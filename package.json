@@ -1,0 +1,55 @@
+{
+  "name": "unbuild",
+  "version": "0.1.0",
+  "description": "An unified javascript build system",
+  "repository": "unjs/unbuild",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "unbuild": "./bin/unbuild.js"
+  },
+  "files": [
+    "bin",
+    "dist"
+  ],
+  "scripts": {
+    "build": "yarn unbuild",
+    "stub": "yarn build --stub",
+    "lint": "eslint --ext .ts,.js .",
+    "unbuild": "jiti ./src/cli",
+    "prepublishOnly": "yarn build",
+    "release": "yarn test && standard-version && git push --follow-tags && npm publish",
+    "test": "yarn lint"
+  },
+  "dependencies": {
+    "@rollup/plugin-alias": "^3.1.2",
+    "@rollup/plugin-commonjs": "^18.0.0",
+    "@rollup/plugin-node-resolve": "^11.2.1",
+    "chalk": "^4.1.0",
+    "consola": "^2.15.3",
+    "defu": "^3.2.2",
+    "esbuild": "^0.10.0",
+    "jiti": "^1.6.4",
+    "mkdist": "^0.1.4",
+    "mri": "^1.1.6",
+    "pretty-bytes": "^5.6.0",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.44.0",
+    "rollup-plugin-dts": "^3.0.1",
+    "rollup-plugin-esbuild": "^3.0.2",
+    "scule": "^0.1.1",
+    "untyped": "^0.2.4",
+    "upath": "^2.0.1"
+  },
+  "devDependencies": {
+    "@nuxtjs/eslint-config-typescript": "latest",
+    "@types/mri": "latest",
+    "@types/node": "latest",
+    "@types/rimraf": "latest",
+    "eslint": "latest",
+    "standard-version": "latest",
+    "typescript": "latest"
+  }
+}

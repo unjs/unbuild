@@ -1,0 +1,7 @@
+.vscode
+node_modules
+*.log
+.DS_Store
+coverage
+dist
+types
