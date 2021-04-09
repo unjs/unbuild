@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.5](https://github.com/unjs/unbuild/compare/v0.1.4...v0.1.5) (2021-04-09)
+
+
+### Bug Fixes
+
+* ensure parent dir for link ([87e75b3](https://github.com/unjs/unbuild/commit/87e75b35c380a65eaa05e30adce2d2a675340216))
+
 ### [0.1.4](https://github.com/unjs/unbuild/compare/v0.1.3...v0.1.4) (2021-04-09)
 
 
