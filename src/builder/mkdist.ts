@@ -1,6 +1,6 @@
-import { unlink, symlink } from 'fs/promises'
 import { mkdist } from 'mkdist'
 import { resolve, join } from 'upath'
+import { symlink } from '../utils'
 import type { BuildContext } from '../types'
 
 export async function mkdistBuild (ctx: BuildContext) {
@@ -8,7 +8,6 @@ export async function mkdistBuild (ctx: BuildContext) {
     if (ctx.stub) {
       const srcDir = resolve(ctx.rootDir, entry.input)
       const outDir = resolve(ctx.rootDir, ctx.outDir, entry.name)
-      await unlink(outDir).catch(() => { })
       await symlink(srcDir, outDir)
     } else {
       const { writtenFiles } = await mkdist({

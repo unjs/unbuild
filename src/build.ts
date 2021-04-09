@@ -8,6 +8,7 @@ import rimraf from 'rimraf'
 import defu from 'defu'
 import prettyBytes from 'pretty-bytes'
 import jiti from 'jiti'
+import { dumpObject, symlink } from './utils'
 import type { BuildContext } from './types'
 import { validateDependencies } from './validate'
 import { rollupBuild } from './builder/rollup'
@@ -79,6 +80,11 @@ export async function build (rootDir: string, stub: boolean) {
     await mkdir(outDir).catch(() => { })
   }
 
+  // selflink
+  if (ctx.stub) {
+    await symlink(resolve(ctx.rootDir), resolve(ctx.rootDir, 'node_modules', ctx.pkg.name))
+  }
+
   // untyped
   await typesBuild(ctx)
 
@@ -87,6 +93,11 @@ export async function build (rootDir: string, stub: boolean) {
 
   // rollup
   await rollupBuild(ctx)
+
+  // Skip rest for stub
+  if (ctx.stub) {
+    return
+  }
 
   // Done info
   consola.success(chalk.green('Build succeed for ' + pkg.name))
@@ -104,6 +115,3 @@ export async function build (rootDir: string, stub: boolean) {
   consola.log('')
 }
 
-function dumpObject (obj: Record<string, any>) {
-  return '{ ' + Object.keys(obj).map(key => `${key}: ${JSON.stringify(obj[key])}`).join(', ') + ' }'
-}
