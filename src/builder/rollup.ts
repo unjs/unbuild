@@ -116,7 +116,7 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
 
       nodeResolve({
         extensions,
-        preferBuiltins: true,
+        preferBuiltins: true
       }),
 
       esbuild({

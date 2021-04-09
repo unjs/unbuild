@@ -32,4 +32,3 @@ export function validateDependencies (ctx: BuildContext) {
     consola.warn('Potential implicit dependencies found:', Array.from(implicitDependnecies).map(id => chalk.cyan(id)).join(', '))
   }
 }
-
