@@ -9,7 +9,7 @@ import mkdirp from 'mkdirp'
 import defu from 'defu'
 import prettyBytes from 'pretty-bytes'
 import jiti from 'jiti'
-import { dumpObject, symlink } from './utils'
+import { dumpObject } from './utils'
 import type { BuildContext } from './types'
 import { validateDependencies } from './validate'
 import { rollupBuild } from './builder/rollup'
@@ -90,10 +90,10 @@ export async function build (rootDir: string, stub: boolean) {
   }
 
   // Try to selflink
-  if (ctx.stub && ctx.pkg.name) {
-    const nodemodulesDir = resolve(ctx.rootDir, 'node_modules', ctx.pkg.name)
-    await symlink(resolve(ctx.rootDir), nodemodulesDir).catch(() => {})
-  }
+  // if (ctx.stub && ctx.pkg.name) {
+  //   const nodemodulesDir = resolve(ctx.rootDir, 'node_modules', ctx.pkg.name)
+  //   await symlink(resolve(ctx.rootDir), nodemodulesDir).catch(() => {})
+  // }
 
   // untyped
   await typesBuild(ctx)
