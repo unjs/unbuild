@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.8](https://github.com/unjs/unbuild/compare/v0.1.7...v0.1.8) (2021-04-09)
+
+
+### Bug Fixes
+
+* **rollup:** set respectExternal option for dts ([a596fa3](https://github.com/unjs/unbuild/commit/a596fa333d78178d41a4e7ad0cd0114f3af9cedb))
+
 ### [0.1.7](https://github.com/unjs/unbuild/compare/v0.1.6...v0.1.7) (2021-04-09)
 
 
