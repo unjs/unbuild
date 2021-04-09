@@ -33,6 +33,7 @@
     "defu": "^3.2.2",
     "esbuild": "^0.11.6",
     "jiti": "^1.9.1",
+    "mkdirp": "^1.0.4",
     "mkdist": "^0.1.5",
     "mri": "^1.1.6",
     "pretty-bytes": "^5.6.0",
@@ -46,6 +47,7 @@
   },
   "devDependencies": {
     "@nuxtjs/eslint-config-typescript": "latest",
+    "@types/mkdirp": "^1.0.1",
     "@types/mri": "latest",
     "@types/node": "latest",
     "@types/rimraf": "latest",

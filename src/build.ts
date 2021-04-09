@@ -1,6 +1,7 @@
 import { promisify } from 'util'
 import Module from 'module'
-import { mkdir, unlink } from 'fs/promises'
+import { unlink } from 'fs/promises'
+import mkdirp from 'mkdirp'
 import { resolve, basename } from 'upath'
 import chalk from 'chalk'
 import consola from 'consola'
@@ -77,7 +78,7 @@ export async function build (rootDir: string, stub: boolean) {
     const outDir = resolve(ctx.rootDir, ctx.outDir)
     await unlink(outDir).catch(() => { })
     await promisify(rimraf)(outDir)
-    await mkdir(outDir).catch(() => { })
+    await mkdirp(outDir)
   }
 
   // selflink

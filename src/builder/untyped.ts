@@ -1,9 +1,10 @@
-import { writeFile, mkdir } from 'fs/promises'
-import { resolve, dirname } from 'upath'
+import { writeFile } from 'fs/promises'
+import { resolve } from 'upath'
 import { resolveSchema, generateTypes, generateMarkdown } from 'untyped'
 import untypedPlugin from 'untyped/dist/loader/babel'
 import jiti from 'jiti'
 import { pascalCase } from 'scule'
+import mkdirp from 'mkdirp'
 import type { BuildContext } from '../types'
 
 export async function typesBuild (ctx: BuildContext) {
@@ -25,8 +26,7 @@ export async function typesBuild (ctx: BuildContext) {
     const defaults = entry.defaults || {}
     const schema = resolveSchema(srcConfig, defaults)
 
-    await mkdir(dirname(genDir)).catch(() => { })
-    await mkdir(genDir).catch(() => { })
+    await mkdirp(genDir)
     await writeFile(resolve(genDir, `${entry.name}.md`), generateMarkdown(schema))
     await writeFile(resolve(genDir, `${entry.name}.schema.json`), JSON.stringify(schema, null, 2))
     await writeFile(resolve(genDir, `${entry.name}.defaults.json`), JSON.stringify(defaults, null, 2))
