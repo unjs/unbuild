@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.11](https://github.com/unjs/unbuild/compare/v0.1.10...v0.1.11) (2021-04-09)
+
+
+### Features
+
+* declaration option to generate types ([936478a](https://github.com/unjs/unbuild/commit/936478a0c6c36373a111a01b9c6e4eb2438e6ed6))
+
 ### [0.1.10](https://github.com/unjs/unbuild/compare/v0.1.9...v0.1.10) (2021-04-09)
 
 
