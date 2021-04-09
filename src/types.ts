@@ -17,7 +17,9 @@ export interface BuildOptions {
   genDir: string
   stub: boolean
   dependencies: string[],
+  devDependencies: string[]
   externals: string[]
+  inlineDependencies: boolean
 }
 
 export interface BuildContext extends BuildOptions {

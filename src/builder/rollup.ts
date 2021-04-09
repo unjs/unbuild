@@ -7,6 +7,7 @@ import esbuild from 'rollup-plugin-esbuild'
 import dts from 'rollup-plugin-dts'
 import { relative, resolve } from 'upath'
 import consola from 'consola'
+import { getpkg } from '../utils'
 import type { BuildContext } from '../types'
 
 export async function rollupBuild (ctx: BuildContext) {
@@ -88,12 +89,16 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
     ],
 
     external (id) {
-      if (id[0] === '.' || id[0] === '/' || id.includes('src/') || id.startsWith(ctx.pkg.name)) {
+      const pkg = getpkg(id)
+      const isExplicitExternal = !!ctx.externals.find(extenrnal => pkg === extenrnal)
+      if (isExplicitExternal) {
+        return true
+      }
+      if (ctx.inlineDependencies || id[0] === '.' || id[0] === '/' || id.includes('src/') || id.startsWith(ctx.pkg.name)) {
         return false
       }
-      const isExplicitExternal = !!ctx.externals.find(ext => id.includes(ext))
       if (!isExplicitExternal) {
-        consola.warn(`Inlining external ${id}`)
+        consola.warn(`Inlining implicit external ${id}`)
       }
       return isExplicitExternal
     },
@@ -110,7 +115,8 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
       }),
 
       nodeResolve({
-        extensions
+        extensions,
+        preferBuiltins: true,
       }),
 
       esbuild({

@@ -1,6 +1,7 @@
 import chalk from 'chalk'
 import consola from 'consola'
 import { BuildContext } from './types'
+import { getpkg } from './utils'
 
 export function validateDependencies (ctx: BuildContext) {
   const usedDependencies = new Set<string>()
@@ -19,7 +20,7 @@ export function validateDependencies (ctx: BuildContext) {
     if (
       !ctx.externals.includes(id) &&
       !id.startsWith('chunks/') &&
-      !ctx.externals.includes(id.split('/')[0]) // lodash/get
+      !ctx.dependencies.includes(getpkg(id))
     ) {
       implicitDependnecies.add(id)
     }
@@ -27,7 +28,8 @@ export function validateDependencies (ctx: BuildContext) {
   if (unusedDependencies.size) {
     consola.warn('Potential unused dependencies found:', Array.from(unusedDependencies).map(id => chalk.cyan(id)).join(', '))
   }
-  if (implicitDependnecies.size) {
+  if (implicitDependnecies.size && !ctx.inlineDependencies) {
     consola.warn('Potential implicit dependencies found:', Array.from(implicitDependnecies).map(id => chalk.cyan(id)).join(', '))
   }
 }
+

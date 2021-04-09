@@ -17,3 +17,8 @@ export async function symlink (from: string, to: string, force: boolean = true) 
 export function dumpObject (obj: Record<string, any>) {
   return '{ ' + Object.keys(obj).map(key => `${key}: ${JSON.stringify(obj[key])}`).join(', ') + ' }'
 }
+
+export function getpkg (id: string = '') {
+  const s = id.split('/')
+  return s[0][0] === '@' ? `${s[0]}/${s[1]}` : s[0]
+}

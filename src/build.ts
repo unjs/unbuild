@@ -32,12 +32,14 @@ export async function build (rootDir: string, stub: boolean) {
     rootDir,
     entries: [],
     dependencies: [],
+    devDependencies: [],
     externals: [...Module.builtinModules],
     srcDir: 'src',
     outDir: 'dist',
     genDir: '.gen',
     untyped: undefined,
     declaration: undefined,
+    inlineDependencies: false,
     clean: true,
     stub,
     buildEntries: [],
@@ -63,10 +65,12 @@ export async function build (rootDir: string, stub: boolean) {
     }
   }
 
+  // Collect dependencies and devDependnecies
+  ctx.dependencies = Object.keys(pkg.dependencies || {})
+  ctx.devDependencies = Object.keys(pkg.devDependencies || {})
+
   // Add dependencies from package.json as externals
-  if (pkg.dependencies) {
-    ctx.externals.push(...Object.keys(pkg.dependencies))
-  }
+  ctx.externals.push(...ctx.dependencies)
 
   // Start info
   consola.info(chalk.cyan(`${ctx.stub ? 'Stubbing' : 'Building'} ${pkg.name}`))
