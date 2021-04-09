@@ -46,7 +46,9 @@ export async function rollupBuild (ctx: BuildContext) {
 
   // Types
   rollupOptions.plugins = rollupOptions.plugins || []
-  rollupOptions.plugins.push(dts())
+  rollupOptions.plugins.push(dts({
+    respectExternal: true
+  }))
   const typesBuild = await rollup(rollupOptions)
   await typesBuild.write({
     dir: resolve(ctx.rootDir, ctx.outDir),
