@@ -86,7 +86,7 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
     ],
 
     external (id) {
-      if (id[0] === '.' || id[0] === '/' || id.includes('src/')) {
+      if (id[0] === '.' || id[0] === '/' || id.includes('src/') || id.startsWith(ctx.pkg.name)) {
         return false
       }
       const isExplicitExternal = !!ctx.externals.find(ext => id.includes(ext))
