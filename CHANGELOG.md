@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.10](https://github.com/unjs/unbuild/compare/v0.1.9...v0.1.10) (2021-04-09)
+
+
+### Bug Fixes
+
+* exclude package itself from externals ([617a9f9](https://github.com/unjs/unbuild/commit/617a9f98f233e5a5c9764aa3e7802ef374c74944))
+
 ### [0.1.9](https://github.com/unjs/unbuild/compare/v0.1.8...v0.1.9) (2021-04-09)
 
 
