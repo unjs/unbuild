@@ -114,4 +114,3 @@ export async function build (rootDir: string, stub: boolean) {
 
   consola.log('')
 }
-

@@ -17,6 +17,7 @@
   "scripts": {
     "build": "yarn unbuild",
     "stub": "yarn build --stub",
+    "dev": "yarn unbuild test/fixture",
     "lint": "eslint --ext .ts,.js .",
     "unbuild": "jiti ./src/cli",
     "prepublishOnly": "yarn build",
@@ -31,7 +32,7 @@
     "consola": "^2.15.3",
     "defu": "^3.2.2",
     "esbuild": "^0.10.0",
-    "jiti": "^1.6.4",
+    "jiti": "^1.8.0",
     "mkdist": "^0.1.4",
     "mri": "^1.1.6",
     "pretty-bytes": "^5.6.0",

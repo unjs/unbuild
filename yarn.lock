@@ -1924,10 +1924,15 @@ isexe@^2.0.0:
   resolved "https://registry.yarnpkg.com/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
   integrity sha1-6PvzdNxVb/iUehDcsFctYz8s+hA=
 
-jiti@^1.6.3, jiti@^1.6.4:
+jiti@^1.6.3:
   version "1.6.4"
   resolved "https://registry.yarnpkg.com/jiti/-/jiti-1.6.4.tgz#63453b602d0234f8bd7ce638f03f0e74ef99be12"
   integrity sha512-ICUtP0/rAyT/GaaDG0vj6fmWzx5yjFc7v+L1MAEARGl1+lrdJ8wtJNChr+ZGEdPoOhFwdhtcDO5VM2TNNgPpjQ==
+
+jiti@^1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/jiti/-/jiti-1.8.0.tgz#8ddec5722b5785eb98cbe4298c0d8080ff5814d1"
+  integrity sha512-qtwVKO+1YbKIssnbnGN/V6m9g0XvNTCKwk3mJWJD+kEgkxHTozhSZiV7Vb8nkjzKU7asL7m1xOowXBJvjwlZ+g==
 
 joycon@^3.0.0:
   version "3.0.1"
