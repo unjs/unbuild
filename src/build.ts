@@ -1,11 +1,11 @@
 import { promisify } from 'util'
 import Module from 'module'
 import { unlink } from 'fs/promises'
-import mkdirp from 'mkdirp'
 import { resolve, basename } from 'upath'
 import chalk from 'chalk'
 import consola from 'consola'
 import rimraf from 'rimraf'
+import mkdirp from 'mkdirp'
 import defu from 'defu'
 import prettyBytes from 'pretty-bytes'
 import jiti from 'jiti'
@@ -65,7 +65,7 @@ export async function build (rootDir: string, stub: boolean) {
   }
 
   // Start info
-  consola.info(chalk.cyan(`Building ${pkg.name}`))
+  consola.info(chalk.cyan(`${ctx.stub ? 'Stubbing' : 'Building'} ${pkg.name}`))
   if (process.env.DEBUG) {
     consola.info(`${chalk.bold('Root dir:')} ${ctx.rootDir}
   ${chalk.bold('Entries:')}
@@ -81,9 +81,10 @@ export async function build (rootDir: string, stub: boolean) {
     await mkdirp(outDir)
   }
 
-  // selflink
-  if (ctx.stub) {
-    await symlink(resolve(ctx.rootDir), resolve(ctx.rootDir, 'node_modules', ctx.pkg.name))
+  // Try to selflink
+  if (ctx.stub && ctx.pkg.name) {
+    const nodemodulesDir = resolve(ctx.rootDir, 'node_modules', ctx.pkg.name)
+    await symlink(resolve(ctx.rootDir), nodemodulesDir).catch(() => {})
   }
 
   // untyped
