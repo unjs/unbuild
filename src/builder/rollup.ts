@@ -45,15 +45,17 @@ export async function rollupBuild (ctx: BuildContext) {
   }
 
   // Types
-  rollupOptions.plugins = rollupOptions.plugins || []
-  rollupOptions.plugins.push(dts({
-    respectExternal: true
-  }))
-  const typesBuild = await rollup(rollupOptions)
-  await typesBuild.write({
-    dir: resolve(ctx.rootDir, ctx.outDir),
-    format: 'esm'
-  })
+  if (ctx.declaration) {
+    rollupOptions.plugins = rollupOptions.plugins || []
+    rollupOptions.plugins.push(dts({
+      respectExternal: true
+    }))
+    const typesBuild = await rollup(rollupOptions)
+    await typesBuild.write({
+      dir: resolve(ctx.rootDir, ctx.outDir),
+      format: 'esm'
+    })
+  }
 }
 
 export function getRollupOptions (ctx: BuildContext): RollupOptions {
@@ -103,8 +105,9 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
     },
 
     plugins: [
-      // TODO
-      alias({}),
+      alias({
+        [ctx.pkg.name]: ctx.rootDir
+      }),
 
       nodeResolve({
         extensions

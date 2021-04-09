@@ -16,7 +16,7 @@ export async function mkdistBuild (ctx: BuildContext) {
         distDir: join(ctx.outDir, entry.name),
         format: entry.format,
         cleanDist: false,
-        declaration: true
+        declaration: entry.declaration
       })
       ctx.buildEntries.push({
         path: join(ctx.outDir, entry.name),

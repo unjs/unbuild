@@ -4,11 +4,13 @@ export interface BuildEntry {
   builder?: 'rollup' | 'mkdist' | 'untyped'
   format?: 'esm' | 'cjs'
   defaults?: Record<string, any>
+  declaration?: boolean
 }
 
 export interface BuildOptions {
   pkg: any,
   rootDir: string
+  declaration?: boolean
   entries: BuildEntry[],
   clean: boolean
   outDir: string

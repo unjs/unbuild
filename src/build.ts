@@ -37,6 +37,7 @@ export async function build (rootDir: string, stub: boolean) {
     outDir: 'dist',
     genDir: '.gen',
     untyped: undefined,
+    declaration: undefined,
     clean: true,
     stub,
     buildEntries: [],
@@ -56,6 +57,9 @@ export async function build (rootDir: string, stub: boolean) {
     }
     if (!entry.builder) {
       entry.builder = entry.input.endsWith('/') ? 'mkdist' : 'rollup'
+    }
+    if (ctx.declaration !== undefined && entry.declaration === undefined) {
+      entry.declaration = ctx.declaration
     }
   }
 

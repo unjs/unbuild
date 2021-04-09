@@ -6,6 +6,7 @@ export default <BuildConfig> {
     'src/cli'
   ],
   dependencies: [
-    'esbuild'
+    'esbuild',
+    'typescript'
   ]
 }
