@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.6](https://github.com/unjs/unbuild/compare/v0.1.5...v0.1.6) (2021-04-09)
+
+
+### Bug Fixes
+
+* **pkg:** specify peerDependencies ([71e8994](https://github.com/unjs/unbuild/commit/71e8994cbb5d17693e94d9d93073b2d2b9011a89))
+
 ### [0.1.5](https://github.com/unjs/unbuild/compare/v0.1.4...v0.1.5) (2021-04-09)
 
 
