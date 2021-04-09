@@ -1143,11 +1143,6 @@ esbuild@^0.11.6:
   resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.11.6.tgz#20961309c4cfed00b71027e18806150358d0cbb0"
   integrity sha512-L+nKW9ftVS/N2CVJMR9YmXHbkm+vHzlNYuo09rzipQhF7dYNvRLfWoEPSDRTl10and4owFBV9rJ2CTFNtLIOiw==
 
-esbuild@^0.8.56:
-  version "0.8.57"
-  resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.8.57.tgz#a42d02bc2b57c70bcd0ef897fe244766bb6dd926"
-  integrity sha512-j02SFrUwFTRUqiY0Kjplwjm1psuzO1d6AjaXKuOR9hrY0HuPsT6sV42B6myW34h1q4CRy+Y3g4RU/cGJeI/nNA==
-
 escalade@^3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/escalade/-/escalade-3.1.1.tgz#d8cfdc7000965c5a0174b4a82eaa5c0552742e40"
@@ -1655,7 +1650,7 @@ globals@^13.6.0:
   dependencies:
     type-fest "^0.20.2"
 
-globby@^11.0.1, globby@^11.0.2:
+globby@^11.0.1, globby@^11.0.3:
   version "11.0.3"
   resolved "https://registry.yarnpkg.com/globby/-/globby-11.0.3.tgz#9b1f0cb523e171dd1ad8c7b2a9fb4b644b9593cb"
   integrity sha512-ffdmosjA807y7+lA1NM0jELARVmYul/715xiILEjo3hBLPTcirgQNnXECn5g3mtR8TOLCVbkfua1Hpen25/Xcg==
@@ -1930,11 +1925,6 @@ isexe@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
   integrity sha1-6PvzdNxVb/iUehDcsFctYz8s+hA=
-
-jiti@^1.6.3:
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/jiti/-/jiti-1.9.0.tgz#7b39fd870929171af1267ec4c0ac57787060a581"
-  integrity sha512-89yTCLjy7zRF+oLIKM1bF/vX1kxl7OvdXCq55u3Bl5h+wjFG3jzb9tBY7uG9CI8jjx5MbpRNSGmclHDMfFSskw==
 
 jiti@^1.9.1:
   version "1.9.1"
@@ -2240,16 +2230,16 @@ mkdirp@^1.0.4:
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-1.0.4.tgz#3eb5ed62622756d79a5f0e2a221dfebad75c2f7e"
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
 
-mkdist@^0.1.5:
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/mkdist/-/mkdist-0.1.5.tgz#ce1401916f388f42ed6f7a95b342cac6b165d863"
-  integrity sha512-K+475ooTpRzOODoJ2yyPjlkQnfMVWt4s5NSYQV3uEDfoiDNd5ETpZ3eQbpnDS3HGidI5EtWmfq6HRYd5/Jhh0w==
+mkdist@^0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/mkdist/-/mkdist-0.1.6.tgz#d7aa1c8ee39c26251a051875adb6c5fd0a632b19"
+  integrity sha512-5wbujMUje/vyK2F/eotvUIvGeLB2/eVQD/Vf4Cx3qdVTAKaaWLdexxW9ews29vIRYjCx1UvLTNZkUka5nR6VQw==
   dependencies:
     defu "^3.2.2"
-    esbuild "^0.8.56"
+    esbuild "^0.11.6"
     fs-extra "^9.1.0"
-    globby "^11.0.2"
-    jiti "^1.6.3"
+    globby "^11.0.3"
+    jiti "^1.9.1"
     mri "^1.1.6"
     upath "^2.0.1"
     vue-template-compiler "^2.6.12"
