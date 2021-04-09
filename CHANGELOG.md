@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.12](https://github.com/unjs/unbuild/compare/v0.1.11...v0.1.12) (2021-04-09)
+
+
+### Features
+
+* inlineDependencies option ([9f320a1](https://github.com/unjs/unbuild/commit/9f320a17b567c18d3b9212481ae3da4fd06ea1c9))
+
 ### [0.1.11](https://github.com/unjs/unbuild/compare/v0.1.10...v0.1.11) (2021-04-09)
 
 
