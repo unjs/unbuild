@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.3](https://github.com/unjs/unbuild/compare/v0.1.2...v0.1.3) (2021-04-09)
+
+
+### Bug Fixes
+
+* update deps and use interopDefault ([6b0f39a](https://github.com/unjs/unbuild/commit/6b0f39a8270ed1927d806ab04ce9fc160c3353f6))
+
 ### [0.1.2](https://github.com/unjs/unbuild/compare/v0.1.1...v0.1.2) (2021-04-09)
 
 
