@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.7](https://github.com/unjs/unbuild/compare/v0.1.6...v0.1.7) (2021-04-09)
+
+
+### Bug Fixes
+
+* **pkg:** directly add typescript dependency for standalone usage ([adeda2f](https://github.com/unjs/unbuild/commit/adeda2f7b1b6627359316f1fb47afcb1a6119827))
+
 ### [0.1.6](https://github.com/unjs/unbuild/compare/v0.1.5...v0.1.6) (2021-04-09)
 
 
