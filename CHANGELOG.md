@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.9](https://github.com/unjs/unbuild/compare/v0.1.8...v0.1.9) (2021-04-09)
+
+
+### Bug Fixes
+
+* **pkg:** move typescript to dependencies ([51cd53b](https://github.com/unjs/unbuild/commit/51cd53b836947e35da2639a2ee1602b6aa122499))
+
 ### [0.1.8](https://github.com/unjs/unbuild/compare/v0.1.7...v0.1.8) (2021-04-09)
 
 
