@@ -9,6 +9,7 @@ import type { BuildContext } from '../types'
 export async function typesBuild (ctx: BuildContext) {
   for (const entry of ctx.entries.filter(entry => entry.builder === 'untyped')) {
     const _require = jiti(ctx.rootDir, {
+      interopDefault: true,
       transformOptions: {
         babel: {
           plugins: [
