@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.13](https://github.com/unjs/unbuild/compare/v0.1.12...v0.1.13) (2021-04-16)
+
+
+### Bug Fixes
+
+* rollup config fixes (inline related) ([ae8a3d3](https://github.com/unjs/unbuild/commit/ae8a3d31438f1ea5b1f006a050e94fe335646cf3))
+
 ### [0.1.12](https://github.com/unjs/unbuild/compare/v0.1.11...v0.1.12) (2021-04-09)
 
 
