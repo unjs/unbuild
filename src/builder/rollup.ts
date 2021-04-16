@@ -1,7 +1,7 @@
 import { writeFile } from 'fs/promises'
 import { RollupOptions, OutputOptions, OutputChunk, rollup } from 'rollup'
 import commonjs from '@rollup/plugin-commonjs'
-import nodeResolve from '@rollup/plugin-node-resolve'
+import { nodeResolve } from '@rollup/plugin-node-resolve'
 import alias from '@rollup/plugin-alias'
 import esbuild from 'rollup-plugin-esbuild'
 import dts from 'rollup-plugin-dts'
@@ -64,6 +64,7 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
 
   return {
     context: ctx.rootDir,
+
     input: Object.fromEntries(ctx.entries
       .filter(entry => entry.builder === 'rollup')
       .map(entry => [entry.name, resolve(ctx.rootDir, entry.input)])
@@ -76,7 +77,9 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
         chunkFileNames: 'chunks/[name].js',
         format: 'cjs',
         exports: 'auto',
-        preferConst: true
+        preferConst: true,
+        externalLiveBindings: false,
+        freeze: false
       },
       {
         dir: resolve(ctx.rootDir, ctx.outDir),
@@ -84,7 +87,9 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
         chunkFileNames: 'chunks/[name].mjs',
         format: 'esm',
         exports: 'auto',
-        preferConst: true
+        preferConst: true,
+        externalLiveBindings: false,
+        freeze: false
       }
     ],
 
@@ -119,15 +124,26 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
         preferBuiltins: true
       }),
 
-      esbuild({
-        target: 'node12',
-        loaders: {
-          '.json': 'json'
+      {
+        name: 'json',
+        transform (json, id) {
+          if (!id || id[0] === '\0' || !id.endsWith('.json')) { return null }
+          return {
+            code: 'module.exports = ' + json,
+            map: null
+          }
         }
+      },
+
+      esbuild({
+        target: 'node12'
       }),
 
       commonjs({
-        extensions
+        extensions,
+        ignore: [
+          ...ctx.externals
+        ]
       })
     ]
   }
