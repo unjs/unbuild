@@ -1,11 +1,12 @@
 import { mkdist } from 'mkdist'
-import { symlink } from '../utils'
+import { symlink, rmdir } from '../utils'
 import type { BuildContext } from '../types'
 
 export async function mkdistBuild (ctx: BuildContext) {
   for (const entry of ctx.entries.filter(e => e.builder === 'mkdist')) {
     const distDir = entry.outDir!
     if (ctx.stub) {
+      await rmdir(distDir)
       await symlink(entry.input, distDir)
     } else {
       const { writtenFiles } = await mkdist({

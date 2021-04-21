@@ -2,7 +2,7 @@ import fsp from 'fs/promises'
 import { promisify } from 'util'
 import { dirname } from 'upath'
 import mkdirp from 'mkdirp'
-import rimraf from 'rimraf'
+import _rimraf from 'rimraf'
 
 export async function ensuredir (path: string) {
   await mkdirp(dirname(path))
@@ -25,8 +25,9 @@ export function getpkg (id: string = '') {
   return s[0][0] === '@' ? `${s[0]}/${s[1]}` : s[0]
 }
 
-export async function cleanDir (dir: string) {
+const rimraf = promisify(_rimraf)
+
+export async function rmdir (dir: string) {
   await fsp.unlink(dir).catch(() => { })
-  await promisify(rimraf)(dir)
-  await mkdirp(dir)
+  await rimraf(dir)
 }

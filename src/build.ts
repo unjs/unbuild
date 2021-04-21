@@ -5,7 +5,8 @@ import consola from 'consola'
 import defu from 'defu'
 import prettyBytes from 'pretty-bytes'
 import jiti from 'jiti'
-import { dumpObject, cleanDir } from './utils'
+import mkdirp from 'mkdirp'
+import { dumpObject, rmdir } from './utils'
 import type { BuildContext } from './types'
 import { validateDependencies } from './validate'
 import { rollupBuild } from './builder/rollup'
@@ -85,7 +86,8 @@ export async function build (rootDir: string, stub: boolean) {
   // Clean dist dirs
   if (ctx.clean) {
     for (const dir of new Set(ctx.entries.map(e => e.outDir).sort())) {
-      await cleanDir(dir!)
+      await rmdir(dir!)
+      await mkdirp(dir!)
     }
   }
 
