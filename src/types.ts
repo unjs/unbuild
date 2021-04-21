@@ -30,3 +30,7 @@ export interface BuildContext extends BuildOptions {
 export interface BuildConfig extends Partial<Omit<BuildOptions, 'entries'>> {
   entries: (BuildEntry | string)[],
 }
+
+export function defineBuildConfig (config: BuildConfig): BuildConfig {
+  return config
+}
