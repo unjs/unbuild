@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.1](https://github.com/unjs/unbuild/compare/v0.2.0...v0.2.1) (2021-04-21)
+
+
+### Bug Fixes
+
+* avoid duplicate name in dist ([cbc8f55](https://github.com/unjs/unbuild/commit/cbc8f55cbdd2df29d328a44b773118ec6e00a079))
+
 ## [0.2.0](https://github.com/unjs/unbuild/compare/v0.1.13...v0.2.0) (2021-04-21)
 
 
