@@ -1,5 +1,5 @@
 import { writeFile } from 'fs/promises'
-import { resolve, join } from 'upath'
+import { resolve } from 'upath'
 import { resolveSchema, generateTypes, generateMarkdown } from 'untyped'
 import untypedPlugin from 'untyped/dist/loader/babel'
 import jiti from 'jiti'
@@ -19,7 +19,7 @@ export async function typesBuild (ctx: BuildContext) {
       }
     })
 
-    const distDir = join(entry.outDir, entry.name)
+    const distDir = entry.outDir!
     const srcConfig = _require(resolve(ctx.rootDir, entry.input))
 
     const defaults = entry.defaults || {}
