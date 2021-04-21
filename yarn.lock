@@ -2237,10 +2237,10 @@ mkdirp@^1.0.4:
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-1.0.4.tgz#3eb5ed62622756d79a5f0e2a221dfebad75c2f7e"
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
 
-mkdist@^0.1.6:
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/mkdist/-/mkdist-0.1.6.tgz#d7aa1c8ee39c26251a051875adb6c5fd0a632b19"
-  integrity sha512-5wbujMUje/vyK2F/eotvUIvGeLB2/eVQD/Vf4Cx3qdVTAKaaWLdexxW9ews29vIRYjCx1UvLTNZkUka5nR6VQw==
+mkdist@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/mkdist/-/mkdist-0.2.0.tgz#4dc2045328229bbe11ec1f1c20af49248ee1f606"
+  integrity sha512-eDTfFHlGqhMxC54PVH5RjSve4AkEzFwtazIvbDUejG4y6Cp/2b9IySObIZSlHetI76lmE1t/TuFJ54Ssg0HlCg==
   dependencies:
     defu "^3.2.2"
     esbuild "^0.11.6"
