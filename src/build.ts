@@ -1,15 +1,11 @@
-import { promisify } from 'util'
 import Module from 'module'
-import { unlink } from 'fs/promises'
 import { resolve, basename } from 'upath'
 import chalk from 'chalk'
 import consola from 'consola'
-import rimraf from 'rimraf'
-import mkdirp from 'mkdirp'
 import defu from 'defu'
 import prettyBytes from 'pretty-bytes'
 import jiti from 'jiti'
-import { dumpObject } from './utils'
+import { dumpObject, cleanDir } from './utils'
 import type { BuildContext } from './types'
 import { validateDependencies } from './validate'
 import { rollupBuild } from './builder/rollup'
@@ -54,15 +50,21 @@ export async function build (rootDir: string, stub: boolean) {
     if (typeof entry.name !== 'string') {
       entry.name = basename(entry.input)
     }
+
     if (!entry.input) {
       throw new Error('Missing entry input: ' + dumpObject(entry))
     }
+
     if (!entry.builder) {
       entry.builder = entry.input.endsWith('/') ? 'mkdist' : 'rollup'
     }
+
     if (ctx.declaration !== undefined && entry.declaration === undefined) {
       entry.declaration = ctx.declaration
     }
+
+    entry.input = resolve(ctx.rootDir, entry.input)
+    entry.outDir = resolve(ctx.rootDir, entry.outDir || ctx.outDir)
   }
 
   // Collect dependencies and devDependnecies
@@ -81,12 +83,11 @@ export async function build (rootDir: string, stub: boolean) {
 `)
   }
 
-  // Clean dist dir
+  // Clean dist dirs
   if (ctx.clean) {
-    const outDir = resolve(ctx.rootDir, ctx.outDir)
-    await unlink(outDir).catch(() => { })
-    await promisify(rimraf)(outDir)
-    await mkdirp(outDir)
+    for (const dir of new Set(ctx.entries.map(e => e.outDir).sort())) {
+      await cleanDir(dir!)
+    }
   }
 
   // Try to selflink

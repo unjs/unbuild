@@ -5,6 +5,7 @@ export interface BuildEntry {
   format?: 'esm' | 'cjs'
   defaults?: Record<string, any>
   declaration?: boolean
+  outDir?: string
 }
 
 export interface BuildOptions {
@@ -14,7 +15,6 @@ export interface BuildOptions {
   entries: BuildEntry[],
   clean: boolean
   outDir: string
-  genDir: string
   stub: boolean
   dependencies: string[],
   devDependencies: string[]

@@ -13,11 +13,10 @@ import type { BuildContext } from '../types'
 export async function rollupBuild (ctx: BuildContext) {
   if (ctx.stub) {
     for (const entry of ctx.entries.filter(entry => entry.builder === 'rollup')) {
-      const input = resolve(ctx.rootDir, entry.input)
       const output = resolve(ctx.rootDir, ctx.outDir, entry.name)
-      await writeFile(output + '.js', `module.exports = require('jiti')()('${input}')`)
-      await writeFile(output + '.mjs', `export * from '${input}'`)
-      await writeFile(output + '.d.ts', `export * from '${input}'`)
+      await writeFile(output + '.js', `module.exports = require('jiti')()('${entry.input}')`)
+      await writeFile(output + '.mjs', `export * from '${entry.input}'`)
+      await writeFile(output + '.d.ts', `export * from '${entry.input}'`)
     }
     return
   }
