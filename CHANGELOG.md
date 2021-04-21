@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](https://github.com/unjs/unbuild/compare/v0.1.13...v0.2.0) (2021-04-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* support per-entry outDir
+
+### Features
+
+* support per-entry outDir ([5bb7ac3](https://github.com/unjs/unbuild/commit/5bb7ac384381c08b896c346fde94ca69fe704412))
+
+
+### Bug Fixes
+
+* enable declarations and export defineBuildConfig ([0e7d62b](https://github.com/unjs/unbuild/commit/0e7d62ba1fcf8dffa7932e0df66ccfee658ea069))
+
 ### [0.1.13](https://github.com/unjs/unbuild/compare/v0.1.12...v0.1.13) (2021-04-16)
 
 
