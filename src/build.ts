@@ -30,7 +30,6 @@ export async function build (rootDir: string, stub: boolean) {
     dependencies: [],
     devDependencies: [],
     externals: [...Module.builtinModules],
-    srcDir: 'src',
     outDir: 'dist',
     genDir: '.gen',
     untyped: undefined,
