@@ -1,6 +1,6 @@
-import type { BuildConfig } from './src/types'
+import { defineBuildConfig } from '.'
 
-export default <BuildConfig> {
+export default defineBuildConfig({
   declaration: true,
   entries: [
     'src/index',
@@ -10,4 +10,4 @@ export default <BuildConfig> {
     'esbuild',
     'typescript'
   ]
-}
+})
