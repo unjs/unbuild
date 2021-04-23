@@ -689,10 +689,18 @@ chalk@^2.0.0, chalk@^2.4.2:
     escape-string-regexp "^1.0.5"
     supports-color "^5.3.0"
 
-chalk@^4.0.0, chalk@^4.1.0:
+chalk@^4.0.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-4.1.0.tgz#4e14870a618d9e2edd97dd8345fd9d9dc315646a"
   integrity sha512-qwx12AxXe2Q5xQ43Ac//I6v5aXTipYrSESdOgzrN+9XjgEpyjpKuvSGaN4qE93f7TQTlerQQ8S+EQ0EyDoVL1A==
+  dependencies:
+    ansi-styles "^4.1.0"
+    supports-color "^7.1.0"
+
+chalk@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/chalk/-/chalk-4.1.1.tgz#c80b3fab28bf6371e6863325eee67e618b77e6ad"
+  integrity sha512-diHzdDKxcU+bAsUboHLPEDQiw0qEe0qd7SYUn3HgcFlWgbDcfLGswOHYeGrHKzG9z6UYf01d9VFMfZxPM1xZSg==
   dependencies:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
@@ -1043,6 +1051,11 @@ defu@^3.2.2:
   resolved "https://registry.yarnpkg.com/defu/-/defu-3.2.2.tgz#be20f4cc49b9805d54ee6b610658d53894942e97"
   integrity sha512-8UWj5lNv7HD+kB0e9w77Z7TdQlbUYDVWqITLHNqFIn6khrNHv5WQo38Dcm1f6HeNyZf0U7UbPf6WeZDSdCzGDQ==
 
+defu@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/defu/-/defu-4.0.1.tgz#9d7d7a48f9295f08285d153dcff174c89b9bcb22"
+  integrity sha512-lC+G0KvvWRbisQa50+iFelm3/eMmwo4IlBmfASOVlw9MZpHHyQeVsZxc5j23+TQy5ydgEoTVSrWl7ptou1kzJQ==
+
 detect-indent@^6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/detect-indent/-/detect-indent-6.0.0.tgz#0abd0f549f69fc6659a254fe96786186b6f528fd"
@@ -1144,6 +1157,11 @@ es-to-primitive@^1.2.1:
     is-callable "^1.1.4"
     is-date-object "^1.0.1"
     is-symbol "^1.0.2"
+
+esbuild@^0.11.13:
+  version "0.11.13"
+  resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.11.13.tgz#f61bb9b62f1ea5b749537db78fafb11c9cc0e096"
+  integrity sha512-d5coY4dd4rVWle0WzrR8+32ukKtZroVJ/wJzOwbBEmoSFB/H3QME0l+3IAN5Sf3LtuoUSivdv1/b5rD7OykXeg==
 
 esbuild@^0.11.6:
   version "0.11.6"
@@ -2237,10 +2255,10 @@ mkdirp@^1.0.4:
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-1.0.4.tgz#3eb5ed62622756d79a5f0e2a221dfebad75c2f7e"
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
 
-mkdist@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/mkdist/-/mkdist-0.2.0.tgz#4dc2045328229bbe11ec1f1c20af49248ee1f606"
-  integrity sha512-eDTfFHlGqhMxC54PVH5RjSve4AkEzFwtazIvbDUejG4y6Cp/2b9IySObIZSlHetI76lmE1t/TuFJ54Ssg0HlCg==
+mkdist@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/mkdist/-/mkdist-0.2.1.tgz#5bde8cd8ba5a884ed51bfe32d6d111d29209b92c"
+  integrity sha512-q9KBmE9tIqQF6bRRKSt4N8FQ7FU9NpviTxOODep0x+Ji8e077Dgfm262t9vR8jjXeKC+GHNf1BdDLyNjFGeWqg==
   dependencies:
     defu "^3.2.2"
     esbuild "^0.11.6"
@@ -2795,10 +2813,10 @@ rollup-plugin-esbuild@^3.0.2:
     joycon "^3.0.0"
     jsonc-parser "^3.0.0"
 
-rollup@^2.44.0:
-  version "2.45.0"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.45.0.tgz#bfcce2347c96f15f5c78ac860bc38e3349ba27c9"
-  integrity sha512-JJznbtGIsHZfKH0Sa9RpCAy5JarH8SWvBzRAGuRkgzAafb8e8D7VSMJ0O1Bsix1nn91koN/Ecvl2+ZWhljcuTw==
+rollup@^2.45.2:
+  version "2.45.2"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.45.2.tgz#8fb85917c9f35605720e92328f3ccbfba6f78b48"
+  integrity sha512-kRRU7wXzFHUzBIv0GfoFFIN3m9oteY4uAsKllIpQDId5cfnkWF2J130l+27dzDju0E6MScKiV0ZM5Bw8m4blYQ==
   optionalDependencies:
     fsevents "~2.3.1"
 
@@ -2826,10 +2844,10 @@ safe-regex@^2.1.1:
   dependencies:
     regexp-tree "~0.1.1"
 
-scule@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/scule/-/scule-0.1.1.tgz#6bf026f1815c646f061761f9bfd7a3e783f2d05c"
-  integrity sha512-1j2RlmUNADEprCkzDaeo8w2tdum/mvQWAKdRaS2raud7IOnPaDbLSFKhcY5xXPbAFYWk4ZQ0BUnfmg0ZUcI+Pg==
+scule@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/scule/-/scule-0.2.0.tgz#785957412f2d38de49d574ba2ae49d71bcdfd6ee"
+  integrity sha512-rkL64/42rBu2WzWO4xRGbRPm/04R8qjkHpMcbj/r9C4ISLbMeZrwnbZ94+qfeGT0ZXDSPkqTlEMK/cg3NI83Sg==
 
 "semver@2 || 3 || 4 || 5":
   version "5.7.1"

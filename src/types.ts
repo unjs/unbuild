@@ -6,6 +6,7 @@ export interface BuildEntry {
   defaults?: Record<string, any>
   declaration?: boolean
   outDir?: string
+  ext?: 'mjs' | 'js' | 'ts'
 }
 
 export interface BuildOptions {

@@ -15,7 +15,8 @@ export async function mkdistBuild (ctx: BuildContext) {
         distDir,
         format: entry.format,
         cleanDist: false,
-        declaration: entry.declaration
+        declaration: entry.declaration,
+        ext: entry.ext
       })
       ctx.buildEntries.push({
         path: distDir,
