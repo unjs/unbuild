@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.3](https://github.com/unjs/unbuild/compare/v0.2.2...v0.2.3) (2021-04-23)
+
+
+### Features
+
+* pass ext option to mkdist ([2c9a513](https://github.com/unjs/unbuild/commit/2c9a513014bab7d5b0cab67e6952647c085edf11))
+
 ### [0.2.2](https://github.com/unjs/unbuild/compare/v0.2.1...v0.2.2) (2021-04-21)
 
 
