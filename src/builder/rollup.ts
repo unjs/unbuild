@@ -135,7 +135,7 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
       },
 
       esbuild({
-        target: 'node12'
+        target: 'es2019'
       }),
 
       commonjs({
