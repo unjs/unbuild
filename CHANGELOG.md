@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.1](https://github.com/unjs/unbuild/compare/v0.3.0...v0.3.1) (2021-06-16)
+
+
+### Bug Fixes
+
+* change esbuild target to es2019 ([a91ec26](https://github.com/unjs/unbuild/commit/a91ec26abef272a30e94f0568b0004cf9351c19c))
+
 ## [0.3.0](https://github.com/unjs/unbuild/compare/v0.2.3...v0.3.0) (2021-05-24)
 
 
