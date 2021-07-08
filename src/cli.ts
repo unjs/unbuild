@@ -1,4 +1,4 @@
-import { resolve } from 'path'
+import { resolve } from 'upath'
 import mri from 'mri'
 import { build } from './build'
 

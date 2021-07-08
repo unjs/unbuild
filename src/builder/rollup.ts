@@ -94,11 +94,11 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
 
     external (id) {
       const pkg = getpkg(id)
-      const isExplicitExternal = !!ctx.externals.find(extenrnal => pkg === extenrnal)
+      const isExplicitExternal = ctx.externals.includes(pkg)
       if (isExplicitExternal) {
         return true
       }
-      if (ctx.inlineDependencies || id[0] === '.' || id[0] === '/' || id.includes('src/') || id.startsWith(ctx.pkg.name)) {
+      if (ctx.inlineDependencies || id[0] === '.' || id[0] === '/' || id.match(/src[\\/]/) || id.startsWith(ctx.pkg.name)) {
         return false
       }
       if (!isExplicitExternal) {
