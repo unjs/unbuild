@@ -1,4 +1,4 @@
-import { defineBuildConfig } from '.'
+import { defineBuildConfig } from './src/types'
 
 export default defineBuildConfig({
   declaration: true,
