@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.2](https://github.com/unjs/unbuild/compare/v0.3.1...v0.3.2) (2021-07-08)
+
+
+### Bug Fixes
+
+* don't warn for every src file in windows ([#10](https://github.com/unjs/unbuild/issues/10)) ([e4d18aa](https://github.com/unjs/unbuild/commit/e4d18aa020533810dc297acda923a4edcfce9114))
+
 ### [0.3.1](https://github.com/unjs/unbuild/compare/v0.3.0...v0.3.1) (2021-06-16)
 
 
