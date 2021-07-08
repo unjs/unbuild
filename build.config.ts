@@ -1,4 +1,4 @@
-import { defineBuildConfig } from '.'
+import { defineBuildConfig } from './src'
 
 export default defineBuildConfig({
   declaration: true,
