@@ -25,35 +25,35 @@
     "test": "yarn lint"
   },
   "dependencies": {
-    "@rollup/plugin-alias": "^3.1.2",
-    "@rollup/plugin-commonjs": "^19.0.0",
+    "@rollup/plugin-alias": "^3.1.4",
+    "@rollup/plugin-commonjs": "^19.0.1",
     "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-node-resolve": "^13.0.0",
+    "@rollup/plugin-node-resolve": "^13.0.2",
     "chalk": "^4.1.1",
     "consola": "^2.15.3",
     "defu": "^5.0.0",
-    "esbuild": "^0.12.9",
+    "esbuild": "^0.12.15",
     "jiti": "^1.10.1",
     "mkdirp": "^1.0.4",
-    "mkdist": "^0.3.1",
+    "mkdist": "^0.3.3",
     "mri": "^1.1.6",
     "pretty-bytes": "^5.6.0",
     "rimraf": "^3.0.2",
-    "rollup": "^2.52.0",
+    "rollup": "^2.53.2",
     "rollup-plugin-dts": "^3.0.2",
     "rollup-plugin-esbuild": "^4.5.0",
     "scule": "^0.2.1",
-    "typescript": "^4.3.2",
+    "typescript": "^4.3.5",
     "untyped": "^0.2.5",
     "upath": "^2.0.1"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config-typescript": "latest",
-    "@types/mkdirp": "latest",
-    "@types/mri": "latest",
+    "@types/mkdirp": "1.0.2",
+    "@types/mri": "1.1.1",
     "@types/node": "latest",
-    "@types/rimraf": "latest",
-    "eslint": "latest",
-    "standard-version": "latest"
+    "@types/rimraf": "3.0.1",
+    "eslint": "7.31.0",
+    "standard-version": "9.3.1"
   }
 }
