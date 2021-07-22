@@ -1,7 +1,7 @@
 import { writeFile } from 'fs/promises'
 import { resolve } from 'upath'
 import { resolveSchema, generateTypes, generateMarkdown } from 'untyped'
-import untypedPlugin from 'untyped/dist/loader/babel'
+import untypedPlugin from 'untyped/loader/babel'
 import jiti from 'jiti'
 import { pascalCase } from 'scule'
 import type { BuildContext } from '../types'

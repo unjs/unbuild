@@ -3225,10 +3225,10 @@ universalify@^2.0.0:
   resolved "https://registry.yarnpkg.com/universalify/-/universalify-2.0.0.tgz#75a4984efedc4b08975c5aeb73f530d02df25717"
   integrity sha512-hAZsKq7Yy11Zu1DE0OzWjw7nnLZmJZYTDZZyEFHZdUhV8FkH5MCfoU1XMaxXovpyW5nq5scPqq0ZDP9Zyl04oQ==
 
-untyped@^0.2.5:
-  version "0.2.5"
-  resolved "https://registry.yarnpkg.com/untyped/-/untyped-0.2.5.tgz#0464bb73509d8f1078eb7a70dacb67fa92cfed53"
-  integrity sha512-VYYchiYP9EUXISmErn1aFzhikpWhxSic8IsJzPDEZ/MyezenSDhNua0YHh9jY/54aDlv0G4yjPThEr+tXZA7SA==
+untyped@^0.2.6:
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/untyped/-/untyped-0.2.6.tgz#94155d8835cb388ae7353d9fcbd1d7e67479e5cd"
+  integrity sha512-mvOQntngOmY0Udj1nvEMX0tokkUNSbIj4+34hZS19LnrvwTATMz7eGZ4/1p+B1y8uY4SYgyGrNaEineaLClfPQ==
 
 upath@^2.0.1:
   version "2.0.1"
