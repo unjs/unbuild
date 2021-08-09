@@ -13,7 +13,7 @@ export async function symlink (from: string, to: string, force: boolean = true) 
   if (force) {
     await fsp.unlink(to).catch(() => { })
   }
-  await fsp.symlink(from, to)
+  await fsp.symlink(from, to, 'junction')
 }
 
 export function dumpObject (obj: Record<string, any>) {
