@@ -14,7 +14,7 @@ export async function rollupBuild (ctx: BuildContext) {
   if (ctx.stub) {
     for (const entry of ctx.entries.filter(entry => entry.builder === 'rollup')) {
       const output = resolve(ctx.rootDir, ctx.outDir, entry.name)
-      await writeFile(output + '.js', `module.exports = require('jiti')()('${entry.input}')`)
+      await writeFile(output + '.cjs', `module.exports = require('jiti')()('${entry.input}')`)
       await writeFile(output + '.mjs', `export * from '${entry.input}'`)
       await writeFile(output + '.d.ts', `export * from '${entry.input}'`)
     }
@@ -59,7 +59,7 @@ export async function rollupBuild (ctx: BuildContext) {
 }
 
 export function getRollupOptions (ctx: BuildContext): RollupOptions {
-  const extensions = ['.ts', '.mjs', '.js', '.json']
+  const extensions = ['.ts', '.mjs', '.cjs', '.js', '.json']
 
   return {
     context: ctx.rootDir,
@@ -72,8 +72,8 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
     output: [
       {
         dir: resolve(ctx.rootDir, ctx.outDir),
-        entryFileNames: '[name].js',
-        chunkFileNames: 'chunks/[name].js',
+        entryFileNames: '[name].cjs',
+        chunkFileNames: 'chunks/[name].cjs',
         format: 'cjs',
         exports: 'auto',
         preferConst: true,
