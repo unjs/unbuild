@@ -1,5 +1,6 @@
 import { writeFile } from 'fs/promises'
-import { RollupOptions, OutputOptions, OutputChunk, rollup } from 'rollup'
+import type { RollupOptions, OutputOptions, OutputChunk } from 'rollup'
+import { rollup } from 'rollup'
 import commonjs from '@rollup/plugin-commonjs'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import alias from '@rollup/plugin-alias'
