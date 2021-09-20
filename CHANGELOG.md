@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.5.0](https://github.com/unjs/unbuild/compare/v0.4.2...v0.5.0) (2021-09-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* use `.cjs` extension
+
+### Features
+
+* use `.cjs` extension ([a1c8c0f](https://github.com/unjs/unbuild/commit/a1c8c0fb9d93dad57e876e3876e91854cb321612))
+
+
+### Bug Fixes
+
+* **pkg:** use explicit .cjs extension ([909a539](https://github.com/unjs/unbuild/commit/909a5395714525a883cf1d9f91b9f7c4b3f1621a))
+* **rollup:** stub esm with jiti for typescript support ([6bab21f](https://github.com/unjs/unbuild/commit/6bab21f366600d071a0a182d88968023380ff3ec))
+
 ### [0.4.2](https://github.com/unjs/unbuild/compare/v0.4.1...v0.4.2) (2021-08-09)
 
 

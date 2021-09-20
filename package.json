@@ -1,6 +1,6 @@
 {
   "name": "unbuild",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "description": "An unified javascript build system",
   "repository": "unjs/unbuild",
   "license": "MIT",
