@@ -4,11 +4,10 @@
   "description": "An unified javascript build system",
   "repository": "unjs/unbuild",
   "license": "MIT",
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
+  "main": "dist/index.cjs",
   "types": "dist/index.d.ts",
   "bin": {
-    "unbuild": "./bin/unbuild.js"
+    "unbuild": "./bin/unbuild.cjs"
   },
   "files": [
     "bin",
