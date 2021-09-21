@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.1](https://github.com/unjs/unbuild/compare/v0.5.0...v0.5.1) (2021-09-21)
+
+
+### Bug Fixes
+
+* **rollup:** add `interopDefault` for jiti stub ([b1bf926](https://github.com/unjs/unbuild/commit/b1bf9266413bed041ef38693ef735ce754955895))
+
 ## [0.5.0](https://github.com/unjs/unbuild/compare/v0.4.2...v0.5.0) (2021-09-20)
 
 
