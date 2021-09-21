@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.2](https://github.com/unjs/unbuild/compare/v0.5.1...v0.5.2) (2021-09-21)
+
+
+### Bug Fixes
+
+* avoid interopDefault for esm stub ([6a36080](https://github.com/unjs/unbuild/commit/6a360801afbf04d3889d2abe8acfac6b709fc094))
+
 ### [0.5.1](https://github.com/unjs/unbuild/compare/v0.5.0...v0.5.1) (2021-09-21)
 
 
