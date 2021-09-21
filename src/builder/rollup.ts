@@ -16,7 +16,7 @@ export async function rollupBuild (ctx: BuildContext) {
     for (const entry of ctx.entries.filter(entry => entry.builder === 'rollup')) {
       const output = resolve(ctx.rootDir, ctx.outDir, entry.name)
       await writeFile(output + '.cjs', `module.exports = require('jiti')(null, { interopDefault: true })('${entry.input}')`)
-      await writeFile(output + '.mjs', `import jiti from 'jiti';\nexport default jiti()('${entry.input}');`)
+      await writeFile(output + '.mjs', `import jiti from 'jiti';\nexport default jiti(null, { interopDefault: true })('${entry.input}');`)
       await writeFile(output + '.d.ts', `export * from '${entry.input}'`)
     }
     return
