@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.5](https://github.com/unjs/unbuild/compare/v0.5.4...v0.5.5) (2021-09-29)
+
+
+### Bug Fixes
+
+* **rollup:** don't ignore built-in requires to transform into import ([00c6b21](https://github.com/unjs/unbuild/commit/00c6b2103168793c359e2e1fcf18e45ce064982c))
+
 ### [0.5.4](https://github.com/unjs/unbuild/compare/v0.5.3...v0.5.4) (2021-09-21)
 
 ### [0.5.3](https://github.com/unjs/unbuild/compare/v0.5.2...v0.5.3) (2021-09-21)
