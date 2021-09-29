@@ -140,10 +140,7 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
       }),
 
       commonjs({
-        extensions,
-        ignore: [
-          ...ctx.externals
-        ]
+        extensions
       })
     ]
   }
