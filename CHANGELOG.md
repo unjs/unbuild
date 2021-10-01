@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.6](https://github.com/unjs/unbuild/compare/v0.5.5...v0.5.6) (2021-10-01)
+
+
+### Features
+
+* cjsBridge and emitCJS ([74a64c1](https://github.com/unjs/unbuild/commit/74a64c100a983ba5965c3177194261fd5d595b7d))
+
 ### [0.5.5](https://github.com/unjs/unbuild/compare/v0.5.4...v0.5.5) (2021-09-29)
 
 
