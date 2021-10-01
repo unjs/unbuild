@@ -1,5 +1,5 @@
 import Module from 'module'
-import { resolve, basename } from 'upath'
+import { resolve, basename } from 'pathe'
 import chalk from 'chalk'
 import consola from 'consola'
 import defu from 'defu'
@@ -39,7 +39,9 @@ export async function build (rootDir: string, stub: boolean) {
     clean: true,
     stub,
     buildEntries: [],
-    usedImports: new Set()
+    usedImports: new Set(),
+    emitCJS: true,
+    cjsBridge: false
   } as BuildContext) as BuildContext
 
   // Normalize entries

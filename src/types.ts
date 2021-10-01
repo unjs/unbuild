@@ -21,6 +21,8 @@ export interface BuildOptions {
   devDependencies: string[]
   externals: string[]
   inlineDependencies: boolean
+  emitCJS: boolean
+  cjsBridge: boolean
 }
 
 export interface BuildContext extends BuildOptions {

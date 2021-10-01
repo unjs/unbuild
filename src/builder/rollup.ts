@@ -6,16 +6,19 @@ import { nodeResolve } from '@rollup/plugin-node-resolve'
 import alias from '@rollup/plugin-alias'
 import esbuild from 'rollup-plugin-esbuild'
 import dts from 'rollup-plugin-dts'
-import { relative, resolve } from 'upath'
+import { relative, resolve } from 'pathe'
 import consola from 'consola'
 import { getpkg } from '../utils'
 import type { BuildContext } from '../types'
+import { CJSBridgePlugin } from './utils/cjs-bridge'
 
 export async function rollupBuild (ctx: BuildContext) {
   if (ctx.stub) {
     for (const entry of ctx.entries.filter(entry => entry.builder === 'rollup')) {
       const output = resolve(ctx.rootDir, ctx.outDir, entry.name)
-      await writeFile(output + '.cjs', `module.exports = require('jiti')(null, { interopDefault: true })('${entry.input}')`)
+      if (ctx.emitCJS) {
+        await writeFile(output + '.cjs', `module.exports = require('jiti')(null, { interopDefault: true })('${entry.input}')`)
+      }
       await writeFile(output + '.mjs', `import jiti from 'jiti';\nexport default jiti(null, { interopDefault: true })('${entry.input}');`)
       await writeFile(output + '.d.ts', `export * from '${entry.input}'`)
     }
@@ -71,7 +74,7 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
     ),
 
     output: [
-      {
+      ctx.emitCJS && {
         dir: resolve(ctx.rootDir, ctx.outDir),
         entryFileNames: '[name].cjs',
         chunkFileNames: 'chunks/[name].cjs',
@@ -91,7 +94,7 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
         externalLiveBindings: false,
         freeze: false
       }
-    ],
+    ].filter(Boolean),
 
     external (id) {
       const pkg = getpkg(id)
@@ -126,7 +129,7 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
 
       {
         name: 'json',
-        transform (json, id) {
+        transform (json: string, id: string) {
           if (!id || id[0] === '\0' || !id.endsWith('.json')) { return null }
           return {
             code: 'module.exports = ' + json,
@@ -140,8 +143,14 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
       }),
 
       commonjs({
-        extensions
-      })
-    ]
-  }
+        extensions,
+        ignoreTryCatch: true
+      }),
+
+      // Preserve dynamic imports for CommonJS
+      { renderDynamicImport () { return { left: 'import(', right: ')' } } },
+
+      ctx.cjsBridge && CJSBridgePlugin({})
+    ].filter(Boolean)
+  } as RollupOptions
 }

@@ -1,6 +1,6 @@
 import fsp from 'fs/promises'
 import { promisify } from 'util'
-import { dirname } from 'upath'
+import { dirname } from 'pathe'
 import mkdirp from 'mkdirp'
 import _rimraf from 'rimraf'
 

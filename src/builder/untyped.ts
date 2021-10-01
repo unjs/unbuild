@@ -1,5 +1,5 @@
 import { writeFile } from 'fs/promises'
-import { resolve } from 'upath'
+import { resolve } from 'pathe'
 import { resolveSchema, generateTypes, generateMarkdown } from 'untyped'
 import untypedPlugin from 'untyped/loader/babel'
 import jiti from 'jiti'
