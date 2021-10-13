@@ -55,7 +55,7 @@
     "@types/mri": "latest",
     "@types/node": "latest",
     "@types/rimraf": "latest",
-    "eslint": "latest",
+    "eslint": "7.x",
     "standard-version": "latest"
   }
 }
