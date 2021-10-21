@@ -6,11 +6,11 @@ import { nodeResolve } from '@rollup/plugin-node-resolve'
 import alias from '@rollup/plugin-alias'
 import esbuild from 'rollup-plugin-esbuild'
 import dts from 'rollup-plugin-dts'
-import json from '@rollup/plugin-json'
 import { relative, resolve } from 'pathe'
 import consola from 'consola'
 import { getpkg } from '../utils'
 import type { BuildContext } from '../types'
+import { JSONPlugin } from './utils/json'
 import { CJSBridgePlugin } from './utils/cjs-bridge'
 
 export async function rollupBuild (ctx: BuildContext) {
@@ -128,7 +128,7 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
         preferBuiltins: true
       }),
 
-      json({
+      JSONPlugin({
         preferConst: true
       }),
 
