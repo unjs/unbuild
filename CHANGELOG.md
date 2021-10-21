@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.10](https://github.com/unjs/unbuild/compare/v0.5.9...v0.5.10) (2021-10-21)
+
+
+### Bug Fixes
+
+* **rollup:** use cjs compatible json exports ([06d7b9d](https://github.com/unjs/unbuild/commit/06d7b9d2aedbb75d56a9e11bc31fd2ee0551a09d)), closes [nuxt/framework#1335](https://github.com/nuxt/framework/issues/1335)
+
 ### [0.5.9](https://github.com/unjs/unbuild/compare/v0.5.8...v0.5.9) (2021-10-21)
 
 
