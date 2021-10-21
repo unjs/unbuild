@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.9](https://github.com/unjs/unbuild/compare/v0.5.8...v0.5.9) (2021-10-21)
+
+
+### Features
+
+* use json plugin to allow treeshaking ([562e4d1](https://github.com/unjs/unbuild/commit/562e4d1110d3d0675f5205874f5088cbaa3dc3d6))
+
 ### [0.5.8](https://github.com/unjs/unbuild/compare/v0.5.7...v0.5.8) (2021-10-20)
 
 ### [0.5.7](https://github.com/unjs/unbuild/compare/v0.5.6...v0.5.7) (2021-10-13)
