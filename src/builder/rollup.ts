@@ -6,6 +6,7 @@ import { nodeResolve } from '@rollup/plugin-node-resolve'
 import alias from '@rollup/plugin-alias'
 import esbuild from 'rollup-plugin-esbuild'
 import dts from 'rollup-plugin-dts'
+import json from '@rollup/plugin-json'
 import { relative, resolve } from 'pathe'
 import consola from 'consola'
 import { getpkg } from '../utils'
@@ -15,7 +16,7 @@ import { CJSBridgePlugin } from './utils/cjs-bridge'
 export async function rollupBuild (ctx: BuildContext) {
   if (ctx.stub) {
     for (const entry of ctx.entries.filter(entry => entry.builder === 'rollup')) {
-      const output = resolve(ctx.rootDir, ctx.outDir, entry.name)
+      const output = resolve(ctx.rootDir, ctx.outDir, entry.name!)
       if (ctx.emitCJS) {
         await writeFile(output + '.cjs', `module.exports = require('jiti')(null, { interopDefault: true })('${entry.input}')`)
       }
@@ -40,7 +41,7 @@ export async function rollupBuild (ctx: BuildContext) {
       }
       if (entry.isEntry) {
         ctx.buildEntries.push({
-          path: relative(ctx.rootDir, resolve(outputOptions.dir, entry.fileName)),
+          path: relative(ctx.rootDir, resolve(outputOptions.dir!, entry.fileName)),
           bytes: entry.code.length * 4,
           exports: entry.exports
         })
@@ -127,16 +128,9 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
         preferBuiltins: true
       }),
 
-      {
-        name: 'json',
-        transform (json: string, id: string) {
-          if (!id || id[0] === '\0' || !id.endsWith('.json')) { return null }
-          return {
-            code: 'module.exports = ' + json,
-            map: null
-          }
-        }
-      },
+      json({
+        preferConst: true
+      }),
 
       esbuild({
         target: 'es2020'
