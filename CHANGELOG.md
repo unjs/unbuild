@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.11](https://github.com/unjs/unbuild/compare/v0.5.10...v0.5.11) (2021-10-22)
+
+
+### Bug Fixes
+
+* allow cjs for ext in types ([e878d1d](https://github.com/unjs/unbuild/commit/e878d1d4fb8ab808367df52e2a536db1da104c68))
+
 ### [0.5.10](https://github.com/unjs/unbuild/compare/v0.5.9...v0.5.10) (2021-10-21)
 
 
