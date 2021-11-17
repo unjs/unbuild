@@ -29,6 +29,7 @@
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.0.6",
     "@rollup/plugin-replace": "^3.0.0",
+    "@rollup/pluginutils": "^4.1.1",
     "chalk": "^4.1.1",
     "consola": "^2.15.3",
     "defu": "^5.0.0",

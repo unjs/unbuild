@@ -2,9 +2,9 @@ import type { Plugin } from 'rollup'
 import { findStaticImports } from 'mlly'
 import MagicString from 'magic-string'
 
-export function CJSBridgePlugin (_opts?: any): Plugin {
+export function cjsPlugin (_opts?: any): Plugin {
   return {
-    name: 'cjs-bridge',
+    name: 'unbuild-cjs',
     renderChunk (code, _chunk, opts) {
       if (opts.format === 'es') {
         return CJSToESM(code)

@@ -10,8 +10,9 @@ import { relative, resolve } from 'pathe'
 import consola from 'consola'
 import { getpkg } from '../utils'
 import type { BuildContext } from '../types'
-import { JSONPlugin } from './utils/json'
-import { CJSBridgePlugin } from './utils/cjs-bridge'
+import { JSONPlugin } from './plugins/json'
+import { rawPlugin } from './plugins/raw'
+import { cjsPlugin } from './plugins/cjs'
 
 export async function rollupBuild (ctx: BuildContext) {
   if (ctx.stub) {
@@ -144,7 +145,9 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
       // Preserve dynamic imports for CommonJS
       { renderDynamicImport () { return { left: 'import(', right: ')' } } },
 
-      ctx.cjsBridge && CJSBridgePlugin({})
+      ctx.cjsBridge && cjsPlugin({}),
+
+      rawPlugin()
     ].filter(Boolean)
   } as RollupOptions
 }
