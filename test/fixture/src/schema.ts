@@ -1,3 +1,7 @@
 export const config = {
-  foo: 'bar'
+  foo: 'bar',
+  /**
+   * @type {typeof import('untyped').BuildConfig}
+   */
+  build: {}
 }

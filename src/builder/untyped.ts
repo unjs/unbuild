@@ -29,7 +29,7 @@ export async function typesBuild (ctx: BuildContext) {
     await writeFile(resolve(distDir, `${entry.name}.schema.json`), JSON.stringify(schema, null, 2))
     await writeFile(resolve(distDir, `${entry.name}.defaults.json`), JSON.stringify(defaults, null, 2))
     if (entry.declaration) {
-      await writeFile(resolve(distDir, `${entry.name}.d.ts`), 'export ' + generateTypes(schema, pascalCase(entry.name + '-schema')))
+      await writeFile(resolve(distDir, `${entry.name}.d.ts`), generateTypes(schema, pascalCase(entry.name + '-schema')))
     }
   }
 }

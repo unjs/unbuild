@@ -48,7 +48,7 @@
     "rollup-plugin-esbuild": "^4.7.1",
     "scule": "^0.2.1",
     "typescript": "^4.5.2",
-    "untyped": "^0.2.9"
+    "untyped": "^0.3.0"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config-typescript": "latest",
