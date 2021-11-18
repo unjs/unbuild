@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.12](https://github.com/unjs/unbuild/compare/v0.5.11...v0.5.12) (2021-11-18)
+
+
+### Features
+
+* raw import support ([0af3032](https://github.com/unjs/unbuild/commit/0af30328571e4d9864211e52fa0bb2f4542571f3))
+
+
+### Bug Fixes
+
+* de-default rollup-plugin-esbuild (resolves [#23](https://github.com/unjs/unbuild/issues/23)) ([e88fc72](https://github.com/unjs/unbuild/commit/e88fc72b0b18f2041ec0501db5402625079e62cf))
+
 ### [0.5.11](https://github.com/unjs/unbuild/compare/v0.5.10...v0.5.11) (2021-10-22)
 
 
