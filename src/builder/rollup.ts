@@ -4,7 +4,7 @@ import { rollup } from 'rollup'
 import commonjs from '@rollup/plugin-commonjs'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import alias from '@rollup/plugin-alias'
-import esbuild from 'rollup-plugin-esbuild'
+import _esbuild from 'rollup-plugin-esbuild'
 import dts from 'rollup-plugin-dts'
 import { relative, resolve } from 'pathe'
 import consola from 'consola'
@@ -13,6 +13,9 @@ import type { BuildContext } from '../types'
 import { JSONPlugin } from './plugins/json'
 import { rawPlugin } from './plugins/raw'
 import { cjsPlugin } from './plugins/cjs'
+
+// @ts-ignore https://github.com/unjs/unbuild/issues/23
+const esbuild = _esbuild.default || _esbuild
 
 export async function rollupBuild (ctx: BuildContext) {
   if (ctx.stub) {
