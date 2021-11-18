@@ -33,21 +33,21 @@
     "chalk": "^4.1.1",
     "consola": "^2.15.3",
     "defu": "^5.0.0",
-    "esbuild": "^0.13.8",
+    "esbuild": "^0.13.14",
     "jiti": "^1.12.9",
     "magic-string": "^0.25.7",
     "mkdirp": "^1.0.4",
     "mkdist": "^0.3.5",
-    "mlly": "^0.3.0",
+    "mlly": "^0.3.13",
     "mri": "^1.2.0",
     "pathe": "^0.2.0",
     "pretty-bytes": "^5.6.0",
     "rimraf": "^3.0.2",
-    "rollup": "^2.58.0",
-    "rollup-plugin-dts": "^4.0.0",
-    "rollup-plugin-esbuild": "^4.6.0",
+    "rollup": "^2.60.0",
+    "rollup-plugin-dts": "^4.0.1",
+    "rollup-plugin-esbuild": "^4.7.1",
     "scule": "^0.2.1",
-    "typescript": "^4.4.4",
+    "typescript": "^4.5.2",
     "untyped": "^0.2.9"
   },
   "devDependencies": {
@@ -56,7 +56,7 @@
     "@types/mri": "latest",
     "@types/node": "latest",
     "@types/rimraf": "latest",
-    "eslint": "7.x",
+    "eslint": "latest",
     "standard-version": "latest"
   }
 }
