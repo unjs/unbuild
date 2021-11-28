@@ -13,11 +13,11 @@ Robust [rollup](https://rollupjs.org) based bundler that supports typescript and
 
 **📁 Bundleless build**
 
-Integration with [mkdist](https://github.com/unjs/mkdist) for generating bundleles dists with file-to-file transpilation.
+Integration with [mkdist](https://github.com/unjs/mkdist) for generating bundleless dists with file-to-file transpilation.
 
 **✨ Passive watcher**
 
-Stub `dist` once using  [jiti](https://github.com/unjs/jiti) and you can try and link your project without need to watch and rebuild during development.
+Stub `dist` once using  [jiti](https://github.com/unjs/jiti) and you can try and link your project without needing to watch and rebuild during development.
 
 **✍ Untype Generator**
 
