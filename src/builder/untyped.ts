@@ -5,20 +5,28 @@ import { resolveSchema, generateTypes, generateMarkdown } from 'untyped'
 import untypedPlugin from 'untyped/loader/babel'
 import jiti from 'jiti'
 import { pascalCase } from 'scule'
-import type { BuildContext } from '../types'
+import type { BuildContext, UntypedEntry, UntypedOutputs } from '../types'
 
 export async function typesBuild (ctx: BuildContext) {
-  for (const entry of ctx.options.entries.filter(entry => entry.builder === 'untyped')) {
-    const _require = jiti(ctx.options.rootDir, {
-      interopDefault: true,
-      transformOptions: {
-        babel: {
-          plugins: [
-            untypedPlugin
-          ]
+  const entries = ctx.options.entries.filter(entry => entry.builder === 'untyped') as UntypedEntry[]
+  await ctx.hooks.callHook('untyped:entries', ctx, entries)
+
+  for (const entry of entries) {
+    const options = {
+      jiti: {
+        interopDefault: true,
+        transformOptions: {
+          babel: {
+            plugins: [
+              untypedPlugin
+            ]
+          }
         }
       }
-    })
+    }
+    await ctx.hooks.callHook('untyped:entry:options', ctx, entry, options)
+
+    const _require = jiti(ctx.options.rootDir, options.jiti)
 
     const distDir = entry.outDir!
     const srcConfig = _require(resolve(ctx.options.rootDir, entry.input))
@@ -26,11 +34,32 @@ export async function typesBuild (ctx: BuildContext) {
     const defaults = entry.defaults || {}
     const schema = resolveSchema(srcConfig, defaults)
 
-    await writeFile(resolve(distDir, `${entry.name}.md`), generateMarkdown(schema))
-    await writeFile(resolve(distDir, `${entry.name}.schema.json`), JSON.stringify(schema, null, 2))
-    await writeFile(resolve(distDir, `${entry.name}.defaults.json`), JSON.stringify(defaults, null, 2))
-    if (entry.declaration) {
-      await writeFile(resolve(distDir, `${entry.name}.d.ts`), generateTypes(schema, pascalCase(entry.name + '-schema')))
+    await ctx.hooks.callHook('untyped:entry:schema', ctx, entry, schema)
+
+    const outputs: UntypedOutputs = {
+      markdown: {
+        fileName: resolve(distDir, `${entry.name}.md`),
+        contents: generateMarkdown(schema)
+      },
+      schema: {
+        fileName: `${entry.name}.schema.json`,
+        contents: JSON.stringify(schema, null, 2)
+      },
+      defaults: {
+        fileName: `${entry.name}.defaults.json`,
+        contents: JSON.stringify(defaults, null, 2)
+      },
+      declaration: entry.declaration
+        ? {
+            fileName: `${entry.name}.d.ts`,
+            contents: generateTypes(schema, pascalCase(entry.name + '-schema'))
+          }
+        : undefined
+    }
+    await ctx.hooks.callHook('untyped:entry:outputs', ctx, entry, outputs)
+    for (const output of Object.values(outputs)) {
+      await writeFile(resolve(distDir, output.fileName), output.contents, 'utf8')
     }
   }
+  await ctx.hooks.callHook('untyped:done', ctx)
 }
