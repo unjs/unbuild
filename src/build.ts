@@ -19,14 +19,20 @@ export async function build (rootDir: string, stub: boolean) {
   rootDir = resolve(process.cwd(), rootDir || '.')
 
   // Read build.config and package.json
-  const _require = jiti(rootDir)
+  const _require = jiti(rootDir, { interopDefault: true })
   let buildConfigFile
   try { buildConfigFile = _require.resolve('./build.config') } catch (e) {}
-  const buildConfig: BuildConfig = buildConfigFile ? _require('./build.config').default : {}
+  const buildConfig: BuildConfig = buildConfigFile ? _require('./build.config') : {}
   const pkg = _require('./package.json')
 
+  // Resolve preset
+  let preset = buildConfig.preset || pkg.unbuild.preset || pkg.build.preset || {}
+  if (typeof preset === 'string') {
+    preset = _require(preset)
+  }
+
   // Merge options
-  const options = defu(buildConfig, pkg.unbuild || pkg.build, <BuildOptions>{
+  const options = defu(buildConfig, pkg.unbuild || pkg.build, preset, <BuildOptions>{
     rootDir,
     entries: [],
     clean: true,
@@ -55,6 +61,9 @@ export async function build (rootDir: string, stub: boolean) {
   // Register hooks
   if (buildConfig.hooks) {
     ctx.hooks.addHooks(buildConfig.hooks)
+  }
+  if (preset.hooks) {
+    ctx.hooks.addHooks(preset.hooks)
   }
 
   // Normalize entries
@@ -143,8 +152,9 @@ export async function build (rootDir: string, stub: boolean) {
 
   // Validate
   validateDependencies(ctx)
-  consola.log('')
 
   // Call build:done
   await ctx.hooks.callHook('build:done', ctx)
+
+  consola.log('')
 }

@@ -2,7 +2,9 @@ import { defineBuildConfig } from './src'
 
 export default defineBuildConfig({
   declaration: true,
-  emitCJS: false,
+  rollup: {
+    emitCJS: false
+  },
   entries: [
     'src/index',
     'src/cli'

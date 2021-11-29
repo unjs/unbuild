@@ -30,9 +30,9 @@ export interface MkdistBuildEntry extends BaseBuildEntry {
 export type BuildEntry = BaseBuildEntry | RollupBuildEntry | UntypedBuildEntry | MkdistBuildEntry
 
 export interface RollupBuildOptions {
-  emitCJS: boolean
-  cjsBridge: boolean
-  inlineDependencies: boolean
+  emitCJS?: boolean
+  cjsBridge?: boolean
+  inlineDependencies?: boolean
 }
 
 export interface BuildOptions {
@@ -57,7 +57,8 @@ export interface BuildContext {
 }
 
 export interface BuildConfig extends Partial<Omit<BuildOptions, 'entries'>> {
-  entries: (BuildEntry | string)[],
+  entries?: (BuildEntry | string)[]
+  preset?: string | BuildConfig
   hooks?: BuildHooks // eslint-disable-line no-use-before-define
 }
 
