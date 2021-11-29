@@ -26,7 +26,7 @@ export async function build (rootDir: string, stub: boolean) {
   const pkg = _require('./package.json')
 
   // Resolve preset
-  let preset = buildConfig.preset || pkg.unbuild.preset || pkg.build.preset || {}
+  let preset = buildConfig.preset || pkg.unbuild?.preset || pkg.build?.preset || {}
   if (typeof preset === 'string') {
     preset = _require(preset)
   }
