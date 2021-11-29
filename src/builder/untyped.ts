@@ -5,10 +5,10 @@ import { resolveSchema, generateTypes, generateMarkdown } from 'untyped'
 import untypedPlugin from 'untyped/loader/babel'
 import jiti from 'jiti'
 import { pascalCase } from 'scule'
-import type { BuildContext, UntypedEntry, UntypedOutputs } from '../types'
+import type { BuildContext, UntypedBuildEntry, UntypedOutputs } from '../types'
 
 export async function typesBuild (ctx: BuildContext) {
-  const entries = ctx.options.entries.filter(entry => entry.builder === 'untyped') as UntypedEntry[]
+  const entries = ctx.options.entries.filter(entry => entry.builder === 'untyped') as UntypedBuildEntry[]
   await ctx.hooks.callHook('untyped:entries', ctx, entries)
 
   for (const entry of entries) {

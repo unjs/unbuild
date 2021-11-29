@@ -4,19 +4,30 @@ import type { RollupOptions, RollupBuild } from 'rollup'
 import type { MkdistOptions } from 'mkdist'
 import { Schema } from 'untyped'
 
-export interface BuildEntry {
+export interface BaseBuildEntry {
+  builder?: 'untyped' | 'rollup' | 'mkdist'
   input: string
   name?: string
-  builder?: 'rollup' | 'mkdist' | 'untyped'
-  format?: 'esm' | 'cjs'
-  defaults?: Record<string, any>
-  declaration?: boolean
   outDir?: string
+  declaration?: boolean
+}
+
+export interface UntypedBuildEntry extends BaseBuildEntry {
+  builder: 'untyped'
+  defaults?: Record<string, any>
+}
+
+export interface RollupBuildEntry extends BaseBuildEntry {
+  builder: 'rollup'
+}
+
+export interface MkdistBuildEntry extends BaseBuildEntry {
+  builder: 'mkdist'
+  format?: 'esm' | 'cjs'
   ext?: 'cjs' | 'mjs' | 'js' | 'ts'
 }
 
-export type MkdistEntry = BuildEntry & { builder: 'mkdist' }
-export type UntypedEntry = BuildEntry & { builder: 'untyped' }
+export type BuildEntry = BaseBuildEntry | RollupBuildEntry | UntypedBuildEntry | MkdistBuildEntry
 
 export interface BuildOptions {
   rootDir: string
@@ -64,15 +75,15 @@ export interface BuildHooks {
   'rollup:dts:build': (ctx: BuildContext, build: RollupBuild) => void | Promise<void>
   'rollup:done': (ctx: BuildContext) => void | Promise<void>
 
-  'mkdist:entries': (ctx: BuildContext, entries: MkdistEntry[]) => void | Promise<void>
-  'mkdist:entry:options': (ctx: BuildContext, entry: MkdistEntry, options: MkdistOptions) => void | Promise<void>
-  'mkdist:entry:build': (ctx: BuildContext, entry: MkdistEntry, output: { writtenFiles: string[] }) => void | Promise<void>
+  'mkdist:entries': (ctx: BuildContext, entries: MkdistBuildEntry[]) => void | Promise<void>
+  'mkdist:entry:options': (ctx: BuildContext, entry: MkdistBuildEntry, options: MkdistOptions) => void | Promise<void>
+  'mkdist:entry:build': (ctx: BuildContext, entry: MkdistBuildEntry, output: { writtenFiles: string[] }) => void | Promise<void>
   'mkdist:done': (ctx: BuildContext) => void | Promise<void>
 
-  'untyped:entries': (ctx: BuildContext, entries: UntypedEntry[]) => void | Promise<void>
-  'untyped:entry:options': (ctx: BuildContext, entry: UntypedEntry, options: any) => void | Promise<void>
-  'untyped:entry:schema': (ctx: BuildContext, entry: UntypedEntry, schema: Schema) => void | Promise<void>
-  'untyped:entry:outputs': (ctx: BuildContext, entry: UntypedEntry, outputs: UntypedOutputs) => void | Promise<void>
+  'untyped:entries': (ctx: BuildContext, entries: UntypedBuildEntry[]) => void | Promise<void>
+  'untyped:entry:options': (ctx: BuildContext, entry: UntypedBuildEntry, options: any) => void | Promise<void>
+  'untyped:entry:schema': (ctx: BuildContext, entry: UntypedBuildEntry, schema: Schema) => void | Promise<void>
+  'untyped:entry:outputs': (ctx: BuildContext, entry: UntypedBuildEntry, outputs: UntypedOutputs) => void | Promise<void>
   'untyped:done': (ctx: BuildContext) => void | Promise<void>
 }
 

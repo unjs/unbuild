@@ -1,8 +1,9 @@
 import { mkdist, MkdistOptions } from 'mkdist'
 import { symlink, rmdir } from '../utils'
-import type { MkdistEntry, BuildContext } from '../types'
+import type { MkdistBuildEntry, BuildContext } from '../types'
+
 export async function mkdistBuild (ctx: BuildContext) {
-  const entries = ctx.options.entries.filter(e => e.builder === 'mkdist') as MkdistEntry[]
+  const entries = ctx.options.entries.filter(e => e.builder === 'mkdist') as MkdistBuildEntry[]
   await ctx.hooks.callHook('mkdist:entries', ctx, entries)
   for (const entry of entries) {
     const distDir = entry.outDir!
