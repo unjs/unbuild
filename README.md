@@ -45,7 +45,7 @@ npx unbuild
 
 ## Configuration
 
-You can either use `build` key in `package.json` or `build.config.{js,ts,json}` to specify configuration.
+You can either use `unbuild` key in `package.json` or `build.config.{js,ts,json}` to specify configuration.
 
 See options [here](./src/types.ts).
 

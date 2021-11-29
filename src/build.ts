@@ -24,7 +24,7 @@ export async function build (rootDir: string, stub: boolean) {
   const pkg = _require('./package.json')
 
   // Build context
-  const ctx: BuildContext = defu(buildConfig, {
+  const ctx: BuildContext = defu(buildConfig, pkg.unbuild || pkg.build, {
     pkg,
     rootDir,
     entries: [],
