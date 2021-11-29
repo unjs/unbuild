@@ -1,3 +1,5 @@
+import type { PackageJson } from 'pkg-types'
+
 export interface BuildEntry {
   input: string
   name?: string
@@ -10,7 +12,6 @@ export interface BuildEntry {
 }
 
 export interface BuildOptions {
-  pkg: any,
   rootDir: string
   declaration?: boolean
   entries: BuildEntry[],
@@ -25,7 +26,9 @@ export interface BuildOptions {
   cjsBridge: boolean
 }
 
-export interface BuildContext extends BuildOptions {
+export interface BuildContext {
+  options: BuildOptions,
+  pkg: PackageJson,
   buildEntries: { path: string, bytes?: number, exports?: string[], chunks?: string[] }[]
   usedImports: Set<string>
 }

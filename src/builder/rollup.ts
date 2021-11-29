@@ -18,10 +18,10 @@ import { cjsPlugin } from './plugins/cjs'
 const esbuild = _esbuild.default || _esbuild
 
 export async function rollupBuild (ctx: BuildContext) {
-  if (ctx.stub) {
-    for (const entry of ctx.entries.filter(entry => entry.builder === 'rollup')) {
-      const output = resolve(ctx.rootDir, ctx.outDir, entry.name!)
-      if (ctx.emitCJS) {
+  if (ctx.options.stub) {
+    for (const entry of ctx.options.entries.filter(entry => entry.builder === 'rollup')) {
+      const output = resolve(ctx.options.rootDir, ctx.options.outDir, entry.name!)
+      if (ctx.options.emitCJS) {
         await writeFile(output + '.cjs', `module.exports = require('jiti')(null, { interopDefault: true })('${entry.input}')`)
       }
       await writeFile(output + '.mjs', `import jiti from 'jiti';\nexport default jiti(null, { interopDefault: true })('${entry.input}');`)
@@ -45,7 +45,7 @@ export async function rollupBuild (ctx: BuildContext) {
       }
       if (entry.isEntry) {
         ctx.buildEntries.push({
-          path: relative(ctx.rootDir, resolve(outputOptions.dir!, entry.fileName)),
+          path: relative(ctx.options.rootDir, resolve(outputOptions.dir!, entry.fileName)),
           bytes: entry.code.length * 4,
           exports: entry.exports
         })
@@ -54,14 +54,14 @@ export async function rollupBuild (ctx: BuildContext) {
   }
 
   // Types
-  if (ctx.declaration) {
+  if (ctx.options.declaration) {
     rollupOptions.plugins = rollupOptions.plugins || []
     rollupOptions.plugins.push(dts({
       respectExternal: true
     }))
     const typesBuild = await rollup(rollupOptions)
     await typesBuild.write({
-      dir: resolve(ctx.rootDir, ctx.outDir),
+      dir: resolve(ctx.options.rootDir, ctx.options.outDir),
       format: 'esm'
     })
   }
@@ -71,16 +71,16 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
   const extensions = ['.ts', '.mjs', '.cjs', '.js', '.json']
 
   return {
-    context: ctx.rootDir,
+    context: ctx.options.rootDir,
 
-    input: Object.fromEntries(ctx.entries
+    input: Object.fromEntries(ctx.options.entries
       .filter(entry => entry.builder === 'rollup')
-      .map(entry => [entry.name, resolve(ctx.rootDir, entry.input)])
+      .map(entry => [entry.name, resolve(ctx.options.rootDir, entry.input)])
     ),
 
     output: [
-      ctx.emitCJS && {
-        dir: resolve(ctx.rootDir, ctx.outDir),
+      ctx.options.emitCJS && {
+        dir: resolve(ctx.options.rootDir, ctx.options.outDir),
         entryFileNames: '[name].cjs',
         chunkFileNames: 'chunks/[name].cjs',
         format: 'cjs',
@@ -90,7 +90,7 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
         freeze: false
       },
       {
-        dir: resolve(ctx.rootDir, ctx.outDir),
+        dir: resolve(ctx.options.rootDir, ctx.options.outDir),
         entryFileNames: '[name].mjs',
         chunkFileNames: 'chunks/[name].mjs',
         format: 'esm',
@@ -103,11 +103,11 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
 
     external (id) {
       const pkg = getpkg(id)
-      const isExplicitExternal = ctx.externals.includes(pkg)
+      const isExplicitExternal = ctx.options.externals.includes(pkg)
       if (isExplicitExternal) {
         return true
       }
-      if (ctx.inlineDependencies || id[0] === '.' || id[0] === '/' || id.match(/src[\\/]/) || id.startsWith(ctx.pkg.name)) {
+      if (ctx.options.inlineDependencies || id[0] === '.' || id[0] === '/' || id.match(/src[\\/]/) || id.startsWith(ctx.pkg.name!)) {
         return false
       }
       if (!isExplicitExternal) {
@@ -124,7 +124,7 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
 
     plugins: [
       alias({
-        [ctx.pkg.name]: ctx.rootDir
+        [ctx.pkg.name!]: ctx.options.rootDir
       }),
 
       nodeResolve({
@@ -148,7 +148,7 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
       // Preserve dynamic imports for CommonJS
       { renderDynamicImport () { return { left: 'import(', right: ')' } } },
 
-      ctx.cjsBridge && cjsPlugin({}),
+      ctx.options.cjsBridge && cjsPlugin({}),
 
       rawPlugin()
     ].filter(Boolean)

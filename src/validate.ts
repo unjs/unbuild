@@ -11,16 +11,16 @@ export function validateDependencies (ctx: BuildContext) {
     unusedDependencies.delete(id)
     usedDependencies.add(id)
   }
-  if (Array.isArray(ctx.dependencies)) {
-    for (const id of ctx.dependencies) {
+  if (Array.isArray(ctx.options.dependencies)) {
+    for (const id of ctx.options.dependencies) {
       unusedDependencies.delete(id)
     }
   }
   for (const id of usedDependencies) {
     if (
-      !ctx.externals.includes(id) &&
+      !ctx.options.externals.includes(id) &&
       !id.startsWith('chunks/') &&
-      !ctx.dependencies.includes(getpkg(id))
+      !ctx.options.dependencies.includes(getpkg(id))
     ) {
       implicitDependnecies.add(id)
     }
@@ -28,7 +28,7 @@ export function validateDependencies (ctx: BuildContext) {
   if (unusedDependencies.size) {
     consola.warn('Potential unused dependencies found:', Array.from(unusedDependencies).map(id => chalk.cyan(id)).join(', '))
   }
-  if (implicitDependnecies.size && !ctx.inlineDependencies) {
+  if (implicitDependnecies.size && !ctx.options.inlineDependencies) {
     consola.warn('Potential implicit dependencies found:', Array.from(implicitDependnecies).map(id => chalk.cyan(id)).join(', '))
   }
 }

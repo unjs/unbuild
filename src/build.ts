@@ -7,48 +7,45 @@ import prettyBytes from 'pretty-bytes'
 import jiti from 'jiti'
 import mkdirp from 'mkdirp'
 import { dumpObject, rmdir } from './utils'
-import type { BuildContext } from './types'
+import type { BuildContext, BuildConfig, BuildOptions } from './types'
 import { validateDependencies } from './validate'
 import { rollupBuild } from './builder/rollup'
 import { typesBuild } from './builder/untyped'
 import { mkdistBuild } from './builder/mkdist'
 
 export async function build (rootDir: string, stub: boolean) {
+  // Determine rootDir
   rootDir = resolve(process.cwd(), rootDir || '.')
 
   // Read build.config and package.json
   const _require = jiti(rootDir)
   let buildConfigFile
   try { buildConfigFile = _require.resolve('./build.config') } catch (e) {}
-  const buildConfig = buildConfigFile ? _require('./build.config').default : {}
+  const buildConfig: BuildConfig = buildConfigFile ? _require('./build.config').default : {}
   const pkg = _require('./package.json')
 
-  // Build context
-  const ctx: BuildContext = defu(buildConfig, pkg.unbuild || pkg.build, {
-    pkg,
+  // Merge options
+  const options = defu(buildConfig, pkg.unbuild || pkg.build, <BuildOptions>{
     rootDir,
+    outDir: 'dist',
+    emitCJS: true,
+    cjsBridge: false,
+    inlineDependencies: false,
+    clean: true,
+    declaration: false,
+    stub,
     entries: [],
     dependencies: [],
     devDependencies: [],
-    externals: [...Module.builtinModules],
-    outDir: 'dist',
-    genDir: '.gen',
-    untyped: undefined,
-    declaration: undefined,
-    inlineDependencies: false,
-    clean: true,
-    stub,
-    buildEntries: [],
-    usedImports: new Set(),
-    emitCJS: true,
-    cjsBridge: false
-  } as BuildContext) as BuildContext
+    externals: [...Module.builtinModules]
+  }) as BuildOptions
 
   // Normalize entries
-  ctx.entries = ctx.entries.map(entry =>
+  options.entries = options.entries.map(entry =>
     typeof entry === 'string' ? { input: entry } : entry
   )
-  for (const entry of ctx.entries) {
+
+  for (const entry of options.entries) {
     if (typeof entry.name !== 'string') {
       entry.name = basename(entry.input)
     }
@@ -61,36 +58,44 @@ export async function build (rootDir: string, stub: boolean) {
       entry.builder = entry.input.endsWith('/') ? 'mkdist' : 'rollup'
     }
 
-    if (ctx.declaration !== undefined && entry.declaration === undefined) {
-      entry.declaration = ctx.declaration
+    if (options.declaration !== undefined && entry.declaration === undefined) {
+      entry.declaration = options.declaration
     }
 
-    entry.input = resolve(ctx.rootDir, entry.input)
-    entry.outDir = resolve(ctx.rootDir, entry.outDir || ctx.outDir)
+    entry.input = resolve(options.rootDir, entry.input)
+    entry.outDir = resolve(options.rootDir, entry.outDir || options.outDir)
   }
 
   // Collect dependencies and devDependnecies
-  ctx.dependencies = Object.keys(pkg.dependencies || {})
-  ctx.devDependencies = Object.keys(pkg.devDependencies || {})
+  options.dependencies = Object.keys(pkg.dependencies || {})
+  options.devDependencies = Object.keys(pkg.devDependencies || {})
 
   // Add dependencies from package.json as externals
-  ctx.externals.push(...ctx.dependencies)
+  options.externals.push(...options.dependencies)
 
   // Start info
-  consola.info(chalk.cyan(`${ctx.stub ? 'Stubbing' : 'Building'} ${pkg.name}`))
+  consola.info(chalk.cyan(`${options.stub ? 'Stubbing' : 'Building'} ${pkg.name}`))
   if (process.env.DEBUG) {
-    consola.info(`${chalk.bold('Root dir:')} ${ctx.rootDir}
+    consola.info(`${chalk.bold('Root dir:')} ${options.rootDir}
   ${chalk.bold('Entries:')}
-  ${ctx.entries.map(entry => '  ' + dumpObject(entry)).join('\n  ')}
+  ${options.entries.map(entry => '  ' + dumpObject(entry)).join('\n  ')}
 `)
   }
 
   // Clean dist dirs
-  if (ctx.clean) {
-    for (const dir of new Set(ctx.entries.map(e => e.outDir).sort())) {
+  if (options.clean) {
+    for (const dir of new Set(options.entries.map(e => e.outDir).sort())) {
       await rmdir(dir!)
       await mkdirp(dir!)
     }
+  }
+
+  // Build context
+  const ctx: BuildContext = {
+    options,
+    pkg,
+    buildEntries: [],
+    usedImports: new Set()
   }
 
   // Try to selflink
@@ -109,7 +114,7 @@ export async function build (rootDir: string, stub: boolean) {
   await rollupBuild(ctx)
 
   // Skip rest for stub
-  if (ctx.stub) {
+  if (options.stub) {
     return
   }
 
