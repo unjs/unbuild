@@ -27,15 +27,20 @@ export async function rollupBuild (ctx: BuildContext) {
       await writeFile(output + '.mjs', `import jiti from 'jiti';\nexport default jiti(null, { interopDefault: true })('${entry.input}');`)
       await writeFile(output + '.d.ts', `export * from '${entry.input}'`)
     }
+    await ctx.hooks.callHook('rollup:done', ctx)
     return
   }
 
   const rollupOptions = getRollupOptions(ctx)
+  await ctx.hooks.callHook('rollup:options', ctx, rollupOptions)
+
   if (!Object.keys(rollupOptions.input as any).length) {
     return
   }
 
   const buildResult = await rollup(rollupOptions)
+  await ctx.hooks.callHook('rollup:build', ctx, buildResult)
+
   const allOutputOptions = rollupOptions.output! as OutputOptions[]
   for (const outputOptions of allOutputOptions) {
     const { output } = await buildResult.write(outputOptions)
@@ -56,15 +61,17 @@ export async function rollupBuild (ctx: BuildContext) {
   // Types
   if (ctx.options.declaration) {
     rollupOptions.plugins = rollupOptions.plugins || []
-    rollupOptions.plugins.push(dts({
-      respectExternal: true
-    }))
+    rollupOptions.plugins.push(dts({ respectExternal: true }))
+    await ctx.hooks.callHook('rollup:dts:options', ctx, rollupOptions)
     const typesBuild = await rollup(rollupOptions)
+    await ctx.hooks.callHook('rollup:dts:build', ctx, typesBuild)
     await typesBuild.write({
       dir: resolve(ctx.options.rootDir, ctx.options.outDir),
       format: 'esm'
     })
   }
+
+  await ctx.hooks.callHook('rollup:done', ctx)
 }
 
 export function getRollupOptions (ctx: BuildContext): RollupOptions {

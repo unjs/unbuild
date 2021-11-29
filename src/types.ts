@@ -1,5 +1,6 @@
 import type { PackageJson } from 'pkg-types'
 import type { Hooks, Hookable } from 'hookable'
+import type { RollupOptions, RollupBuild } from 'rollup'
 
 export interface BuildEntry {
   input: string
@@ -43,6 +44,12 @@ export interface BuildConfig extends Partial<Omit<BuildOptions, 'entries'>> {
 export interface BuildHooks extends Hooks {
   'build:before': (ctx: BuildContext) => void | Promise<void>
   'build:after': (ctx: BuildContext) => void | Promise<void>
+
+  'rollup:options': (ctx: BuildContext, options: RollupOptions) => void | Promise<void>
+  'rollup:build': (ctx: BuildContext, build: RollupBuild) => void | Promise<void>
+  'rollup:dts:options': (ctx: BuildContext, options: RollupOptions) => void | Promise<void>
+  'rollup:dts:build': (ctx: BuildContext, build: RollupBuild) => void | Promise<void>
+  'rollup:done': (ctx: BuildContext) => void | Promise<void>
 }
 
 export function defineBuildConfig (config: BuildConfig): BuildConfig {
