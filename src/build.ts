@@ -3,6 +3,7 @@ import { resolve, basename } from 'pathe'
 import chalk from 'chalk'
 import consola from 'consola'
 import defu from 'defu'
+import { createHooks } from 'hookable'
 import prettyBytes from 'pretty-bytes'
 import jiti from 'jiti'
 import mkdirp from 'mkdirp'
@@ -40,6 +41,20 @@ export async function build (rootDir: string, stub: boolean) {
     externals: [...Module.builtinModules]
   }) as BuildOptions
 
+  // Build context
+  const ctx: BuildContext = {
+    options,
+    pkg,
+    buildEntries: [],
+    usedImports: new Set(),
+    hooks: createHooks()
+  }
+
+  // Register hooks
+  if (buildConfig.hooks) {
+    ctx.hooks.addHooks(buildConfig.hooks)
+  }
+
   // Normalize entries
   options.entries = options.entries.map(entry =>
     typeof entry === 'string' ? { input: entry } : entry
@@ -73,6 +88,9 @@ export async function build (rootDir: string, stub: boolean) {
   // Add dependencies from package.json as externals
   options.externals.push(...options.dependencies)
 
+  // Call build:before
+  await ctx.hooks.callHook('build:before', ctx)
+
   // Start info
   consola.info(chalk.cyan(`${options.stub ? 'Stubbing' : 'Building'} ${pkg.name}`))
   if (process.env.DEBUG) {
@@ -88,14 +106,6 @@ export async function build (rootDir: string, stub: boolean) {
       await rmdir(dir!)
       await mkdirp(dir!)
     }
-  }
-
-  // Build context
-  const ctx: BuildContext = {
-    options,
-    pkg,
-    buildEntries: [],
-    usedImports: new Set()
   }
 
   // Try to selflink
@@ -115,6 +125,7 @@ export async function build (rootDir: string, stub: boolean) {
 
   // Skip rest for stub
   if (options.stub) {
+    await ctx.hooks.callHook('build:after', ctx)
     return
   }
 
@@ -130,6 +141,8 @@ export async function build (rootDir: string, stub: boolean) {
 
   // Validate
   validateDependencies(ctx)
-
   consola.log('')
+
+  // Call build:after
+  await ctx.hooks.callHook('build:after', ctx)
 }

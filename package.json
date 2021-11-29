@@ -34,6 +34,7 @@
     "consola": "^2.15.3",
     "defu": "^5.0.0",
     "esbuild": "^0.13.14",
+    "hookable": "^5.0.0",
     "jiti": "^1.12.9",
     "magic-string": "^0.25.7",
     "mkdirp": "^1.0.4",

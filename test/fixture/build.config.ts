@@ -6,5 +6,9 @@ export default <BuildConfig>{
   entries: [
     'src/index',
     { input: 'src/schema', builder: 'untyped' }
-  ]
+  ],
+  hooks: {
+    'build:before': () => { console.log('Before build') },
+    'build:after': () => { console.log('After build') }
+  }
 }

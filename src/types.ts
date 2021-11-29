@@ -1,4 +1,5 @@
 import type { PackageJson } from 'pkg-types'
+import type { Hooks, Hookable } from 'hookable'
 
 export interface BuildEntry {
   input: string
@@ -31,10 +32,17 @@ export interface BuildContext {
   pkg: PackageJson,
   buildEntries: { path: string, bytes?: number, exports?: string[], chunks?: string[] }[]
   usedImports: Set<string>
+  hooks: Hookable<BuildHooks> // eslint-disable-line no-use-before-define
 }
 
 export interface BuildConfig extends Partial<Omit<BuildOptions, 'entries'>> {
   entries: (BuildEntry | string)[],
+  hooks: BuildHooks // eslint-disable-line no-use-before-define
+}
+
+export interface BuildHooks extends Hooks {
+  'build:before': (ctx: BuildContext) => void | Promise<void>
+  'build:after': (ctx: BuildContext) => void | Promise<void>
 }
 
 export function defineBuildConfig (config: BuildConfig): BuildConfig {
