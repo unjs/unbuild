@@ -37,7 +37,7 @@ export interface BuildContext {
 
 export interface BuildConfig extends Partial<Omit<BuildOptions, 'entries'>> {
   entries: (BuildEntry | string)[],
-  hooks: BuildHooks // eslint-disable-line no-use-before-define
+  hooks?: BuildHooks // eslint-disable-line no-use-before-define
 }
 
 export interface BuildHooks extends Hooks {
