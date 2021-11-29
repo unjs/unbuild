@@ -29,19 +29,23 @@ export interface MkdistBuildEntry extends BaseBuildEntry {
 
 export type BuildEntry = BaseBuildEntry | RollupBuildEntry | UntypedBuildEntry | MkdistBuildEntry
 
-export interface BuildOptions {
-  rootDir: string
-  declaration?: boolean
-  entries: BuildEntry[],
-  clean: boolean
-  outDir: string
-  stub: boolean
-  dependencies: string[],
-  devDependencies: string[]
-  externals: string[]
-  inlineDependencies: boolean
+export interface RollupBuildOptions {
   emitCJS: boolean
   cjsBridge: boolean
+  inlineDependencies: boolean
+}
+
+export interface BuildOptions {
+  rootDir: string
+  entries: BuildEntry[],
+  clean: boolean
+  declaration?: boolean
+  outDir: string
+  stub: boolean
+  externals: string[]
+  dependencies: string[],
+  devDependencies: string[]
+  rollup: RollupBuildOptions
 }
 
 export interface BuildContext {

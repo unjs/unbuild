@@ -21,7 +21,7 @@ export async function rollupBuild (ctx: BuildContext) {
   if (ctx.options.stub) {
     for (const entry of ctx.options.entries.filter(entry => entry.builder === 'rollup')) {
       const output = resolve(ctx.options.rootDir, ctx.options.outDir, entry.name!)
-      if (ctx.options.emitCJS) {
+      if (ctx.options.rollup.emitCJS) {
         await writeFile(output + '.cjs', `module.exports = require('jiti')(null, { interopDefault: true })('${entry.input}')`)
       }
       await writeFile(output + '.mjs', `import jiti from 'jiti';\nexport default jiti(null, { interopDefault: true })('${entry.input}');`)
@@ -86,7 +86,7 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
     ),
 
     output: [
-      ctx.options.emitCJS && {
+      ctx.options.rollup.emitCJS && {
         dir: resolve(ctx.options.rootDir, ctx.options.outDir),
         entryFileNames: '[name].cjs',
         chunkFileNames: 'chunks/[name].cjs',
@@ -114,7 +114,7 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
       if (isExplicitExternal) {
         return true
       }
-      if (ctx.options.inlineDependencies || id[0] === '.' || id[0] === '/' || id.match(/src[\\/]/) || id.startsWith(ctx.pkg.name!)) {
+      if (ctx.options.rollup.inlineDependencies || id[0] === '.' || id[0] === '/' || id.match(/src[\\/]/) || id.startsWith(ctx.pkg.name!)) {
         return false
       }
       if (!isExplicitExternal) {
@@ -155,7 +155,7 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
       // Preserve dynamic imports for CommonJS
       { renderDynamicImport () { return { left: 'import(', right: ')' } } },
 
-      ctx.options.cjsBridge && cjsPlugin({}),
+      ctx.options.rollup.cjsBridge && cjsPlugin({}),
 
       rawPlugin()
     ].filter(Boolean)

@@ -28,17 +28,19 @@ export async function build (rootDir: string, stub: boolean) {
   // Merge options
   const options = defu(buildConfig, pkg.unbuild || pkg.build, <BuildOptions>{
     rootDir,
-    outDir: 'dist',
-    emitCJS: true,
-    cjsBridge: false,
-    inlineDependencies: false,
+    entries: [],
     clean: true,
     declaration: false,
+    outDir: 'dist',
     stub,
-    entries: [],
+    externals: [...Module.builtinModules],
     dependencies: [],
     devDependencies: [],
-    externals: [...Module.builtinModules]
+    rollup: {
+      emitCJS: true,
+      cjsBridge: false,
+      inlineDependencies: false
+    }
   }) as BuildOptions
 
   // Build context
@@ -81,11 +83,11 @@ export async function build (rootDir: string, stub: boolean) {
     entry.outDir = resolve(options.rootDir, entry.outDir || options.outDir)
   }
 
-  // Collect dependencies and devDependnecies
+  // Infer dependencies from pkg
   options.dependencies = Object.keys(pkg.dependencies || {})
   options.devDependencies = Object.keys(pkg.devDependencies || {})
 
-  // Add dependencies from package.json as externals
+  // Add all dependencies as externals
   options.externals.push(...options.dependencies)
 
   // Call build:before
