@@ -1,6 +1,7 @@
 import type { PackageJson } from 'pkg-types'
-import type { Hooks, Hookable } from 'hookable'
+import type { Hookable } from 'hookable'
 import type { RollupOptions, RollupBuild } from 'rollup'
+import type { MkdistOptions } from 'mkdist'
 
 export interface BuildEntry {
   input: string
@@ -12,6 +13,8 @@ export interface BuildEntry {
   outDir?: string
   ext?: 'cjs' | 'mjs' | 'js' | 'ts'
 }
+
+export type MkdistEntry = BuildEntry & { builder: 'mkdist' }
 
 export interface BuildOptions {
   rootDir: string
@@ -41,15 +44,20 @@ export interface BuildConfig extends Partial<Omit<BuildOptions, 'entries'>> {
   hooks?: BuildHooks // eslint-disable-line no-use-before-define
 }
 
-export interface BuildHooks extends Hooks {
+export interface BuildHooks {
   'build:before': (ctx: BuildContext) => void | Promise<void>
-  'build:after': (ctx: BuildContext) => void | Promise<void>
+  'build:done': (ctx: BuildContext) => void | Promise<void>
 
   'rollup:options': (ctx: BuildContext, options: RollupOptions) => void | Promise<void>
   'rollup:build': (ctx: BuildContext, build: RollupBuild) => void | Promise<void>
   'rollup:dts:options': (ctx: BuildContext, options: RollupOptions) => void | Promise<void>
   'rollup:dts:build': (ctx: BuildContext, build: RollupBuild) => void | Promise<void>
   'rollup:done': (ctx: BuildContext) => void | Promise<void>
+
+  'mkdist:before': (ctx: BuildContext, entries: MkdistEntry[]) => void | Promise<void>
+  'mkdist:options': (ctx: BuildContext, options: MkdistOptions) => void | Promise<void>
+  'mkdist:build': (ctx: BuildContext, output: { writtenFiles: string[] }) => void | Promise<void>
+  'mkdist:done': (ctx: BuildContext) => void | Promise<void>
 }
 
 export function defineBuildConfig (config: BuildConfig): BuildConfig {

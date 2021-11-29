@@ -125,7 +125,7 @@ export async function build (rootDir: string, stub: boolean) {
 
   // Skip rest for stub
   if (options.stub) {
-    await ctx.hooks.callHook('build:after', ctx)
+    await ctx.hooks.callHook('build:done', ctx)
     return
   }
 
