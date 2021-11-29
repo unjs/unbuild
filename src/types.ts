@@ -72,7 +72,7 @@ export interface BuildHooks {
   'untyped:entries': (ctx: BuildContext, entries: UntypedEntry[]) => void | Promise<void>
   'untyped:entry:options': (ctx: BuildContext, entry: UntypedEntry, options: any) => void | Promise<void>
   'untyped:entry:schema': (ctx: BuildContext, entry: UntypedEntry, schema: Schema) => void | Promise<void>
-  'untyped:entry:outputs': (ctx: BuildContext, entry: UntypedEntry, templates: UntypedTemplates) => void | Promise<void>
+  'untyped:entry:outputs': (ctx: BuildContext, entry: UntypedEntry, outputs: UntypedOutputs) => void | Promise<void>
   'untyped:done': (ctx: BuildContext) => void | Promise<void>
 }
 

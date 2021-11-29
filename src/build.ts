@@ -143,6 +143,6 @@ export async function build (rootDir: string, stub: boolean) {
   validateDependencies(ctx)
   consola.log('')
 
-  // Call build:after
-  await ctx.hooks.callHook('build:after', ctx)
+  // Call build:done
+  await ctx.hooks.callHook('build:done', ctx)
 }
