@@ -28,7 +28,7 @@ export function validateDependencies (ctx: BuildContext) {
   if (unusedDependencies.size) {
     consola.warn('Potential unused dependencies found:', Array.from(unusedDependencies).map(id => chalk.cyan(id)).join(', '))
   }
-  if (implicitDependnecies.size && !ctx.options.inlineDependencies) {
+  if (implicitDependnecies.size && !ctx.options.rollup.inlineDependencies) {
     consola.warn('Potential implicit dependencies found:', Array.from(implicitDependnecies).map(id => chalk.cyan(id)).join(', '))
   }
 }
