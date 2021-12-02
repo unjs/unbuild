@@ -42,6 +42,7 @@ export async function build (rootDir: string, stub: boolean) {
     externals: [...Module.builtinModules],
     dependencies: [],
     devDependencies: [],
+    peerDependencies: [],
     rollup: {
       emitCJS: true,
       cjsBridge: false,
@@ -94,10 +95,11 @@ export async function build (rootDir: string, stub: boolean) {
 
   // Infer dependencies from pkg
   options.dependencies = Object.keys(pkg.dependencies || {})
+  options.peerDependencies = Object.keys(pkg.dependencies || {})
   options.devDependencies = Object.keys(pkg.devDependencies || {})
 
   // Add all dependencies as externals
-  options.externals.push(...options.dependencies)
+  options.externals.push(...options.dependencies, ...options.peerDependencies)
 
   // Call build:before
   await ctx.hooks.callHook('build:before', ctx)
