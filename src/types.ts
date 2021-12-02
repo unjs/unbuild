@@ -43,7 +43,8 @@ export interface BuildOptions {
   outDir: string
   stub: boolean
   externals: string[]
-  dependencies: string[],
+  dependencies: string[]
+  peerDependencies: string[]
   devDependencies: string[]
   rollup: RollupBuildOptions
 }
