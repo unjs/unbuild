@@ -10,45 +10,13 @@ on:
 
 jobs:
   ci:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        node: [14]
-
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node }}
-
-      - name: checkout
-        uses: actions/checkout@master
-
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - uses: actions/cache@v2
-        id: yarn-cache
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
-      - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: yarn
-
-      - name: Lint
-        run: yarn lint
-
-      - name: Build
-        run: yarn build
-
-      # - name: Test
-      #   run: yarn jest
-
-      # - name: Coverage
-      #   uses: codecov/codecov-action@v1
+          node-version: 16
+          cache: 'yarn'
+      - run: yarn install
+      - run: yarn lint
+      - run: yarn build
