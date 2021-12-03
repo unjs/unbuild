@@ -7,10 +7,9 @@
   "exports": "./dist/index.mjs",
   "types": "dist/index.d.ts",
   "bin": {
-    "unbuild": "./bin/unbuild.mjs"
+    "unbuild": "./dist/cli.mjs"
   },
   "files": [
-    "bin",
     "dist"
   ],
   "scripts": {

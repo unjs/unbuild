@@ -1,4 +1,5 @@
 import { writeFile } from 'fs/promises'
+import { promises as fsp } from 'fs'
 import type { RollupOptions, OutputOptions, OutputChunk } from 'rollup'
 import { rollup } from 'rollup'
 import commonjs from '@rollup/plugin-commonjs'
@@ -8,11 +9,12 @@ import _esbuild from 'rollup-plugin-esbuild'
 import dts from 'rollup-plugin-dts'
 import { relative, resolve } from 'pathe'
 import consola from 'consola'
-import { getpkg } from '../utils'
+import { getpkg, tryResolve } from '../utils'
 import type { BuildContext } from '../types'
 import { JSONPlugin } from './plugins/json'
 import { rawPlugin } from './plugins/raw'
 import { cjsPlugin } from './plugins/cjs'
+import { shebangPlugin, makeExecutable, getShebang } from './plugins/shebang'
 
 // @ts-ignore https://github.com/unjs/unbuild/issues/23
 const esbuild = _esbuild.default || _esbuild
@@ -21,11 +23,21 @@ export async function rollupBuild (ctx: BuildContext) {
   if (ctx.options.stub) {
     for (const entry of ctx.options.entries.filter(entry => entry.builder === 'rollup')) {
       const output = resolve(ctx.options.rootDir, ctx.options.outDir, entry.name!)
+
+      const resolvedEntry = tryResolve(entry.input, ctx.options.rootDir) || entry.input
+      const code = await fsp.readFile(resolvedEntry, 'utf8')
+      const shebang = getShebang(code)
+
       if (ctx.options.rollup.emitCJS) {
-        await writeFile(output + '.cjs', `module.exports = require('jiti')(null, { interopDefault: true })('${entry.input}')`)
+        await writeFile(output + '.cjs', `${shebang}module.exports = require('jiti')(null, { interopDefault: true })('${entry.input}')`)
       }
-      await writeFile(output + '.mjs', `import jiti from 'jiti';\nexport default jiti(null, { interopDefault: true })('${entry.input}');`)
+      await writeFile(output + '.mjs', `${shebang}import jiti from 'jiti';\nexport default jiti(null, { interopDefault: true })('${entry.input}');`)
       await writeFile(output + '.d.ts', `export * from '${entry.input}';\nexport { default } from '${entry.input}';`)
+
+      if (shebang) {
+        await makeExecutable(output + '.cjs')
+        await makeExecutable(output + '.mjs')
+      }
     }
     await ctx.hooks.callHook('rollup:done', ctx)
     return
@@ -61,6 +73,9 @@ export async function rollupBuild (ctx: BuildContext) {
   // Types
   if (ctx.options.declaration) {
     rollupOptions.plugins = rollupOptions.plugins || []
+    // TODO: Use fresh rollup options
+    const shebangPlugin: any = rollupOptions.plugins.find(p => p && p.name === 'unbuild-shebang')
+    shebangPlugin._options.preserve = false
     rollupOptions.plugins.push(dts({ respectExternal: true }))
     await ctx.hooks.callHook('rollup:dts:options', ctx, rollupOptions)
     const typesBuild = await rollup(rollupOptions)
@@ -143,6 +158,8 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
         preferConst: true
       }),
 
+      shebangPlugin(),
+
       esbuild({
         target: 'es2020'
       }),
@@ -158,6 +175,7 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
       ctx.options.rollup.cjsBridge && cjsPlugin({}),
 
       rawPlugin()
+
     ].filter(Boolean)
   } as RollupOptions
 }

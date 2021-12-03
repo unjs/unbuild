@@ -44,3 +44,15 @@ export function tryRequire (id: string, rootDir: string = process.cwd()) {
     return {}
   }
 }
+
+export function tryResolve (id: string, rootDir: string = process.cwd()) {
+  const _require = jiti(rootDir, { interopDefault: true })
+  try {
+    return _require.resolve(id)
+  } catch (err: any) {
+    if (err.code !== 'MODULE_NOT_FOUND') {
+      console.error(`Error trying import ${id} from ${rootDir}`, err)
+    }
+    return id
+  }
+}
