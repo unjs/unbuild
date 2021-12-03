@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.6.0](https://github.com/unjs/unbuild/compare/v0.5.13...v0.6.0) (2021-12-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* extract rollup specific global options
+
+### Features
+
+* `mkdist:` hooks ([46f8b96](https://github.com/unjs/unbuild/commit/46f8b966242f06a9fc8f321795c4dc9c8ea32b5c))
+* `rollup:` hooks ([43cb0da](https://github.com/unjs/unbuild/commit/43cb0da484380d9208bd28a0f39bbcb6ae8ae113))
+* auto external peerDeps ([#25](https://github.com/unjs/unbuild/issues/25)) ([f629d74](https://github.com/unjs/unbuild/commit/f629d747c2e525cc21416fe177dd243417276be0))
+* basic preset support ([1c0f772](https://github.com/unjs/unbuild/commit/1c0f772259a4216e5f3e922144312b3d3cc5b7aa))
+* support `build:before` and `build:after` hooks ([c834e56](https://github.com/unjs/unbuild/commit/c834e56765510346f2c2901176cf09a0e3b1a39f))
+* support `unbuild` key from `package.json` ([ee16f56](https://github.com/unjs/unbuild/commit/ee16f56e9927c2c61fbee8db8e8c369b9e066902))
+* untyped hooks ([e5ddb8e](https://github.com/unjs/unbuild/commit/e5ddb8ed0542e3a18be21090993392a200d529dc))
+
+
+### Bug Fixes
+
+* **stub:** re-export `default` in dts stub ([#26](https://github.com/unjs/unbuild/issues/26)) ([468347f](https://github.com/unjs/unbuild/commit/468347f39e9c270c865975b3bde46dbd753d94f2))
+
+
+* extract rollup specific global options ([0dfb39f](https://github.com/unjs/unbuild/commit/0dfb39fcdf90a5842ffd56440860ef25b058cdb4))
+
 ### [0.5.13](https://github.com/unjs/unbuild/compare/v0.5.12...v0.5.13) (2021-11-18)
 
 
