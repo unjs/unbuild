@@ -14,7 +14,7 @@ import { rollupBuild } from './builder/rollup'
 import { typesBuild } from './builder/untyped'
 import { mkdistBuild } from './builder/mkdist'
 
-export async function build (rootDir: string, stub: boolean) {
+export async function build (rootDir: string, stub: boolean, inputConfig: BuildConfig = {}) {
   // Determine rootDir
   rootDir = resolve(process.cwd(), rootDir || '.')
 
@@ -26,13 +26,13 @@ export async function build (rootDir: string, stub: boolean) {
   const pkg = _require('./package.json')
 
   // Resolve preset
-  let preset = buildConfig.preset || pkg.unbuild?.preset || pkg.build?.preset || {}
+  let preset = buildConfig.preset || pkg.unbuild?.preset || pkg.build?.preset || inputConfig.preset || {}
   if (typeof preset === 'string') {
     preset = _require(preset)
   }
 
   // Merge options
-  const options = defu(buildConfig, pkg.unbuild || pkg.build, preset, <BuildOptions>{
+  const options = defu(buildConfig, pkg.unbuild || pkg.build, inputConfig, preset, <BuildOptions>{
     rootDir,
     entries: [],
     clean: true,
