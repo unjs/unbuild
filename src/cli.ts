@@ -1,4 +1,4 @@
-#!/bin/env node
+#!/usr/bin/env node
 import { resolve } from 'pathe'
 import mri from 'mri'
 import { build } from './build'
