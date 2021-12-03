@@ -5,9 +5,8 @@ import consola from 'consola'
 import defu from 'defu'
 import { createHooks } from 'hookable'
 import prettyBytes from 'pretty-bytes'
-import jiti from 'jiti'
 import mkdirp from 'mkdirp'
-import { dumpObject, rmdir } from './utils'
+import { dumpObject, rmdir, tryRequire } from './utils'
 import type { BuildContext, BuildConfig, BuildOptions } from './types'
 import { validateDependencies } from './validate'
 import { rollupBuild } from './builder/rollup'
@@ -19,16 +18,13 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
   rootDir = resolve(process.cwd(), rootDir || '.')
 
   // Read build.config and package.json
-  const _require = jiti(rootDir, { interopDefault: true })
-  let buildConfigFile
-  try { buildConfigFile = _require.resolve('./build.config') } catch (e) {}
-  const buildConfig: BuildConfig = buildConfigFile ? _require('./build.config') : {}
-  const pkg = _require('./package.json')
+  const buildConfig: BuildConfig = tryRequire('./build.config', rootDir) || {}
+  const pkg = tryRequire('./package.json')
 
   // Resolve preset
   let preset = buildConfig.preset || pkg.unbuild?.preset || pkg.build?.preset || inputConfig.preset || {}
   if (typeof preset === 'string') {
-    preset = _require(preset)
+    preset = tryRequire(preset)
   }
 
   // Merge options

@@ -3,6 +3,7 @@ import { promisify } from 'util'
 import { dirname } from 'pathe'
 import mkdirp from 'mkdirp'
 import _rimraf from 'rimraf'
+import jiti from 'jiti'
 
 export async function ensuredir (path: string) {
   await mkdirp(dirname(path))
@@ -30,4 +31,14 @@ const rimraf = promisify(_rimraf)
 export async function rmdir (dir: string) {
   await fsp.unlink(dir).catch(() => { })
   await rimraf(dir)
+}
+
+export function tryRequire (id: string, rootDir: string = process.cwd()) {
+  const _require = jiti(rootDir, { interopDefault: true })
+  try {
+    return _require(id)
+  } catch (_err) {
+    console.log(_err.code)
+    // Ignore
+  }
 }
