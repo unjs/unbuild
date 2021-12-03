@@ -60,7 +60,7 @@ export interface BuildContext {
 export interface BuildConfig extends Partial<Omit<BuildOptions, 'entries'>> {
   entries?: (BuildEntry | string)[]
   preset?: string | BuildConfig
-  hooks?: BuildHooks // eslint-disable-line no-use-before-define
+  hooks?: Partial<BuildHooks> // eslint-disable-line no-use-before-define
 }
 
 export interface UntypedOutput { fileName: string, contents: string }
