@@ -25,7 +25,7 @@ export async function rollupBuild (ctx: BuildContext) {
         await writeFile(output + '.cjs', `module.exports = require('jiti')(null, { interopDefault: true })('${entry.input}')`)
       }
       await writeFile(output + '.mjs', `import jiti from 'jiti';\nexport default jiti(null, { interopDefault: true })('${entry.input}');`)
-      await writeFile(output + '.d.ts', `export * from '${entry.input}'`)
+      await writeFile(output + '.d.ts', `export * from '${entry.input}';\nexport { default } from '${entry.input}';`)
     }
     await ctx.hooks.callHook('rollup:done', ctx)
     return
