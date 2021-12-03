@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.6.1](https://github.com/unjs/unbuild/compare/v0.6.0...v0.6.1) (2021-12-03)
+
+
+### Features
+
+* allow programmatic inputConfig ([9493837](https://github.com/unjs/unbuild/commit/9493837636f203657d5166eba277eee83e959e21))
+
+
+### Bug Fixes
+
+* `hooks` type in config should be partial ([62fd953](https://github.com/unjs/unbuild/commit/62fd9534bb82b69bd97091ff45a9947546e18d9a))
+* register programmatic hooks ([867ebc5](https://github.com/unjs/unbuild/commit/867ebc52dd7654cb0e41a61d6833461c178d2a28))
+* resolve outDir relative to rootDir ([ba18055](https://github.com/unjs/unbuild/commit/ba18055a42a939a692e063cb95ad18f559bbb5c4))
+* show error if code is not `MODULE_NOT_FOUND` ([82d9432](https://github.com/unjs/unbuild/commit/82d9432ae29bc61459b71b3809868c8b6af26946))
+* use tryRequire for package.json ([31ab840](https://github.com/unjs/unbuild/commit/31ab840c56ca807577082d8216bee87ef23d977f))
+
 ## [0.6.0](https://github.com/unjs/unbuild/compare/v0.5.13...v0.6.0) (2021-12-03)
 
 
