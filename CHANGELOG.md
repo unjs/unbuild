@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.6.2](https://github.com/unjs/unbuild/compare/v0.6.1...v0.6.2) (2021-12-03)
+
+
+### Features
+
+* shebang support ([12ccc15](https://github.com/unjs/unbuild/commit/12ccc15d42a360995280aec057e44cb1bfba0c87)), closes [#27](https://github.com/unjs/unbuild/issues/27)
+
 ### [0.6.1](https://github.com/unjs/unbuild/compare/v0.6.0...v0.6.1) (2021-12-03)
 
 
