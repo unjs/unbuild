@@ -19,12 +19,12 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
 
   // Read build.config and package.json
   const buildConfig: BuildConfig = tryRequire('./build.config', rootDir) || {}
-  const pkg = tryRequire('./package.json')
+  const pkg = tryRequire('./package.json', rootDir)
 
   // Resolve preset
   let preset = buildConfig.preset || pkg.unbuild?.preset || pkg.build?.preset || inputConfig.preset || {}
   if (typeof preset === 'string') {
-    preset = tryRequire(preset)
+    preset = tryRequire(preset, rootDir)
   }
 
   // Merge options
@@ -56,11 +56,14 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
   }
 
   // Register hooks
-  if (buildConfig.hooks) {
-    ctx.hooks.addHooks(buildConfig.hooks)
-  }
   if (preset.hooks) {
     ctx.hooks.addHooks(preset.hooks)
+  }
+  if (inputConfig.hooks) {
+    ctx.hooks.addHooks(inputConfig.hooks)
+  }
+  if (buildConfig.hooks) {
+    ctx.hooks.addHooks(buildConfig.hooks)
   }
 
   // Normalize entries
