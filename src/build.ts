@@ -46,6 +46,9 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
     }
   }) as BuildOptions
 
+  // Resolve dirs relative to rootDir
+  options.outDir = resolve(options.rootDir, options.outDir)
+
   // Build context
   const ctx: BuildContext = {
     options,
