@@ -20,7 +20,7 @@
     "unbuild": "jiti ./src/cli",
     "prepack": "yarn build",
     "release": "yarn test && standard-version && git push --follow-tags && npm publish",
-    "test:unit": "mocha -r jiti/register test/unit/**.test.*",
+    "test:unit": "nyc mocha -r jiti/register test/unit/**.test.*",
     "test": "yarn lint"
   },
   "dependencies": {
@@ -63,6 +63,7 @@
     "chai": "^4.3.4",
     "eslint": "latest",
     "mocha": "^9.1.3",
+    "nyc": "^15.1.0",
     "standard-version": "latest"
   }
 }
