@@ -1,5 +1,6 @@
 import Module from 'module'
 import { resolve, basename } from 'pathe'
+import type { PackageJson } from 'pkg-types'
 import chalk from 'chalk'
 import consola from 'consola'
 import defu from 'defu'
@@ -13,19 +14,23 @@ import { rollupBuild } from './builder/rollup'
 import { typesBuild } from './builder/untyped'
 import { mkdistBuild } from './builder/mkdist'
 
+function resolvePreset (preset: string | BuildConfig, rootDir: string): BuildConfig {
+  if (typeof preset === 'string') {
+    preset = tryRequire(preset, rootDir) || {}
+  }
+  return preset as BuildConfig
+}
+
 export async function build (rootDir: string, stub: boolean, inputConfig: BuildConfig = {}) {
   // Determine rootDir
   rootDir = resolve(process.cwd(), rootDir || '.')
 
   // Read build.config and package.json
   const buildConfig: BuildConfig = tryRequire('./build.config', rootDir) || {}
-  const pkg = tryRequire('./package.json', rootDir)
+  const pkg: PackageJson & Record<'unbuild' | 'build', BuildConfig> = tryRequire('./package.json', rootDir)
 
   // Resolve preset
-  let preset = buildConfig.preset || pkg.unbuild?.preset || pkg.build?.preset || inputConfig.preset || {}
-  if (typeof preset === 'string') {
-    preset = tryRequire(preset, rootDir)
-  }
+  const preset = resolvePreset(buildConfig.preset || pkg.unbuild?.preset || pkg.build?.preset || inputConfig.preset || {}, rootDir)
 
   // Merge options
   const options = defu(buildConfig, pkg.unbuild || pkg.build, inputConfig, preset, <BuildOptions>{
