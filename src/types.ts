@@ -1,7 +1,9 @@
 import type { PackageJson } from 'pkg-types'
 import type { Hookable } from 'hookable'
 import type { RollupOptions, RollupBuild } from 'rollup'
+import type { Alias } from '@rollup/plugin-alias'
 import type { MkdistOptions } from 'mkdist'
+import type { Options as EsbuildOptions } from 'rollup-plugin-esbuild'
 import { Schema } from 'untyped'
 
 export interface BaseBuildEntry {
@@ -46,6 +48,8 @@ export interface BuildOptions {
   dependencies: string[]
   peerDependencies: string[]
   devDependencies: string[]
+  alias: Alias[],
+  esbuild: EsbuildOptions,
   rollup: RollupBuildOptions
 }
 
