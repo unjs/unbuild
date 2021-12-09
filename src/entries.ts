@@ -1,6 +1,7 @@
 import { normalize, join } from 'pathe'
-
+import consola from 'consola'
 import type { PackageJson } from 'pkg-types'
+
 import { listRecursively } from './utils'
 import type { BuildEntry, MkdistBuildEntry } from '.'
 
@@ -57,7 +58,7 @@ export function inferEntries (pkg: PackageJson, source: string | string[] = proc
     }, undefined)
 
     if (!input) {
-      console.log(`could not infer entrypoint for \`${output.file}\``)
+      consola.warn(`could not infer entrypoint for \`${output.file}\``)
       continue
     }
 

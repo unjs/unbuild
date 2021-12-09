@@ -57,6 +57,12 @@ describe('inferEntries', () => {
   })
 
   it('handles declarations from `types`', () => {
+    expect(inferEntries({ main: 'dist/test.cjs', types: 'custom/handwritten.d.ts' }, ['src/', 'src/test.ts'])).to.deep.equal({
+      emitCJS: true,
+      declaration: undefined,
+      entries: [{ input: 'src/test' }
+      ]
+    })
     expect(inferEntries({ main: 'dist/test.cjs', module: 'dist/test.mjs', types: 'dist/test.d.ts' }, ['src/', 'src/test.ts'])).to.deep.equal({
       emitCJS: true,
       declaration: true,

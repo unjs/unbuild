@@ -60,6 +60,10 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
     options.entries = entries
     options.rollup.emitCJS = emitCJS
     options.declaration = declaration
+    consola.info(chalk.cyan(
+      'Inferred build configuration for:',
+      options.entries.map(e => chalk.bold(e.input.replace(rootDir + '/', '').replace(/\/$/, '/*'))).join(', '))
+    )
   }
 
   // Build context
