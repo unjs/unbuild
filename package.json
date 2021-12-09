@@ -20,8 +20,7 @@
     "unbuild": "jiti ./src/cli",
     "prepack": "yarn build",
     "release": "yarn test && standard-version && git push --follow-tags && npm publish",
-    "test:unit": "nyc mocha -r jiti/register test/unit/**.test.*",
-    "test": "yarn lint"
+    "test": "nyc mocha -r jiti/register test/unit/**.test.*"
   },
   "dependencies": {
     "@rollup/plugin-alias": "^3.1.8",

@@ -13,6 +13,7 @@ import { validateDependencies } from './validate'
 import { rollupBuild } from './builder/rollup'
 import { typesBuild } from './builder/untyped'
 import { mkdistBuild } from './builder/mkdist'
+import { inferEntries } from './entries'
 
 function resolvePreset (preset: string | BuildConfig, rootDir: string): BuildConfig {
   if (typeof preset === 'string') {
@@ -53,6 +54,13 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
 
   // Resolve dirs relative to rootDir
   options.outDir = resolve(options.rootDir, options.outDir)
+
+  if (!options.entries.length && pkg) {
+    const { entries, emitCJS, declaration } = inferEntries(pkg, options.rootDir)
+    options.entries = entries
+    options.rollup.emitCJS = emitCJS
+    options.declaration = declaration
+  }
 
   // Build context
   const ctx: BuildContext = {
