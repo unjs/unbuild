@@ -6,7 +6,6 @@ const fixtureDir = resolve(__dirname, '../fixture')
 const files = [
   'build.config.ts',
   'build.preset.ts',
-  'dist/',
   'package.json',
   'src/',
   'src/index.ts',
@@ -15,6 +14,6 @@ const files = [
 ]
 describe('listRecursively', () => {
   it('lists the files in a directory', () => {
-    expect(listRecursively(fixtureDir)).to.deep.equal(files.map(f => `${fixtureDir}/${f}`))
+    expect(listRecursively(fixtureDir).filter(m => !m.includes('dist'))).to.deep.equal(files.map(f => `${fixtureDir}/${f}`))
   })
 })
