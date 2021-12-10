@@ -163,10 +163,7 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
 
       shebangPlugin(),
 
-      esbuild({
-        target: 'es2020',
-        ...ctx.options.rollup.esbuild
-      }),
+      esbuild(ctx.options.rollup.esbuild),
 
       commonjs({
         extensions,

@@ -40,8 +40,10 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
     devDependencies: [],
     peerDependencies: [],
     alias: {},
-    esbuild: {},
     rollup: {
+      esbuild: {
+        target: 'es2020'
+      },
       emitCJS: true,
       cjsBridge: false,
       inlineDependencies: false
