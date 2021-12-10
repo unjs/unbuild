@@ -1,7 +1,6 @@
 import type { PackageJson } from 'pkg-types'
 import type { Hookable } from 'hookable'
 import type { RollupOptions, RollupBuild } from 'rollup'
-import type { Alias } from '@rollup/plugin-alias'
 import type { MkdistOptions } from 'mkdist'
 import type { Options as EsbuildOptions } from 'rollup-plugin-esbuild'
 import { Schema } from 'untyped'
@@ -35,6 +34,7 @@ export interface RollupBuildOptions {
   emitCJS?: boolean
   cjsBridge?: boolean
   inlineDependencies?: boolean
+  esbuild: EsbuildOptions
 }
 
 export interface BuildOptions {
@@ -49,7 +49,6 @@ export interface BuildOptions {
   peerDependencies: string[]
   devDependencies: string[]
   alias: { [find: string]: string },
-  esbuild: EsbuildOptions,
   rollup: RollupBuildOptions
 }
 

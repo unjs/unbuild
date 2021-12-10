@@ -165,7 +165,7 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
 
       esbuild({
         target: 'es2020',
-        ...ctx.options.esbuild
+        ...ctx.options.rollup.esbuild
       }),
 
       commonjs({
