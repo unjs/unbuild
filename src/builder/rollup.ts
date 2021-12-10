@@ -90,7 +90,7 @@ export async function rollupBuild (ctx: BuildContext) {
 }
 
 export function getRollupOptions (ctx: BuildContext): RollupOptions {
-  const extensions = ['.ts', '.mjs', '.cjs', '.js', '.json']
+  const extensions = ['.ts', '.tsx', '.mjs', '.cjs', '.js', '.jsx', '.json']
 
   return {
     context: ctx.options.rootDir,
