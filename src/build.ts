@@ -7,20 +7,12 @@ import defu from 'defu'
 import { createHooks } from 'hookable'
 import prettyBytes from 'pretty-bytes'
 import mkdirp from 'mkdirp'
-import { dumpObject, rmdir, tryRequire } from './utils'
+import { dumpObject, rmdir, tryRequire, resolvePreset } from './utils'
 import type { BuildContext, BuildConfig, BuildOptions } from './types'
 import { validateDependencies } from './validate'
 import { rollupBuild } from './builder/rollup'
 import { typesBuild } from './builder/untyped'
 import { mkdistBuild } from './builder/mkdist'
-import { inferEntries } from './entries'
-
-function resolvePreset (preset: string | BuildConfig, rootDir: string): BuildConfig {
-  if (typeof preset === 'string') {
-    preset = tryRequire(preset, rootDir) || {}
-  }
-  return preset as BuildConfig
-}
 
 export async function build (rootDir: string, stub: boolean, inputConfig: BuildConfig = {}) {
   // Determine rootDir
@@ -31,7 +23,7 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
   const pkg: PackageJson & Record<'unbuild' | 'build', BuildConfig> = tryRequire('./package.json', rootDir)
 
   // Resolve preset
-  const preset = resolvePreset(buildConfig.preset || pkg.unbuild?.preset || pkg.build?.preset || inputConfig.preset || {}, rootDir)
+  const preset = resolvePreset(buildConfig.preset || pkg.unbuild?.preset || pkg.build?.preset || inputConfig.preset || 'auto', rootDir)
 
   // Merge options
   const options = defu(buildConfig, pkg.unbuild || pkg.build, inputConfig, preset, <BuildOptions>{
@@ -46,7 +38,7 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
     devDependencies: [],
     peerDependencies: [],
     rollup: {
-      emitCJS: true,
+      emitCJS: false,
       cjsBridge: false,
       inlineDependencies: false
     }
@@ -54,17 +46,6 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
 
   // Resolve dirs relative to rootDir
   options.outDir = resolve(options.rootDir, options.outDir)
-
-  if (!options.entries.length && pkg) {
-    const { entries, emitCJS, declaration } = inferEntries(pkg, options.rootDir)
-    options.entries = entries
-    options.rollup.emitCJS = emitCJS
-    options.declaration = declaration
-    consola.info(chalk.cyan(
-      'Inferred build configuration for:',
-      options.entries.map(e => chalk.bold(e.input.replace(rootDir + '/', '').replace(/\/$/, '/*'))).join(', '))
-    )
-  }
 
   // Build context
   const ctx: BuildContext = {
@@ -85,6 +66,9 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
   if (buildConfig.hooks) {
     ctx.hooks.addHooks(buildConfig.hooks)
   }
+
+  // Allow prepare and extending context
+  await ctx.hooks.callHook('build:prepare', ctx)
 
   // Normalize entries
   options.entries = options.entries.map(entry =>

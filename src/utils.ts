@@ -5,6 +5,8 @@ import { dirname, resolve } from 'pathe'
 import mkdirp from 'mkdirp'
 import _rimraf from 'rimraf'
 import jiti from 'jiti'
+import { autoPreset } from './auto'
+import type { BuildPreset, BuildConfig } from './types'
 
 export async function ensuredir (path: string) {
   await mkdirp(dirname(path))
@@ -74,4 +76,16 @@ export function tryResolve (id: string, rootDir: string = process.cwd()) {
     }
     return id
   }
+}
+
+export function resolvePreset (preset: string | BuildPreset, rootDir: string): BuildConfig {
+  if (preset === 'auto') {
+    preset = autoPreset
+  } else if (typeof preset === 'string') {
+    preset = tryRequire(preset, rootDir) || {}
+  }
+  if (typeof preset === 'function') {
+    preset = preset()
+  }
+  return preset as BuildConfig
 }

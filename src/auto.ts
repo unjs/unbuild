@@ -1,13 +1,38 @@
 import { normalize, join } from 'pathe'
 import consola from 'consola'
+import chalk from 'chalk'
 import type { PackageJson } from 'pkg-types'
-
 import { listRecursively } from './utils'
-import type { BuildEntry, MkdistBuildEntry } from '.'
+import { BuildEntry, definePreset, MkdistBuildEntry, BuildContext } from './types'
 
-type OutputDescriptor = { type: 'esm' | 'cjs', file: string }
+type OutputDescriptor = { file: string, type?: 'esm' | 'cjs' }
+type InferEntriesResult = { entries: BuildEntry[], cjs?: boolean, dts?: boolean }
 
-type InferEntriesResult = { emitCJS?: boolean, entries: BuildEntry[], declaration?: boolean }
+export const autoPreset = definePreset(() => {
+  return {
+    hooks: {
+      'build:prepare' (ctx) {
+        // Disable auto if entries already provided of pkg not available
+        if (!ctx.pkg || ctx.options.entries.length) {
+          return
+        }
+        const res = interEntries(ctx)
+        ctx.options.entries.push(...res.entries)
+        if (res.cjs) {
+          ctx.options.rollup.emitCJS = true
+        }
+        if (res.dts) {
+          ctx.options.declaration = res.dts
+        }
+        consola.info(
+          'Automatically detected entries:',
+          chalk.cyan(ctx.options.entries.map(e => chalk.bold(e.input.replace(ctx.options.rootDir + '/', '').replace(/\/$/, '/*'))).join(', ')),
+          chalk.gray(['esm', res.cjs && 'cjs', res.dts && 'dts'].filter(Boolean).map(tag => `[${tag}]`).join(' '))
+        )
+      }
+    }
+  }
+})
 
 /**
  * @param {PackageJson} pkg The contents of a package.json file to serve as the source for inferred entries.
@@ -15,35 +40,46 @@ type InferEntriesResult = { emitCJS?: boolean, entries: BuildEntry[], declaratio
  *   - if string, `<source>/src` will be scanned for possible source files.
  *   - if an array of source files, these will be used directly instead of accessing fs.
  */
-export function inferEntries (pkg: PackageJson, source: string | string[] = process.cwd()): InferEntriesResult {
-  const sourceFiles = Array.isArray(source) ? source : listRecursively(join(source, 'src'))
+function interEntries (ctx: BuildContext): InferEntriesResult {
+  const sourceFiles = listRecursively(join(ctx.options.rootDir, 'src'))
 
   // Come up with a list of all output files & their formats
-  const outputs: OutputDescriptor[] = extractExportFilenames(pkg.exports)
+  const outputs: OutputDescriptor[] = extractExportFilenames(ctx.pkg.exports)
 
-  if (pkg.bin) {
-    const binaries = typeof pkg.bin === 'string' ? [pkg.bin] : Object.values(pkg.bin)
+  if (ctx.pkg.bin) {
+    const binaries = typeof ctx.pkg.bin === 'string' ? [ctx.pkg.bin] : Object.values(ctx.pkg.bin)
     for (const file of binaries) {
-      outputs.push({ type: file.endsWith('.mjs') || pkg.type === 'module' ? 'esm' : 'cjs', file })
+      outputs.push({ file })
     }
   }
-  if (pkg.main) {
-    outputs.push({ type: pkg.main.endsWith('.mjs') || pkg.type === 'module' ? 'esm' : 'cjs', file: pkg.main })
+  if (ctx.pkg.main) {
+    outputs.push({ file: ctx.pkg.main })
   }
-  if (pkg.module) {
-    outputs.push({ type: 'esm', file: pkg.module })
+  if (ctx.pkg.module) {
+    outputs.push({ type: 'esm', file: ctx.pkg.module })
   }
-  if (pkg.types || pkg.typings) {
-    outputs.push({ type: 'esm', file: pkg.types || pkg.typings! })
+  if (ctx.pkg.types || ctx.pkg.typings) {
+    outputs.push({ file: ctx.pkg.types || ctx.pkg.typings! })
   }
 
-  let emitCJS
-  let declaration
+  // Try to detect output types
+  const isESMPkg = ctx.pkg.type === 'module'
+  for (const output of outputs.filter(o => !o.type)) {
+    const isJS = output.file.endsWith('.js')
+    if ((isESMPkg && isJS) || output.file.endsWith('.mjs')) {
+      output.type = 'esm'
+    } else if ((!isESMPkg && isJS) || output.file.endsWith('.cjs')) {
+      output.type = 'cjs'
+    }
+  }
 
+  let cjs, dts
+
+  // Infer entries from package files
   const entries: BuildEntry[] = []
   for (const output of outputs) {
     // Supported output file extensions are `.d.ts`, `.cjs` and `.mjs`
-    // but we support any file extension here in case user has extended rollup options
+    // But we support any file extension here in case user has extended rollup options
     const outputSlug = output.file.replace(/(\*[^\\/]*|\.d\.ts|\.\w+)$/, '')
     const isDir = outputSlug.endsWith('/')
 
@@ -63,13 +99,13 @@ export function inferEntries (pkg: PackageJson, source: string | string[] = proc
     }
 
     if (output.type === 'cjs') {
-      emitCJS = true
+      cjs = true
     }
 
     const entry = entries.find(i => i.input === input) || entries[entries.push({ input }) - 1]
 
     if (output.file.endsWith('.d.ts')) {
-      declaration = true
+      dts = true
     }
 
     if (isDir) {
@@ -78,11 +114,7 @@ export function inferEntries (pkg: PackageJson, source: string | string[] = proc
     }
   }
 
-  return {
-    emitCJS,
-    declaration,
-    entries
-  }
+  return { entries, cjs, dts }
 }
 
 export function inferExportType (condition: string, previousConditions: string[] = [], filename = ''): 'esm' | 'cjs' {
@@ -104,6 +136,7 @@ export function inferExportType (condition: string, previousConditions: string[]
       return 'cjs'
     default: {
       if (!previousConditions.length) {
+        // TODO: Check against type:module for default
         return 'esm'
       }
       const [newCondition, ...rest] = previousConditions
