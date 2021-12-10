@@ -3,7 +3,7 @@ import consola from 'consola'
 import chalk from 'chalk'
 import type { PackageJson } from 'pkg-types'
 import { listRecursively } from './utils'
-import { BuildEntry, definePreset, MkdistBuildEntry, BuildContext } from './types'
+import { BuildEntry, definePreset, MkdistBuildEntry } from './types'
 
 type OutputDescriptor = { file: string, type?: 'esm' | 'cjs' }
 type InferEntriesResult = { entries: BuildEntry[], cjs?: boolean, dts?: boolean }
@@ -16,7 +16,8 @@ export const autoPreset = definePreset(() => {
         if (!ctx.pkg || ctx.options.entries.length) {
           return
         }
-        const res = inferEntries(ctx)
+        const sourceFiles = listRecursively(join(ctx.options.rootDir, 'src'))
+        const res = inferEntries(ctx.pkg, sourceFiles)
         ctx.options.entries.push(...res.entries)
         if (res.cjs) {
           ctx.options.rollup.emitCJS = true
@@ -40,30 +41,28 @@ export const autoPreset = definePreset(() => {
  *   - if string, `<source>/src` will be scanned for possible source files.
  *   - if an array of source files, these will be used directly instead of accessing fs.
  */
-export function inferEntries (ctx: BuildContext): InferEntriesResult {
-  const sourceFiles = listRecursively(join(ctx.options.rootDir, 'src'))
-
+export function inferEntries (pkg: PackageJson, sourceFiles: string[]): InferEntriesResult {
   // Come up with a list of all output files & their formats
-  const outputs: OutputDescriptor[] = extractExportFilenames(ctx.pkg.exports)
+  const outputs: OutputDescriptor[] = extractExportFilenames(pkg.exports)
 
-  if (ctx.pkg.bin) {
-    const binaries = typeof ctx.pkg.bin === 'string' ? [ctx.pkg.bin] : Object.values(ctx.pkg.bin)
+  if (pkg.bin) {
+    const binaries = typeof pkg.bin === 'string' ? [pkg.bin] : Object.values(pkg.bin)
     for (const file of binaries) {
       outputs.push({ file })
     }
   }
-  if (ctx.pkg.main) {
-    outputs.push({ file: ctx.pkg.main })
+  if (pkg.main) {
+    outputs.push({ file: pkg.main })
   }
-  if (ctx.pkg.module) {
-    outputs.push({ type: 'esm', file: ctx.pkg.module })
+  if (pkg.module) {
+    outputs.push({ type: 'esm', file: pkg.module })
   }
-  if (ctx.pkg.types || ctx.pkg.typings) {
-    outputs.push({ file: ctx.pkg.types || ctx.pkg.typings! })
+  if (pkg.types || pkg.typings) {
+    outputs.push({ file: pkg.types || pkg.typings! })
   }
 
   // Try to detect output types
-  const isESMPkg = ctx.pkg.type === 'module'
+  const isESMPkg = pkg.type === 'module'
   for (const output of outputs.filter(o => !o.type)) {
     const isJS = output.file.endsWith('.js')
     if ((isESMPkg && isJS) || output.file.endsWith('.mjs')) {
@@ -73,7 +72,8 @@ export function inferEntries (ctx: BuildContext): InferEntriesResult {
     }
   }
 
-  let cjs, dts
+  let cjs = false
+  let dts = false
 
   // Infer entries from package files
   const entries: BuildEntry[] = []

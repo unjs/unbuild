@@ -20,7 +20,7 @@
     "unbuild": "jiti ./src/cli",
     "prepack": "yarn build",
     "release": "yarn test && standard-version && git push --follow-tags && npm publish",
-    "test": "nyc mocha -r jiti/register test/unit/**.test.*"
+    "test": "mocha -r jiti/register ./test/*.test.*"
   },
   "dependencies": {
     "@rollup/plugin-alias": "^3.1.8",
@@ -53,16 +53,15 @@
   },
   "devDependencies": {
     "@nuxtjs/eslint-config-typescript": "latest",
-    "@types/chai": "^4.2.22",
+    "@types/chai": "latest",
     "@types/mkdirp": "latest",
-    "@types/mocha": "^9.0.0",
+    "@types/mocha": "latest",
     "@types/mri": "latest",
     "@types/node": "latest",
     "@types/rimraf": "latest",
-    "chai": "^4.3.4",
+    "chai": "latest",
     "eslint": "latest",
-    "mocha": "^9.1.3",
-    "nyc": "^15.1.0",
+    "mocha": "latest",
     "standard-version": "latest"
   }
 }

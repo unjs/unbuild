@@ -9,6 +9,7 @@
     "declaration": true
   },
   "include": [
-    "src"
+    "src",
+    "test"
   ]
 }
