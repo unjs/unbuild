@@ -16,7 +16,7 @@ export const autoPreset = definePreset(() => {
         if (!ctx.pkg || ctx.options.entries.length) {
           return
         }
-        const res = interEntries(ctx)
+        const res = inferEntries(ctx)
         ctx.options.entries.push(...res.entries)
         if (res.cjs) {
           ctx.options.rollup.emitCJS = true
@@ -40,7 +40,7 @@ export const autoPreset = definePreset(() => {
  *   - if string, `<source>/src` will be scanned for possible source files.
  *   - if an array of source files, these will be used directly instead of accessing fs.
  */
-function interEntries (ctx: BuildContext): InferEntriesResult {
+export function inferEntries (ctx: BuildContext): InferEntriesResult {
   const sourceFiles = listRecursively(join(ctx.options.rootDir, 'src'))
 
   // Come up with a list of all output files & their formats
