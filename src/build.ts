@@ -102,7 +102,7 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
 
   // Infer dependencies from pkg
   options.dependencies = Object.keys(pkg.dependencies || {})
-  options.peerDependencies = Object.keys(pkg.dependencies || {})
+  options.peerDependencies = Object.keys(pkg.peerDependencies || {})
   options.devDependencies = Object.keys(pkg.devDependencies || {})
 
   // Add all dependencies as externals
