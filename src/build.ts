@@ -39,7 +39,7 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
     dependencies: [],
     devDependencies: [],
     peerDependencies: [],
-    alias: [],
+    alias: {},
     esbuild: {},
     rollup: {
       emitCJS: true,

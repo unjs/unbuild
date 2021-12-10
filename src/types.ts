@@ -48,7 +48,7 @@ export interface BuildOptions {
   dependencies: string[]
   peerDependencies: string[]
   devDependencies: string[]
-  alias: Alias[],
+  alias: { [find: string]: string },
   esbuild: EsbuildOptions,
   rollup: RollupBuildOptions
 }

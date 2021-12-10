@@ -146,13 +146,10 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
 
     plugins: [
       alias({
-        entries: [
-          {
-            find: ctx.pkg.name!,
-            replacement: ctx.options.rootDir
-          },
+        entries: {
+          [ctx.pkg.name!]: ctx.options.rootDir,
           ...ctx.options.alias
-        ]
+        }
       }),
 
       nodeResolve({
