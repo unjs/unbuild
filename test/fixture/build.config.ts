@@ -1,9 +1,9 @@
-import type { BuildConfig } from 'unbuild'
+import { defineBuildConfig } from '../../src'
 
-export default <BuildConfig>{
+export default defineBuildConfig({
   preset: './build.preset',
   entries: [
     'src/index',
     { input: 'src/schema', builder: 'untyped' }
   ]
-}
+})

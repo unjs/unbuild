@@ -1,12 +1,13 @@
 import Module from 'module'
 import { resolve, basename } from 'pathe'
+import type { PackageJson } from 'pkg-types'
 import chalk from 'chalk'
 import consola from 'consola'
 import defu from 'defu'
 import { createHooks } from 'hookable'
 import prettyBytes from 'pretty-bytes'
 import mkdirp from 'mkdirp'
-import { dumpObject, rmdir, tryRequire } from './utils'
+import { dumpObject, rmdir, tryRequire, resolvePreset } from './utils'
 import type { BuildContext, BuildConfig, BuildOptions } from './types'
 import { validateDependencies } from './validate'
 import { rollupBuild } from './builder/rollup'
@@ -19,13 +20,10 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
 
   // Read build.config and package.json
   const buildConfig: BuildConfig = tryRequire('./build.config', rootDir) || {}
-  const pkg = tryRequire('./package.json', rootDir)
+  const pkg: PackageJson & Record<'unbuild' | 'build', BuildConfig> = tryRequire('./package.json', rootDir)
 
   // Resolve preset
-  let preset = buildConfig.preset || pkg.unbuild?.preset || pkg.build?.preset || inputConfig.preset || {}
-  if (typeof preset === 'string') {
-    preset = tryRequire(preset, rootDir)
-  }
+  const preset = resolvePreset(buildConfig.preset || pkg.unbuild?.preset || pkg.build?.preset || inputConfig.preset || 'auto', rootDir)
 
   // Merge options
   const options = defu(buildConfig, pkg.unbuild || pkg.build, inputConfig, preset, <BuildOptions>{
@@ -40,7 +38,7 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
     devDependencies: [],
     peerDependencies: [],
     rollup: {
-      emitCJS: true,
+      emitCJS: false,
       cjsBridge: false,
       inlineDependencies: false
     }
@@ -68,6 +66,9 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
   if (buildConfig.hooks) {
     ctx.hooks.addHooks(buildConfig.hooks)
   }
+
+  // Allow prepare and extending context
+  await ctx.hooks.callHook('build:prepare', ctx)
 
   // Normalize entries
   options.entries = options.entries.map(entry =>

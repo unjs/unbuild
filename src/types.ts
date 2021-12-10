@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 import type { PackageJson } from 'pkg-types'
 import type { Hookable } from 'hookable'
 import type { RollupOptions, RollupBuild } from 'rollup'
@@ -54,13 +55,15 @@ export interface BuildContext {
   pkg: PackageJson,
   buildEntries: { path: string, bytes?: number, exports?: string[], chunks?: string[] }[]
   usedImports: Set<string>
-  hooks: Hookable<BuildHooks> // eslint-disable-line no-use-before-define
+  hooks: Hookable<BuildHooks>
 }
+
+export type BuildPreset = BuildConfig | (() => BuildConfig)
 
 export interface BuildConfig extends Partial<Omit<BuildOptions, 'entries'>> {
   entries?: (BuildEntry | string)[]
-  preset?: string | BuildConfig
-  hooks?: Partial<BuildHooks> // eslint-disable-line no-use-before-define
+  preset?: string | BuildPreset
+  hooks?: Partial<BuildHooks>
 }
 
 export interface UntypedOutput { fileName: string, contents: string }
@@ -72,6 +75,7 @@ export interface UntypedOutputs {
   }
 
 export interface BuildHooks {
+  'build:prepare': (ctx: BuildContext) => void | Promise<void>
   'build:before': (ctx: BuildContext) => void | Promise<void>
   'build:done': (ctx: BuildContext) => void | Promise<void>
 
@@ -95,4 +99,8 @@ export interface BuildHooks {
 
 export function defineBuildConfig (config: BuildConfig): BuildConfig {
   return config
+}
+
+export function definePreset (preset: BuildPreset): BuildPreset {
+  return preset
 }
