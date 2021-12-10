@@ -146,7 +146,10 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
 
     plugins: [
       alias({
-        [ctx.pkg.name!]: ctx.options.rootDir
+        entries: {
+          [ctx.pkg.name!]: ctx.options.rootDir,
+          ...ctx.options.alias
+        }
       }),
 
       nodeResolve({
@@ -160,9 +163,7 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
 
       shebangPlugin(),
 
-      esbuild({
-        target: 'es2020'
-      }),
+      esbuild(ctx.options.rollup.esbuild),
 
       commonjs({
         extensions,
