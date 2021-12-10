@@ -1,10 +1,12 @@
-import type { BuildConfig } from 'unbuild'
+import { definePreset } from '../../src'
 
-export default <BuildConfig>{
-  cjsBridge: true,
+export default definePreset({
   declaration: true,
+  rollup: {
+    cjsBridge: true
+  },
   hooks: {
     'build:before': () => { console.log('Before build') },
     'build:done': () => { console.log('After build') }
   }
-}
+})

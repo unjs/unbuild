@@ -20,7 +20,7 @@
     "unbuild": "jiti ./src/cli",
     "prepack": "yarn build",
     "release": "yarn test && standard-version && git push --follow-tags && npm publish",
-    "test": "yarn lint"
+    "test": "mocha -r jiti/register ./test/*.test.*"
   },
   "dependencies": {
     "@rollup/plugin-alias": "^3.1.8",
@@ -53,11 +53,15 @@
   },
   "devDependencies": {
     "@nuxtjs/eslint-config-typescript": "latest",
+    "@types/chai": "latest",
     "@types/mkdirp": "latest",
+    "@types/mocha": "latest",
     "@types/mri": "latest",
     "@types/node": "latest",
     "@types/rimraf": "latest",
+    "chai": "latest",
     "eslint": "latest",
+    "mocha": "latest",
     "standard-version": "latest"
   }
 }
