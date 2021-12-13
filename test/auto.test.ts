@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import jiti from 'jiti'
 
-const { inferEntries, getEntrypointPaths } = jiti(import.meta.url)('../src/auto')
+const { inferEntries, getEntrypointPaths } = jiti(import.meta.url)('../src/auto') as typeof import('../src/auto')
 
 describe('inferEntries', () => {
   it('recognises main and module outputs', () => {

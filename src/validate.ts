@@ -36,7 +36,7 @@ export function validateDependencies (ctx: BuildContext) {
   }
 }
 
-export function validateBuildOutputs (pkg: PackageJson, rootDir: string) {
+export function validatePackage (pkg: PackageJson, rootDir: string) {
   if (!pkg) { return }
 
   const filenames = new Set([

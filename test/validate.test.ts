@@ -4,14 +4,14 @@ import { expect } from 'chai'
 import consola from 'consola'
 import { join } from 'pathe'
 
-const { validateBuildOutputs } = jiti(import.meta.url)('../src/validate') as typeof import('../src/validate')
+const { validatePackage } = jiti(import.meta.url)('../src/validate') as typeof import('../src/validate')
 
-describe('validateBuildOutputs', () => {
+describe('validatePackage', () => {
   it('detects missing files', () => {
     const logs: string[] = []
     consola.mock(type => type === 'warn' ? (str: string) => logs.push(str) : () => {})
 
-    validateBuildOutputs({
+    validatePackage({
       main: './dist/test',
       bin: {
         './cli': './dist/cli'
