@@ -57,6 +57,6 @@ export function validateBuildOutputs (pkg: PackageJson, rootDir: string) {
     }
   }
   if (missingOutputs.length) {
-    consola.warn(`Potential missing build outputs: ${missingOutputs.map(o => chalk.cyan(o)).join(', ')}`)
+    consola.warn(`Potential missing package.json files: ${missingOutputs.map(o => chalk.cyan(o)).join(', ')}`)
   }
 }
