@@ -23,7 +23,7 @@ describe('validateBuildOutputs', () => {
       }
     }, join(fileURLToPath(import.meta.url), '../fixture'))
 
-    expect(logs[0]).to.include('Potential missing build outputs')
+    expect(logs[0]).to.include('Potential missing')
     expect(logs[0]).not.to.include('src/index.ts')
 
     for (const file of ['dist/test', 'dist/cli', 'dist/mod', 'runtime']) {
