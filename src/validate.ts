@@ -3,9 +3,8 @@ import chalk from 'chalk'
 import consola from 'consola'
 import { resolve } from 'pathe'
 import { PackageJson } from 'pkg-types'
-import { extractExportFilenames } from './auto'
+import { extractExportFilenames, getpkg } from './utils'
 import { BuildContext } from './types'
-import { getpkg } from './utils'
 
 export function validateDependencies (ctx: BuildContext) {
   const usedDependencies = new Set<string>()

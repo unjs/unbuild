@@ -5,6 +5,7 @@ import { dirname, resolve } from 'pathe'
 import mkdirp from 'mkdirp'
 import _rimraf from 'rimraf'
 import jiti from 'jiti'
+import type { PackageJson } from 'pkg-types'
 import { autoPreset } from './auto'
 import type { BuildPreset, BuildConfig } from './types'
 
@@ -88,4 +89,46 @@ export function resolvePreset (preset: string | BuildPreset, rootDir: string): B
     preset = preset()
   }
   return preset as BuildConfig
+}
+
+export function inferExportType (condition: string, previousConditions: string[] = [], filename = ''): 'esm' | 'cjs' {
+  if (filename) {
+    if (filename.endsWith('.d.ts')) {
+      return 'esm'
+    }
+    if (filename.endsWith('.mjs')) {
+      return 'esm'
+    }
+    if (filename.endsWith('.cjs')) {
+      return 'cjs'
+    }
+  }
+  switch (condition) {
+    case 'import':
+      return 'esm'
+    case 'require':
+      return 'cjs'
+    default: {
+      if (!previousConditions.length) {
+        // TODO: Check against type:module for default
+        return 'esm'
+      }
+      const [newCondition, ...rest] = previousConditions
+      return inferExportType(newCondition, rest, filename)
+    }
+  }
+}
+
+export type OutputDescriptor = { file: string, type?: 'esm' | 'cjs' }
+
+export function extractExportFilenames (exports: PackageJson['exports'], conditions: string[] = []): OutputDescriptor[] {
+  if (!exports) { return [] }
+  if (typeof exports === 'string') {
+    return [{ file: exports, type: 'esm' }]
+  }
+  return Object.entries(exports).flatMap(
+    ([condition, exports]) => typeof exports === 'string'
+      ? { file: exports, type: inferExportType(condition, conditions, exports) }
+      : extractExportFilenames(exports, [...conditions, condition])
+  )
 }
