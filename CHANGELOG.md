@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.6.6](https://github.com/unjs/unbuild/compare/v0.6.5...v0.6.6) (2021-12-14)
+
+
+### Bug Fixes
+
+* update mkdist ([46272a1](https://github.com/unjs/unbuild/commit/46272a1339763116cdb8366b655f5a0c3421dd4e))
+
 ### [0.6.5](https://github.com/unjs/unbuild/compare/v0.6.4...v0.6.5) (2021-12-14)
 
 
