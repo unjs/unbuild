@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.6.7](https://github.com/unjs/unbuild/compare/v0.6.6...v0.6.7) (2021-12-14)
+
+
+### Features
+
+* **rollup:** replace and per-plugin configuration ([6d185b2](https://github.com/unjs/unbuild/commit/6d185b260ce40099380fed5f1dd9d123c2459cf0))
+
 ### [0.6.6](https://github.com/unjs/unbuild/compare/v0.6.5...v0.6.6) (2021-12-14)
 
 
