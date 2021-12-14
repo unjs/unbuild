@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.6.5](https://github.com/unjs/unbuild/compare/v0.6.4...v0.6.5) (2021-12-14)
+
+
+### Bug Fixes
+
+* fix nested config types to be optional ([d48e0ac](https://github.com/unjs/unbuild/commit/d48e0ac48eb460daacb51843078cee73993c8243))
+
 ### [0.6.4](https://github.com/unjs/unbuild/compare/v0.6.3...v0.6.4) (2021-12-14)
 
 
