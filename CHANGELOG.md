@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.6.4](https://github.com/unjs/unbuild/compare/v0.6.3...v0.6.4) (2021-12-14)
+
+
+### Features
+
+* auto config preset ([#30](https://github.com/unjs/unbuild/issues/30)) ([fe1ac94](https://github.com/unjs/unbuild/commit/fe1ac940d6c3617e8d9679a7f458c991c69eaafa))
+* resolve tsx and jsx files ([#31](https://github.com/unjs/unbuild/issues/31)) ([03d7056](https://github.com/unjs/unbuild/commit/03d705617177ef0efbab0f0b6a5c6b7bb3f062b5))
+* support alias and esbuild config ([#29](https://github.com/unjs/unbuild/issues/29)) ([b0b09e0](https://github.com/unjs/unbuild/commit/b0b09e04b35487090109e2a76e6b9b3ef3e449ff))
+* validate build outputs against `package.json` ([#33](https://github.com/unjs/unbuild/issues/33)) ([c9ce0b0](https://github.com/unjs/unbuild/commit/c9ce0b0bc5e1e38734c72393f15cd28516703e19))
+
+
+### Bug Fixes
+
+* external peerDependencies ([#32](https://github.com/unjs/unbuild/issues/32)) ([ba82fcb](https://github.com/unjs/unbuild/commit/ba82fcb5dd84dfdf3b3ab5e435e0c269c8659e0c))
+
 ### [0.6.3](https://github.com/unjs/unbuild/compare/v0.6.2...v0.6.3) (2021-12-03)
 
 
