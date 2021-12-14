@@ -1,7 +1,10 @@
+import { existsSync } from 'fs'
 import chalk from 'chalk'
 import consola from 'consola'
+import { resolve } from 'pathe'
+import { PackageJson } from 'pkg-types'
+import { extractExportFilenames, getpkg } from './utils'
 import { BuildContext } from './types'
-import { getpkg } from './utils'
 
 export function validateDependencies (ctx: BuildContext) {
   const usedDependencies = new Set<string>()
@@ -30,5 +33,29 @@ export function validateDependencies (ctx: BuildContext) {
   }
   if (implicitDependnecies.size && !ctx.options.rollup.inlineDependencies) {
     consola.warn('Potential implicit dependencies found:', Array.from(implicitDependnecies).map(id => chalk.cyan(id)).join(', '))
+  }
+}
+
+export function validatePackage (pkg: PackageJson, rootDir: string) {
+  if (!pkg) { return }
+
+  const filenames = new Set([
+    ...typeof pkg.bin === 'string' ? [pkg.bin] : Object.values(pkg.bin || {}),
+    pkg.main,
+    pkg.module,
+    pkg.types,
+    pkg.typings,
+    ...extractExportFilenames(pkg.exports).map(i => i.file)
+  ].map(i => i && resolve(rootDir, i.replace(/\/[^/]*\*.*$/, ''))))
+
+  const missingOutputs = []
+
+  for (const filename of filenames) {
+    if (filename && !filename.includes('*') && !existsSync(filename)) {
+      missingOutputs.push(filename.replace(rootDir + '/', ''))
+    }
+  }
+  if (missingOutputs.length) {
+    consola.warn(`Potential missing package.json files: ${missingOutputs.map(o => chalk.cyan(o)).join(', ')}`)
   }
 }

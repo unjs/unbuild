@@ -2,10 +2,9 @@ import { normalize, join } from 'pathe'
 import consola from 'consola'
 import chalk from 'chalk'
 import type { PackageJson } from 'pkg-types'
-import { listRecursively } from './utils'
+import { extractExportFilenames, listRecursively } from './utils'
 import { BuildEntry, definePreset, MkdistBuildEntry } from './types'
 
-type OutputDescriptor = { file: string, type?: 'esm' | 'cjs' }
 type InferEntriesResult = { entries: BuildEntry[], cjs?: boolean, dts?: boolean }
 
 export const autoPreset = definePreset(() => {
@@ -43,7 +42,7 @@ export const autoPreset = definePreset(() => {
  */
 export function inferEntries (pkg: PackageJson, sourceFiles: string[]): InferEntriesResult {
   // Come up with a list of all output files & their formats
-  const outputs: OutputDescriptor[] = extractExportFilenames(pkg.exports)
+  const outputs = extractExportFilenames(pkg.exports)
 
   if (pkg.bin) {
     const binaries = typeof pkg.bin === 'string' ? [pkg.bin] : Object.values(pkg.bin)
@@ -117,63 +116,7 @@ export function inferEntries (pkg: PackageJson, sourceFiles: string[]): InferEnt
   return { entries, cjs, dts }
 }
 
-export function inferExportType (condition: string, previousConditions: string[] = [], filename = ''): 'esm' | 'cjs' {
-  if (filename) {
-    if (filename.endsWith('.d.ts')) {
-      return 'esm'
-    }
-    if (filename.endsWith('.mjs')) {
-      return 'esm'
-    }
-    if (filename.endsWith('.cjs')) {
-      return 'cjs'
-    }
-  }
-  switch (condition) {
-    case 'import':
-      return 'esm'
-    case 'require':
-      return 'cjs'
-    default: {
-      if (!previousConditions.length) {
-        // TODO: Check against type:module for default
-        return 'esm'
-      }
-      const [newCondition, ...rest] = previousConditions
-      return inferExportType(newCondition, rest, filename)
-    }
-  }
-}
-
-export function extractExportFilenames (exports: PackageJson['exports'], conditions: string[] = []): OutputDescriptor[] {
-  if (!exports) { return [] }
-  if (typeof exports === 'string') {
-    return [{ file: exports, type: 'esm' }]
-  }
-  return Object.entries(exports).flatMap(
-    ([condition, exports]) => typeof exports === 'string'
-      ? { file: exports, type: inferExportType(condition, conditions, exports) }
-      : extractExportFilenames(exports, [...conditions, condition])
-  )
-}
-
 export const getEntrypointPaths = (path: string) => {
   const segments = normalize(path).split('/')
   return segments.map((_, index) => segments.slice(index).join('/')).filter(Boolean)
-}
-
-export const getEntrypointFilenames = (path: string, supportedExtensions = ['.ts', '.mjs', '.cjs', '.js', '.json']) => {
-  if (path.startsWith('./')) { path = path.slice(2) }
-
-  const filenames = getEntrypointPaths(path).flatMap((path) => {
-    const basefile = path.replace(/\.\w+$/, '')
-    return [
-      basefile,
-      `${basefile}/index`
-    ]
-  })
-
-  filenames.push('index')
-
-  return filenames.flatMap(name => supportedExtensions.map(ext => `${name}${ext}`))
 }

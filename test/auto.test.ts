@@ -1,8 +1,7 @@
 import { expect } from 'chai'
 import jiti from 'jiti'
 
-const { inferEntries, inferExportType, extractExportFilenames, getEntrypointPaths, getEntrypointFilenames } =
-  jiti(import.meta.url)('../src/auto')
+const { inferEntries, getEntrypointPaths } = jiti(import.meta.url)('../src/auto') as typeof import('../src/auto')
 
 describe('inferEntries', () => {
   it('recognises main and module outputs', () => {
@@ -126,32 +125,6 @@ describe('inferEntries', () => {
   })
 })
 
-describe('inferExportType', () => {
-  it('infers export type by condition', () => {
-    expect(inferExportType('import')).to.equal('esm')
-    expect(inferExportType('require')).to.equal('cjs')
-    expect(inferExportType('node')).to.equal('esm')
-    expect(inferExportType('some_unknown_condition')).to.equal('esm')
-  })
-  it('infers export type based on previous conditions', () => {
-    expect(inferExportType('import', ['require'])).to.equal('esm')
-    expect(inferExportType('node', ['require'])).to.equal('cjs')
-    expect(inferExportType('node', ['import'])).to.equal('esm')
-    expect(inferExportType('node', ['unknown', 'require'])).to.equal('cjs')
-  })
-})
-
-describe('extractExportFilenames', () => {
-  it('handles strings', () => {
-    expect(extractExportFilenames('test')).to.deep.equal([{ file: 'test', type: 'esm' }])
-  })
-  it('handles nested objects', () => {
-    expect(extractExportFilenames({ require: 'test' })).to.deep.equal([{ file: 'test', type: 'cjs' }])
-    // @ts-ignore TODO: fix pkg-types
-    expect(extractExportFilenames({ require: { node: 'test', other: { import: 'this', require: 'that' } } })).to.deep.equal([{ file: 'test', type: 'cjs' }, { file: 'this', type: 'esm' }, { file: 'that', type: 'cjs' }])
-  })
-})
-
 describe('getEntrypointPaths', () => {
   it('produces a list of possible paths', () => {
     expect(getEntrypointPaths('./dist/foo/bar.js')).to.deep.equal([
@@ -162,39 +135,6 @@ describe('getEntrypointPaths', () => {
     expect(getEntrypointPaths('./dist/foo/')).to.deep.equal([
       'dist/foo/',
       'foo/'
-    ])
-  })
-})
-
-describe('getEntrypointFilenames', () => {
-  it('produces a list of possible source files', () => {
-    expect(getEntrypointFilenames('./dist/foo/bar.js', ['.ts'])).to.deep.equal([
-      'dist/foo/bar.ts',
-      'dist/foo/bar/index.ts',
-      'foo/bar.ts',
-      'foo/bar/index.ts',
-      'bar.ts',
-      'bar/index.ts',
-      'index.ts'
-    ])
-  })
-  it('uses default filenames', () => {
-    expect(getEntrypointFilenames('bar.js')).to.deep.equal([
-      'bar.ts',
-      'bar.mjs',
-      'bar.cjs',
-      'bar.js',
-      'bar.json',
-      'bar/index.ts',
-      'bar/index.mjs',
-      'bar/index.cjs',
-      'bar/index.js',
-      'bar/index.json',
-      'index.ts',
-      'index.mjs',
-      'index.cjs',
-      'index.js',
-      'index.json'
     ])
   })
 })

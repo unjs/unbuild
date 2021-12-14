@@ -9,7 +9,7 @@ import prettyBytes from 'pretty-bytes'
 import mkdirp from 'mkdirp'
 import { dumpObject, rmdir, tryRequire, resolvePreset } from './utils'
 import type { BuildContext, BuildConfig, BuildOptions } from './types'
-import { validateDependencies } from './validate'
+import { validatePackage, validateDependencies } from './validate'
 import { rollupBuild } from './builder/rollup'
 import { typesBuild } from './builder/untyped'
 import { mkdistBuild } from './builder/mkdist'
@@ -161,6 +161,7 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
 
   // Validate
   validateDependencies(ctx)
+  validatePackage(pkg, rootDir)
 
   // Call build:done
   await ctx.hooks.callHook('build:done', ctx)
