@@ -38,13 +38,26 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
     devDependencies: [],
     peerDependencies: [],
     alias: {},
+    replace: {},
     rollup: {
-      esbuild: {
-        target: 'es2020'
-      },
       emitCJS: false,
       cjsBridge: false,
-      inlineDependencies: false
+      inlineDependencies: false,
+      // Plugins
+      replace: {
+        preventAssignment: true
+      },
+      alias: {},
+      resolve: {
+        preferBuiltins: true
+      },
+      json: {
+        preferConst: true
+      },
+      commonjs: {
+        ignoreTryCatch: true
+      },
+      esbuild: { target: 'es2020' }
     }
   }) as BuildOptions
 

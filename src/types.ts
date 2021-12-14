@@ -4,7 +4,14 @@ import type { Hookable } from 'hookable'
 import type { RollupOptions, RollupBuild } from 'rollup'
 import type { MkdistOptions } from 'mkdist'
 import type { Options as EsbuildOptions } from 'rollup-plugin-esbuild'
-import { Schema } from 'untyped'
+import type { Schema } from 'untyped'
+import type { RollupReplaceOptions } from '@rollup/plugin-replace'
+import type { RollupAliasOptions } from '@rollup/plugin-alias'
+import type { RollupNodeResolveOptions } from '@rollup/plugin-node-resolve'
+import type { RollupJsonOptions } from '@rollup/plugin-json'
+import type commonjs from '@rollup/plugin-commonjs'
+
+export type RollupCommonJSOptions = Parameters<typeof commonjs>[0] & {}
 
 export interface BaseBuildEntry {
   builder?: 'untyped' | 'rollup' | 'mkdist'
@@ -35,7 +42,13 @@ export interface RollupBuildOptions {
   emitCJS?: boolean
   cjsBridge?: boolean
   inlineDependencies?: boolean
-  esbuild: EsbuildOptions
+  // Plugins
+  replace: RollupReplaceOptions | false
+  alias: RollupAliasOptions | false
+  resolve: RollupNodeResolveOptions | false
+  json: RollupJsonOptions | false
+  esbuild: EsbuildOptions | false
+  commonjs: RollupCommonJSOptions | false
 }
 
 export interface BuildOptions {
@@ -50,6 +63,7 @@ export interface BuildOptions {
   peerDependencies: string[]
   devDependencies: string[]
   alias: { [find: string]: string },
+  replace: { [find: string]: string },
   rollup: RollupBuildOptions
 }
 

@@ -7,6 +7,7 @@ import { nodeResolve } from '@rollup/plugin-node-resolve'
 import alias from '@rollup/plugin-alias'
 import _esbuild from 'rollup-plugin-esbuild'
 import dts from 'rollup-plugin-dts'
+import replace from '@rollup/plugin-replace'
 import { relative, resolve } from 'pathe'
 import consola from 'consola'
 import { getpkg, tryResolve } from '../utils'
@@ -145,29 +146,41 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
     },
 
     plugins: [
-      alias({
-        entries: {
-          [ctx.pkg.name!]: ctx.options.rootDir,
-          ...ctx.options.alias
+      ctx.options.rollup.replace && replace({
+        ...ctx.options.rollup.replace,
+        values: {
+          ...ctx.options.replace,
+          ...ctx.options.rollup.replace.values
         }
       }),
 
-      nodeResolve({
-        extensions,
-        preferBuiltins: true
+      ctx.options.rollup.alias && alias({
+        ...ctx.options.rollup.alias,
+        entries: {
+          [ctx.pkg.name!]: ctx.options.rootDir,
+          ...ctx.options.alias,
+          ...ctx.options.rollup.alias.entries
+        }
       }),
 
-      JSONPlugin({
-        preferConst: true
+      ctx.options.rollup.resolve && nodeResolve({
+        extensions,
+        ...ctx.options.rollup.resolve
+      }),
+
+      ctx.options.rollup.json && JSONPlugin({
+        ...ctx.options.rollup.json
       }),
 
       shebangPlugin(),
 
-      esbuild(ctx.options.rollup.esbuild),
+      ctx.options.rollup.esbuild && esbuild({
+        ...ctx.options.rollup.esbuild
+      }),
 
-      commonjs({
+      ctx.options.rollup.commonjs && commonjs({
         extensions,
-        ignoreTryCatch: true
+        ...ctx.options.rollup.commonjs
       }),
 
       // Preserve dynamic imports for CommonJS
