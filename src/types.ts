@@ -63,7 +63,9 @@ export interface BuildContext {
 
 export type BuildPreset = BuildConfig | (() => BuildConfig)
 
-export interface BuildConfig extends Partial<Omit<BuildOptions, 'entries'>> {
+type DeepPartial<T> = { [P in keyof T]?: DeepPartial<T[P]>; };
+
+export interface BuildConfig extends DeepPartial<Omit<BuildOptions, 'entries'>> {
   entries?: (BuildEntry | string)[]
   preset?: string | BuildPreset
   hooks?: Partial<BuildHooks>
