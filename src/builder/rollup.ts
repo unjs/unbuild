@@ -1,4 +1,4 @@
-import { writeFile } from 'fs/promises'
+import { writeFile, mkdir } from 'fs/promises'
 import { promises as fsp } from 'fs'
 import type { RollupOptions, OutputOptions, OutputChunk } from 'rollup'
 import { rollup } from 'rollup'
@@ -8,7 +8,7 @@ import alias from '@rollup/plugin-alias'
 import _esbuild from 'rollup-plugin-esbuild'
 import dts from 'rollup-plugin-dts'
 import replace from '@rollup/plugin-replace'
-import { relative, resolve } from 'pathe'
+import { relative, resolve, dirname } from 'pathe'
 import consola from 'consola'
 import { getpkg, tryResolve } from '../utils'
 import type { BuildContext } from '../types'
@@ -29,6 +29,7 @@ export async function rollupBuild (ctx: BuildContext) {
       const code = await fsp.readFile(resolvedEntry, 'utf8')
       const shebang = getShebang(code)
 
+      await mkdir(dirname(output), { recursive: true })
       if (ctx.options.rollup.emitCJS) {
         await writeFile(output + '.cjs', `${shebang}module.exports = require('jiti')(null, { interopDefault: true })('${entry.input}')`)
       }
