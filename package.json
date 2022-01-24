@@ -1,7 +1,7 @@
 {
   "name": "unbuild",
   "version": "0.6.8",
-  "description": "An unified javascript build system",
+  "description": "A unified javascript build system",
   "repository": "unjs/unbuild",
   "license": "MIT",
   "exports": "./dist/index.mjs",

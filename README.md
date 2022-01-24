@@ -5,7 +5,7 @@
 [![Github Actions][github-actions-src]][github-actions-href]
 [![Codecov][codecov-src]][codecov-href]
 
-> An unified javascript build system
+> A unified javascript build system
 
 **📦 Optimized bundler**
 
