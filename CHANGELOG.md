@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.6.9](https://github.com/unjs/unbuild/compare/v0.6.8...v0.6.9) (2022-01-27)
+
+
+### Features
+
+* allow peerDeps as import entry points ([#43](https://github.com/unjs/unbuild/issues/43)) ([755981d](https://github.com/unjs/unbuild/commit/755981dc98a17898ab45d6d794eac3023b7d0298))
+
 ### [0.6.8](https://github.com/unjs/unbuild/compare/v0.6.7...v0.6.8) (2022-01-21)
 
 
