@@ -34,8 +34,6 @@ describe('validatePackage', () => {
   })
 })
 
-
-
 describe('validateDependecies', () => {
   it('detects implicit deps', () => {
     const logs: string[] = []
@@ -45,16 +43,16 @@ describe('validateDependecies', () => {
       pkg: {},
       buildEntries: [],
       hooks: [] as any,
-      usedImports: new Set(["pkg-a/core"]),
+      usedImports: new Set(['pkg-a/core']),
       options: {
         externals: [],
-        dependencies: ["react"],
+        dependencies: ['react'],
         peerDependencies: [],
         devDependencies: [],
-        rootDir: ".",
+        rootDir: '.',
         entries: [] as BuildEntry[],
         clean: false,
-        outDir: "dist",
+        outDir: 'dist',
         stub: false,
         alias: {},
         replace: {},
@@ -64,8 +62,8 @@ describe('validateDependecies', () => {
           resolve: false,
           json: false,
           esbuild: false,
-          commonjs: false,
-        },
+          commonjs: false
+        }
       }
     })
 
@@ -80,16 +78,16 @@ describe('validateDependecies', () => {
       pkg: {},
       buildEntries: [],
       hooks: [] as any,
-      usedImports: new Set(["pkg-a/core"]),
+      usedImports: new Set(['pkg-a/core']),
       options: {
         externals: [],
-        dependencies: ["react"],
-        peerDependencies: ["pkg-a"],
+        dependencies: ['react'],
+        peerDependencies: ['pkg-a'],
         devDependencies: [],
-        rootDir: ".",
+        rootDir: '.',
         entries: [] as BuildEntry[],
         clean: false,
-        outDir: "dist",
+        outDir: 'dist',
         stub: false,
         alias: {},
         replace: {},
@@ -99,11 +97,11 @@ describe('validateDependecies', () => {
           resolve: false,
           json: false,
           esbuild: false,
-          commonjs: false,
-        },
+          commonjs: false
+        }
       }
     })
 
-    expect(logs).to.be.empty
+    expect(logs.length).to.eq(0)
   })
 })
