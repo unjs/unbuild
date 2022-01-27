@@ -23,7 +23,8 @@ export function validateDependencies (ctx: BuildContext) {
     if (
       !ctx.options.externals.includes(id) &&
       !id.startsWith('chunks/') &&
-      !ctx.options.dependencies.includes(getpkg(id))
+      !ctx.options.dependencies.includes(getpkg(id)) &&
+      !ctx.options.peerDependencies.includes(getpkg(id))
     ) {
       implicitDependnecies.add(id)
     }

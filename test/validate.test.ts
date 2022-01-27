@@ -3,13 +3,15 @@ import jiti from 'jiti'
 import { expect } from 'chai'
 import consola from 'consola'
 import { join } from 'pathe'
+import { validateDependencies } from '../src/validate'
+import { BuildEntry } from '../src/types'
 
 const { validatePackage } = jiti(import.meta.url)('../src/validate') as typeof import('../src/validate')
 
 describe('validatePackage', () => {
   it('detects missing files', () => {
     const logs: string[] = []
-    consola.mock(type => type === 'warn' ? (str: string) => logs.push(str) : () => {})
+    consola.mock(type => type === 'warn' ? (str: string) => logs.push(str) : () => { })
 
     validatePackage({
       main: './dist/test',
@@ -29,5 +31,77 @@ describe('validatePackage', () => {
     for (const file of ['dist/test', 'dist/cli', 'dist/mod', 'runtime']) {
       expect(logs[0]).to.include(file)
     }
+  })
+})
+
+describe('validateDependecies', () => {
+  it('detects implicit deps', () => {
+    const logs: string[] = []
+    consola.mock(type => type === 'warn' ? (str: string) => logs.push(str) : () => { })
+
+    validateDependencies({
+      pkg: {},
+      buildEntries: [],
+      hooks: [] as any,
+      usedImports: new Set(['pkg-a/core']),
+      options: {
+        externals: [],
+        dependencies: ['react'],
+        peerDependencies: [],
+        devDependencies: [],
+        rootDir: '.',
+        entries: [] as BuildEntry[],
+        clean: false,
+        outDir: 'dist',
+        stub: false,
+        alias: {},
+        replace: {},
+        rollup: {
+          replace: false,
+          alias: false,
+          resolve: false,
+          json: false,
+          esbuild: false,
+          commonjs: false
+        }
+      }
+    })
+
+    expect(logs[0]).to.include('Potential implicit dependencies found:')
+  })
+
+  it('does not print implicit deps warning for peerDependencies', () => {
+    const logs: string[] = []
+    consola.mock(type => type === 'warn' ? (str: string) => logs.push(str) : () => { })
+
+    validateDependencies({
+      pkg: {},
+      buildEntries: [],
+      hooks: [] as any,
+      usedImports: new Set(['pkg-a/core']),
+      options: {
+        externals: [],
+        dependencies: ['react'],
+        peerDependencies: ['pkg-a'],
+        devDependencies: [],
+        rootDir: '.',
+        entries: [] as BuildEntry[],
+        clean: false,
+        outDir: 'dist',
+        stub: false,
+        alias: {},
+        replace: {},
+        rollup: {
+          replace: false,
+          alias: false,
+          resolve: false,
+          json: false,
+          esbuild: false,
+          commonjs: false
+        }
+      }
+    })
+
+    expect(logs.length).to.eq(0)
   })
 })
