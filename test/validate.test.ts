@@ -4,7 +4,7 @@ import { expect } from 'chai'
 import consola from 'consola'
 import { join } from 'pathe'
 import { validateDependencies } from '../src/validate'
-import { BuildEntry } from '../src/types.js'
+import { BuildEntry } from '../src/types'
 
 const { validatePackage } = jiti(import.meta.url)('../src/validate') as typeof import('../src/validate')
 
