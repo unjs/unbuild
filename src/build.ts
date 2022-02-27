@@ -57,7 +57,10 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
       commonjs: {
         ignoreTryCatch: true
       },
-      esbuild: { target: 'es2020' }
+      esbuild: { target: 'es2020' },
+      dts: {
+        respectExternal: true
+      }
     }
   }) as BuildOptions
 
