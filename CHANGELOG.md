@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.7.0](https://github.com/unjs/unbuild/compare/v0.6.9...v0.7.0) (2022-03-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* update all dependencies
+
+### Features
+
+* make rollup-plugin-dts options configurable ([#52](https://github.com/unjs/unbuild/issues/52)) ([e710503](https://github.com/unjs/unbuild/commit/e710503cda58a2691a6ed04abe91c346dae66d21))
+* update all dependencies ([fc7c164](https://github.com/unjs/unbuild/commit/fc7c1646f13adbc3fcaa9397e25951d39fb5dc21))
+
 ### [0.6.9](https://github.com/unjs/unbuild/compare/v0.6.8...v0.6.9) (2022-01-27)
 
 
