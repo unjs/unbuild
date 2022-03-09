@@ -2,7 +2,7 @@ import { writeFile } from 'fs/promises'
 import { resolve } from 'pathe'
 import { resolveSchema, generateTypes, generateMarkdown } from 'untyped'
 // @ts-ignore
-import untypedPlugin from 'untyped/loader/babel'
+import untypedPlugin from 'untyped/babel-plugin'
 import jiti from 'jiti'
 import { pascalCase } from 'scule'
 import type { BuildContext, UntypedBuildEntry, UntypedOutputs } from '../types'
@@ -52,7 +52,9 @@ export async function typesBuild (ctx: BuildContext) {
       declaration: entry.declaration
         ? {
             fileName: `${entry.name}.d.ts`,
-            contents: generateTypes(schema, pascalCase(entry.name + '-schema'))
+            contents: generateTypes(schema, {
+              interfaceName: pascalCase(entry.name + '-schema')
+            })
           }
         : undefined
     }
