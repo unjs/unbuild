@@ -49,9 +49,12 @@ You can either use `unbuild` key in `package.json` or `build.config.{js,ts,json}
 
 See options [here](./src/types.ts).
 
-## Fun fact
+## 💻 Development
 
-This library is built using itself for publishing!
+- Clone this repository
+- Enable [Corepack](https://github.com/nodejs/corepack) using `corepack enable` (use `npm i -g corepack` for Node.js < 16.10)
+- Install dependencies using `pnpm install`
+- Run interactive tests using `pnpm dev`
 
 ## License
 
