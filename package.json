@@ -14,13 +14,13 @@
   ],
   "scripts": {
     "build": "pnpm unbuild",
-    "stub": "pnpm build --stub",
     "dev": "pnpm unbuild test/fixture",
     "lint": "eslint --ext .ts,.js .",
-    "unbuild": "jiti ./src/cli",
     "prepack": "pnpm build",
     "release": "pnpm test && standard-version && git push --follow-tags && npm publish",
-    "test": "mocha -r jiti/register ./test/*.test.*"
+    "stub": "pnpm build --stub",
+    "test": "mocha -r jiti/register ./test/*.test.*",
+    "unbuild": "jiti ./src/cli"
   },
   "dependencies": {
     "@rollup/plugin-alias": "^3.1.9",
@@ -63,5 +63,6 @@
     "eslint": "latest",
     "mocha": "latest",
     "standard-version": "latest"
-  }
+  },
+  "packageManager": "pnpm@6.32.2"
 }
