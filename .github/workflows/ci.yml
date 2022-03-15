@@ -16,8 +16,8 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 16
-          cache: "yarn"
-      - run: yarn install
-      - run: yarn lint
-      - run: yarn build
-      - run: yarn test
+          cache: "pnpm"
+      - run: pnpm install
+      - run: pnpm lint
+      - run: pnpm build
+      - run: pnpm test
