@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.7.1](https://github.com/unjs/unbuild/compare/v0.7.0...v0.7.1) (2022-03-25)
+
+
+### Bug Fixes
+
+* add `builtins` and `node:` prefixes to externals ([2af233d](https://github.com/unjs/unbuild/commit/2af233d16797ffdf331c3c311b874d41ab75dac8))
+
 ## [0.7.0](https://github.com/unjs/unbuild/compare/v0.6.9...v0.7.0) (2022-03-09)
 
 
