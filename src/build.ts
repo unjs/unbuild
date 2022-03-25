@@ -33,7 +33,11 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
     declaration: false,
     outDir: 'dist',
     stub,
-    externals: [...Module.builtinModules],
+    externals: [
+      ...Module.builtinModules,
+      ...Module.builtinModules.map(m => 'node:' + m),
+      'builtins'
+    ],
     dependencies: [],
     devDependencies: [],
     peerDependencies: [],
