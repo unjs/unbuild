@@ -35,8 +35,7 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
     stub,
     externals: [
       ...Module.builtinModules,
-      ...Module.builtinModules.map(m => 'node:' + m),
-      'builtins'
+      ...Module.builtinModules.map(m => 'node:' + m)
     ],
     dependencies: [],
     devDependencies: [],
