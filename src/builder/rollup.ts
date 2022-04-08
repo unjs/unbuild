@@ -10,6 +10,7 @@ import dts from 'rollup-plugin-dts'
 import replace from '@rollup/plugin-replace'
 import { relative, resolve, dirname } from 'pathe'
 import consola from 'consola'
+import { resolvePath } from 'mlly'
 import { getpkg, tryResolve } from '../utils'
 import type { BuildContext } from '../types'
 import { JSONPlugin } from './plugins/json'
@@ -22,6 +23,8 @@ const esbuild = _esbuild.default || _esbuild
 
 export async function rollupBuild (ctx: BuildContext) {
   if (ctx.options.stub) {
+    const jitiPath = await resolvePath('jiti', { url: import.meta.url })
+
     for (const entry of ctx.options.entries.filter(entry => entry.builder === 'rollup')) {
       const output = resolve(ctx.options.rootDir, ctx.options.outDir, entry.name!)
 
@@ -31,9 +34,9 @@ export async function rollupBuild (ctx: BuildContext) {
 
       await mkdir(dirname(output), { recursive: true })
       if (ctx.options.rollup.emitCJS) {
-        await writeFile(output + '.cjs', `${shebang}module.exports = require('jiti')(null, { interopDefault: true })('${entry.input}')`)
+        await writeFile(output + '.cjs', `${shebang}module.exports = require(${JSON.stringify(jitiPath)})(null, { interopDefault: true })('${entry.input}')`)
       }
-      await writeFile(output + '.mjs', `${shebang}import jiti from 'jiti';\nexport default jiti(null, { interopDefault: true })('${entry.input}');`)
+      await writeFile(output + '.mjs', `${shebang}import jiti from ${JSON.stringify(jitiPath)};\nexport default jiti(null, { interopDefault: true })('${entry.input}');`)
       await writeFile(output + '.d.ts', `export * from '${entry.input}';\nexport { default } from '${entry.input}';`)
 
       if (shebang) {
