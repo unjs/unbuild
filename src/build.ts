@@ -62,6 +62,8 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
       },
       esbuild: { target: 'es2020' },
       dts: {
+        // https://github.com/Swatinem/rollup-plugin-dts/issues/143
+        compilerOptions: { preserveSymlinks: false },
         respectExternal: true
       }
     }
