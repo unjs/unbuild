@@ -31,7 +31,7 @@
     "@rollup/pluginutils": "^4.2.0",
     "chalk": "^5.0.1",
     "consola": "^2.15.3",
-    "defu": "^5.0.1",
+    "defu": "^6.0.0",
     "esbuild": "^0.14.25",
     "hookable": "^5.1.1",
     "jiti": "^1.13.0",
