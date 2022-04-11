@@ -65,7 +65,8 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
         // https://github.com/Swatinem/rollup-plugin-dts/issues/143
         compilerOptions: { preserveSymlinks: false },
         respectExternal: true
-      }
+      },
+      minify: false
     }
   }) as BuildOptions
 

@@ -51,6 +51,7 @@ export interface RollupBuildOptions {
   esbuild: EsbuildOptions | false
   commonjs: RollupCommonJSOptions | false
   dts: RollupDtsOptions
+  minify: boolean
 }
 
 export interface BuildOptions {
