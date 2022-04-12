@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.7.3](https://github.com/unjs/unbuild/compare/v0.7.2...v0.7.3) (2022-04-12)
+
+
+### Bug Fixes
+
+* resolve asbolute path to jiti for pnpm support ([#58](https://github.com/unjs/unbuild/issues/58)) ([81d6da7](https://github.com/unjs/unbuild/commit/81d6da7894533b020c6a2c4a5991eecce1824b18))
+* **stub:** use `file://` protocol for windows compatibility ([12a99c1](https://github.com/unjs/unbuild/commit/12a99c1fa2bb8ce9341cb9a62bd1faf8b8f265e0))
+* work around issue building with pnpm ([#57](https://github.com/unjs/unbuild/issues/57)) ([eb7da84](https://github.com/unjs/unbuild/commit/eb7da84b5665ef11d1942ec7c70820d46d20f905))
+
 ### [0.7.2](https://github.com/unjs/unbuild/compare/v0.7.1...v0.7.2) (2022-03-25)
 
 
