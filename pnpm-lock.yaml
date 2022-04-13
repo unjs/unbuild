@@ -25,7 +25,7 @@ specifiers:
   magic-string: ^0.26.1
   mkdirp: ^1.0.4
   mkdist: ^0.3.10
-  mlly: ^0.5.1
+  mlly: ^0.5.2
   mocha: latest
   mri: ^1.2.0
   pathe: ^0.2.0
@@ -56,7 +56,7 @@ dependencies:
   magic-string: 0.26.1
   mkdirp: 1.0.4
   mkdist: 0.3.10_typescript@4.6.3
-  mlly: 0.5.1
+  mlly: 0.5.2
   mri: 1.2.0
   pathe: 0.2.0
   pkg-types: 0.3.2
@@ -2846,8 +2846,8 @@ packages:
     resolution: {integrity: sha512-zMq5n3cOf4fOzA4WoeulxagbAgMChdev3MgP6K51k7M0u2whTXxupfIY4VVzws4vxkiWhwH1rVQcsw7zDGfRhA==}
     dev: false
 
-  /mlly/0.5.1:
-    resolution: {integrity: sha512-0axKqxbYyQvaAfi6BNqDluCJqg6RkjdsdFxSDoiP6l5HplSTr3ie5Vkxvw9U9ogdj65x56amTnAn+xSoP727Rg==}
+  /mlly/0.5.2:
+    resolution: {integrity: sha512-4GTELSSErv6ZZJYU98fZNuIBJcXSz+ktHdRrCYEqU1m6ZlebOCG0jwZ+IEd9vOrbpYsVBBMC5OTrEyLnKRcauQ==}
     dependencies:
       pathe: 0.2.0
       pkg-types: 0.3.2
