@@ -1,5 +1,6 @@
 import { writeFile, mkdir } from 'fs/promises'
 import { promises as fsp } from 'fs'
+import { pathToFileURL } from 'url'
 import type { RollupOptions, OutputOptions, OutputChunk } from 'rollup'
 import { rollup } from 'rollup'
 import commonjs from '@rollup/plugin-commonjs'
@@ -48,17 +49,10 @@ export async function rollupBuild(ctx: BuildContext) {
           )})(null, { interopDefault: true })('${entry.input}')`
         )
       }
-      await writeFile(
-        output + '.mjs',
-        `${shebang}import jiti from ${JSON.stringify(
-          jitiPath
-        )};\nexport default jiti(null, { interopDefault: true })('${entry.input
-        }');`
-      )
-      await writeFile(
-        output + '.d.ts',
-        `export * from '${entry.input}';\nexport { default } from '${entry.input}';`
-      )
+
+      // Use file:// protocol for windows compatibility
+      await writeFile(output + '.mjs', `${shebang}import jiti from ${JSON.stringify(pathToFileURL(jitiPath).href)};\nexport default jiti(null, { interopDefault: true })('${entry.input}');`)
+      await writeFile(output + '.d.ts', `export * from '${entry.input}';\nexport { default } from '${entry.input}';`)
 
       if (shebang) {
         await makeExecutable(output + '.cjs')
