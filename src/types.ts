@@ -88,12 +88,13 @@ export interface BuildConfig extends DeepPartial<Omit<BuildOptions, 'entries'>> 
 }
 
 export interface UntypedOutput { fileName: string, contents: string }
+
 export interface UntypedOutputs {
   markdown: UntypedOutput,
   schema: UntypedOutput,
   defaults: UntypedOutput,
-   declaration?: UntypedOutput
-  }
+  declaration?: UntypedOutput
+}
 
 export interface BuildHooks {
   'build:prepare': (ctx: BuildContext) => void | Promise<void>
