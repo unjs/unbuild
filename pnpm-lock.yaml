@@ -1,4 +1,4 @@
-lockfileVersion: 5.3
+lockfileVersion: 5.4
 
 specifiers:
   '@nuxtjs/eslint-config-typescript': latest
@@ -63,14 +63,14 @@ dependencies:
   pretty-bytes: 6.0.0
   rimraf: 3.0.2
   rollup: 2.71.1
-  rollup-plugin-dts: 4.2.1_rollup@2.71.1+typescript@4.6.4
-  rollup-plugin-esbuild: 4.9.1_esbuild@0.14.38+rollup@2.71.1
+  rollup-plugin-dts: 4.2.1_ucrswzumipog3rfswkcvuves4u
+  rollup-plugin-esbuild: 4.9.1_lq7i7lniz7dbjsssi7edpdfmuu
   scule: 0.2.1
   typescript: 4.6.4
   untyped: 0.4.4
 
 devDependencies:
-  '@nuxtjs/eslint-config-typescript': 10.0.0_eslint@8.14.0+typescript@4.6.4
+  '@nuxtjs/eslint-config-typescript': 10.0.0_t725usgvqspm5woeqpaxbfp2qu
   '@types/chai': 4.3.1
   '@types/mkdirp': 1.0.2
   '@types/mocha': 9.1.1
@@ -359,16 +359,16 @@ packages:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.13.0
 
-  /@nuxtjs/eslint-config-typescript/10.0.0_eslint@8.14.0+typescript@4.6.4:
+  /@nuxtjs/eslint-config-typescript/10.0.0_t725usgvqspm5woeqpaxbfp2qu:
     resolution: {integrity: sha512-DaFjb0IPOq5MhdPs/5h0+kUmjQ6sVSMo3mrEuuAY3r2NUWmVSWEFrlUCqx0S0pHvjBXS4MfwBWS/oWPs41aQeA==}
     peerDependencies:
       eslint: ^8.14.0
     dependencies:
       '@nuxtjs/eslint-config': 10.0.0_eslint@8.14.0
-      '@typescript-eslint/eslint-plugin': 5.21.0_ade6595cb7be1524e723c025c098ae5d
-      '@typescript-eslint/parser': 5.21.0_eslint@8.14.0+typescript@4.6.4
+      '@typescript-eslint/eslint-plugin': 5.21.0_vxtfsxfxxyksjzzdyas4bgfolu
+      '@typescript-eslint/parser': 5.21.0_t725usgvqspm5woeqpaxbfp2qu
       eslint: 8.14.0
-      eslint-import-resolver-typescript: 2.7.1_662e1b2e8ef3f6aa5d22c3f7cd670612
+      eslint-import-resolver-typescript: 2.7.1_myxbwluo6p3kuxjcyp342zygci
       eslint-plugin-import: 2.26.0_eslint@8.14.0
     transitivePeerDependencies:
       - supports-color
@@ -381,7 +381,7 @@ packages:
       eslint: ^8.14.0
     dependencies:
       eslint: 8.14.0
-      eslint-config-standard: 17.0.0_14af0798efd537ecbc8732fe6f15829c
+      eslint-config-standard: 17.0.0_csxqpghp2u36zpehgl7g6fmctq
       eslint-plugin-import: 2.26.0_eslint@8.14.0
       eslint-plugin-n: 15.2.0_eslint@8.14.0
       eslint-plugin-node: 11.1.0_eslint@8.14.0
@@ -541,7 +541,7 @@ packages:
       '@types/node': 17.0.31
     dev: true
 
-  /@typescript-eslint/eslint-plugin/5.21.0_ade6595cb7be1524e723c025c098ae5d:
+  /@typescript-eslint/eslint-plugin/5.21.0_vxtfsxfxxyksjzzdyas4bgfolu:
     resolution: {integrity: sha512-fTU85q8v5ZLpoZEyn/u1S2qrFOhi33Edo2CZ0+q1gDaWWm0JuPh3bgOyU8lM0edIEYgKLDkPFiZX2MOupgjlyg==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
@@ -552,10 +552,10 @@ packages:
       typescript:
         optional: true
     dependencies:
-      '@typescript-eslint/parser': 5.21.0_eslint@8.14.0+typescript@4.6.4
+      '@typescript-eslint/parser': 5.21.0_t725usgvqspm5woeqpaxbfp2qu
       '@typescript-eslint/scope-manager': 5.21.0
-      '@typescript-eslint/type-utils': 5.21.0_eslint@8.14.0+typescript@4.6.4
-      '@typescript-eslint/utils': 5.21.0_eslint@8.14.0+typescript@4.6.4
+      '@typescript-eslint/type-utils': 5.21.0_t725usgvqspm5woeqpaxbfp2qu
+      '@typescript-eslint/utils': 5.21.0_t725usgvqspm5woeqpaxbfp2qu
       debug: 4.3.4
       eslint: 8.14.0
       functional-red-black-tree: 1.0.1
@@ -568,7 +568,7 @@ packages:
       - supports-color
     dev: true
 
-  /@typescript-eslint/parser/5.21.0_eslint@8.14.0+typescript@4.6.4:
+  /@typescript-eslint/parser/5.21.0_t725usgvqspm5woeqpaxbfp2qu:
     resolution: {integrity: sha512-8RUwTO77hstXUr3pZoWZbRQUxXcSXafZ8/5gpnQCfXvgmP9gpNlRGlWzvfbEQ14TLjmtU8eGnONkff8U2ui2Eg==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
@@ -596,7 +596,7 @@ packages:
       '@typescript-eslint/visitor-keys': 5.21.0
     dev: true
 
-  /@typescript-eslint/type-utils/5.21.0_eslint@8.14.0+typescript@4.6.4:
+  /@typescript-eslint/type-utils/5.21.0_t725usgvqspm5woeqpaxbfp2qu:
     resolution: {integrity: sha512-MxmLZj0tkGlkcZCSE17ORaHl8Th3JQwBzyXL/uvC6sNmu128LsgjTX0NIzy+wdH2J7Pd02GN8FaoudJntFvSOw==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
@@ -606,7 +606,7 @@ packages:
       typescript:
         optional: true
     dependencies:
-      '@typescript-eslint/utils': 5.21.0_eslint@8.14.0+typescript@4.6.4
+      '@typescript-eslint/utils': 5.21.0_t725usgvqspm5woeqpaxbfp2qu
       debug: 4.3.4
       eslint: 8.14.0
       tsutils: 3.21.0_typescript@4.6.4
@@ -641,7 +641,7 @@ packages:
       - supports-color
     dev: true
 
-  /@typescript-eslint/utils/5.21.0_eslint@8.14.0+typescript@4.6.4:
+  /@typescript-eslint/utils/5.21.0_t725usgvqspm5woeqpaxbfp2qu:
     resolution: {integrity: sha512-q/emogbND9wry7zxy7VYri+7ydawo2HDZhRZ5k6yggIvXa7PvBbAAZ4PFH/oZLem72ezC4Pr63rJvDK/sTlL8Q==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
@@ -1772,7 +1772,7 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /eslint-config-standard/17.0.0_14af0798efd537ecbc8732fe6f15829c:
+  /eslint-config-standard/17.0.0_csxqpghp2u36zpehgl7g6fmctq:
     resolution: {integrity: sha512-/2ks1GKyqSOkH7JFvXJicu0iMpoojkwB+f5Du/1SC0PtBL+s8v30k9njRZ21pm2drKYm2342jFnGWzttxPmZVg==}
     peerDependencies:
       eslint: ^8.0.1
@@ -1793,7 +1793,7 @@ packages:
       resolve: 1.22.0
     dev: true
 
-  /eslint-import-resolver-typescript/2.7.1_662e1b2e8ef3f6aa5d22c3f7cd670612:
+  /eslint-import-resolver-typescript/2.7.1_myxbwluo6p3kuxjcyp342zygci:
     resolution: {integrity: sha512-00UbgGwV8bSgUv34igBDbTOtKhqoRMy9bFjNehT40bXg6585PNIct8HhXZ0SybqB9rWtXj9crcku8ndDn/gIqQ==}
     engines: {node: '>=4'}
     peerDependencies:
@@ -3347,7 +3347,7 @@ packages:
     dependencies:
       glob: 7.2.0
 
-  /rollup-plugin-dts/4.2.1_rollup@2.71.1+typescript@4.6.4:
+  /rollup-plugin-dts/4.2.1_ucrswzumipog3rfswkcvuves4u:
     resolution: {integrity: sha512-eaxQZNUJ5iQcxNGlpJ1CUgG4OSVqWjDZ3nNSWBIoGrpcote2aNphSe1RJOaSYkb8dwn3o+rYm1vvld/5z3EGSQ==}
     engines: {node: '>=v12.22.11'}
     peerDependencies:
@@ -3361,7 +3361,7 @@ packages:
       '@babel/code-frame': 7.16.7
     dev: false
 
-  /rollup-plugin-esbuild/4.9.1_esbuild@0.14.38+rollup@2.71.1:
+  /rollup-plugin-esbuild/4.9.1_lq7i7lniz7dbjsssi7edpdfmuu:
     resolution: {integrity: sha512-qn/x7Wz9p3Xnva99qcb+nopH0d2VJwVnsxJTGEg+Sh2Z3tqQl33MhOwzekVo1YTKgv+yAmosjcBRJygMfGrtLw==}
     engines: {node: '>=12'}
     peerDependencies:
