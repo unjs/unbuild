@@ -64,5 +64,5 @@
     "mocha": "latest",
     "standard-version": "latest"
   },
-  "packageManager": "pnpm@6.32.11"
+  "packageManager": "pnpm@7.0.0"
 }
