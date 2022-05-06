@@ -1,7 +1,7 @@
 /* eslint-disable no-use-before-define */
 import type { PackageJson } from 'pkg-types'
 import type { Hookable } from 'hookable'
-import type { RollupOptions, RollupBuild } from 'rollup'
+import type { RollupOptions, RollupBuild, Plugin } from 'rollup'
 import type { MkdistOptions } from 'mkdist'
 import type { Options as EsbuildOptions } from 'rollup-plugin-esbuild'
 import type { Schema } from 'untyped'
@@ -51,6 +51,8 @@ export interface RollupBuildOptions {
   esbuild: EsbuildOptions | false
   commonjs: RollupCommonJSOptions | false
   dts: RollupDtsOptions
+  // Other
+  plugins?: (Plugin | null | false | undefined)[]
 }
 
 export interface BuildOptions {

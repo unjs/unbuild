@@ -194,8 +194,9 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
 
       ctx.options.rollup.cjsBridge && cjsPlugin({}),
 
-      rawPlugin()
+      rawPlugin(),
 
+      ...(ctx.options.rollup.plugins || [])
     ].filter(Boolean)
   } as RollupOptions
 }
