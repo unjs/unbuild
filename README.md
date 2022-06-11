@@ -49,6 +49,34 @@ You can either use `unbuild` key in `package.json` or `build.config.{js,ts,json}
 
 See options [here](./src/types.ts).
 
+Example:
+
+```typescript
+import { defineBuildConfig } from "unbuild"
+
+export default defineBuildConfig({
+
+    entries: [
+        // default
+        './src/index',
+
+        // mkdist builder transpiles file-to-file keeping original sources structure
+        {
+            builder: 'mkdist',
+            input: './src/package/components/',
+            outDir: './build/components'
+        },
+    ],
+
+    // change outDir, default is 'dist'
+    outDir: 'build',
+
+    // generates .d.ts declaration file
+    declaration: true,
+
+})
+```
+
 ## 💻 Development
 
 - Clone this repository
