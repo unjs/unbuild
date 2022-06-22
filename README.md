@@ -51,15 +51,14 @@ See options [here](./src/types.ts).
 
 Example:
 
-```typescript
-import { defineBuildConfig } from "unbuild"
+```ts
+import { defineBuildConfig } from 'unbuild'
 
 export default defineBuildConfig({
-
+    // If entries is not provided, will be automatically inferred from package.json 
     entries: [
         // default
         './src/index',
-
         // mkdist builder transpiles file-to-file keeping original sources structure
         {
             builder: 'mkdist',
@@ -68,12 +67,11 @@ export default defineBuildConfig({
         },
     ],
 
-    // change outDir, default is 'dist'
+    // Change outDir, default is 'dist'
     outDir: 'build',
 
-    // generates .d.ts declaration file
+    // Generates .d.ts declaration file
     declaration: true,
-
 })
 ```
 
