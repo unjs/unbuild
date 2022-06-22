@@ -70,7 +70,7 @@ export async function rollupBuild (ctx: BuildContext) {
       if (entry.isEntry) {
         ctx.buildEntries.push({
           path: relative(ctx.options.rootDir, resolve(outputOptions.dir!, entry.fileName)),
-          bytes: entry.code.length * 4,
+          bytes: Buffer.byteLength(entry.code, 'utf8'),
           exports: entry.exports
         })
       }

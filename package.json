@@ -18,7 +18,7 @@
     "lint": "eslint --ext .ts,.js .",
     "prepack": "pnpm unbuild",
     "release": "pnpm test && standard-version && git push --follow-tags && npm publish",
-    "stub": "pnpm unbuild -- --stub",
+    "stub": "pnpm unbuild --stub",
     "test": "mocha -r jiti/register ./test/*.test.*",
     "unbuild": "jiti ./src/cli"
   },
