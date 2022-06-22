@@ -171,7 +171,7 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
   }
 
   // Done info
-  consola.success(chalk.green('Build succeed for ' + pkg.name))
+  consola.success(chalk.green('Build succeeded for ' + pkg.name))
   for (const entry of ctx.buildEntries) {
     consola.log(`  ${chalk.bold(entry.path)} (` + [
       entry.bytes && `size: ${chalk.cyan(prettyBytes(entry.bytes))}`,
