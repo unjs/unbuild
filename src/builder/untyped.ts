@@ -14,6 +14,7 @@ export async function typesBuild (ctx: BuildContext) {
   for (const entry of entries) {
     const options = {
       jiti: {
+        esmResolve: true,
         interopDefault: true,
         transformOptions: {
           babel: {
