@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.7.5](https://github.com/unjs/unbuild/compare/v0.7.4...v0.7.5) (2022-07-20)
+
+
+### Features
+
+* enable `esmResolve` when loading `build.config` ([#93](https://github.com/unjs/unbuild/issues/93)) ([c856812](https://github.com/unjs/unbuild/commit/c856812ef28ba2aac3d57030b4db087d0369cd6c))
+
+
+### Bug Fixes
+
+* **pkg:** add types field for exports ([#89](https://github.com/unjs/unbuild/issues/89)) ([457f043](https://github.com/unjs/unbuild/commit/457f0434b43b9e16cbbe1b54c61bfc5dcaf666a6))
+* properly calculate bytes of output size ([#82](https://github.com/unjs/unbuild/issues/82)) ([1888978](https://github.com/unjs/unbuild/commit/1888978944ae3384585e7da54ba0a4c0f55e9eb2))
+
 ### [0.7.4](https://github.com/unjs/unbuild/compare/v0.7.3...v0.7.4) (2022-04-13)
 
 
