@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.7.6](https://github.com/unjs/unbuild/compare/v0.7.5...v0.7.6) (2022-07-20)
+
+
+### Bug Fixes
+
+* **pkg:** use `default` export condition to avoid breaking change ([858d35d](https://github.com/unjs/unbuild/commit/858d35de754dcc76f55e3ba8d01945be9c6e9bee)), closes [#89](https://github.com/unjs/unbuild/issues/89)
+
 ### [0.7.5](https://github.com/unjs/unbuild/compare/v0.7.4...v0.7.5) (2022-07-20)
 
 
