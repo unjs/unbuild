@@ -66,6 +66,7 @@ export interface BuildOptions {
   devDependencies: string[]
   alias: { [find: string]: string },
   replace: { [find: string]: string },
+  failOnWarn?: boolean
   rollup: RollupBuildOptions
 }
 
@@ -74,6 +75,7 @@ export interface BuildContext {
   pkg: PackageJson,
   buildEntries: { path: string, bytes?: number, exports?: string[], chunks?: string[] }[]
   usedImports: Set<string>
+  warnings: Set<string>
   hooks: Hookable<BuildHooks>
 }
 
