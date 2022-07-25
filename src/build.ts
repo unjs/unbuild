@@ -76,6 +76,7 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
   // Build context
   const ctx: BuildContext = {
     options,
+    warnings: new Set(),
     pkg,
     buildEntries: [],
     usedImports: new Set(),
@@ -189,4 +190,9 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
   await ctx.hooks.callHook('build:done', ctx)
 
   consola.log('')
+
+  if (ctx.warnings.size) {
+    consola.error('Failing build due to warnings. You can remove this protection by disabling `failOnWarn`.')
+    process.exit(1)
+  }
 }

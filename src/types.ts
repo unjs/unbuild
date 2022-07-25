@@ -75,6 +75,7 @@ export interface BuildContext {
   pkg: PackageJson,
   buildEntries: { path: string, bytes?: number, exports?: string[], chunks?: string[] }[]
   usedImports: Set<string>
+  warnings: Set<string>
   hooks: Hookable<BuildHooks>
 }
 

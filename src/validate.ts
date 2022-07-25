@@ -3,7 +3,7 @@ import chalk from 'chalk'
 import consola from 'consola'
 import { resolve } from 'pathe'
 import { PackageJson } from 'pkg-types'
-import { extractExportFilenames, getpkg } from './utils'
+import { extractExportFilenames, getpkg, warn } from './utils'
 import { BuildContext } from './types'
 
 export function validateDependencies (ctx: BuildContext) {
@@ -30,15 +30,10 @@ export function validateDependencies (ctx: BuildContext) {
     }
   }
   if (unusedDependencies.size) {
-    consola.warn('Potential unused dependencies found:', Array.from(unusedDependencies).map(id => chalk.cyan(id)).join(', '))
+    warn(ctx, 'Potential unused dependencies found:', Array.from(unusedDependencies).map(id => chalk.cyan(id)).join(', '))
   }
   if (implicitDependencies.size && !ctx.options.rollup.inlineDependencies) {
-    consola.warn('Potential implicit dependencies found:', Array.from(implicitDependencies).map(id => chalk.cyan(id)).join(', '))
-  }
-  if (unusedDependencies.size || (implicitDependencies.size && !ctx.options.rollup.inlineDependencies)) {
-    if (ctx.options.failOnWarn) {
-      throw new Error('Failing build due to warnings. You can remove this protection by disabling `failOnWarn`.')
-    }
+    warn(ctx, 'Potential implicit dependencies found:', Array.from(implicitDependencies).map(id => chalk.cyan(id)).join(', '))
   }
 }
 
