@@ -141,7 +141,7 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
       }
       if (!isExplicitExternal) {
         if (!ctx.options.rollup.allowImplicitExternals) {
-          throw new Error(`Implicit external ${id} detected. Either add to your project dependencies or add to \`externals\`.`)
+          throw new Error(`Implicit external ${id} detected. Either add to your project dependencies or add to \`externals\`. You can disable this check by setting \`rollup.allowImplicitExternals\`.`)
         }
         consola.warn(`Inlining implicit external ${id}`)
       }
