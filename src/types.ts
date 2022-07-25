@@ -43,6 +43,7 @@ export interface RollupBuildOptions {
   emitCJS?: boolean
   cjsBridge?: boolean
   inlineDependencies?: boolean
+  allowImplicitExternals?: boolean
   // Plugins
   replace: RollupReplaceOptions | false
   alias: RollupAliasOptions | false

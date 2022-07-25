@@ -46,6 +46,7 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
       emitCJS: false,
       cjsBridge: false,
       inlineDependencies: false,
+      allowImplicitExternals: false,
       // Plugins
       replace: {
         preventAssignment: true
