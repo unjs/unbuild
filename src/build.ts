@@ -42,11 +42,11 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
     peerDependencies: [],
     alias: {},
     replace: {},
+    failOnWarn: true,
     rollup: {
       emitCJS: false,
       cjsBridge: false,
       inlineDependencies: false,
-      allowImplicitExternals: false,
       // Plugins
       replace: {
         preventAssignment: true

@@ -35,6 +35,11 @@ export function validateDependencies (ctx: BuildContext) {
   if (implicitDependencies.size && !ctx.options.rollup.inlineDependencies) {
     consola.warn('Potential implicit dependencies found:', Array.from(implicitDependencies).map(id => chalk.cyan(id)).join(', '))
   }
+  if (unusedDependencies.size || (implicitDependencies.size && !ctx.options.rollup.inlineDependencies)) {
+    if (ctx.options.failOnWarn) {
+      throw new Error('Failing build due to warnings. You can remove this protection by disabling `failOnWarn`.')
+    }
+  }
 }
 
 export function validatePackage (pkg: PackageJson, rootDir: string) {
