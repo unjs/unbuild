@@ -9,7 +9,7 @@ import { BuildContext } from './types'
 export function validateDependencies (ctx: BuildContext) {
   const usedDependencies = new Set<string>()
   const unusedDependencies = new Set<string>(Object.keys(ctx.pkg.dependencies || {}))
-  const implicitDependnecies = new Set<string>()
+  const implicitDependencies = new Set<string>()
   for (const id of ctx.usedImports) {
     unusedDependencies.delete(id)
     usedDependencies.add(id)
@@ -26,14 +26,14 @@ export function validateDependencies (ctx: BuildContext) {
       !ctx.options.dependencies.includes(getpkg(id)) &&
       !ctx.options.peerDependencies.includes(getpkg(id))
     ) {
-      implicitDependnecies.add(id)
+      implicitDependencies.add(id)
     }
   }
   if (unusedDependencies.size) {
     consola.warn('Potential unused dependencies found:', Array.from(unusedDependencies).map(id => chalk.cyan(id)).join(', '))
   }
-  if (implicitDependnecies.size && !ctx.options.rollup.inlineDependencies) {
-    consola.warn('Potential implicit dependencies found:', Array.from(implicitDependnecies).map(id => chalk.cyan(id)).join(', '))
+  if (implicitDependencies.size && !ctx.options.rollup.inlineDependencies) {
+    consola.warn('Potential implicit dependencies found:', Array.from(implicitDependencies).map(id => chalk.cyan(id)).join(', '))
   }
 }
 
