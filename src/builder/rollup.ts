@@ -9,7 +9,7 @@ import alias from '@rollup/plugin-alias'
 import _esbuild from 'rollup-plugin-esbuild'
 import dts from 'rollup-plugin-dts'
 import replace from '@rollup/plugin-replace'
-import { relative, resolve, dirname } from 'pathe'
+import { relative, resolve, dirname, normalize } from 'pathe'
 import { resolvePath, resolveModuleExportNames } from 'mlly'
 import { getpkg, tryResolve, warn } from '../utils'
 import type { BuildContext } from '../types'
@@ -30,7 +30,7 @@ export async function rollupBuild (ctx: BuildContext) {
     for (const entry of ctx.options.entries.filter(entry => entry.builder === 'rollup')) {
       const output = resolve(ctx.options.rootDir, ctx.options.outDir, entry.name!)
 
-      const resolvedEntry = tryResolve(entry.input, ctx.options.rootDir) || entry.input
+      const resolvedEntry = normalize(tryResolve(entry.input, ctx.options.rootDir) || entry.input)
       const code = await fsp.readFile(resolvedEntry, 'utf8')
       const shebang = getShebang(code)
 
