@@ -195,10 +195,8 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
     }
   }
 
-  let distSize = 0
   const rPath = (p: string) => relative(process.cwd(), resolve(options.outDir, p))
   for (const entry of ctx.buildEntries.filter(e => !e.chunk)) {
-    distSize += entry.bytes || 0
     let totalBytes = entry.bytes || 0
     for (const chunk of entry.chunks || []) {
       totalBytes += ctx.buildEntries.find(e => e.path === chunk)?.bytes || 0
@@ -216,7 +214,7 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
     }
     consola.log(entry.chunk ? chalk.gray(line) : line)
   }
-  console.log('Σ Total dist size:', chalk.cyan(prettyBytes(distSize)))
+  console.log('Σ Total dist size (byte size):', chalk.cyan(prettyBytes(ctx.buildEntries.reduce((a, e) => a + (e.bytes || 0), 0))))
 
   // Validate
   validateDependencies(ctx)
