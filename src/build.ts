@@ -184,7 +184,7 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
 
   // Validate
   validateDependencies(ctx)
-  validatePackage(pkg, rootDir)
+  validatePackage(pkg, rootDir, ctx)
 
   // Call build:done
   await ctx.hooks.callHook('build:done', ctx)
