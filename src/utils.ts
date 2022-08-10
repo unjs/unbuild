@@ -6,7 +6,6 @@ import mkdirp from 'mkdirp'
 import _rimraf from 'rimraf'
 import jiti from 'jiti'
 import type { PackageJson } from 'pkg-types'
-import consola from 'consola'
 import { autoPreset } from './auto'
 import type { BuildPreset, BuildConfig, BuildContext } from './types'
 

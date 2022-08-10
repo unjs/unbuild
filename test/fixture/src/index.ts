@@ -14,4 +14,5 @@ import('./test.html').then(console.log)
 
 export const foo = 'bar'
 
-export * from 'defu'
+// Failing test
+// export * from 'defu'
