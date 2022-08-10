@@ -9,7 +9,7 @@ import alias from '@rollup/plugin-alias'
 import _esbuild from 'rollup-plugin-esbuild'
 import dts from 'rollup-plugin-dts'
 import replace from '@rollup/plugin-replace'
-import { relative, resolve, dirname, normalize } from 'pathe'
+import { relative, resolve, dirname, normalize, extname } from 'pathe'
 import { resolvePath, resolveModuleExportNames } from 'mlly'
 import { getpkg, tryResolve, warn } from '../utils'
 import type { BuildContext } from '../types'
@@ -31,6 +31,7 @@ export async function rollupBuild (ctx: BuildContext) {
       const output = resolve(ctx.options.rootDir, ctx.options.outDir, entry.name!)
 
       const resolvedEntry = normalize(tryResolve(entry.input, ctx.options.rootDir) || entry.input)
+      const resolvedEntryWithoutExt = resolvedEntry.substring(0, resolvedEntry.length - extname(resolvedEntry).length)
       const code = await fsp.readFile(resolvedEntry, 'utf8')
       const shebang = getShebang(code)
 
@@ -49,10 +50,10 @@ export async function rollupBuild (ctx: BuildContext) {
         warn(ctx, `Cannot analyze ${resolvedEntry} for exports:` + err)
         return []
       })
-      await writeFile(output + '.mjs', `${shebang}import jiti from ${JSON.stringify(pathToFileURL(jitiPath).href)};\nconst _module = jiti(null, { interopDefault: true, esmResolve: true })(${JSON.stringify(resolvedEntry)});\n\nexport default _module;\n\n${namedExports.map(name => `export const ${name} = _module.${name};`).join('\n')}`)
+      await writeFile(output + '.mjs', `${shebang}import jiti from ${JSON.stringify(pathToFileURL(jitiPath).href)};\n\n/** @type {import(${JSON.stringify(resolvedEntryWithoutExt)})} */\nconst _module = jiti(null, { interopDefault: true, esmResolve: true })(${JSON.stringify(resolvedEntry)});\n\nexport default _module;\n\n${namedExports.map(name => `export const ${name} = _module.${name};`).join('\n')}`)
 
       // DTS Stub
-      await writeFile(output + '.d.ts', `export * from ${JSON.stringify(entry.input)};\nexport { default } from ${JSON.stringify(resolvedEntry)};`)
+      await writeFile(output + '.d.ts', `export * from ${JSON.stringify(resolvedEntryWithoutExt)};\nexport { default } from ${JSON.stringify(resolvedEntryWithoutExt)};`)
 
       if (shebang) {
         await makeExecutable(output + '.cjs')
