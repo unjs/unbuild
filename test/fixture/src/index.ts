@@ -10,7 +10,7 @@ console.log(require.resolve('rollup'))
 import('os').then(os => console.log(os.arch()))
 
 // @ts-ignore
-import('./test.html').then(console.log)
+import('./runtime/foo.ts').then(console.log)
 
 export const foo = 'bar'
 export const baz = '123'

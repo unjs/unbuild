@@ -96,13 +96,14 @@ export async function rollupBuild (ctx: BuildContext) {
       for (const id of entry.imports) {
         ctx.usedImports.add(id)
       }
-      ctx.buildEntries.push({
-        chunk: !entry.isEntry,
-        chunks: entry.imports.filter(i => outputChunks.find(c => c.fileName === i)),
-        path: entry.fileName,
-        bytes: Buffer.byteLength(entry.code, 'utf8'),
-        exports: entry.isEntry ? entry.exports : []
-      })
+      if (entry.isEntry) {
+        ctx.buildEntries.push({
+          chunks: entry.imports.filter(i => outputChunks.find(c => c.fileName === i)),
+          path: entry.fileName,
+          bytes: Buffer.byteLength(entry.code, 'utf8'),
+          exports: entry.exports
+        })
+      }
     }
     for (const chunkFileName of chunkFileNames) {
       ctx.usedImports.delete(chunkFileName)

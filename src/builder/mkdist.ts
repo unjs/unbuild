@@ -1,3 +1,4 @@
+import { relative } from 'pathe'
 import { mkdist, MkdistOptions } from 'mkdist'
 import { symlink, rmdir } from '../utils'
 import type { MkdistBuildEntry, BuildContext } from '../types'
@@ -25,7 +26,7 @@ export async function mkdistBuild (ctx: BuildContext) {
       const output = await mkdist(mkdistOptions)
       ctx.buildEntries.push({
         path: distDir,
-        chunks: [`${output.writtenFiles.length} files`]
+        chunks: output.writtenFiles.map(p => relative(ctx.options.outDir, p))
       })
       await ctx.hooks.callHook('mkdist:entry:build', ctx, entry, output)
     }

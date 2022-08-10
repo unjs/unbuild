@@ -7,6 +7,7 @@ export default defineBuildConfig({
   },
   entries: [
     'src/index',
+    { input: 'src/runtime/', outDir: 'dist/runtime' },
     { input: 'src/schema', builder: 'untyped' }
   ]
 })

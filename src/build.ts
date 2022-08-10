@@ -195,17 +195,13 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
     }
   }
 
-  const entries = [
-    ...ctx.buildEntries.filter(e => !e.chunk),
-    ...ctx.buildEntries.filter(e => e.chunk)
-  ]
   let distSize = 0
   const rPath = (p: string) => relative(process.cwd(), resolve(options.outDir, p))
-  for (const entry of entries) {
+  for (const entry of ctx.buildEntries.filter(e => !e.chunk)) {
     distSize += entry.bytes || 0
     let totalBytes = entry.bytes || 0
     for (const chunk of entry.chunks || []) {
-      totalBytes += entries.find(e => e.path === chunk)?.bytes || 0
+      totalBytes += ctx.buildEntries.find(e => e.path === chunk)?.bytes || 0
     }
     let line = `  ${chalk.bold(rPath(entry.path))} (` + [
       entry.bytes && `size: ${chalk.cyan(prettyBytes(entry.bytes))}`,
@@ -213,7 +209,10 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
       entry.exports?.length && `exports: ${chalk.gray(entry.exports.join(', '))}`
     ].filter(Boolean).join(', ') + ')'
     if (entry.chunks?.length) {
-      line += '\n' + entry.chunks.map(p => chalk.gray('  └─ ' + rPath(p))).join('\n')
+      line += '\n' + entry.chunks.map((p) => {
+        const chunk = ctx.buildEntries.find(e => e.path === p) || {} as any
+        return chalk.gray('  └─ ' + rPath(p) + (chunk.bytes ? ` (${prettyBytes(chunk?.bytes)})` : ''))
+      }).join('\n')
     }
     consola.log(entry.chunk ? chalk.gray(line) : line)
   }
