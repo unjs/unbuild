@@ -10,7 +10,7 @@ import _esbuild from 'rollup-plugin-esbuild'
 import dts from 'rollup-plugin-dts'
 import replace from '@rollup/plugin-replace'
 import { relative, resolve, dirname } from 'pathe'
-import { resolvePath } from 'mlly'
+import { resolvePath, resolveModuleExportNames } from 'mlly'
 import { getpkg, tryResolve, warn } from '../utils'
 import type { BuildContext } from '../types'
 import { JSONPlugin } from './plugins/json'
@@ -33,12 +33,19 @@ export async function rollupBuild (ctx: BuildContext) {
       const shebang = getShebang(code)
 
       await mkdir(dirname(output), { recursive: true })
+
+      // CJS Stub
       if (ctx.options.rollup.emitCJS) {
-        await writeFile(output + '.cjs', `${shebang}module.exports = require(${JSON.stringify(jitiPath)})(null, { interopDefault: true, esmResolve: true })('${entry.input}')`)
+        await writeFile(output + '.cjs', `${shebang}module.exports = require(${JSON.stringify(jitiPath)})(null, { interopDefault: true, esmResolve: true })('${resolvedEntry}')`)
       }
-      // Use file:// protocol for windows compatibility
-      await writeFile(output + '.mjs', `${shebang}import jiti from ${JSON.stringify(pathToFileURL(jitiPath).href)};\nexport default jiti(null, { interopDefault: true, esmResolve: true })('${entry.input}');`)
-      await writeFile(output + '.d.ts', `export * from '${entry.input}';\nexport { default } from '${entry.input}';`)
+
+      // MJS Stub
+      // Try to analyze exports
+      const namedExports = await resolveModuleExportNames(resolvedEntry)
+      await writeFile(output + '.mjs', `${shebang}import jiti from ${JSON.stringify(pathToFileURL(jitiPath).href)};\nconst _module = jiti(null, { interopDefault: true, esmResolve: true })('${resolvedEntry}');\n\nexport default _module;\n\n${namedExports.map(name => `export const ${name} = _module.${name};`).join('\n')}`)
+
+      // DTS Stub
+      await writeFile(output + '.d.ts', `export * from '${entry.input}';\nexport { default } from '${resolvedEntry}';`)
 
       if (shebang) {
         await makeExecutable(output + '.cjs')
