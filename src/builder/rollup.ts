@@ -38,7 +38,7 @@ export async function rollupBuild (ctx: BuildContext) {
 
       // CJS Stub
       if (ctx.options.rollup.emitCJS) {
-        await writeFile(output + '.cjs', `${shebang}module.exports = require(${JSON.stringify(jitiPath)})(null, { interopDefault: true, esmResolve: true })('${resolvedEntry}')`)
+        await writeFile(output + '.cjs', `${shebang}module.exports = require(${JSON.stringify(jitiPath)})(null, { interopDefault: true, esmResolve: true })(${JSON.stringify(resolvedEntry)})`)
       }
 
       // MJS Stub
@@ -49,10 +49,10 @@ export async function rollupBuild (ctx: BuildContext) {
         warn(ctx, `Cannot analyze ${resolvedEntry} for exports:` + err)
         return []
       })
-      await writeFile(output + '.mjs', `${shebang}import jiti from ${JSON.stringify(pathToFileURL(jitiPath).href)};\nconst _module = jiti(null, { interopDefault: true, esmResolve: true })('${resolvedEntry}');\n\nexport default _module;\n\n${namedExports.map(name => `export const ${name} = _module.${name};`).join('\n')}`)
+      await writeFile(output + '.mjs', `${shebang}import jiti from ${JSON.stringify(pathToFileURL(jitiPath).href)};\nconst _module = jiti(null, { interopDefault: true, esmResolve: true })(${JSON.stringify(resolvedEntry)});\n\nexport default _module;\n\n${namedExports.map(name => `export const ${name} = _module.${name};`).join('\n')}`)
 
       // DTS Stub
-      await writeFile(output + '.d.ts', `export * from '${entry.input}';\nexport { default } from '${resolvedEntry}';`)
+      await writeFile(output + '.d.ts', `export * from ${JSON.stringify(entry.input)};\nexport { default } from ${JSON.stringify(resolvedEntry)};`)
 
       if (shebang) {
         await makeExecutable(output + '.cjs')
