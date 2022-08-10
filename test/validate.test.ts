@@ -7,8 +7,9 @@ import { BuildEntry } from '../src/types'
 
 describe('validatePackage', () => {
   it('detects missing files', () => {
-    const logs: string[] = []
-    consola.mock(type => type === 'warn' ? (str: string) => logs.push(str) : () => { })
+    const buildContext = {
+      warnings: new Set()
+    } as any
 
     validatePackage({
       main: './dist/test',
@@ -20,13 +21,15 @@ describe('validatePackage', () => {
         './runtime/*': './runtime/*.mjs',
         '.': { node: './src/index.ts' }
       }
-    }, join(fileURLToPath(import.meta.url), '../fixture'))
+    }, join(fileURLToPath(import.meta.url), '../fixture'), buildContext)
 
-    expect(logs[0]).to.include('Potential missing')
-    expect(logs[0]).not.to.include('src/index.ts')
+    const warnings = Array.from(buildContext.warnings)
+
+    expect(warnings[0]).to.include('Potential missing')
+    expect(warnings[0]).not.to.include('src/index.ts')
 
     for (const file of ['dist/test', 'dist/cli', 'dist/mod', 'runtime']) {
-      expect(logs[0]).to.include(file)
+      expect(warnings[0]).to.include(file)
     }
   })
 })

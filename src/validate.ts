@@ -37,7 +37,7 @@ export function validateDependencies (ctx: BuildContext) {
   }
 }
 
-export function validatePackage (pkg: PackageJson, rootDir: string) {
+export function validatePackage (pkg: PackageJson, rootDir: string, ctx: BuildContext) {
   if (!pkg) { return }
 
   const filenames = new Set([
@@ -57,6 +57,6 @@ export function validatePackage (pkg: PackageJson, rootDir: string) {
     }
   }
   if (missingOutputs.length) {
-    consola.warn(`Potential missing package.json files: ${missingOutputs.map(o => chalk.cyan(o)).join(', ')}`)
+    warn(ctx, `Potential missing package.json files: ${missingOutputs.map(o => chalk.cyan(o)).join(', ')}`)
   }
 }
