@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.8.0](https://github.com/unjs/unbuild/compare/v0.7.6...v0.8.0) (2022-08-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* always enable `esmResolve` for `jiti` (stub and config)
+* exit with code (1) on build warnings (#98)
+
+### Features
+
+* always enable `esmResolve` for `jiti` (stub and config) ([b87c8df](https://github.com/unjs/unbuild/commit/b87c8df9bbd27081bba00dfb43f9e75cb540990c))
+* exit with code (1) on build warnings ([#98](https://github.com/unjs/unbuild/issues/98)) ([ffc0d7c](https://github.com/unjs/unbuild/commit/ffc0d7c63f53e531eb66c6ea3d32cfe144ecd988))
+* **rollup:** generated named exports in esm stub ([c9fce24](https://github.com/unjs/unbuild/commit/c9fce24d5ad1c987d469846715b668c855435280))
+
 ### [0.7.6](https://github.com/unjs/unbuild/compare/v0.7.5...v0.7.6) (2022-07-20)
 
 
