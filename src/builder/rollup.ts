@@ -139,7 +139,7 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
         return false
       }
       if (!isExplicitExternal) {
-        warn(ctx, `Inlining implicit external ${id}`)
+        warn(ctx, `Inlined implicit external ${id}`)
       }
       return isExplicitExternal
     },
