@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.8.3](https://github.com/unjs/unbuild/compare/v0.8.2...v0.8.3) (2022-08-10)
+
+
+### Bug Fixes
+
+* **rollup:** escape stub import paths ([63a3c11](https://github.com/unjs/unbuild/commit/63a3c1163fa7bdd26cfbd9ea0cc06acf27919d3c))
+* **rollup:** fix stub type hints ([38d95be](https://github.com/unjs/unbuild/commit/38d95be7c9295052553c441a746ed78385d164fd))
+* **rollup:** normalize stub entry path ([f7272e0](https://github.com/unjs/unbuild/commit/f7272e09f866bf02372597a151c1b2f686f2cd5b))
+
 ### [0.8.2](https://github.com/unjs/unbuild/compare/v0.8.1...v0.8.2) (2022-08-10)
 
 
