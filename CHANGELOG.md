@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.8.4](https://github.com/unjs/unbuild/compare/v0.8.3...v0.8.4) (2022-08-10)
+
+
+### Bug Fixes
+
+* **rollup:** handle stubbing multiple exports ([f215525](https://github.com/unjs/unbuild/commit/f2155253e9a2cd9d33e552006d31acc9355b72e7))
+
 ### [0.8.3](https://github.com/unjs/unbuild/compare/v0.8.2...v0.8.3) (2022-08-10)
 
 
