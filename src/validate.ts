@@ -1,6 +1,5 @@
 import { existsSync } from 'fs'
 import chalk from 'chalk'
-import consola from 'consola'
 import { resolve } from 'pathe'
 import { PackageJson } from 'pkg-types'
 import { extractExportFilenames, getpkg, warn } from './utils'
