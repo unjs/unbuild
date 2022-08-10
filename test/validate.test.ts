@@ -1,12 +1,9 @@
 import { fileURLToPath } from 'url'
-import jiti from 'jiti'
-import { expect } from 'chai'
 import consola from 'consola'
 import { join } from 'pathe'
-import { validateDependencies } from '../src/validate'
+import { describe, it, expect } from 'vitest'
+import { validateDependencies, validatePackage } from '../src/validate'
 import { BuildEntry } from '../src/types'
-
-const { validatePackage } = jiti(import.meta.url)('../src/validate') as typeof import('../src/validate')
 
 describe('validatePackage', () => {
   it('detects missing files', () => {

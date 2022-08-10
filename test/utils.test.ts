@@ -1,7 +1,5 @@
-import { expect } from 'chai'
-import jiti from 'jiti'
-
-const { extractExportFilenames, inferExportType } = jiti(import.meta.url)('../src/utils') as typeof import('../src/utils')
+import { describe, it, expect } from 'vitest'
+import { extractExportFilenames, inferExportType } from '../src/utils'
 
 describe('inferExportType', () => {
   it('infers export type by condition', () => {
