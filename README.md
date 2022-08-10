@@ -7,29 +7,74 @@
 
 > A unified javascript build system
 
-**📦 Optimized bundler**
+### 📦 Optimized bundler
 
 Robust [rollup](https://rollupjs.org) based bundler that supports typescript and generates commonjs and module formats + type declarations.
 
-**📁 Bundleless build**
+### 🪄 Automated config
+
+Automagically infer build config and entries from `package.json`.
+
+### 📁 Bundleless build
 
 Integration with [mkdist](https://github.com/unjs/mkdist) for generating bundleless dists with file-to-file transpilation.
 
-**✨ Passive watcher**
+### ✨ Passive watcher
 
 Stub `dist` once using  [jiti](https://github.com/unjs/jiti) and you can try and link your project without needing to watch and rebuild during development.
 
-**✍ Untype Generator**
+### ✍ Untype Generator
 
 Integration with [untyped](https://github.com/unjs/untyped).
 
-**✔️ Build Validator**
+### ✔️ Secure builds
 
-Automatically check for potential **missing** and **unused** [dependencies](https://docs.npmjs.com/cli/v7/configuring-npm/package-json#dependencies). Also you can check output size and exports quickly in CLI output.
+Automatically check for varias build issues such as potential **missing** and **unused** [dependencies](https://docs.npmjs.com/cli/v7/configuring-npm/package-json#dependencies) and fail CI.
+
+CLI output also includes output size and exports for quick inspection.
 
 ## Usage
 
-Create `src/index.ts` and `build.config.ts`:
+Create `src/index.ts`:
+
+```ts
+export const log = (...args) => { console.log(...args) }
+```
+
+Update `package.json`:
+
+```json
+{
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ]
+}
+```
+
+> **Note**
+> You can find a more complete example in [unjs/template](https://github.com/unjs/template) for project setup.
+
+Build with `unbuild`:
+
+```sh
+npx unbuild
+```
+
+Configuration is automatically inferred from fields in `package.json` mapped to `src/` directory. For more control, continue with next section.
+
+
+## Configuration
+
+Create `build.config.ts`:
 
 ```ts
 export default {
@@ -38,12 +83,6 @@ export default {
   ]
 }
 ```
-
-```sh
-npx unbuild
-```
-
-## Configuration
 
 You can either use `unbuild` key in `package.json` or `build.config.{js,ts,json}` to specify configuration.
 
@@ -55,7 +94,7 @@ Example:
 import { defineBuildConfig } from 'unbuild'
 
 export default defineBuildConfig({
-    // If entries is not provided, will be automatically inferred from package.json 
+    // If entries is not provided, will be automatically inferred from package.json
     entries: [
         // default
         './src/index',
