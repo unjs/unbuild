@@ -5,12 +5,19 @@ import { dirname, resolve } from 'pathe'
 import mkdirp from 'mkdirp'
 import _rimraf from 'rimraf'
 import jiti from 'jiti'
+import consola from 'consola'
 import type { PackageJson } from 'pkg-types'
 import { autoPreset } from './auto'
-import type { BuildPreset, BuildConfig } from './types'
+import type { BuildPreset, BuildConfig, BuildContext } from './types'
 
 export async function ensuredir (path: string) {
   await mkdirp(dirname(path))
+}
+
+export function warn (ctx: BuildContext, message: string) {
+  if (ctx.warnings.has(message)) { return }
+  consola.debug('[unbuild] [warn]', message)
+  ctx.warnings.add(message)
 }
 
 export async function symlink (from: string, to: string, force: boolean = true) {

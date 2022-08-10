@@ -10,9 +10,8 @@ import _esbuild from 'rollup-plugin-esbuild'
 import dts from 'rollup-plugin-dts'
 import replace from '@rollup/plugin-replace'
 import { relative, resolve, dirname } from 'pathe'
-import consola from 'consola'
 import { resolvePath } from 'mlly'
-import { getpkg, tryResolve } from '../utils'
+import { getpkg, tryResolve, warn } from '../utils'
 import type { BuildContext } from '../types'
 import { JSONPlugin } from './plugins/json'
 import { rawPlugin } from './plugins/raw'
@@ -140,7 +139,7 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
         return false
       }
       if (!isExplicitExternal) {
-        consola.warn(`Inlining implicit external ${id}`)
+        warn(ctx, `Inlined implicit external ${id}`)
       }
       return isExplicitExternal
     },

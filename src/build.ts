@@ -42,6 +42,7 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
     peerDependencies: [],
     alias: {},
     replace: {},
+    failOnWarn: true,
     rollup: {
       emitCJS: false,
       cjsBridge: false,
@@ -75,6 +76,7 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
   // Build context
   const ctx: BuildContext = {
     options,
+    warnings: new Set(),
     pkg,
     buildEntries: [],
     usedImports: new Set(),
@@ -182,10 +184,18 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
 
   // Validate
   validateDependencies(ctx)
-  validatePackage(pkg, rootDir)
+  validatePackage(pkg, rootDir, ctx)
 
   // Call build:done
   await ctx.hooks.callHook('build:done', ctx)
 
   consola.log('')
+
+  if (ctx.warnings.size) {
+    consola.warn('Build is done with some warnings:\n\n' + Array.from(ctx.warnings).map(msg => '- ' + msg).join('\n'))
+    if (ctx.options.failOnWarn) {
+      consola.error('Exiting with code (1). You can change this behavior by setting `failOnWarn: false` .')
+      process.exit(1)
+    }
+  }
 }

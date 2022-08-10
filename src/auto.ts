@@ -2,10 +2,10 @@ import { normalize, join } from 'pathe'
 import consola from 'consola'
 import chalk from 'chalk'
 import type { PackageJson } from 'pkg-types'
-import { extractExportFilenames, listRecursively } from './utils'
+import { extractExportFilenames, listRecursively, warn } from './utils'
 import { BuildEntry, definePreset, MkdistBuildEntry } from './types'
 
-type InferEntriesResult = { entries: BuildEntry[], cjs?: boolean, dts?: boolean }
+type InferEntriesResult = { entries: BuildEntry[], cjs?: boolean, dts?: boolean, warnings: string[] }
 
 export const autoPreset = definePreset(() => {
   return {
@@ -17,6 +17,9 @@ export const autoPreset = definePreset(() => {
         }
         const sourceFiles = listRecursively(join(ctx.options.rootDir, 'src'))
         const res = inferEntries(ctx.pkg, sourceFiles)
+        for (const message of res.warnings) {
+          warn(ctx, message)
+        }
         ctx.options.entries.push(...res.entries)
         if (res.cjs) {
           ctx.options.rollup.emitCJS = true
@@ -41,6 +44,8 @@ export const autoPreset = definePreset(() => {
  *   - if an array of source files, these will be used directly instead of accessing fs.
  */
 export function inferEntries (pkg: PackageJson, sourceFiles: string[]): InferEntriesResult {
+  const warnings = []
+
   // Come up with a list of all output files & their formats
   const outputs = extractExportFilenames(pkg.exports)
 
@@ -93,7 +98,7 @@ export function inferEntries (pkg: PackageJson, sourceFiles: string[]): InferEnt
     }, undefined)
 
     if (!input) {
-      consola.warn(`could not infer entrypoint for \`${output.file}\``)
+      warnings.push(`Could not find entrypoint for ${output.file}`)
       continue
     }
 
@@ -113,7 +118,7 @@ export function inferEntries (pkg: PackageJson, sourceFiles: string[]): InferEnt
     }
   }
 
-  return { entries, cjs, dts }
+  return { entries, cjs, dts, warnings }
 }
 
 export const getEntrypointPaths = (path: string) => {
