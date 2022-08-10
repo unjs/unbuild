@@ -63,7 +63,7 @@ export function listRecursively (path: string) {
 }
 
 export function tryRequire (id: string, rootDir: string = process.cwd()) {
-  const _require = jiti(rootDir, { interopDefault: true })
+  const _require = jiti(rootDir, { interopDefault: true, esmResolve: true })
   try {
     return _require(id)
   } catch (err: any) {
@@ -75,7 +75,7 @@ export function tryRequire (id: string, rootDir: string = process.cwd()) {
 }
 
 export function tryResolve (id: string, rootDir: string = process.cwd()) {
-  const _require = jiti(rootDir, { interopDefault: true })
+  const _require = jiti(rootDir, { interopDefault: true, esmResolve: true })
   try {
     return _require.resolve(id)
   } catch (err: any) {

@@ -34,10 +34,10 @@ export async function rollupBuild (ctx: BuildContext) {
 
       await mkdir(dirname(output), { recursive: true })
       if (ctx.options.rollup.emitCJS) {
-        await writeFile(output + '.cjs', `${shebang}module.exports = require(${JSON.stringify(jitiPath)})(null, { interopDefault: true })('${entry.input}')`)
+        await writeFile(output + '.cjs', `${shebang}module.exports = require(${JSON.stringify(jitiPath)})(null, { interopDefault: true, esmResolve: true })('${entry.input}')`)
       }
       // Use file:// protocol for windows compatibility
-      await writeFile(output + '.mjs', `${shebang}import jiti from ${JSON.stringify(pathToFileURL(jitiPath).href)};\nexport default jiti(null, { interopDefault: true })('${entry.input}');`)
+      await writeFile(output + '.mjs', `${shebang}import jiti from ${JSON.stringify(pathToFileURL(jitiPath).href)};\nexport default jiti(null, { interopDefault: true, esmResolve: true })('${entry.input}');`)
       await writeFile(output + '.d.ts', `export * from '${entry.input}';\nexport { default } from '${entry.input}';`)
 
       if (shebang) {
