@@ -191,8 +191,11 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
 
   consola.log('')
 
-  if (ctx.warnings.size && ctx.options.failOnWarn) {
-    consola.error('Failing build due to warnings. You can remove this protection by disabling `failOnWarn`.')
-    process.exit(1)
+  if (ctx.warnings.length) {
+    consola.warn('Build is done with some warnings!')
+    if (ctx.options.failOnWarn) {
+      consola.error('Exiting with code (1) due to the warnings. You can remove this protection by disabling `failOnWarn`.')
+      process.exit(1)
+    }
   }
 }

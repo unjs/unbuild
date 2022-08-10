@@ -14,9 +14,9 @@ export async function ensuredir (path: string) {
   await mkdirp(dirname(path))
 }
 
-export function warn (ctx: BuildContext, msg: string, ...rest: string[]) {
-  ctx.warnings.add([msg, ...rest].join(' '))
-  consola.warn(msg, ...rest)
+export function warn (ctx: BuildContext, message: string, ...payload: string[]) {
+  ctx.warnings.push({ message, payload })
+  consola.warn(message, ...payload)
 }
 
 export async function symlink (from: string, to: string, force: boolean = true) {

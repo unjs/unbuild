@@ -37,7 +37,7 @@ describe('validateDependecies', () => {
     consola.mock(type => type === 'warn' ? (str: string) => logs.push(str) : () => { })
 
     validateDependencies({
-      warnings: new Set(),
+      warnings: [],
       pkg: {},
       buildEntries: [],
       hooks: [] as any,
