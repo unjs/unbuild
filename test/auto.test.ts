@@ -7,7 +7,8 @@ describe('inferEntries', () => {
     expect(result).to.deep.equal({
       cjs: true,
       dts: false,
-      entries: [{ input: 'src/test' }]
+      entries: [{ input: 'src/test' }],
+      warnings: []
     })
   })
 
@@ -15,17 +16,20 @@ describe('inferEntries', () => {
     expect(inferEntries({ bin: 'dist/cli.cjs' }, ['src/', 'src/cli.ts'])).to.deep.equal({
       cjs: true,
       dts: false,
-      entries: [{ input: 'src/cli' }]
+      entries: [{ input: 'src/cli' }],
+      warnings: []
     })
     expect(inferEntries({ bin: { nuxt: 'dist/cli.js' } }, ['src/', 'src/cli.ts'])).to.deep.equal({
       cjs: true,
       dts: false,
-      entries: [{ input: 'src/cli' }]
+      entries: [{ input: 'src/cli' }],
+      warnings: []
     })
     expect(inferEntries({ bin: { nuxt: 'dist/cli.js' }, type: 'module' }, ['src/', 'src/cli.ts'])).to.deep.equal({
       cjs: false,
       dts: false,
-      entries: [{ input: 'src/cli' }]
+      entries: [{ input: 'src/cli' }],
+      warnings: []
     })
   })
 
@@ -34,7 +38,8 @@ describe('inferEntries', () => {
     expect(result).to.deep.equal({
       cjs: false,
       dts: false,
-      entries: [{ input: 'src/test' }]
+      entries: [{ input: 'src/test' }],
+      warnings: []
     })
   })
 
@@ -43,7 +48,8 @@ describe('inferEntries', () => {
     expect(result).to.deep.equal({
       cjs: false,
       dts: false,
-      entries: [{ input: 'src/other/runtime/index' }]
+      entries: [{ input: 'src/other/runtime/index' }],
+      warnings: []
     })
   })
 
@@ -51,20 +57,22 @@ describe('inferEntries', () => {
     expect(inferEntries({ main: 'dist/test.cjs', types: 'custom/handwritten.d.ts' }, ['src/', 'src/test.ts'])).to.deep.equal({
       cjs: true,
       dts: false,
-      entries: [{ input: 'src/test' }
+      entries: [{ input: 'src/test' }],
+      warnings: [
+        'Could not find entrypoint for custom/handwritten.d.ts'
       ]
     })
     expect(inferEntries({ main: 'dist/test.cjs', module: 'dist/test.mjs', types: 'dist/test.d.ts' }, ['src/', 'src/test.ts'])).to.deep.equal({
       cjs: true,
       dts: true,
-      entries: [{ input: 'src/test' }
-      ]
+      entries: [{ input: 'src/test' }],
+      warnings: []
     })
     expect(inferEntries({ main: 'dist/test.cjs', module: 'dist/test.mjs', typings: 'dist/test.d.ts' }, ['src/', 'src/test.ts'])).to.deep.equal({
       cjs: true,
       dts: true,
-      entries: [{ input: 'src/test' }
-      ]
+      entries: [{ input: 'src/test' }],
+      warnings: []
     })
   })
 
@@ -73,7 +81,8 @@ describe('inferEntries', () => {
     expect(result).to.deep.equal({
       cjs: true,
       dts: true,
-      entries: [{ input: 'src/test' }]
+      entries: [{ input: 'src/test' }],
+      warnings: []
     })
   })
 
@@ -81,7 +90,10 @@ describe('inferEntries', () => {
     expect(inferEntries({ exports: 'dist/test.js' }, ['src/', 'src/index.ts'])).to.deep.equal({
       cjs: false,
       entries: [],
-      dts: false
+      dts: false,
+      warnings: [
+        'Could not find entrypoint for dist/test.js'
+      ]
     })
   })
 
@@ -89,7 +101,8 @@ describe('inferEntries', () => {
     expect(inferEntries({ exports: { './*': './*' } }, ['src/', 'src/', 'src/index.ts'])).to.deep.equal({
       cjs: false,
       entries: [],
-      dts: false
+      dts: false,
+      warnings: []
     })
   })
 
@@ -100,7 +113,8 @@ describe('inferEntries', () => {
       entries: [
         { input: 'src/index' },
         { input: 'src/test' }
-      ]
+      ],
+      warnings: []
     })
   })
 
@@ -108,17 +122,20 @@ describe('inferEntries', () => {
     expect(inferEntries({ exports: './dist/runtime/*' }, ['src/', 'src/runtime/', 'src/runtime/test.js'])).to.deep.equal({
       cjs: false,
       dts: false,
-      entries: [{ format: 'esm', input: 'src/runtime/', outDir: './dist/runtime/' }]
+      entries: [{ format: 'esm', input: 'src/runtime/', outDir: './dist/runtime/' }],
+      warnings: []
     })
     expect(inferEntries({ exports: { './runtime/*': './dist/runtime/*.mjs,' } }, ['src/', 'src/runtime/'])).to.deep.equal({
       cjs: false,
       dts: false,
-      entries: [{ format: 'esm', input: 'src/runtime/', outDir: './dist/runtime/' }]
+      entries: [{ format: 'esm', input: 'src/runtime/', outDir: './dist/runtime/' }],
+      warnings: []
     })
     expect(inferEntries({ exports: { './runtime/*': { require: './dist/runtime/*' } } }, ['src/', 'src/runtime/'])).to.deep.equal({
       cjs: true,
       dts: false,
-      entries: [{ format: 'cjs', input: 'src/runtime/', outDir: './dist/runtime/' }]
+      entries: [{ format: 'cjs', input: 'src/runtime/', outDir: './dist/runtime/' }],
+      warnings: []
     })
   })
 })
