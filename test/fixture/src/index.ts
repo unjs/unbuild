@@ -13,6 +13,8 @@ import('os').then(os => console.log(os.arch()))
 import('./test.html').then(console.log)
 
 export const foo = 'bar'
+export const baz = '123'
+export default 'default'
 
 // Failing test
 // export * from 'defu'

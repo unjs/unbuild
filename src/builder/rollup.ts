@@ -58,7 +58,7 @@ export async function rollupBuild (ctx: BuildContext) {
         `/** @type {import(${JSON.stringify(resolvedEntryWithoutExt)})} */`,
         `const _module = jiti(null, { interopDefault: true, esmResolve: true })(${JSON.stringify(resolvedEntry)});`,
         hasDefaultExport ? '\nexport default _module;' : '',
-        namedExports.map(name => `export const ${name} = _module.${name};`)
+        ...namedExports.filter(name => name !== 'default').map(name => `export const ${name} = _module.${name};`)
       ].join('\n'))
 
       // DTS Stub
