@@ -89,7 +89,9 @@ export async function rollupBuild (ctx: BuildContext) {
   const allOutputOptions = rollupOptions.output! as OutputOptions[]
   for (const outputOptions of allOutputOptions) {
     const { output } = await buildResult.write(outputOptions)
+    const chunkFileNames = new Set<string>()
     for (const entry of output.filter(e => e.type === 'chunk') as OutputChunk[]) {
+      chunkFileNames.add(entry.fileName)
       for (const id of entry.imports) {
         ctx.usedImports.add(id)
       }
@@ -100,6 +102,9 @@ export async function rollupBuild (ctx: BuildContext) {
           exports: entry.exports
         })
       }
+    }
+    for (const chunkFileName of chunkFileNames) {
+      ctx.usedImports.delete(chunkFileName)
     }
   }
 
@@ -135,7 +140,7 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
       ctx.options.rollup.emitCJS && {
         dir: resolve(ctx.options.rootDir, ctx.options.outDir),
         entryFileNames: '[name].cjs',
-        chunkFileNames: `chunks/${ctx.options.name}.[hash].cjs`,
+        chunkFileNames: `${ctx.options.name}.[hash].cjs`,
         format: 'cjs',
         exports: 'auto',
         preferConst: true,
@@ -145,7 +150,7 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
       {
         dir: resolve(ctx.options.rootDir, ctx.options.outDir),
         entryFileNames: '[name].mjs',
-        chunkFileNames: `chunks/${ctx.options.name}.[hash].mjs`,
+        chunkFileNames: `${ctx.options.name}.[hash].mjs`,
         format: 'esm',
         exports: 'auto',
         preferConst: true,
