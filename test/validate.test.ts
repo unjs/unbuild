@@ -33,11 +33,10 @@ describe('validatePackage', () => {
 
 describe('validateDependecies', () => {
   it('detects implicit deps', () => {
-    const logs: string[] = []
-    consola.mock(type => type === 'warn' ? (str: string) => logs.push(str) : () => { })
+    const warnings = new Set<string>()
 
     validateDependencies({
-      warnings: new Set(),
+      warnings,
       pkg: {},
       buildEntries: [],
       hooks: [] as any,
@@ -65,7 +64,7 @@ describe('validateDependecies', () => {
       }
     })
 
-    expect(logs[0]).to.include('Potential implicit dependencies found:')
+    expect(Array.from(warnings)[0]).to.include('Potential implicit dependencies found:')
   })
 
   it('does not print implicit deps warning for peerDependencies', () => {
