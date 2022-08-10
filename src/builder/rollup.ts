@@ -21,6 +21,8 @@ import { shebangPlugin, makeExecutable, getShebang } from './plugins/shebang'
 // @ts-ignore https://github.com/unjs/unbuild/issues/23
 const esbuild = _esbuild.default || _esbuild
 
+const DEFAULT_EXTENSIONS = ['.ts', '.tsx', '.mjs', '.cjs', '.js', '.jsx', '.json']
+
 export async function rollupBuild (ctx: BuildContext) {
   if (ctx.options.stub) {
     const jitiPath = await resolvePath('jiti', { url: import.meta.url })
@@ -41,7 +43,12 @@ export async function rollupBuild (ctx: BuildContext) {
 
       // MJS Stub
       // Try to analyze exports
-      const namedExports = await resolveModuleExportNames(resolvedEntry)
+      const namedExports = await resolveModuleExportNames(resolvedEntry, {
+        extensions: DEFAULT_EXTENSIONS
+      }).catch((err) => {
+        warn(ctx, `Cannot analyze ${resolvedEntry} for exports:` + err)
+        return []
+      })
       await writeFile(output + '.mjs', `${shebang}import jiti from ${JSON.stringify(pathToFileURL(jitiPath).href)};\nconst _module = jiti(null, { interopDefault: true, esmResolve: true })('${resolvedEntry}');\n\nexport default _module;\n\n${namedExports.map(name => `export const ${name} = _module.${name};`).join('\n')}`)
 
       // DTS Stub
@@ -103,8 +110,6 @@ export async function rollupBuild (ctx: BuildContext) {
 }
 
 export function getRollupOptions (ctx: BuildContext): RollupOptions {
-  const extensions = ['.ts', '.tsx', '.mjs', '.cjs', '.js', '.jsx', '.json']
-
   return {
     context: ctx.options.rootDir,
 
@@ -176,7 +181,7 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
       }),
 
       ctx.options.rollup.resolve && nodeResolve({
-        extensions,
+        extensions: DEFAULT_EXTENSIONS,
         ...ctx.options.rollup.resolve
       }),
 
@@ -191,7 +196,7 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
       }),
 
       ctx.options.rollup.commonjs && commonjs({
-        extensions,
+        extensions: DEFAULT_EXTENSIONS,
         ...ctx.options.rollup.commonjs
       }),
 

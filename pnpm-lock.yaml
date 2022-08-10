@@ -23,7 +23,7 @@ specifiers:
   magic-string: ^0.26.2
   mkdirp: ^1.0.4
   mkdist: ^0.3.13
-  mlly: ^0.5.8
+  mlly: ^0.5.9
   mri: ^1.2.0
   pathe: ^0.3.3
   pkg-types: ^0.3.3
@@ -54,7 +54,7 @@ dependencies:
   magic-string: 0.26.2
   mkdirp: 1.0.4
   mkdist: 0.3.13_typescript@4.7.4
-  mlly: 0.5.8
+  mlly: 0.5.9
   mri: 1.2.0
   pathe: 0.3.3
   pkg-types: 0.3.3
@@ -2937,12 +2937,13 @@ packages:
       typescript: 4.7.4
     dev: false
 
-  /mlly/0.5.8:
-    resolution: {integrity: sha512-WRmpgVQ8dQTkmVsG1rvbwNOVUkIYsoFxzzjjPSmeVEci14nNin50bTRw/Ikp0X0cVdsIVjMR/iT6Pp9rVtmDDg==}
+  /mlly/0.5.9:
+    resolution: {integrity: sha512-OsbZUJVn5Z79gEEALFpSKjk99AZdXaNG8zaJvpKFtMXcjYASIQX34yVJwIXMwOYM8yVOqhL4tPgtKaHI8s5tLA==}
     dependencies:
       acorn: 8.8.0
       pathe: 0.3.3
       pkg-types: 0.3.3
+      ufo: 0.8.5
     dev: false
 
   /modify-values/1.0.1:
@@ -3204,7 +3205,7 @@ packages:
     resolution: {integrity: sha512-6AJcCMnjUQPQv/Wk960w0TOmjhdjbeaQJoSKWRQv9N3rgkessCu6J0Ydsog/nw1MbpnxHuPzYbfOn2KmlZO1FA==}
     dependencies:
       jsonc-parser: 3.0.0
-      mlly: 0.5.8
+      mlly: 0.5.9
       pathe: 0.3.3
     dev: false
 
@@ -3754,6 +3755,10 @@ packages:
     resolution: {integrity: sha512-C0WQT0gezHuw6AdY1M2jxUO83Rjf0HP7Sk1DtXj6j1EwkQNZrHAg2XPWlq62oqEhYvONq5pkC2Y9oPljWToLmQ==}
     engines: {node: '>=4.2.0'}
     hasBin: true
+
+  /ufo/0.8.5:
+    resolution: {integrity: sha512-e4+UtA5IRO+ha6hYklwj6r7BjiGMxS0O+UaSg9HbaTefg4kMkzj4tXzEBajRR+wkxf+golgAWKzLbytCUDMJAA==}
+    dev: false
 
   /uglify-js/3.15.3:
     resolution: {integrity: sha512-6iCVm2omGJbsu3JWac+p6kUiOpg3wFO2f8lIXjfEb8RrmLjzog1wTPMmwKB7swfzzqxj9YM+sGUM++u1qN4qJg==}
