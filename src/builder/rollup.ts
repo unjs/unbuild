@@ -44,16 +44,28 @@ export async function rollupBuild (ctx: BuildContext) {
 
       // MJS Stub
       // Try to analyze exports
-      const namedExports = await resolveModuleExportNames(resolvedEntry, {
+      const namedExports: string[] = await resolveModuleExportNames(resolvedEntry, {
         extensions: DEFAULT_EXTENSIONS
       }).catch((err) => {
         warn(ctx, `Cannot analyze ${resolvedEntry} for exports:` + err)
         return []
       })
-      await writeFile(output + '.mjs', `${shebang}import jiti from ${JSON.stringify(pathToFileURL(jitiPath).href)};\n\n/** @type {import(${JSON.stringify(resolvedEntryWithoutExt)})} */\nconst _module = jiti(null, { interopDefault: true, esmResolve: true })(${JSON.stringify(resolvedEntry)});\n\nexport default _module;\n\n${namedExports.map(name => `export const ${name} = _module.${name};`).join('\n')}`)
+      const hasDefaultExport = namedExports.includes('default') || !namedExports.length
+
+      await writeFile(output + '.mjs', shebang + [
+        `import jiti from ${JSON.stringify(pathToFileURL(jitiPath).href)};`,
+        '',
+        `/** @type {import(${JSON.stringify(resolvedEntryWithoutExt)})} */`,
+        `const _module = jiti(null, { interopDefault: true, esmResolve: true })(${JSON.stringify(resolvedEntry)});`,
+        hasDefaultExport ? '\nexport default _module;' : '',
+        namedExports.map(name => `export const ${name} = _module.${name};`)
+      ].join('\n'))
 
       // DTS Stub
-      await writeFile(output + '.d.ts', `export * from ${JSON.stringify(resolvedEntryWithoutExt)};\nexport { default } from ${JSON.stringify(resolvedEntryWithoutExt)};`)
+      await writeFile(output + '.d.ts', [
+        `export * from ${JSON.stringify(resolvedEntryWithoutExt)};`,
+        hasDefaultExport ? `export { default } from ${JSON.stringify(resolvedEntryWithoutExt)};` : ''
+      ].join('\n'))
 
       if (shebang) {
         await makeExecutable(output + '.cjs')
