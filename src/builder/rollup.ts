@@ -135,7 +135,7 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
       ctx.options.rollup.emitCJS && {
         dir: resolve(ctx.options.rootDir, ctx.options.outDir),
         entryFileNames: '[name].cjs',
-        chunkFileNames: 'chunks/[name].cjs',
+        chunkFileNames: `chunks/${ctx.options.name}.[hash].cjs`,
         format: 'cjs',
         exports: 'auto',
         preferConst: true,
@@ -145,7 +145,7 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
       {
         dir: resolve(ctx.options.rootDir, ctx.options.outDir),
         entryFileNames: '[name].mjs',
-        chunkFileNames: 'chunks/[name].mjs',
+        chunkFileNames: `chunks/${ctx.options.name}.[hash].mjs`,
         format: 'esm',
         exports: 'auto',
         preferConst: true,
