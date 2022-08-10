@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.8.5](https://github.com/unjs/unbuild/compare/v0.8.4...v0.8.5) (2022-08-10)
+
+
+### Features
+
+* `name` option defaulting to package name ([c3979ab](https://github.com/unjs/unbuild/commit/c3979abde77cd7393d4c4e7fa231a3496923e4aa))
+* **rollup:** use hashed chunk names ([850b013](https://github.com/unjs/unbuild/commit/850b013da4da6463be84b552889a507f9d6e1085))
+
+
+### Bug Fixes
+
+* **rollup:** unmark chunk names as external imports ([59debad](https://github.com/unjs/unbuild/commit/59debad1cfb5a6fcb31f032b11d82ff11eafa519))
+
 ### [0.8.4](https://github.com/unjs/unbuild/compare/v0.8.3...v0.8.4) (2022-08-10)
 
 
