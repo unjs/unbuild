@@ -178,8 +178,8 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
   for (const entry of ctx.buildEntries) {
     consola.log(`  ${chalk.bold(entry.path)} (` + [
       entry.bytes && `size: ${chalk.cyan(prettyBytes(entry.bytes))}`,
-      entry.exports && `exports: ${chalk.gray(entry.exports.join(', '))}`,
-      entry.chunks && `chunks: ${chalk.gray(entry.chunks.join(', '))}`
+      entry.exports?.length && `exports: ${chalk.gray(entry.exports.join(', '))}`,
+      entry.chunks?.length && `chunks: ${chalk.gray(entry.chunks.join(', '))}`
     ].filter(Boolean).join(', ') + ')')
   }
 
