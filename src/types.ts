@@ -74,7 +74,7 @@ export interface BuildOptions {
 export interface BuildContext {
   options: BuildOptions,
   pkg: PackageJson,
-  buildEntries: { path: string, bytes?: number, exports?: string[], chunks?: string[] }[]
+  buildEntries: { path: string, bytes?: number, exports?: string[], chunks?: string[], chunk?: boolean }[]
   usedImports: Set<string>
   warnings: Set<string>
   hooks: Hookable<BuildHooks>

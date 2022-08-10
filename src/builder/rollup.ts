@@ -9,7 +9,7 @@ import alias from '@rollup/plugin-alias'
 import _esbuild from 'rollup-plugin-esbuild'
 import dts from 'rollup-plugin-dts'
 import replace from '@rollup/plugin-replace'
-import { relative, resolve, dirname, normalize, extname } from 'pathe'
+import { resolve, dirname, normalize, extname } from 'pathe'
 import { resolvePath, resolveModuleExportNames } from 'mlly'
 import { getpkg, tryResolve, warn } from '../utils'
 import type { BuildContext } from '../types'
@@ -90,18 +90,19 @@ export async function rollupBuild (ctx: BuildContext) {
   for (const outputOptions of allOutputOptions) {
     const { output } = await buildResult.write(outputOptions)
     const chunkFileNames = new Set<string>()
-    for (const entry of output.filter(e => e.type === 'chunk') as OutputChunk[]) {
+    const outputChunks = output.filter(e => e.type === 'chunk') as OutputChunk[]
+    for (const entry of outputChunks) {
       chunkFileNames.add(entry.fileName)
       for (const id of entry.imports) {
         ctx.usedImports.add(id)
       }
-      if (entry.isEntry) {
-        ctx.buildEntries.push({
-          path: relative(ctx.options.rootDir, resolve(outputOptions.dir!, entry.fileName)),
-          bytes: Buffer.byteLength(entry.code, 'utf8'),
-          exports: entry.exports
-        })
-      }
+      ctx.buildEntries.push({
+        chunk: !entry.isEntry,
+        chunks: entry.imports.filter(i => outputChunks.find(c => c.fileName === i)),
+        path: entry.fileName,
+        bytes: Buffer.byteLength(entry.code, 'utf8'),
+        exports: entry.isEntry ? entry.exports : []
+      })
     }
     for (const chunkFileName of chunkFileNames) {
       ctx.usedImports.delete(chunkFileName)

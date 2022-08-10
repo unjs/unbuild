@@ -1,11 +1,13 @@
 import Module from 'module'
-import { resolve, basename } from 'pathe'
+import { promises as fsp } from 'fs'
+import { resolve, relative, basename } from 'pathe'
 import type { PackageJson } from 'pkg-types'
 import chalk from 'chalk'
 import consola from 'consola'
 import { defu } from 'defu'
 import { createHooks } from 'hookable'
 import prettyBytes from 'pretty-bytes'
+import { globby } from 'globby'
 import mkdirp from 'mkdirp'
 import { dumpObject, rmdir, tryRequire, resolvePreset } from './utils'
 import type { BuildContext, BuildConfig, BuildOptions } from './types'
@@ -175,13 +177,47 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
 
   // Done info
   consola.success(chalk.green('Build succeeded for ' + options.name))
-  for (const entry of ctx.buildEntries) {
-    consola.log(`  ${chalk.bold(entry.path)} (` + [
-      entry.bytes && `size: ${chalk.cyan(prettyBytes(entry.bytes))}`,
-      entry.exports?.length && `exports: ${chalk.gray(entry.exports.join(', '))}`,
-      entry.chunks?.length && `chunks: ${chalk.gray(entry.chunks.join(', '))}`
-    ].filter(Boolean).join(', ') + ')')
+
+  // Find all dist files and add missing entries as chunks
+  const outFiles = await globby('**', { cwd: options.outDir })
+  for (const file of outFiles) {
+    let entry = ctx.buildEntries.find(e => e.path === file)
+    if (!entry) {
+      entry = {
+        path: file,
+        chunk: true
+      }
+      ctx.buildEntries.push(entry)
+    }
+    if (!entry.bytes) {
+      const stat = await fsp.stat(resolve(options.outDir, file))
+      entry.bytes = stat.size
+    }
   }
+
+  const entries = [
+    ...ctx.buildEntries.filter(e => !e.chunk),
+    ...ctx.buildEntries.filter(e => e.chunk)
+  ]
+  let distSize = 0
+  const rPath = (p: string) => relative(process.cwd(), resolve(options.outDir, p))
+  for (const entry of entries) {
+    distSize += entry.bytes || 0
+    let totalBytes = entry.bytes || 0
+    for (const chunk of entry.chunks || []) {
+      totalBytes += entries.find(e => e.path === chunk)?.bytes || 0
+    }
+    let line = `  ${chalk.bold(rPath(entry.path))} (` + [
+      entry.bytes && `size: ${chalk.cyan(prettyBytes(entry.bytes))}`,
+      totalBytes !== entry.bytes && `total size: ${chalk.cyan(prettyBytes(totalBytes))}`,
+      entry.exports?.length && `exports: ${chalk.gray(entry.exports.join(', '))}`
+    ].filter(Boolean).join(', ') + ')'
+    if (entry.chunks?.length) {
+      line += '\n' + entry.chunks.map(p => chalk.gray('  └─ ' + rPath(p))).join('\n')
+    }
+    consola.log(entry.chunk ? chalk.gray(line) : line)
+  }
+  console.log('Σ Total dist size:', chalk.cyan(prettyBytes(distSize)))
 
   // Validate
   validateDependencies(ctx)
