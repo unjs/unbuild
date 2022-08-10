@@ -76,7 +76,7 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
   // Build context
   const ctx: BuildContext = {
     options,
-    warnings: new Set(),
+    warnings: [],
     pkg,
     buildEntries: [],
     usedImports: new Set(),
