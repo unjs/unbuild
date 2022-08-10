@@ -13,3 +13,5 @@ import('os').then(os => console.log(os.arch()))
 import('./test.html').then(console.log)
 
 export const foo = 'bar'
+
+export * from 'defu'

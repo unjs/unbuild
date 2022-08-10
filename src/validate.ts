@@ -30,10 +30,10 @@ export function validateDependencies (ctx: BuildContext) {
     }
   }
   if (unusedDependencies.size) {
-    warn(ctx, 'Potential unused dependencies found:', Array.from(unusedDependencies).map(id => chalk.cyan(id)).join(', '))
+    warn(ctx, 'Potential unused dependencies found: ' + Array.from(unusedDependencies).map(id => chalk.cyan(id)).join(', '))
   }
   if (implicitDependencies.size && !ctx.options.rollup.inlineDependencies) {
-    warn(ctx, 'Potential implicit dependencies found:', Array.from(implicitDependencies).map(id => chalk.cyan(id)).join(', '))
+    warn(ctx, 'Potential implicit dependencies found: ' + Array.from(implicitDependencies).map(id => chalk.cyan(id)).join(', '))
   }
 }
 
