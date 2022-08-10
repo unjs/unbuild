@@ -23,7 +23,7 @@ specifiers:
   magic-string: ^0.26.2
   mkdirp: ^1.0.4
   mkdist: ^0.3.13
-  mlly: ^0.5.7
+  mlly: ^0.5.8
   mri: ^1.2.0
   pathe: ^0.3.3
   pkg-types: ^0.3.3
@@ -54,7 +54,7 @@ dependencies:
   magic-string: 0.26.2
   mkdirp: 1.0.4
   mkdist: 0.3.13_typescript@4.7.4
-  mlly: 0.5.7
+  mlly: 0.5.8
   mri: 1.2.0
   pathe: 0.3.3
   pkg-types: 0.3.3
@@ -1810,7 +1810,7 @@ packages:
     resolution: {integrity: sha512-0En0w03NRVMn9Uiyn8YRPDKvWjxCWkslUEhGNTdGx15RvPJYQ+lbOlqrlNI2vEAs4pDYK4f/HN2TbDmk5TP0iw==}
     dependencies:
       debug: 3.2.7
-      resolve: 1.22.0
+      resolve: 1.22.1
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -1827,7 +1827,7 @@ packages:
       eslint-plugin-import: 2.26.0_j5ht47nkb3z6j6ozr62tmenhjm
       glob: 7.2.0
       is-glob: 4.0.3
-      resolve: 1.22.0
+      resolve: 1.22.1
       tsconfig-paths: 3.14.1
     transitivePeerDependencies:
       - supports-color
@@ -1901,11 +1901,11 @@ packages:
       eslint-import-resolver-node: 0.3.6
       eslint-module-utils: 2.7.3_5zeicuv6z6i32arielnnarwece
       has: 1.0.3
-      is-core-module: 2.8.1
+      is-core-module: 2.10.0
       is-glob: 4.0.3
       minimatch: 3.1.2
       object.values: 1.1.5
-      resolve: 1.22.0
+      resolve: 1.22.1
       tsconfig-paths: 3.14.1
     transitivePeerDependencies:
       - eslint-import-resolver-typescript
@@ -2539,6 +2539,7 @@ packages:
     resolution: {integrity: sha512-SdNCUs284hr40hFTFP6l0IfZ/RSrMXF3qgoRHd3/79unUTvrFO/JoXwkGm+5J/Oe3E/b5GsnG330uUNgRpu1PA==}
     dependencies:
       has: 1.0.3
+    dev: false
 
   /is-date-object/1.0.5:
     resolution: {integrity: sha512-9YQaSxsAiSwcvS33MBk3wTCVnWK+HhF8VZR2jRxehM16QcVOdHqPn4VPHmRK4lSr38n9JriurInLcP90xsYNfQ==}
@@ -2936,8 +2937,8 @@ packages:
       typescript: 4.7.4
     dev: false
 
-  /mlly/0.5.7:
-    resolution: {integrity: sha512-rz+n2i9862ymLH+UDlHpsuTVyCIAs+9WejS2De2VUlAKdpq8OJ9x/C2M7nNUMLEW1H+D6n0uZlpz8+tMGxCmyQ==}
+  /mlly/0.5.8:
+    resolution: {integrity: sha512-WRmpgVQ8dQTkmVsG1rvbwNOVUkIYsoFxzzjjPSmeVEci14nNin50bTRw/Ikp0X0cVdsIVjMR/iT6Pp9rVtmDDg==}
     dependencies:
       acorn: 8.8.0
       pathe: 0.3.3
@@ -3203,7 +3204,7 @@ packages:
     resolution: {integrity: sha512-6AJcCMnjUQPQv/Wk960w0TOmjhdjbeaQJoSKWRQv9N3rgkessCu6J0Ydsog/nw1MbpnxHuPzYbfOn2KmlZO1FA==}
     dependencies:
       jsonc-parser: 3.0.0
-      mlly: 0.5.7
+      mlly: 0.5.8
       pathe: 0.3.3
     dev: false
 
@@ -3353,6 +3354,7 @@ packages:
       is-core-module: 2.8.1
       path-parse: 1.0.7
       supports-preserve-symlinks-flag: 1.0.0
+    dev: false
 
   /resolve/1.22.1:
     resolution: {integrity: sha512-nBpuuYuY5jFsli/JIs1oldw6fOQCBioohqWZg/2hiaOybXOft4lonv85uDOKXdf8rhyK159cxU5cDcK/NKk8zw==}
