@@ -54,6 +54,7 @@ export interface RollupBuildOptions {
 }
 
 export interface BuildOptions {
+  name: string
   rootDir: string
   entries: BuildEntry[],
   clean: boolean

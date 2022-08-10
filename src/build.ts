@@ -27,6 +27,7 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
 
   // Merge options
   const options = defu(buildConfig, pkg.unbuild || pkg.build, inputConfig, preset, <BuildOptions>{
+    name: (pkg?.name || '').split('/').pop() || 'default',
     rootDir,
     entries: [],
     clean: true,
@@ -173,7 +174,7 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
   }
 
   // Done info
-  consola.success(chalk.green('Build succeeded for ' + pkg.name))
+  consola.success(chalk.green('Build succeeded for ' + options.name))
   for (const entry of ctx.buildEntries) {
     consola.log(`  ${chalk.bold(entry.path)} (` + [
       entry.bytes && `size: ${chalk.cyan(prettyBytes(entry.bytes))}`,
