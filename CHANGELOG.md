@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.8.8](https://github.com/unjs/unbuild/compare/v0.8.7...v0.8.8) (2022-08-11)
+
+
+### Bug Fixes
+
+* **rollup:** seperate dynamic chunks from shared chunk names ([aaf8227](https://github.com/unjs/unbuild/commit/aaf8227692f5c11b93ed034d5528fb69f255601f))
+
 ### [0.8.7](https://github.com/unjs/unbuild/compare/v0.8.6...v0.8.7) (2022-08-10)
 
 
