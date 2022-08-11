@@ -1,7 +1,7 @@
 import { writeFile, mkdir } from 'fs/promises'
 import { promises as fsp } from 'fs'
 import { pathToFileURL } from 'url'
-import type { RollupOptions, OutputOptions, OutputChunk } from 'rollup'
+import type { RollupOptions, OutputOptions, OutputChunk, PreRenderedChunk } from 'rollup'
 import { rollup } from 'rollup'
 import commonjs from '@rollup/plugin-commonjs'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
@@ -130,6 +130,14 @@ export async function rollupBuild (ctx: BuildContext) {
 }
 
 export function getRollupOptions (ctx: BuildContext): RollupOptions {
+  const getChunkFilename = (chunk: PreRenderedChunk, ext: string) => {
+    if (chunk.isDynamicEntry) {
+      return `chunks/[name].${ext}`
+    }
+    // TODO: Find a way to generate human friendly hash for short groups
+    return `shared/${ctx.options.name}.[hash].${ext}`
+  }
+
   return {
     context: ctx.options.rootDir,
 
@@ -142,7 +150,7 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
       ctx.options.rollup.emitCJS && {
         dir: resolve(ctx.options.rootDir, ctx.options.outDir),
         entryFileNames: '[name].cjs',
-        chunkFileNames: `${ctx.options.name}.[hash].cjs`,
+        chunkFileNames: (chunk: PreRenderedChunk) => getChunkFilename(chunk, 'cjs'),
         format: 'cjs',
         exports: 'auto',
         preferConst: true,
@@ -152,7 +160,7 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
       {
         dir: resolve(ctx.options.rootDir, ctx.options.outDir),
         entryFileNames: '[name].mjs',
-        chunkFileNames: `${ctx.options.name}.[hash].mjs`,
+        chunkFileNames: (chunk: PreRenderedChunk) => getChunkFilename(chunk, 'mjs'),
         format: 'esm',
         exports: 'auto',
         preferConst: true,
