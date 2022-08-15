@@ -29,7 +29,7 @@ Integration with [untyped](https://github.com/unjs/untyped).
 
 ### ✔️ Secure builds
 
-Automatically check for varias build issues such as potential **missing** and **unused** [dependencies](https://docs.npmjs.com/cli/v7/configuring-npm/package-json#dependencies) and fail CI.
+Automatically check for various build issues such as potential **missing** and **unused** [dependencies](https://docs.npmjs.com/cli/v7/configuring-npm/package-json#dependencies) and fail CI.
 
 CLI output also includes output size and exports for quick inspection.
 
