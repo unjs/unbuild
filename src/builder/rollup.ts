@@ -139,8 +139,6 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
   }
 
   return {
-    context: ctx.options.rootDir,
-
     input: Object.fromEntries(ctx.options.entries
       .filter(entry => entry.builder === 'rollup')
       .map(entry => [entry.name, resolve(ctx.options.rootDir, entry.input)])
