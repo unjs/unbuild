@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.8.9](https://github.com/unjs/unbuild/compare/v0.8.8...v0.8.9) (2022-08-18)
+
+
+### Bug Fixes
+
+* **rollup:** remove wrong context ([67d1d38](https://github.com/unjs/unbuild/commit/67d1d38e976e5e72c79ac49155f0047c6a8ff0ee))
+
 ### [0.8.8](https://github.com/unjs/unbuild/compare/v0.8.7...v0.8.8) (2022-08-11)
 
 
