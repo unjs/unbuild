@@ -22,9 +22,9 @@
     "dev": "pnpm unbuild test/fixture",
     "lint": "eslint --ext .ts,.js .",
     "prepack": "pnpm unbuild",
-    "release": "vitest run && standard-version && git push --follow-tags && npm publish",
+    "release": "vitest run && changelogen --release && git push --follow-tags && npm publish",
     "stub": "pnpm unbuild --stub",
-    "test": "pnpm lint && vitest run",
+    "test": "pnpm lint && vitest run --coverage",
     "unbuild": "jiti ./src/cli"
   },
   "dependencies": {
@@ -58,14 +58,14 @@
     "untyped": "^0.4.7"
   },
   "devDependencies": {
-    "@nuxtjs/eslint-config-typescript": "latest",
-    "@types/mkdirp": "latest",
-    "@types/mri": "latest",
-    "@types/node": "latest",
-    "@types/rimraf": "latest",
+    "@nuxtjs/eslint-config-typescript": "^11.0.0",
+    "@types/mkdirp": "^1.0.2",
+    "@types/mri": "^1.1.1",
+    "@types/node": "^18.7.14",
+    "@types/rimraf": "^3.0.2",
     "@vitest/coverage-c8": "^0.22.1",
-    "eslint": "latest",
-    "standard-version": "latest",
+    "changelogen": "^0.3.0",
+    "eslint": "^8.23.0",
     "vitest": "^0.22.1"
   },
   "packageManager": "pnpm@7.9.5"
