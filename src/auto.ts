@@ -46,6 +46,9 @@ export const autoPreset = definePreset(() => {
 export function inferEntries (pkg: PackageJson, sourceFiles: string[]): InferEntriesResult {
   const warnings = []
 
+  // Sort files so least-nested files are first
+  sourceFiles.sort((a, b) => a.split('/').length - b.split('/').length)
+
   // Come up with a list of all output files & their formats
   const outputs = extractExportFilenames(pkg.exports)
 

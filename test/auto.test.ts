@@ -12,6 +12,16 @@ describe('inferEntries', () => {
     })
   })
 
+  it('handles nested indexes', () => {
+    const result = inferEntries({ module: 'dist/index.mjs' }, ['src/', 'src/event/index.ts', 'src/index.ts'])
+    expect(result).to.deep.equal({
+      cjs: false,
+      dts: false,
+      entries: [{ input: 'src/index' }],
+      warnings: []
+    })
+  })
+
   it('handles binary outputs', () => {
     expect(inferEntries({ bin: 'dist/cli.cjs' }, ['src/', 'src/cli.ts'])).to.deep.equal({
       cjs: true,
