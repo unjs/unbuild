@@ -117,7 +117,7 @@ export function inferEntries (pkg: PackageJson, sourceFiles: string[]): InferEnt
 
     if (isDir) {
       entry.outDir = outputSlug
-        ; (entry as MkdistBuildEntry).format = output.type
+      ;(entry as MkdistBuildEntry).format = output.type
     }
   }
 
