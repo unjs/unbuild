@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## main (v0.8.9..main)
+
+
+### 🩹 Fixes
+
+  - Match least-nested files first when inferring entry (#108)
+
+### 🏡 Chore
+
+  - Update repo (6b3c99b)
+
+### ❤️  Contributors
+
+- Daniel Roe
+- Pooya Parsa
+
 ### [0.8.9](https://github.com/unjs/unbuild/compare/v0.8.8...v0.8.9) (2022-08-18)
 
 
