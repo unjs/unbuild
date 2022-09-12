@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## main (v0.8.10..main)
+
+
+### 🚀 Enhancements
+
+  - Upgrade untyped to 0.5 (d45af69)
+
+### ❤️  Contributors
+
+- Pooya Parsa
+
 ## main (v0.8.9..main)
 
 
