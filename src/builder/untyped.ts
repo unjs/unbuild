@@ -33,7 +33,7 @@ export async function typesBuild (ctx: BuildContext) {
     const srcConfig = _require(resolve(ctx.options.rootDir, entry.input))
 
     const defaults = entry.defaults || {}
-    const schema = resolveSchema(srcConfig, defaults)
+    const schema = await resolveSchema(srcConfig, defaults)
 
     await ctx.hooks.callHook('untyped:entry:schema', ctx, entry, schema)
 
