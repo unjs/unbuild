@@ -34,7 +34,7 @@ describe('validatePackage', () => {
   })
 })
 
-describe('validateDependecies', () => {
+describe('validateDependencies', () => {
   it('detects implicit deps', () => {
     const warnings = new Set<string>()
 
