@@ -6,7 +6,7 @@ specifiers:
   '@rollup/plugin-commonjs': ^23.0.0
   '@rollup/plugin-json': ^4.1.0
   '@rollup/plugin-node-resolve': ^15.0.0
-  '@rollup/plugin-replace': ^4.0.0
+  '@rollup/plugin-replace': ^5.0.0
   '@rollup/pluginutils': ^5.0.1
   '@types/mkdirp': ^1.0.2
   '@types/mri': ^1.1.1
@@ -44,7 +44,7 @@ dependencies:
   '@rollup/plugin-commonjs': 23.0.0_rollup@2.79.1
   '@rollup/plugin-json': 4.1.0_rollup@2.79.1
   '@rollup/plugin-node-resolve': 15.0.0_rollup@2.79.1
-  '@rollup/plugin-replace': 4.0.0_rollup@2.79.1
+  '@rollup/plugin-replace': 5.0.0_rollup@2.79.1
   '@rollup/pluginutils': 5.0.1_rollup@2.79.1
   chalk: 5.1.2
   consola: 2.15.3
@@ -513,13 +513,17 @@ packages:
       rollup: 2.79.1
     dev: false
 
-  /@rollup/plugin-replace/4.0.0_rollup@2.79.1:
-    resolution: {integrity: sha512-+rumQFiaNac9y64OHtkHGmdjm7us9bo1PlbgQfdihQtuNxzjpaB064HbRnewUOggLQxVCCyINfStkgmBeQpv1g==}
+  /@rollup/plugin-replace/5.0.0_rollup@2.79.1:
+    resolution: {integrity: sha512-TiPmjMuBjQM+KLWK16O5TAM/eW4yXBYyQ17FbfeNzBC1t2kzX2aXoa8AlS9XTSmg6/2TNvkER1lMEEeN4Lhavw==}
+    engines: {node: '>=14.0.0'}
     peerDependencies:
-      rollup: ^1.20.0 || ^2.0.0
+      rollup: ^1.20.0||^2.0.0||^3.0.0
+    peerDependenciesMeta:
+      rollup:
+        optional: true
     dependencies:
-      '@rollup/pluginutils': 3.1.0_rollup@2.79.1
-      magic-string: 0.25.9
+      '@rollup/pluginutils': 4.2.1
+      magic-string: 0.26.7
       rollup: 2.79.1
     dev: false
 
@@ -2632,12 +2636,6 @@ packages:
     dependencies:
       yallist: 4.0.0
     dev: true
-
-  /magic-string/0.25.9:
-    resolution: {integrity: sha512-RmF0AsMzgt25qzqqLc1+MbHmhdx0ojF2Fvs4XnOqz2ZOBXzzkEwc/dJQZCYHAn7v1jbVOjAZfK8msRn4BxO4VQ==}
-    dependencies:
-      sourcemap-codec: 1.4.8
-    dev: false
 
   /magic-string/0.26.7:
     resolution: {integrity: sha512-hX9XH3ziStPoPhJxLq1syWuZMxbDvGNbVchfrdCtanC7D13888bMFow61x8axrx+GfHLtVeAx2kxL7tTGRl+Ow==}

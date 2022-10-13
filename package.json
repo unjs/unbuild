@@ -32,7 +32,7 @@
     "@rollup/plugin-commonjs": "^23.0.0",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^15.0.0",
-    "@rollup/plugin-replace": "^4.0.0",
+    "@rollup/plugin-replace": "^5.0.0",
     "@rollup/pluginutils": "^5.0.1",
     "chalk": "^5.1.2",
     "consola": "^2.15.3",
