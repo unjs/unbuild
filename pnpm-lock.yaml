@@ -4,7 +4,7 @@ specifiers:
   '@nuxtjs/eslint-config-typescript': ^11.0.0
   '@rollup/plugin-alias': ^3.1.9
   '@rollup/plugin-commonjs': ^23.0.0
-  '@rollup/plugin-json': ^4.1.0
+  '@rollup/plugin-json': ^5.0.0
   '@rollup/plugin-node-resolve': ^15.0.0
   '@rollup/plugin-replace': ^4.0.0
   '@rollup/pluginutils': ^5.0.1
@@ -42,7 +42,7 @@ specifiers:
 dependencies:
   '@rollup/plugin-alias': 3.1.9_rollup@2.79.1
   '@rollup/plugin-commonjs': 23.0.0_rollup@2.79.1
-  '@rollup/plugin-json': 4.1.0_rollup@2.79.1
+  '@rollup/plugin-json': 5.0.0_rollup@2.79.1
   '@rollup/plugin-node-resolve': 15.0.0_rollup@2.79.1
   '@rollup/plugin-replace': 4.0.0_rollup@2.79.1
   '@rollup/pluginutils': 5.0.1_rollup@2.79.1
@@ -486,12 +486,16 @@ packages:
       rollup: 2.79.1
     dev: false
 
-  /@rollup/plugin-json/4.1.0_rollup@2.79.1:
-    resolution: {integrity: sha512-yfLbTdNS6amI/2OpmbiBoW12vngr5NW2jCJVZSBEz+H5KfUJZ2M7sDjk0U6GOOdCWFVScShte29o9NezJ53TPw==}
+  /@rollup/plugin-json/5.0.0_rollup@2.79.1:
+    resolution: {integrity: sha512-LsWDA5wJs/ggzakVuKQhZo7HPRcQZgBa3jWIVxQSFxaRToUGNi8ZBh3+k/gQ+1eInVYJgn4WBRCUkmoDrmmGzw==}
+    engines: {node: '>=14.0.0'}
     peerDependencies:
-      rollup: ^1.20.0 || ^2.0.0
+      rollup: ^1.20.0||^2.0.0||^3.0.0
+    peerDependenciesMeta:
+      rollup:
+        optional: true
     dependencies:
-      '@rollup/pluginutils': 3.1.0_rollup@2.79.1
+      '@rollup/pluginutils': 4.2.1
       rollup: 2.79.1
     dev: false
 
