@@ -116,7 +116,19 @@ export async function rollupBuild (ctx: BuildContext) {
     // TODO: Use fresh rollup options
     const shebangPlugin: any = rollupOptions.plugins.find(p => p && p.name === 'unbuild-shebang')
     shebangPlugin._options.preserve = false
-    rollupOptions.plugins.push(dts(ctx.options.rollup.dts))
+
+    const dtsPlugin = dts(ctx.options.rollup.dts)
+    rollupOptions.plugins.push({
+      ...dtsPlugin,
+      outputOptions (...args) {
+        const opts = dtsPlugin.outputOptions(...args)
+        opts.interop = 'esModule'
+        delete opts.namespaceToStringTag
+        opts.generatedCode = { symbols: false, ...opts.generatedCode }
+        return opts
+      }
+    })
+
     await ctx.hooks.callHook('rollup:dts:options', ctx, rollupOptions)
     const typesBuild = await rollup(rollupOptions)
     await ctx.hooks.callHook('rollup:dts:build', ctx, typesBuild)
