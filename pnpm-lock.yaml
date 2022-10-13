@@ -5,7 +5,7 @@ specifiers:
   '@rollup/plugin-alias': ^3.1.9
   '@rollup/plugin-commonjs': ^22.0.2
   '@rollup/plugin-json': ^4.1.0
-  '@rollup/plugin-node-resolve': ^13.3.0
+  '@rollup/plugin-node-resolve': ^15.0.0
   '@rollup/plugin-replace': ^4.0.0
   '@rollup/pluginutils': ^5.0.1
   '@types/mkdirp': ^1.0.2
@@ -43,7 +43,7 @@ dependencies:
   '@rollup/plugin-alias': 3.1.9_rollup@2.79.0
   '@rollup/plugin-commonjs': 22.0.2_rollup@2.79.0
   '@rollup/plugin-json': 4.1.0_rollup@2.79.0
-  '@rollup/plugin-node-resolve': 13.3.0_rollup@2.79.0
+  '@rollup/plugin-node-resolve': 15.0.0_rollup@2.79.0
   '@rollup/plugin-replace': 4.0.0_rollup@2.79.0
   '@rollup/pluginutils': 5.0.1_rollup@2.79.0
   chalk: 5.0.1
@@ -499,14 +499,17 @@ packages:
       rollup: 2.79.0
     dev: false
 
-  /@rollup/plugin-node-resolve/13.3.0_rollup@2.79.0:
-    resolution: {integrity: sha512-Lus8rbUo1eEcnS4yTFKLZrVumLPY+YayBdWXgFSHYhTT2iJbMhoaaBL3xl5NCdeRytErGr8tZ0L71BMRmnlwSw==}
-    engines: {node: '>= 10.0.0'}
+  /@rollup/plugin-node-resolve/15.0.0_rollup@2.79.0:
+    resolution: {integrity: sha512-iwJbzfTzlzDDQcGmkS7EkCKwe2kSkdBrjX87Fy/KrNjr6UNnLpod0t6X66e502LRe5JJCA4FFqrEscWPnZAkig==}
+    engines: {node: '>=14.0.0'}
     peerDependencies:
-      rollup: ^2.42.0
+      rollup: ^2.78.0||^3.0.0
+    peerDependenciesMeta:
+      rollup:
+        optional: true
     dependencies:
-      '@rollup/pluginutils': 3.1.0_rollup@2.79.0
-      '@types/resolve': 1.17.1
+      '@rollup/pluginutils': 4.2.1
+      '@types/resolve': 1.20.2
       deepmerge: 4.2.2
       is-builtin-module: 3.2.0
       is-module: 1.0.0
@@ -612,15 +615,14 @@ packages:
 
   /@types/node/18.7.16:
     resolution: {integrity: sha512-EQHhixfu+mkqHMZl1R2Ovuvn47PUw18azMJOTwSZr9/fhzHNGXAJ0ma0dayRVchprpCj0Kc1K1xKoWaATWF1qg==}
+    dev: true
 
   /@types/normalize-package-data/2.4.1:
     resolution: {integrity: sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==}
     dev: true
 
-  /@types/resolve/1.17.1:
-    resolution: {integrity: sha512-yy7HuzQhj0dhGpD8RLXSZWEkLsV9ibvxvi6EiJ3bkqLAO1RGo0WbkWQiwpRlSFymTJRz0d3k5LM3kkx8ArDbLw==}
-    dependencies:
-      '@types/node': 18.7.16
+  /@types/resolve/1.20.2:
+    resolution: {integrity: sha512-60BCwRFOZCQhDncwQdxxeOEEkbc5dIMccYLwbxsS4TUNeVECQ/pBJ0j09mrHOl/JJvpRPGwO9SvE4nR2Nb/a4Q==}
     dev: false
 
   /@types/rimraf/3.0.2:
