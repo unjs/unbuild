@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@nuxtjs/eslint-config-typescript': ^11.0.0
-  '@rollup/plugin-alias': ^3.1.9
+  '@rollup/plugin-alias': ^4.0.0
   '@rollup/plugin-commonjs': ^23.0.0
   '@rollup/plugin-json': ^4.1.0
   '@rollup/plugin-node-resolve': ^15.0.0
@@ -40,7 +40,7 @@ specifiers:
   vitest: ^0.24.1
 
 dependencies:
-  '@rollup/plugin-alias': 3.1.9_rollup@2.79.1
+  '@rollup/plugin-alias': 4.0.0_rollup@2.79.1
   '@rollup/plugin-commonjs': 23.0.0_rollup@2.79.1
   '@rollup/plugin-json': 4.1.0_rollup@2.79.1
   '@rollup/plugin-node-resolve': 15.0.0_rollup@2.79.1
@@ -458,14 +458,17 @@ packages:
       tslib: 2.4.0
     dev: true
 
-  /@rollup/plugin-alias/3.1.9_rollup@2.79.1:
-    resolution: {integrity: sha512-QI5fsEvm9bDzt32k39wpOwZhVzRcL5ydcffUHMyLVaVaLeC70I8TJZ17F1z1eMoLu4E/UOcH9BWVkKpIKdrfiw==}
-    engines: {node: '>=8.0.0'}
+  /@rollup/plugin-alias/4.0.0_rollup@2.79.1:
+    resolution: {integrity: sha512-fGRWzM2F6wXnzAqn4Db8SdB/2Ree0u2XOQaaTy9mhqA35NmUzJXevMBUcpZywPF2MIUUAw+SKfWogKxFSPh+Qw==}
+    engines: {node: '>=14.0.0'}
     peerDependencies:
-      rollup: ^1.20.0||^2.0.0
+      rollup: ^1.20.0||^2.0.0||^3.0.0
+    peerDependenciesMeta:
+      rollup:
+        optional: true
     dependencies:
       rollup: 2.79.1
-      slash: 3.0.0
+      slash: 4.0.0
     dev: false
 
   /@rollup/plugin-commonjs/23.0.0_rollup@2.79.1:

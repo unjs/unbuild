@@ -28,7 +28,7 @@
     "unbuild": "jiti ./src/cli"
   },
   "dependencies": {
-    "@rollup/plugin-alias": "^3.1.9",
+    "@rollup/plugin-alias": "^4.0.0",
     "@rollup/plugin-commonjs": "^23.0.0",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^15.0.0",
