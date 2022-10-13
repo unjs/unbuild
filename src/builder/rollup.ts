@@ -138,7 +138,7 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
     return `shared/${ctx.options.name}.[hash].${ext}`
   }
 
-  return {
+  return <RollupOptions>{
     input: Object.fromEntries(ctx.options.entries
       .filter(entry => entry.builder === 'rollup')
       .map(entry => [entry.name, resolve(ctx.options.rootDir, entry.input)])
@@ -151,7 +151,7 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
         chunkFileNames: (chunk: PreRenderedChunk) => getChunkFilename(chunk, 'cjs'),
         format: 'cjs',
         exports: 'auto',
-        preferConst: true,
+        generatedCode: { constBindings: true },
         externalLiveBindings: false,
         freeze: false
       },
@@ -161,7 +161,7 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
         chunkFileNames: (chunk: PreRenderedChunk) => getChunkFilename(chunk, 'mjs'),
         format: 'esm',
         exports: 'auto',
-        preferConst: true,
+        generatedCode: { constBindings: true },
         externalLiveBindings: false,
         freeze: false
       }
