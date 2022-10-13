@@ -116,7 +116,20 @@ export async function rollupBuild (ctx: BuildContext) {
     // TODO: Use fresh rollup options
     const shebangPlugin: any = rollupOptions.plugins.find(p => p && p.name === 'unbuild-shebang')
     shebangPlugin._options.preserve = false
-    rollupOptions.plugins.push(dts(ctx.options.rollup.dts))
+
+    // TODO: https://github.com/Swatinem/rollup-plugin-dts/issues/226
+    const dtsPlugin = dts(ctx.options.rollup.dts)
+    rollupOptions.plugins.push({
+      ...dtsPlugin,
+      outputOptions (...args) {
+        const opts = dtsPlugin.outputOptions(...args)
+        opts.interop = 'esModule'
+        delete opts.namespaceToStringTag
+        opts.generatedCode = { symbols: false, ...opts.generatedCode }
+        return opts
+      }
+    })
+
     await ctx.hooks.callHook('rollup:dts:options', ctx, rollupOptions)
     const typesBuild = await rollup(rollupOptions)
     await ctx.hooks.callHook('rollup:dts:build', ctx, typesBuild)
@@ -138,7 +151,7 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
     return `shared/${ctx.options.name}.[hash].${ext}`
   }
 
-  return {
+  return <RollupOptions>{
     input: Object.fromEntries(ctx.options.entries
       .filter(entry => entry.builder === 'rollup')
       .map(entry => [entry.name, resolve(ctx.options.rootDir, entry.input)])
@@ -151,7 +164,7 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
         chunkFileNames: (chunk: PreRenderedChunk) => getChunkFilename(chunk, 'cjs'),
         format: 'cjs',
         exports: 'auto',
-        preferConst: true,
+        generatedCode: { constBindings: true },
         externalLiveBindings: false,
         freeze: false
       },
@@ -161,7 +174,7 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
         chunkFileNames: (chunk: PreRenderedChunk) => getChunkFilename(chunk, 'mjs'),
         format: 'esm',
         exports: 'auto',
-        preferConst: true,
+        generatedCode: { constBindings: true },
         externalLiveBindings: false,
         freeze: false
       }
