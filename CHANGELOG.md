@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v0.9.1
+
+
+### 🩹 Fixes
+
+  - Do not infer `.json` subpath exports to build (b57afec)
+
+### ❤️  Contributors
+
+- Pooya Parsa
+
 ## v0.9.0
 
 
