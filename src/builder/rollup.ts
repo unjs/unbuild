@@ -117,6 +117,7 @@ export async function rollupBuild (ctx: BuildContext) {
     const shebangPlugin: any = rollupOptions.plugins.find(p => p && p.name === 'unbuild-shebang')
     shebangPlugin._options.preserve = false
 
+    // TODO: https://github.com/Swatinem/rollup-plugin-dts/issues/226
     const dtsPlugin = dts(ctx.options.rollup.dts)
     rollupOptions.plugins.push({
       ...dtsPlugin,
