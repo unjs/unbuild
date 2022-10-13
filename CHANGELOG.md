@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v0.9.0
+
+
+### 🚀 Enhancements
+
+  - ⚠️  Update rollup to v3 (#129)
+
+### 🏡 Chore
+
+  - Fix typo (#118)
+  - Update hookable (fdfd353)
+
+#### ⚠️  Breaking Changes
+
+  - ⚠️  Update rollup to v3 (#129)
+
+### ❤️  Contributors
+
+- Chris
+- Pooya Parsa
+
 ## main (v0.8.10..main)
 
 
