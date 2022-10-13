@@ -133,9 +133,12 @@ export function extractExportFilenames (exports: PackageJson['exports'], conditi
   if (typeof exports === 'string') {
     return [{ file: exports, type: 'esm' }]
   }
-  return Object.entries(exports).flatMap(
-    ([condition, exports]) => typeof exports === 'string'
-      ? { file: exports, type: inferExportType(condition, conditions, exports) }
-      : extractExportFilenames(exports, [...conditions, condition])
-  )
+  return Object.entries(exports)
+    // Filter out .json subpaths such as package.json
+    .filter(([subpath]) => !subpath.endsWith('.json'))
+    .flatMap(
+      ([condition, exports]) => typeof exports === 'string'
+        ? { file: exports, type: inferExportType(condition, conditions, exports) }
+        : extractExportFilenames(exports, [...conditions, condition])
+    )
 }
