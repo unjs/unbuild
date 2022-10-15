@@ -21,7 +21,7 @@ specifiers:
   esbuild: ^0.15.11
   eslint: ^8.25.0
   globby: ^13.1.2
-  hookable: ^5.4.0
+  hookable: ^5.4.1
   jiti: ^1.16.0
   magic-string: ^0.26.7
   mkdirp: ^1.0.4
@@ -51,7 +51,7 @@ dependencies:
   defu: 6.1.0
   esbuild: 0.15.11
   globby: 13.1.2
-  hookable: 5.4.0
+  hookable: 5.4.1
   jiti: 1.16.0
   magic-string: 0.26.7
   mkdirp: 1.0.4
@@ -2298,8 +2298,8 @@ packages:
     dependencies:
       function-bind: 1.1.1
 
-  /hookable/5.4.0:
-    resolution: {integrity: sha512-kMikhpdc0PRI2/d1p36RdA2iWiDHN8UQfb1m1hjsR2edAHxaC5qfF16Vg653zu+XEl5TyWn2AVJOVEjbeQxEOQ==}
+  /hookable/5.4.1:
+    resolution: {integrity: sha512-i808BglQ1OuSIcgPSZoWsDapCMLXKe5wLS6XZvIXpaBWdWLUZARM8vOLayu6cXewj5TSbaZaMzKnq+pRnfscEQ==}
     dev: false
 
   /hosted-git-info/2.8.9:
