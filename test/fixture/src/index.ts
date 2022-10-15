@@ -1,4 +1,5 @@
 import { arch } from 'os'
+import testJSON from './test.json'
 
 console.log('__filename', __filename)
 console.log('__dirname', __dirname)
@@ -7,6 +8,7 @@ console.log('import.meta.url', import.meta.url)
 console.log(arch())
 console.log(require('os').arch())
 console.log(require.resolve('rollup'))
+console.log(testJSON)
 import('os').then(os => console.log(os.arch()))
 
 // @ts-ignore
