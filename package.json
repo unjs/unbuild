@@ -39,7 +39,7 @@
     "defu": "^6.1.0",
     "esbuild": "^0.15.11",
     "globby": "^13.1.2",
-    "hookable": "^5.4.0",
+    "hookable": "^5.4.1",
     "jiti": "^1.16.0",
     "magic-string": "^0.26.7",
     "mkdirp": "^1.0.4",
