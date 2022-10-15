@@ -9,7 +9,7 @@ import type { RollupReplaceOptions } from '@rollup/plugin-replace'
 import type { RollupAliasOptions } from '@rollup/plugin-alias'
 import type { RollupNodeResolveOptions } from '@rollup/plugin-node-resolve'
 import type { RollupJsonOptions } from '@rollup/plugin-json'
-import type { Options as RollupDtsOptions } from 'rollup-plugin-dts'
+import type { Options as RollupDtsOptions } from '@unjsio/rollup-plugin-dts'
 import type commonjs from '@rollup/plugin-commonjs'
 
 export type RollupCommonJSOptions = Parameters<typeof commonjs>[0] & {}

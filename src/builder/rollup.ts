@@ -7,7 +7,7 @@ import commonjs from '@rollup/plugin-commonjs'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import alias from '@rollup/plugin-alias'
 import _esbuild from 'rollup-plugin-esbuild'
-import dts from 'rollup-plugin-dts'
+import dts from '@unjsio/rollup-plugin-dts'
 import replace from '@rollup/plugin-replace'
 import { resolve, dirname, normalize, extname } from 'pathe'
 import { resolvePath, resolveModuleExportNames } from 'mlly'
@@ -117,18 +117,7 @@ export async function rollupBuild (ctx: BuildContext) {
     const shebangPlugin: any = rollupOptions.plugins.find(p => p && p.name === 'unbuild-shebang')
     shebangPlugin._options.preserve = false
 
-    // TODO: https://github.com/Swatinem/rollup-plugin-dts/issues/226
-    const dtsPlugin = dts(ctx.options.rollup.dts)
-    rollupOptions.plugins.push({
-      ...dtsPlugin,
-      outputOptions (...args) {
-        const opts = dtsPlugin.outputOptions(...args)
-        opts.interop = 'esModule'
-        delete opts.namespaceToStringTag
-        opts.generatedCode = { symbols: false, ...opts.generatedCode }
-        return opts
-      }
-    })
+    rollupOptions.plugins.push(dts(ctx.options.rollup.dts))
 
     await ctx.hooks.callHook('rollup:dts:options', ctx, rollupOptions)
     const typesBuild = await rollup(rollupOptions)
