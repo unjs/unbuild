@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v0.9.2
+
+
+### 🩹 Fixes
+
+  - **rollup:** Use inline implementation of esbuild (af41b01)
+
+### 🏡 Chore
+
+  - Use fixed build for `rollup-plugin-dts` (f7acbf4)
+
+### ✅ Tests
+
+  - Add simple json test (955a449)
+
+### ❤️  Contributors
+
+- Pooya Parsa
+
 ## v0.9.1
 
 
