@@ -3,7 +3,6 @@ import type { PackageJson } from 'pkg-types'
 import type { Hookable } from 'hookable'
 import type { RollupOptions, RollupBuild } from 'rollup'
 import type { MkdistOptions } from 'mkdist'
-import type { Options as EsbuildOptions } from 'rollup-plugin-esbuild'
 import type { Schema } from 'untyped'
 import type { RollupReplaceOptions } from '@rollup/plugin-replace'
 import type { RollupAliasOptions } from '@rollup/plugin-alias'
@@ -11,6 +10,7 @@ import type { RollupNodeResolveOptions } from '@rollup/plugin-node-resolve'
 import type { RollupJsonOptions } from '@rollup/plugin-json'
 import type { Options as RollupDtsOptions } from '@unjsio/rollup-plugin-dts'
 import type commonjs from '@rollup/plugin-commonjs'
+import type { Options as EsbuildOptions } from './builder/plugins/esbuild'
 
 export type RollupCommonJSOptions = Parameters<typeof commonjs>[0] & {}
 

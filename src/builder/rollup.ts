@@ -6,20 +6,17 @@ import { rollup } from 'rollup'
 import commonjs from '@rollup/plugin-commonjs'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import alias from '@rollup/plugin-alias'
-import _esbuild from 'rollup-plugin-esbuild'
 import dts from '@unjsio/rollup-plugin-dts'
 import replace from '@rollup/plugin-replace'
 import { resolve, dirname, normalize, extname } from 'pathe'
 import { resolvePath, resolveModuleExportNames } from 'mlly'
 import { getpkg, tryResolve, warn } from '../utils'
 import type { BuildContext } from '../types'
+import { esbuild } from './plugins/esbuild'
 import { JSONPlugin } from './plugins/json'
 import { rawPlugin } from './plugins/raw'
 import { cjsPlugin } from './plugins/cjs'
 import { shebangPlugin, makeExecutable, getShebang } from './plugins/shebang'
-
-// @ts-ignore https://github.com/unjs/unbuild/issues/23
-const esbuild = _esbuild.default || _esbuild
 
 const DEFAULT_EXTENSIONS = ['.ts', '.tsx', '.mjs', '.cjs', '.js', '.jsx', '.json']
 
