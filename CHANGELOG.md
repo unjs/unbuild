@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v0.9.4
+
+
+### 📦 Build
+
+  - Fix `rollup-plugin-dts` version (522687f)
+
+### ❤️  Contributors
+
+- Pooya Parsa
+
 ## v0.9.3
 
 
