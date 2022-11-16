@@ -28,7 +28,7 @@ specifiers:
   mlly: ^0.5.17
   mri: ^1.2.0
   pathe: ^0.3.9
-  pkg-types: ^0.3.6
+  pkg-types: ^1.0.1
   pretty-bytes: ^6.0.0
   rimraf: ^3.0.2
   rollup: ^3.3.0
@@ -58,7 +58,7 @@ dependencies:
   mlly: 0.5.17
   mri: 1.2.0
   pathe: 0.3.9
-  pkg-types: 0.3.6
+  pkg-types: 1.0.1
   pretty-bytes: 6.0.0
   rimraf: 3.0.2
   rollup: 3.3.0
@@ -2737,6 +2737,7 @@ packages:
       jsonc-parser: 3.2.0
       mlly: 0.5.17
       pathe: 0.3.9
+    dev: true
 
   /pkg-types/1.0.1:
     resolution: {integrity: sha512-jHv9HB+Ho7dj6ItwppRDDl0iZRYBD0jsakHXtFgoLr+cHSF6xC+QL54sJmWxyGxOLYSHm0afhXhXcQDQqH9z8g==}
