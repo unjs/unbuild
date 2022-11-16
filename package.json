@@ -68,5 +68,5 @@
     "eslint-config-unjs": "^0.0.2",
     "vitest": "^0.25.2"
   },
-  "packageManager": "pnpm@7.16.0"
+  "packageManager": "pnpm@7.16.1"
 }
