@@ -25,7 +25,7 @@ specifiers:
   magic-string: ^0.26.7
   mkdirp: ^1.0.4
   mkdist: ^0.4.1
-  mlly: ^0.5.17
+  mlly: ^1.0.0
   mri: ^1.2.0
   pathe: ^0.3.9
   pkg-types: ^0.3.6
@@ -55,7 +55,7 @@ dependencies:
   magic-string: 0.26.7
   mkdirp: 1.0.4
   mkdist: 0.4.1_typescript@4.9.3
-  mlly: 0.5.17
+  mlly: 1.0.0
   mri: 1.2.0
   pathe: 0.3.9
   pkg-types: 0.3.6
