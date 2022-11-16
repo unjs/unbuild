@@ -24,7 +24,7 @@ specifiers:
   jiti: ^1.16.0
   magic-string: ^0.26.7
   mkdirp: ^1.0.4
-  mkdist: ^0.4.1
+  mkdist: ^1.0.0
   mlly: ^0.5.17
   mri: ^1.2.0
   pathe: ^0.3.9
@@ -54,7 +54,7 @@ dependencies:
   jiti: 1.16.0
   magic-string: 0.26.7
   mkdirp: 1.0.4
-  mkdist: 0.4.1_typescript@4.9.3
+  mkdist: 1.0.0_typescript@4.9.3
   mlly: 0.5.17
   mri: 1.2.0
   pathe: 0.3.9
@@ -2484,8 +2484,8 @@ packages:
     hasBin: true
     dev: false
 
-  /mkdist/0.4.1_typescript@4.9.3:
-    resolution: {integrity: sha512-3uMNUdekmD2rVXOy6fCtOqtUKaB0L86OfrcBoKrQxtX9JZZZrG98aQV1CkNkaHMc7LLq0U2UdVEVGJ3l5P2x3A==}
+  /mkdist/1.0.0_typescript@4.9.3:
+    resolution: {integrity: sha512-aJke+yvXwwcrOh+3KfAdDgDA+MPe7c+R8hQ7IPfp0gqL1/WPZZUS9rwS6CNjdwDJmHm6DTMA9KwX1FNjZG3I1Q==}
     hasBin: true
     peerDependencies:
       sass: ^1.56.1
