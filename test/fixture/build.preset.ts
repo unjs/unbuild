@@ -1,4 +1,4 @@
-import { definePreset } from '../../src'
+import { definePreset } from "../../src";
 
 export default definePreset({
   declaration: true,
@@ -6,7 +6,7 @@ export default definePreset({
     cjsBridge: true
   },
   hooks: {
-    'build:before': () => { console.log('Before build') },
-    'build:done': () => { console.log('After build') }
+    "build:before": () => { console.log("Before build"); },
+    "build:done": () => { console.log("After build"); }
   }
-})
+});

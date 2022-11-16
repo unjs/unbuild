@@ -1,8 +1,11 @@
 {
   "extends": [
-    "@nuxtjs/eslint-config-typescript"
+    "eslint-config-unjs"
   ],
   "rules": {
-    "no-console": "off"
+    "unicorn/no-null": 0,
+    "unicorn/prevent-abbreviations": 0,
+    "unicorn/prefer-module": 0,
+    "unicorn/prefer-top-level-await": 0
   }
 }

@@ -1,58 +1,58 @@
-import { fileURLToPath } from 'url'
-import consola from 'consola'
-import { join } from 'pathe'
-import { describe, it, expect } from 'vitest'
-import { validateDependencies, validatePackage } from '../src/validate'
-import { BuildEntry } from '../src/types'
+import { fileURLToPath } from "node:url";
+import consola from "consola";
+import { join } from "pathe";
+import { describe, it, expect } from "vitest";
+import { validateDependencies, validatePackage } from "../src/validate";
+import { BuildEntry } from "../src/types";
 
-describe('validatePackage', () => {
-  it('detects missing files', () => {
+describe("validatePackage", () => {
+  it("detects missing files", () => {
     const buildContext = {
       warnings: new Set()
-    } as any
+    } as any;
 
     validatePackage({
-      main: './dist/test',
+      main: "./dist/test",
       bin: {
-        './cli': './dist/cli'
+        "./cli": "./dist/cli"
       },
-      module: 'dist/mod',
+      module: "dist/mod",
       exports: {
-        './runtime/*': './runtime/*.mjs',
-        '.': { node: './src/index.ts' }
+        "./runtime/*": "./runtime/*.mjs",
+        ".": { node: "./src/index.ts" }
       }
-    }, join(fileURLToPath(import.meta.url), '../fixture'), buildContext)
+    }, join(fileURLToPath(import.meta.url), "../fixture"), buildContext);
 
-    const warnings = Array.from(buildContext.warnings)
+    const warnings = [...buildContext.warnings];
 
-    expect(warnings[0]).to.include('Potential missing')
-    expect(warnings[0]).not.to.include('src/index.ts')
+    expect(warnings[0]).to.include("Potential missing");
+    expect(warnings[0]).not.to.include("src/index.ts");
 
-    for (const file of ['dist/test', 'dist/cli', 'dist/mod', 'runtime']) {
-      expect(warnings[0]).to.include(file)
+    for (const file of ["dist/test", "dist/cli", "dist/mod", "runtime"]) {
+      expect(warnings[0]).to.include(file);
     }
-  })
-})
+  });
+});
 
-describe('validateDependencies', () => {
-  it('detects implicit deps', () => {
-    const warnings = new Set<string>()
+describe("validateDependencies", () => {
+  it("detects implicit deps", () => {
+    const warnings = new Set<string>();
 
     validateDependencies({
       warnings,
       pkg: {},
       buildEntries: [],
       hooks: [] as any,
-      usedImports: new Set(['pkg-a/core']),
+      usedImports: new Set(["pkg-a/core"]),
       options: {
         externals: [],
-        dependencies: ['react'],
+        dependencies: ["react"],
         peerDependencies: [],
         devDependencies: [],
-        rootDir: '.',
+        rootDir: ".",
         entries: [] as BuildEntry[],
         clean: false,
-        outDir: 'dist',
+        outDir: "dist",
         stub: false,
         alias: {},
         replace: {},
@@ -65,29 +65,29 @@ describe('validateDependencies', () => {
           commonjs: false
         }
       }
-    })
+    });
 
-    expect(Array.from(warnings)[0]).to.include('Potential implicit dependencies found:')
-  })
+    expect([...warnings][0]).to.include("Potential implicit dependencies found:");
+  });
 
-  it('does not print implicit deps warning for peerDependencies', () => {
-    const logs: string[] = []
-    consola.mock(type => type === 'warn' ? (str: string) => logs.push(str) : () => { })
+  it("does not print implicit deps warning for peerDependencies", () => {
+    const logs: string[] = [];
+    consola.mock(type => type === "warn" ? (str: string) => logs.push(str) : () => {});
 
     validateDependencies({
       pkg: {},
       buildEntries: [],
       hooks: [] as any,
-      usedImports: new Set(['pkg-a/core']),
+      usedImports: new Set(["pkg-a/core"]),
       options: {
         externals: [],
-        dependencies: ['react'],
-        peerDependencies: ['pkg-a'],
+        dependencies: ["react"],
+        peerDependencies: ["pkg-a"],
         devDependencies: [],
-        rootDir: '.',
+        rootDir: ".",
         entries: [] as BuildEntry[],
         clean: false,
-        outDir: 'dist',
+        outDir: "dist",
         stub: false,
         alias: {},
         replace: {},
@@ -100,8 +100,8 @@ describe('validateDependencies', () => {
           commonjs: false
         }
       }
-    })
+    });
 
-    expect(logs.length).to.eq(0)
-  })
-})
+    expect(logs.length).to.eq(0);
+  });
+});
