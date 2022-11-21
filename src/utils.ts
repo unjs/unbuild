@@ -142,3 +142,7 @@ export function extractExportFilenames (exports: PackageJson["exports"], conditi
         : extractExportFilenames(exports, [...conditions, condition])
     );
 }
+
+export function arrayIncludes (arr: (string|RegExp)[], searchElement: string) {
+  return arr.some(entry => entry instanceof RegExp ? entry.test(searchElement) : entry === searchElement);
+}

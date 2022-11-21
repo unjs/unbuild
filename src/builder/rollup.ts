@@ -10,7 +10,7 @@ import dts from "rollup-plugin-dts";
 import replace from "@rollup/plugin-replace";
 import { resolve, dirname, normalize, extname } from "pathe";
 import { resolvePath, resolveModuleExportNames } from "mlly";
-import { getpkg, tryResolve, warn } from "../utils";
+import { arrayIncludes, getpkg, tryResolve, warn } from "../utils";
 import type { BuildContext } from "../types";
 import { esbuild } from "./plugins/esbuild";
 import { JSONPlugin } from "./plugins/json";
@@ -168,7 +168,7 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
 
     external (id) {
       const pkg = getpkg(id);
-      const isExplicitExternal = ctx.options.externals.includes(pkg);
+      const isExplicitExternal = arrayIncludes(ctx.options.externals, pkg);
       if (isExplicitExternal) {
         return true;
       }
