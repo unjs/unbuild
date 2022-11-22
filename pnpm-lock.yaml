@@ -12,7 +12,7 @@ specifiers:
   '@types/mri': ^1.1.1
   '@types/node': ^18.11.9
   '@types/rimraf': ^3.0.2
-  '@vitest/coverage-c8': ^0.25.2
+  '@vitest/coverage-c8': ^0.25.3
   chalk: ^5.1.2
   changelogen: ^0.4.0
   consola: ^2.15.3
@@ -37,7 +37,7 @@ specifiers:
   scule: ^1.0.0
   typescript: ^4.9.3
   untyped: ^1.0.0
-  vitest: ^0.25.2
+  vitest: ^0.25.3
 
 dependencies:
   '@rollup/plugin-alias': 4.0.2_rollup@3.4.0
@@ -74,11 +74,11 @@ devDependencies:
   '@types/mri': 1.1.1
   '@types/node': 18.11.9
   '@types/rimraf': 3.0.2
-  '@vitest/coverage-c8': 0.25.2
+  '@vitest/coverage-c8': 0.25.3
   changelogen: 0.4.0
   eslint: 8.28.0
   eslint-config-unjs: 0.0.2_hsf322ms6xhhd4b5ne6lb74y4a
-  vitest: 0.25.2
+  vitest: 0.25.3
 
 packages:
 
@@ -733,11 +733,11 @@ packages:
       eslint-visitor-keys: 3.3.0
     dev: true
 
-  /@vitest/coverage-c8/0.25.2:
-    resolution: {integrity: sha512-qKsiUJh3bjbB5Q229CbxEWCqiDBwvIrcZ9OOuQdMEC0pce3/LlTUK3+K3hd7WqAYEbbiqXfC5MVMKHZkV82PgA==}
+  /@vitest/coverage-c8/0.25.3:
+    resolution: {integrity: sha512-+tmrB3E7pZTSM+aWKzLk0FpyyaQOoRQf0594hHp+E3Kk0tiFONiEFYf7+9a1Z+C2ffU/0w6KvyBjpNPdashMrg==}
     dependencies:
       c8: 7.12.0
-      vitest: 0.25.2
+      vitest: 0.25.3
     transitivePeerDependencies:
       - '@edge-runtime/vm'
       - '@vitest/browser'
@@ -762,12 +762,6 @@ packages:
   /acorn-walk/8.2.0:
     resolution: {integrity: sha512-k+iyHEuPgSw6SbuDpGQM+06HQUa04DZ3o+F6CSzXMvvI5KMvnaEqXe+YVe555R9nn6GPt404fos4wcgpw12SDA==}
     engines: {node: '>=0.4.0'}
-    dev: true
-
-  /acorn/8.8.0:
-    resolution: {integrity: sha512-QOxyigPVrpZ2GXT+PFyZTl6TtOFc5egxHIP9IlQ+RbupQuX4RkT/Bee4/kQuC02Xkzg84JcT7oLYtDIQxp+v7w==}
-    engines: {node: '>=0.4.0'}
-    hasBin: true
     dev: true
 
   /acorn/8.8.1:
@@ -3342,8 +3336,8 @@ packages:
       fsevents: 2.3.2
     dev: true
 
-  /vitest/0.25.2:
-    resolution: {integrity: sha512-qqkzfzglEFbQY7IGkgSJkdOhoqHjwAao/OrphnHboeYHC5JzsVFoLCaB2lnAy8krhj7sbrFTVRApzpkTOeuDWQ==}
+  /vitest/0.25.3:
+    resolution: {integrity: sha512-/UzHfXIKsELZhL7OaM2xFlRF8HRZgAHtPctacvNK8H4vOcbJJAMEgbWNGSAK7Y9b1NBe5SeM7VTuz2RsTHFJJA==}
     engines: {node: '>=v14.16.0'}
     hasBin: true
     peerDependencies:
@@ -3367,7 +3361,7 @@ packages:
       '@types/chai': 4.3.3
       '@types/chai-subset': 1.3.3
       '@types/node': 18.11.9
-      acorn: 8.8.0
+      acorn: 8.8.1
       acorn-walk: 8.2.0
       chai: 4.3.6
       debug: 4.3.4
