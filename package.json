@@ -37,11 +37,11 @@
     "chalk": "^5.1.2",
     "consola": "^2.15.3",
     "defu": "^6.1.1",
-    "esbuild": "^0.15.16",
+    "esbuild": "^0.15.17",
     "globby": "^13.1.2",
     "hookable": "^5.4.2",
     "jiti": "^1.16.0",
-    "magic-string": "^0.26.7",
+    "magic-string": "^0.27.0",
     "mkdirp": "^1.0.4",
     "mkdist": "^1.0.0",
     "mlly": "^1.0.0",
@@ -68,5 +68,5 @@
     "eslint-config-unjs": "^0.0.2",
     "vitest": "^0.25.3"
   },
-  "packageManager": "pnpm@7.17.1"
+  "packageManager": "pnpm@7.18.0"
 }
