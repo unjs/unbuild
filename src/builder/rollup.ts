@@ -8,7 +8,7 @@ import { nodeResolve } from "@rollup/plugin-node-resolve";
 import alias from "@rollup/plugin-alias";
 import dts from "rollup-plugin-dts";
 import replace from "@rollup/plugin-replace";
-import { resolve, dirname, normalize, extname } from "pathe";
+import { resolve, dirname, normalize, extname, isAbsolute } from "pathe";
 import { resolvePath, resolveModuleExportNames } from "mlly";
 import { getpkg, tryResolve, warn } from "../utils";
 import type { BuildContext } from "../types";
@@ -172,7 +172,7 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
       if (isExplicitExternal) {
         return true;
       }
-      if (ctx.options.rollup.inlineDependencies || id[0] === "." || id[0] === "/" || /src[/\\]/.test(id) || id.startsWith(ctx.pkg.name!)) {
+      if (ctx.options.rollup.inlineDependencies || id[0] === "." || isAbsolute(id) || /src[/\\]/.test(id) || id.startsWith(ctx.pkg.name!)) {
         return false;
       }
       if (!isExplicitExternal) {
