@@ -59,13 +59,13 @@
   "devDependencies": {
     "@types/mkdirp": "^1.0.2",
     "@types/mri": "^1.1.1",
-    "@types/node": "^18.11.12",
+    "@types/node": "^18.11.13",
     "@types/rimraf": "^3.0.2",
-    "@vitest/coverage-c8": "^0.25.6",
+    "@vitest/coverage-c8": "^0.25.7",
     "changelogen": "^0.4.0",
     "eslint": "^8.29.0",
     "eslint-config-unjs": "^0.0.2",
-    "vitest": "^0.25.6"
+    "vitest": "^0.25.7"
   },
   "packageManager": "pnpm@7.18.1"
 }
