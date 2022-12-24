@@ -94,12 +94,11 @@ export function inferEntries (pkg: PackageJson, sourceFiles: string[]): InferEnt
     if (isDir && ["./", "/"].includes(outputSlug)) { continue; }
 
     const possiblePaths = getEntrypointPaths(outputSlug);
-    // eslint-disable-next-line unicorn/no-array-reduce
-    const input = possiblePaths.reduce<string | undefined>((source, d) => {
-      if (source) { return source; }
-      const SOURCE_RE = new RegExp(`${d}${isDir ? "" : "\\.\\w+"}$`);
+
+    const input = possiblePaths.find((source) => {
+      const SOURCE_RE = new RegExp(`${source}${isDir ? "" : "\\.\\w+"}$`);
       return sourceFiles.find(i => i.match(SOURCE_RE))?.replace(/(\.d\.ts|\.\w+)$/, "");
-    }, undefined as any);
+    });
 
     if (!input) {
       warnings.push(`Could not find entrypoint for ${output.file}`);
@@ -110,11 +109,11 @@ export function inferEntries (pkg: PackageJson, sourceFiles: string[]): InferEnt
       cjs = true;
     }
 
-    const entry = entries.find(i => i.input === input) || entries[entries.push({ input }) - 1];
-
     if (output.file.endsWith(".d.ts")) {
       dts = true;
     }
+
+    const entry = entries.find(i => i.input === input) || entries[entries.push({ input }) - 1];
 
     if (isDir) {
       entry.outDir = outputSlug
