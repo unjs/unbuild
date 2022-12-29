@@ -20,6 +20,7 @@ export interface BaseBuildEntry {
   name?: string
   outDir?: string
   declaration?: boolean
+  declarationMap?: boolean
 }
 
 export interface UntypedBuildEntry extends BaseBuildEntry {
@@ -59,6 +60,7 @@ export interface BuildOptions {
   entries: BuildEntry[],
   clean: boolean
   declaration?: boolean
+  declarationMap?: boolean
   outDir: string
   stub: boolean
   externals: string[]

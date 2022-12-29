@@ -19,6 +19,7 @@ export async function mkdistBuild (ctx: BuildContext) {
         format: entry.format,
         cleanDist: false,
         declaration: entry.declaration,
+        declarationMap: entry.declarationMap,
         // @ts-ignore
         ext: entry.ext
       };

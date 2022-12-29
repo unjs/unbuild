@@ -34,6 +34,7 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
     entries: [],
     clean: true,
     declaration: false,
+    declarationMap: false,
     outDir: "dist",
     stub,
     externals: [
@@ -120,6 +121,10 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
 
     if (options.declaration !== undefined && entry.declaration === undefined) {
       entry.declaration = options.declaration;
+    }
+
+    if (options.declarationMap !== undefined && entry.declarationMap === undefined) {
+      entry.declarationMap = options.declarationMap;
     }
 
     entry.input = resolve(options.rootDir, entry.input);
