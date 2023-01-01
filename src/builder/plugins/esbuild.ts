@@ -2,7 +2,7 @@
 
 import { extname, relative } from "pathe";
 import type { Plugin, PluginContext } from "rollup";
-import { Loader, TransformResult, transform } from "esbuild";
+import { Loader, TransformResult, Charset, transform } from "esbuild";
 import { createFilter } from "@rollup/pluginutils";
 import type { FilterPattern } from "@rollup/pluginutils";
 
@@ -16,6 +16,7 @@ export interface Options {
   exclude?: FilterPattern
   sourceMap?: boolean
   minify?: boolean
+  charset?: Charset
   target: string | string[]
   jsxFactory?: string
   jsxFragment?: string
@@ -82,6 +83,7 @@ export function esbuild (options: Options): Plugin {
         loader,
         target: options.target,
         define: options.define,
+        charset: options.charset,
         sourcemap: options.sourceMap,
         sourcefile: id
       });
