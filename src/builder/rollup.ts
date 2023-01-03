@@ -152,7 +152,8 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
         exports: "auto",
         generatedCode: { constBindings: true },
         externalLiveBindings: false,
-        freeze: false
+        freeze: false,
+        sourcemap: ctx.options.rollup.esbuild && !!ctx.options.rollup.esbuild.sourceMap
       },
       {
         dir: resolve(ctx.options.rootDir, ctx.options.outDir),
@@ -162,7 +163,8 @@ export function getRollupOptions (ctx: BuildContext): RollupOptions {
         exports: "auto",
         generatedCode: { constBindings: true },
         externalLiveBindings: false,
-        freeze: false
+        freeze: false,
+        sourcemap: ctx.options.rollup.esbuild && !!ctx.options.rollup.esbuild.sourceMap
       }
     ].filter(Boolean),
 

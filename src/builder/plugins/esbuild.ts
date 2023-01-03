@@ -97,7 +97,7 @@ export function esbuild (options: Options): Plugin {
     },
 
     async renderChunk (code, { fileName }) {
-      if (options.minify && !fileName.endsWith('.d.ts')) {
+      if (options.minify && !fileName.endsWith(".d.ts")) {
         const result = await transform(code, {
           loader: "js",
           minify: true,
