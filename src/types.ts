@@ -37,7 +37,7 @@ export interface MkdistBuildEntry extends BaseBuildEntry {
   ext?: "cjs" | "mjs" | "js" | "ts"
 }
 
-export type BuildEntry = BaseBuildEntry | RollupBuildEntry | UntypedBuildEntry | MkdistBuildEntry
+export type BuildEntry = BaseBuildEntry | RollupBuildEntry | UntypedBuildEntry | MkdistBuildEntry | string
 
 export interface RollupBuildOptions {
   emitCJS?: boolean

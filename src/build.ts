@@ -104,6 +104,31 @@ export async function build (rootDir: string, stub: boolean, inputConfig: BuildC
   options.entries = options.entries.map(entry =>
     typeof entry === "string" ? { input: entry } : entry
   );
+  const DEFAULT_EXTENSIONS = [".ts", ".tsx", ".mjs", ".cjs", ".js", ".jsx", ".json"];
+  options.entries = options.entries.map(
+    (entry) =>  {
+      if (typeof entry === "string") {
+        // if entry has extension name , remove this extension name
+        let  noExtensionEntry:string = entry
+        for (const defaultExtension of DEFAULT_EXTENSIONS) {
+          if (entry.endsWith(defaultExtension) ) {
+            noExtensionEntry =entry.replace(defaultExtension,'')
+              break;
+          }
+        }
+        return {input:noExtensionEntry}
+      }else {
+         for (const defaultExtension of DEFAULT_EXTENSIONS) {
+          // if entry has extension name , remove this extension name
+          if ( entry.input.endsWith(defaultExtension) ) {
+              entry.input= entry.input.replace(defaultExtension,'')
+              break;
+          }
+        }
+        return entry
+      }
+    }
+  );
 
   for (const entry of options.entries) {
     if (typeof entry.name !== "string") {
