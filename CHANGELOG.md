@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v1.1.0
+
+[compare changes](https://github.com/unjs/unbuild/compare/v1.0.2...v1.1.0)
+
+
+### 🚀 Enhancements
+
+  - Update all rollup dependencies ([3d1b976](https://github.com/unjs/unbuild/commit/3d1b976))
+
+### 🩹 Fixes
+
+  - Prevent minification of `.d.ts` files ([#185](https://github.com/unjs/unbuild/pull/185))
+
+### 🎨 Styles
+
+  - Format with prettier ([818ced7](https://github.com/unjs/unbuild/commit/818ced7))
+
+### ❤️  Contributors
+
+- Pooya Parsa <pooya@pi0.io>
+- Marco Solazzi <marco.solazzi@gmail.com>
+
 ## v1.0.2
 
 [compare changes](https://github.com/unjs/unbuild/compare/v1.0.1...v1.0.2)
