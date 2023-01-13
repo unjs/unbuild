@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v1.1.1
+
+[compare changes](https://github.com/unjs/unbuild/compare/v1.1.0...v1.1.1)
+
+
+### 🩹 Fixes
+
+  - Use fs instead of rimraf ([bbd374d](https://github.com/unjs/unbuild/commit/bbd374d))
+
+### ❤️  Contributors
+
+- Pooya Parsa <pooya@pi0.io>
+
 ## v1.1.0
 
 [compare changes](https://github.com/unjs/unbuild/compare/v1.0.2...v1.1.0)
