@@ -31,7 +31,6 @@ specifiers:
   pkg-types: ^1.0.1
   prettier: ^2.8.2
   pretty-bytes: ^6.0.0
-  rimraf: ^4.0.4
   rollup: ^3.10.0
   rollup-plugin-dts: ^5.1.1
   scule: ^1.0.0
@@ -61,7 +60,6 @@ dependencies:
   pathe: 1.0.0
   pkg-types: 1.0.1
   pretty-bytes: 6.0.0
-  rimraf: 4.0.4
   rollup: 3.10.0
   rollup-plugin-dts: 5.1.1_eymahajmafh3u7vrzmo7ylp2pa
   scule: 1.0.0
@@ -3093,12 +3091,6 @@ packages:
     dependencies:
       glob: 7.2.3
     dev: true
-
-  /rimraf/4.0.4:
-    resolution: {integrity: sha512-R0hoVr9xTwemarQjoWlNt/nb5dEGVTBhVdkRmEX2zEkT8T6onH0XKiGjuaC7rNNj/gYzY2p4NVRJ3sjO1ascHQ==}
-    engines: {node: '>=14'}
-    hasBin: true
-    dev: false
 
   /rollup-plugin-dts/5.1.1_eymahajmafh3u7vrzmo7ylp2pa:
     resolution: {integrity: sha512-zpgo52XmnLg8w4k3MScinFHZK1+ro6r7uVe34fJ0Ee8AM45FvgvTuvfWWaRgIpA4pQ1BHJuu2ospncZhkcJVeA==}

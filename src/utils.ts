@@ -3,7 +3,6 @@ import { promisify } from "node:util";
 import { readdirSync, statSync } from "node:fs";
 import { dirname, resolve } from "pathe";
 import mkdirp from "mkdirp";
-import _rimraf from "rimraf";
 import jiti from "jiti";
 import consola from "consola";
 import type { PackageJson } from "pkg-types";
@@ -45,11 +44,9 @@ export function getpkg(id = "") {
   return s[0][0] === "@" ? `${s[0]}/${s[1]}` : s[0];
 }
 
-const rimraf = promisify(_rimraf);
-
 export async function rmdir(dir: string) {
   await fsp.unlink(dir).catch(() => {});
-  await rimraf(dir, {});
+  await fsp.rm(dir, { recursive: true, force: true }).catch(() => {});
 }
 
 export function listRecursively(path: string) {
