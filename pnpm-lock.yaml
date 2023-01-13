@@ -29,6 +29,7 @@ specifiers:
   mri: ^1.2.0
   pathe: ^1.0.0
   pkg-types: ^1.0.1
+  prettier: ^2.8.2
   pretty-bytes: ^6.0.0
   rimraf: ^4.0.4
   rollup: ^3.10.0
@@ -76,6 +77,7 @@ devDependencies:
   changelogen: 0.4.0
   eslint: 8.31.0
   eslint-config-unjs: 0.0.3_iukboom6ndih5an6iafl45j2fe
+  prettier: 2.8.2
   vitest: 0.27.1
 
 packages:
@@ -2996,6 +2998,12 @@ packages:
   /prelude-ls/1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
+    dev: true
+
+  /prettier/2.8.2:
+    resolution: {integrity: sha512-BtRV9BcncDyI2tsuS19zzhzoxD8Dh8LiCx7j7tHzrkz8GFXAexeWFdi22mjE1d16dftH2qNaytVxqiRTGlMfpw==}
+    engines: {node: '>=10.13.0'}
+    hasBin: true
     dev: true
 
   /pretty-bytes/6.0.0:

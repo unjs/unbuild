@@ -20,7 +20,7 @@
   "scripts": {
     "build": "pnpm unbuild",
     "dev": "pnpm unbuild test/fixture",
-    "lint": "eslint --ext .ts,.js .",
+    "lint": "eslint --ext .ts,.js . && prettier -c src test",
     "prepack": "pnpm unbuild",
     "release": "vitest run && changelogen --release && git push --follow-tags && npm publish",
     "stub": "pnpm unbuild --stub",
@@ -65,6 +65,7 @@
     "changelogen": "^0.4.0",
     "eslint": "^8.31.0",
     "eslint-config-unjs": "^0.0.3",
+    "prettier": "^2.8.2",
     "vitest": "^0.27.1"
   },
   "packageManager": "pnpm@7.18.2"
