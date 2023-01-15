@@ -62,7 +62,7 @@
     "@types/rimraf": "^3.0.2",
     "@vitest/coverage-c8": "^0.27.1",
     "changelogen": "^0.4.0",
-    "eslint": "^8.31.0",
+    "eslint": "^8.32.0",
     "eslint-config-unjs": "^0.0.3",
     "prettier": "^2.8.3",
     "vitest": "^0.27.1"
