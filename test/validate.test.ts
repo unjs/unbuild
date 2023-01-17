@@ -8,20 +8,24 @@ import { BuildEntry } from "../src/types";
 describe("validatePackage", () => {
   it("detects missing files", () => {
     const buildContext = {
-      warnings: new Set()
+      warnings: new Set(),
     } as any;
 
-    validatePackage({
-      main: "./dist/test",
-      bin: {
-        "./cli": "./dist/cli"
+    validatePackage(
+      {
+        main: "./dist/test",
+        bin: {
+          "./cli": "./dist/cli",
+        },
+        module: "dist/mod",
+        exports: {
+          "./runtime/*": "./runtime/*.mjs",
+          ".": { node: "./src/index.ts" },
+        },
       },
-      module: "dist/mod",
-      exports: {
-        "./runtime/*": "./runtime/*.mjs",
-        ".": { node: "./src/index.ts" }
-      }
-    }, join(fileURLToPath(import.meta.url), "../fixture"), buildContext);
+      join(fileURLToPath(import.meta.url), "../fixture"),
+      buildContext
+    );
 
     const warnings = [...buildContext.warnings];
 
@@ -62,17 +66,21 @@ describe("validateDependencies", () => {
           resolve: false,
           json: false,
           esbuild: false,
-          commonjs: false
-        }
-      }
+          commonjs: false,
+        },
+      },
     });
 
-    expect([...warnings][0]).to.include("Potential implicit dependencies found:");
+    expect([...warnings][0]).to.include(
+      "Potential implicit dependencies found:"
+    );
   });
 
   it("does not print implicit deps warning for peerDependencies", () => {
     const logs: string[] = [];
-    consola.mock(type => type === "warn" ? (str: string) => logs.push(str) : () => {});
+    consola.mock((type) =>
+      type === "warn" ? (str: string) => logs.push(str) : () => {}
+    );
 
     validateDependencies({
       pkg: {},
@@ -97,9 +105,9 @@ describe("validateDependencies", () => {
           resolve: false,
           json: false,
           esbuild: false,
-          commonjs: false
-        }
-      }
+          commonjs: false,
+        },
+      },
     });
 
     expect(logs.length).to.eq(0);

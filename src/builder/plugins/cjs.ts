@@ -2,15 +2,15 @@ import type { Plugin } from "rollup";
 import { findStaticImports } from "mlly";
 import MagicString from "magic-string";
 
-export function cjsPlugin (_opts?: any): Plugin {
+export function cjsPlugin(_opts?: any): Plugin {
   return {
     name: "unbuild-cjs",
-    renderChunk (code, _chunk, opts) {
+    renderChunk(code, _chunk, opts) {
       if (opts.format === "es") {
         return CJSToESM(code);
       }
       return null;
-    }
+    },
   } as Plugin;
 }
 
@@ -28,7 +28,7 @@ const require = __cjs_mod__.createRequire(import.meta.url);
 `;
 
 // Shim __dirname, __filename and require
-function CJSToESM (code: string) {
+function CJSToESM(code: string) {
   if (code.includes(CJSShim) || !CJSyntaxRe.test(code)) {
     return null;
   }
@@ -40,6 +40,6 @@ function CJSToESM (code: string) {
 
   return {
     code: s.toString(),
-    map: s.generateMap()
+    map: s.generateMap(),
   };
 }
