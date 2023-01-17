@@ -16,6 +16,8 @@ import { rollupBuild } from "./builder/rollup";
 import { typesBuild } from "./builder/untyped";
 import { mkdistBuild } from "./builder/mkdist";
 
+import { loadUnbuildConfig } from "./loader"
+
 export async function build(
   rootDir: string,
   stub: boolean,
@@ -25,7 +27,10 @@ export async function build(
   rootDir = resolve(process.cwd(), rootDir || ".");
 
   // Read build.config and package.json
-  const buildConfig: BuildConfig = tryRequire("./build.config", rootDir) || {};
+  const buildConfig = await loadUnbuildConfig({
+    cwd: rootDir,
+  });
+
   const pkg: PackageJson & Record<"unbuild" | "build", BuildConfig> =
     tryRequire("./package.json", rootDir);
 
@@ -49,6 +54,7 @@ export async function build(
       name: (pkg?.name || "").split("/").pop() || "default",
       rootDir,
       entries: [],
+      extends: [],
       clean: true,
       declaration: false,
       outDir: "dist",
@@ -93,6 +99,8 @@ export async function build(
 
   // Resolve dirs relative to rootDir
   options.outDir = resolve(options.rootDir, options.outDir);
+
+  console.log("options", options)
 
   // Build context
   const ctx: BuildContext = {

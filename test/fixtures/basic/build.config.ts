@@ -1,4 +1,4 @@
-import { defineBuildConfig } from "../../src";
+import { defineBuildConfig } from "../../../dist";
 
 export default defineBuildConfig({
   preset: "./build.preset",

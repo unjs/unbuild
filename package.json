@@ -19,7 +19,8 @@
   ],
   "scripts": {
     "build": "pnpm unbuild",
-    "dev": "pnpm unbuild test/fixture",
+    "dev": "pnpm unbuild test/fixtures/basic",
+    "dev:extends": "JITI_ESM_RESOLVE=1 pnpm unbuild test/fixtures/extends",
     "lint": "eslint --ext .ts,.js . && prettier -c src test",
     "prepack": "pnpm unbuild",
     "release": "vitest run && changelogen --release && git push --follow-tags && npm publish",
@@ -34,6 +35,7 @@
     "@rollup/plugin-node-resolve": "^15.0.1",
     "@rollup/plugin-replace": "^5.0.2",
     "@rollup/pluginutils": "^5.0.2",
+    "c12": "^1.1.0",
     "chalk": "^5.2.0",
     "consola": "^2.15.3",
     "defu": "^6.1.1",

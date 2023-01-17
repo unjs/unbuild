@@ -1,4 +1,4 @@
-import { definePreset } from "../../src";
+import { definePreset } from "../../../dist";
 
 export default definePreset({
   declaration: true,

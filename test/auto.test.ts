@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { inferEntries, getEntrypointPaths } from "../src/auto";
 
 describe("inferEntries", () => {
-  it("recognises main and module outputs", () => {
+  it("recognizes main and module outputs", () => {
     const result = inferEntries(
       { main: "dist/test.cjs", module: "dist/test.mjs" },
       ["src/", "src/test.ts"]
@@ -59,7 +59,7 @@ describe("inferEntries", () => {
     });
   });
 
-  it("recognises `type: module` projects", () => {
+  it("recognizes `type: module` projects", () => {
     const result = inferEntries({ main: "dist/test.js", type: "module" }, [
       "src/",
       "src/test.ts",
@@ -188,7 +188,7 @@ describe("inferEntries", () => {
     });
   });
 
-  it("recognises directory mappings", () => {
+  it("recognizes directory mappings", () => {
     expect(
       inferEntries({ exports: "./dist/runtime/*" }, [
         "src/",
