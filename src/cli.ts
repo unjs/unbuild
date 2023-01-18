@@ -3,7 +3,7 @@ import { resolve } from "pathe";
 import mri from "mri";
 import { build } from "./build";
 
-async function main () {
+async function main() {
   const args = mri(process.argv.splice(2));
   const rootDir = resolve(process.cwd(), args._[0] || ".");
   await build(rootDir, args.stub).catch((error) => {

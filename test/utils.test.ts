@@ -18,11 +18,23 @@ describe("inferExportType", () => {
 
 describe("extractExportFilenames", () => {
   it("handles strings", () => {
-    expect(extractExportFilenames("test")).to.deep.equal([{ file: "test", type: "esm" }]);
+    expect(extractExportFilenames("test")).to.deep.equal([
+      { file: "test", type: "esm" },
+    ]);
   });
   it("handles nested objects", () => {
-    expect(extractExportFilenames({ require: "test" })).to.deep.equal([{ file: "test", type: "cjs" }]);
+    expect(extractExportFilenames({ require: "test" })).to.deep.equal([
+      { file: "test", type: "cjs" },
+    ]);
     // @ts-ignore TODO: fix pkg-types
-    expect(extractExportFilenames({ require: { node: "test", other: { import: "this", require: "that" } } })).to.deep.equal([{ file: "test", type: "cjs" }, { file: "this", type: "esm" }, { file: "that", type: "cjs" }]);
+    expect(
+      extractExportFilenames({
+        require: { node: "test", other: { import: "this", require: "that" } },
+      })
+    ).to.deep.equal([
+      { file: "test", type: "cjs" },
+      { file: "this", type: "esm" },
+      { file: "that", type: "cjs" },
+    ]);
   });
 });

@@ -7,8 +7,10 @@ import jiti from "jiti";
 import { pascalCase } from "scule";
 import type { BuildContext, UntypedBuildEntry, UntypedOutputs } from "../types";
 
-export async function typesBuild (ctx: BuildContext) {
-  const entries = ctx.options.entries.filter(entry => entry.builder === "untyped") as UntypedBuildEntry[];
+export async function typesBuild(ctx: BuildContext) {
+  const entries = ctx.options.entries.filter(
+    (entry) => entry.builder === "untyped"
+  ) as UntypedBuildEntry[];
   await ctx.hooks.callHook("untyped:entries", ctx, entries);
 
   for (const entry of entries) {
@@ -18,12 +20,10 @@ export async function typesBuild (ctx: BuildContext) {
         interopDefault: true,
         transformOptions: {
           babel: {
-            plugins: [
-              untypedPlugin
-            ]
-          }
-        }
-      }
+            plugins: [untypedPlugin],
+          },
+        },
+      },
     };
     await ctx.hooks.callHook("untyped:entry:options", ctx, entry, options);
 
@@ -40,28 +40,32 @@ export async function typesBuild (ctx: BuildContext) {
     const outputs: UntypedOutputs = {
       markdown: {
         fileName: resolve(distDir, `${entry.name}.md`),
-        contents: generateMarkdown(schema)
+        contents: generateMarkdown(schema),
       },
       schema: {
         fileName: `${entry.name}.schema.json`,
-        contents: JSON.stringify(schema, null, 2)
+        contents: JSON.stringify(schema, null, 2),
       },
       defaults: {
         fileName: `${entry.name}.defaults.json`,
-        contents: JSON.stringify(defaults, null, 2)
+        contents: JSON.stringify(defaults, null, 2),
       },
       declaration: entry.declaration
         ? {
             fileName: `${entry.name}.d.ts`,
             contents: generateTypes(schema, {
-              interfaceName: pascalCase(entry.name + "-schema")
-            })
+              interfaceName: pascalCase(entry.name + "-schema"),
+            }),
           }
-        : undefined
+        : undefined,
     };
     await ctx.hooks.callHook("untyped:entry:outputs", ctx, entry, outputs);
     for (const output of Object.values(outputs)) {
-      await writeFile(resolve(distDir, output.fileName), output.contents, "utf8");
+      await writeFile(
+        resolve(distDir, output.fileName),
+        output.contents,
+        "utf8"
+      );
     }
   }
   await ctx.hooks.callHook("untyped:done", ctx);
