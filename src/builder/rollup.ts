@@ -208,6 +208,7 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
           getChunkFilename(chunk, "cjs"),
         format: "cjs",
         exports: "auto",
+        interop: "compat",
         generatedCode: { constBindings: true },
         externalLiveBindings: false,
         freeze: false,
