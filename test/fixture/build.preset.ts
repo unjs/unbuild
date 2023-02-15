@@ -1,6 +1,7 @@
 import { definePreset } from "../../src";
 
 export default definePreset({
+  entries: ["./src/foo.cjs"],
   declaration: true,
   rollup: {
     cjsBridge: true,

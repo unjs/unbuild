@@ -1,6 +1,7 @@
 import type { Plugin } from "rollup";
 import type { RollupJsonOptions } from "@rollup/plugin-json";
 import rollupJSONPlugin from "@rollup/plugin-json";
+import { safetyRequireJSON } from "../../utils";
 
 const EXPORT_DEFAULT = "export default ";
 
@@ -10,6 +11,10 @@ export function JSONPlugin(options: RollupJsonOptions): Plugin {
     ...plugin,
     name: "unbuild-json",
     transform(code, id) {
+      if (!id.endsWith(".json")) {
+        const res = safetyRequireJSON(code);
+        return res;
+      }
       const res = plugin.transform!.call(this, code, id);
       if (
         res &&

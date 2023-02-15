@@ -1,5 +1,9 @@
 import { describe, it, expect } from "vitest";
-import { extractExportFilenames, inferExportType } from "../src/utils";
+import {
+  extractExportFilenames,
+  inferExportType,
+  safetyRequireJSON,
+} from "../src/utils";
 
 describe("inferExportType", () => {
   it("infers export type by condition", () => {
@@ -36,5 +40,21 @@ describe("extractExportFilenames", () => {
       { file: "this", type: "esm" },
       { file: "that", type: "cjs" },
     ]);
+  });
+});
+
+describe("safetyRequireJSON", () => {
+  it("should not change code without require", () => {
+    expect(safetyRequireJSON("const a = 1")).toBe("const a = 1");
+  });
+
+  it("should not change code without json require", () => {
+    expect(safetyRequireJSON('require("./a")')).toBe('require("./a")');
+  });
+
+  it("should change code with json require", () => {
+    expect(safetyRequireJSON('require("./a.json")')).toBe(
+      "require(\"./a.json\")['default']"
+    );
   });
 });

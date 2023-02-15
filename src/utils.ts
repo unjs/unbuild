@@ -164,3 +164,15 @@ export function extractExportFilenames(
       )
   );
 }
+
+// This Regex matches require("...") and require('...') , capturing the path
+const REQUIRE_REG = /require\s*\(\s*["']([^\n']+)["']\s*\)/g;
+
+export const safetyRequireJSON = (code: string) => {
+  if (REQUIRE_REG.test(code)) {
+    return code.replace(REQUIRE_REG, (match, path) =>
+      path.endsWith(".json") ? `${match}['default']` : `${match}`
+    );
+  }
+  return code;
+};
