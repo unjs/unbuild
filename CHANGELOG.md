@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v1.1.2
+
+[compare changes](https://github.com/unjs/unbuild/compare/v1.1.1...v1.1.2)
+
+
+### 💅 Refactors
+
+  - Use `fs.mkdir` instead of `mkdirp` ([6ee6384](https://github.com/unjs/unbuild/commit/6ee6384))
+  - Use `fs.mkdir` instead of `mkdirp` ([8e6962e](https://github.com/unjs/unbuild/commit/8e6962e))
+
+### 🏡 Chore
+
+  - Update dependencies ([87bea65](https://github.com/unjs/unbuild/commit/87bea65))
+
+### ❤️  Contributors
+
+- Pooya Parsa <pooya@pi0.io>
+
 ## v1.1.1
 
 [compare changes](https://github.com/unjs/unbuild/compare/v1.1.0...v1.1.1)
