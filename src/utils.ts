@@ -1,8 +1,6 @@
 import fsp from "node:fs/promises";
-import { promisify } from "node:util";
 import { readdirSync, statSync } from "node:fs";
 import { dirname, resolve } from "pathe";
-import mkdirp from "mkdirp";
 import jiti from "jiti";
 import consola from "consola";
 import type { PackageJson } from "pkg-types";
@@ -10,7 +8,7 @@ import { autoPreset } from "./auto";
 import type { BuildPreset, BuildConfig, BuildContext } from "./types";
 
 export async function ensuredir(path: string) {
-  await mkdirp(dirname(path));
+  await fsp.mkdir(dirname(path), { recursive: true });
 }
 
 export function warn(ctx: BuildContext, message: string) {
