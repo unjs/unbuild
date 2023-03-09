@@ -3,5 +3,5 @@ export const config = {
   /**
    * @type {typeof import('untyped').BuildConfig}
    */
-  build: {}
+  build: {},
 };

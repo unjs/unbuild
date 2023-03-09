@@ -2,6 +2,77 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v1.1.2
+
+[compare changes](https://github.com/unjs/unbuild/compare/v1.1.1...v1.1.2)
+
+
+### 💅 Refactors
+
+  - Use `fs.mkdir` instead of `mkdirp` ([6ee6384](https://github.com/unjs/unbuild/commit/6ee6384))
+  - Use `fs.mkdir` instead of `mkdirp` ([8e6962e](https://github.com/unjs/unbuild/commit/8e6962e))
+
+### 🏡 Chore
+
+  - Update dependencies ([87bea65](https://github.com/unjs/unbuild/commit/87bea65))
+
+### ❤️  Contributors
+
+- Pooya Parsa <pooya@pi0.io>
+
+## v1.1.1
+
+[compare changes](https://github.com/unjs/unbuild/compare/v1.1.0...v1.1.1)
+
+
+### 🩹 Fixes
+
+  - Use fs instead of rimraf ([bbd374d](https://github.com/unjs/unbuild/commit/bbd374d))
+
+### ❤️  Contributors
+
+- Pooya Parsa <pooya@pi0.io>
+
+## v1.1.0
+
+[compare changes](https://github.com/unjs/unbuild/compare/v1.0.2...v1.1.0)
+
+
+### 🚀 Enhancements
+
+  - Update all rollup dependencies ([3d1b976](https://github.com/unjs/unbuild/commit/3d1b976))
+
+### 🩹 Fixes
+
+  - Prevent minification of `.d.ts` files ([#185](https://github.com/unjs/unbuild/pull/185))
+
+### 🎨 Styles
+
+  - Format with prettier ([818ced7](https://github.com/unjs/unbuild/commit/818ced7))
+
+### ❤️  Contributors
+
+- Pooya Parsa <pooya@pi0.io>
+- Marco Solazzi <marco.solazzi@gmail.com>
+
+## v1.0.2
+
+[compare changes](https://github.com/unjs/unbuild/compare/v1.0.1...v1.0.2)
+
+
+### 🩹 Fixes
+
+  - Do not throw error on absolute windows paths ([#166](https://github.com/unjs/unbuild/pull/166))
+
+### 🏡 Chore
+
+  - Remove unused dependency ([79cc03d](https://github.com/unjs/unbuild/commit/79cc03d))
+
+### ❤️  Contributors
+
+- Pooya Parsa <pooya@pi0.io>
+- Daniel Roe <daniel@roe.dev>
+
 ### [1.0.1](https://github.com/unjs/unbuild/compare/v1.0.0...v1.0.1) (2022-11-16)
 
 ## [1.0.0](https://github.com/unjs/unbuild/compare/v0.9.4...v1.0.0) (2022-11-16)

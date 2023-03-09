@@ -5,12 +5,17 @@ import type { PackageJson } from "pkg-types";
 import { extractExportFilenames, listRecursively, warn } from "./utils";
 import { BuildEntry, definePreset, MkdistBuildEntry } from "./types";
 
-type InferEntriesResult = { entries: BuildEntry[], cjs?: boolean, dts?: boolean, warnings: string[] }
+type InferEntriesResult = {
+  entries: BuildEntry[];
+  cjs?: boolean;
+  dts?: boolean;
+  warnings: string[];
+};
 
 export const autoPreset = definePreset(() => {
   return {
     hooks: {
-      "build:prepare" (ctx) {
+      "build:prepare"(ctx) {
         // Disable auto if entries already provided of pkg not available
         if (!ctx.pkg || ctx.options.entries.length > 0) {
           return;
@@ -29,11 +34,26 @@ export const autoPreset = definePreset(() => {
         }
         consola.info(
           "Automatically detected entries:",
-          chalk.cyan(ctx.options.entries.map(e => chalk.bold(e.input.replace(ctx.options.rootDir + "/", "").replace(/\/$/, "/*"))).join(", ")),
-          chalk.gray(["esm", res.cjs && "cjs", res.dts && "dts"].filter(Boolean).map(tag => `[${tag}]`).join(" "))
+          chalk.cyan(
+            ctx.options.entries
+              .map((e) =>
+                chalk.bold(
+                  e.input
+                    .replace(ctx.options.rootDir + "/", "")
+                    .replace(/\/$/, "/*")
+                )
+              )
+              .join(", ")
+          ),
+          chalk.gray(
+            ["esm", res.cjs && "cjs", res.dts && "dts"]
+              .filter(Boolean)
+              .map((tag) => `[${tag}]`)
+              .join(" ")
+          )
         );
-      }
-    }
+      },
+    },
   };
 });
 
@@ -43,7 +63,10 @@ export const autoPreset = definePreset(() => {
  *   - if string, `<source>/src` will be scanned for possible source files.
  *   - if an array of source files, these will be used directly instead of accessing fs.
  */
-export function inferEntries (pkg: PackageJson, sourceFiles: string[]): InferEntriesResult {
+export function inferEntries(
+  pkg: PackageJson,
+  sourceFiles: string[]
+): InferEntriesResult {
   const warnings = [];
 
   // Sort files so least-nested files are first
@@ -53,7 +76,8 @@ export function inferEntries (pkg: PackageJson, sourceFiles: string[]): InferEnt
   const outputs = extractExportFilenames(pkg.exports);
 
   if (pkg.bin) {
-    const binaries = typeof pkg.bin === "string" ? [pkg.bin] : Object.values(pkg.bin);
+    const binaries =
+      typeof pkg.bin === "string" ? [pkg.bin] : Object.values(pkg.bin);
     for (const file of binaries) {
       outputs.push({ file });
     }
@@ -70,7 +94,7 @@ export function inferEntries (pkg: PackageJson, sourceFiles: string[]): InferEnt
 
   // Try to detect output types
   const isESMPkg = pkg.type === "module";
-  for (const output of outputs.filter(o => !o.type)) {
+  for (const output of outputs.filter((o) => !o.type)) {
     const isJS = output.file.endsWith(".js");
     if ((isESMPkg && isJS) || output.file.endsWith(".mjs")) {
       output.type = "esm";
@@ -91,14 +115,20 @@ export function inferEntries (pkg: PackageJson, sourceFiles: string[]): InferEnt
     const isDir = outputSlug.endsWith("/");
 
     // Skip top level directory
-    if (isDir && ["./", "/"].includes(outputSlug)) { continue; }
+    if (isDir && ["./", "/"].includes(outputSlug)) {
+      continue;
+    }
 
     const possiblePaths = getEntrypointPaths(outputSlug);
     // eslint-disable-next-line unicorn/no-array-reduce
     const input = possiblePaths.reduce<string | undefined>((source, d) => {
-      if (source) { return source; }
+      if (source) {
+        return source;
+      }
       const SOURCE_RE = new RegExp(`${d}${isDir ? "" : "\\.\\w+"}$`);
-      return sourceFiles.find(i => i.match(SOURCE_RE))?.replace(/(\.d\.ts|\.\w+)$/, "");
+      return sourceFiles
+        .find((i) => i.match(SOURCE_RE))
+        ?.replace(/(\.d\.ts|\.\w+)$/, "");
     }, undefined as any);
 
     if (!input) {
@@ -110,15 +140,17 @@ export function inferEntries (pkg: PackageJson, sourceFiles: string[]): InferEnt
       cjs = true;
     }
 
-    const entry = entries.find(i => i.input === input) || entries[entries.push({ input }) - 1];
+    const entry =
+      entries.find((i) => i.input === input) ||
+      entries[entries.push({ input }) - 1];
 
     if (output.file.endsWith(".d.ts")) {
       dts = true;
     }
 
     if (isDir) {
-      entry.outDir = outputSlug
-      ;(entry as MkdistBuildEntry).format = output.type;
+      entry.outDir = outputSlug;
+      (entry as MkdistBuildEntry).format = output.type;
     }
   }
 
@@ -127,5 +159,7 @@ export function inferEntries (pkg: PackageJson, sourceFiles: string[]): InferEnt
 
 export const getEntrypointPaths = (path: string) => {
   const segments = normalize(path).split("/");
-  return segments.map((_, index) => segments.slice(index).join("/")).filter(Boolean);
+  return segments
+    .map((_, index) => segments.slice(index).join("/"))
+    .filter(Boolean);
 };
