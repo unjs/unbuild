@@ -84,6 +84,8 @@ export function esbuild(options: Options): Plugin {
         define: options.define,
         sourcemap: options.sourceMap,
         sourcefile: id,
+        jsxFactory: options.jsxFactory,
+        jsxFragment: options.jsxFragment,
       });
 
       printWarnings(id, result, this);
