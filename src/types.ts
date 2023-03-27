@@ -36,6 +36,7 @@ export interface MkdistBuildEntry extends BaseBuildEntry {
   builder: "mkdist";
   format?: "esm" | "cjs";
   ext?: "cjs" | "mjs" | "js" | "ts";
+  pattern?: string | string[];
 }
 
 export type BuildEntry =
