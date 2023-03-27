@@ -21,6 +21,7 @@
     "build": "pnpm unbuild",
     "dev": "pnpm unbuild test/fixture",
     "lint": "eslint --ext .ts,.js . && prettier -c src test",
+    "lint:fix": "eslint --fix --ext .ts,.js . && prettier -w src test",
     "prepack": "pnpm unbuild",
     "release": "vitest run && changelogen --release && git push --follow-tags && npm publish",
     "stub": "pnpm unbuild --stub",

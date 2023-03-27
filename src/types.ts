@@ -67,7 +67,7 @@ export interface BuildOptions {
   declaration?: boolean;
   outDir: string;
   stub: boolean;
-  externals: (string|RegExp)[];
+  externals: (string | RegExp)[];
   dependencies: string[];
   peerDependencies: string[];
   devDependencies: string[];

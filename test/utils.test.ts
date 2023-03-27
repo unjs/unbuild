@@ -1,5 +1,9 @@
 import { describe, it, expect } from "vitest";
-import { arrayIncludes, extractExportFilenames, inferExportType } from "../src/utils";
+import {
+  arrayIncludes,
+  extractExportFilenames,
+  inferExportType,
+} from "../src/utils";
 
 describe("inferExportType", () => {
   it("infers export type by condition", () => {

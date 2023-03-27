@@ -270,9 +270,11 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
             [ctx.pkg.name!]: ctx.options.rootDir,
             ...ctx.options.alias,
             ...(Array.isArray(ctx.options.rollup.alias.entries)
-              ? Object.fromEntries(ctx.options.rollup.alias.entries.map(entry => {
-                return [entry.find, entry.replacement]
-              }))
+              ? Object.fromEntries(
+                  ctx.options.rollup.alias.entries.map((entry) => {
+                    return [entry.find, entry.replacement];
+                  })
+                )
               : ctx.options.rollup.alias.entries),
           },
         }),

@@ -10,7 +10,7 @@ const defaultLoaders: { [ext: string]: Loader } = {
   ".ts": "ts",
   ".js": "js",
   ".tsx": "tsx",
-  ".jsx": "jsx"
+  ".jsx": "jsx",
 };
 
 export interface Options {

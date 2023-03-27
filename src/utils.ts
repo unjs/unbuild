@@ -163,6 +163,10 @@ export function extractExportFilenames(
   );
 }
 
-export function arrayIncludes (arr: (string|RegExp)[], searchElement: string) {
-  return arr.some(entry => entry instanceof RegExp ? entry.test(searchElement) : entry === searchElement);
+export function arrayIncludes(arr: (string | RegExp)[], searchElement: string) {
+  return arr.some((entry) =>
+    entry instanceof RegExp
+      ? entry.test(searchElement)
+      : entry === searchElement
+  );
 }
