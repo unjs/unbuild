@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { extractExportFilenames, inferExportType } from "../src/utils";
+import { arrayIncludes, extractExportFilenames, inferExportType } from "../src/utils";
 
 describe("inferExportType", () => {
   it("infers export type by condition", () => {
@@ -36,5 +36,16 @@ describe("extractExportFilenames", () => {
       { file: "this", type: "esm" },
       { file: "that", type: "cjs" },
     ]);
+  });
+});
+
+describe("arrayIncludes", () => {
+  it("handles strings", () => {
+    expect(arrayIncludes(["test1", "test2"], "test1")).to.eq(true);
+    expect(arrayIncludes(["test1", "test2"], "test3")).to.eq(false);
+  });
+  it("handles regular expressions", () => {
+    expect(arrayIncludes([/t1$/, "test2"], "test1")).to.eq(true);
+    expect(arrayIncludes([/t3$/, "test2"], "test1")).to.eq(false);
   });
 });

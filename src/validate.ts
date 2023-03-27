@@ -2,7 +2,7 @@ import { existsSync } from "node:fs";
 import chalk from "chalk";
 import { resolve } from "pathe";
 import { PackageJson } from "pkg-types";
-import { extractExportFilenames, getpkg, warn } from "./utils";
+import { arrayIncludes, extractExportFilenames, getpkg, warn } from "./utils";
 import { BuildContext } from "./types";
 
 export function validateDependencies(ctx: BuildContext) {
@@ -22,7 +22,7 @@ export function validateDependencies(ctx: BuildContext) {
   }
   for (const id of usedDependencies) {
     if (
-      !ctx.options.externals.includes(id) &&
+      !arrayIncludes(ctx.options.externals, id) &&
       !id.startsWith("chunks/") &&
       !ctx.options.dependencies.includes(getpkg(id)) &&
       !ctx.options.peerDependencies.includes(getpkg(id))
