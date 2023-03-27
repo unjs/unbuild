@@ -2,43 +2,46 @@
 
 import { extname, relative } from "pathe";
 import type { Plugin, PluginContext } from "rollup";
-import { Loader, TransformResult, transform } from "esbuild";
+import { Loader, TransformResult, Charset, transform } from "esbuild";
 import { createFilter } from "@rollup/pluginutils";
 import type { FilterPattern } from "@rollup/pluginutils";
 
 const defaultLoaders: { [ext: string]: Loader } = {
   ".ts": "ts",
-  ".js": "js"
+  ".js": "js",
+  ".tsx": "tsx",
+  ".jsx": "jsx",
 };
 
 export interface Options {
-  include?: FilterPattern
-  exclude?: FilterPattern
-  sourceMap?: boolean
-  minify?: boolean
-  target: string | string[]
-  jsxFactory?: string
-  jsxFragment?: string
+  include?: FilterPattern;
+  exclude?: FilterPattern;
+  sourceMap?: boolean;
+  minify?: boolean;
+  charset?: Charset;
+  target: string | string[];
+  jsxFactory?: string;
+  jsxFragment?: string;
   define?: {
-    [k: string]: string
-  }
+    [k: string]: string;
+  };
   /**
    * Use this tsconfig file instead
    * Disable it by setting to `false`
    */
-  tsconfig?: string | false
+  tsconfig?: string | false;
   /**
    * Map extension to esbuild loader
    * Note that each entry (the extension) needs to start with a dot
    */
   loaders?: {
-    [ext: string]: Loader | false
-  }
+    [ext: string]: Loader | false;
+  };
 }
 
-export function esbuild (options: Options): Plugin {
+export function esbuild(options: Options): Plugin {
   const loaders = {
-    ...defaultLoaders
+    ...defaultLoaders,
   };
 
   if (options.loaders) {
@@ -54,7 +57,7 @@ export function esbuild (options: Options): Plugin {
 
   const extensions: string[] = Object.keys(loaders);
   const INCLUDE_REGEXP = new RegExp(
-    `\\.(${extensions.map(ext => ext.slice(1)).join("|")})$`
+    `\\.(${extensions.map((ext) => ext.slice(1)).join("|")})$`
   );
   const EXCLUDE_REGEXP = /node_modules/;
 
@@ -66,7 +69,7 @@ export function esbuild (options: Options): Plugin {
   return {
     name: "esbuild",
 
-    async transform (code, id) {
+    async transform(code, id) {
       if (!filter(id)) {
         return null;
       }
@@ -82,8 +85,11 @@ export function esbuild (options: Options): Plugin {
         loader,
         target: options.target,
         define: options.define,
+        charset: options.charset,
         sourcemap: options.sourceMap,
-        sourcefile: id
+        sourcefile: id,
+        jsxFactory: options.jsxFactory,
+        jsxFragment: options.jsxFragment,
       });
 
       printWarnings(id, result, this);
@@ -91,31 +97,31 @@ export function esbuild (options: Options): Plugin {
       return (
         result.code && {
           code: result.code,
-          map: result.map || null
+          map: result.map || null,
         }
       );
     },
 
-    async renderChunk (code, { fileName }) {
-      if (options.minify && !fileName.endsWith('.d.ts')) {
+    async renderChunk(code, { fileName }) {
+      if (options.minify && !fileName.endsWith(".d.ts")) {
         const result = await transform(code, {
           loader: "js",
           minify: true,
-          target: options.target
+          target: options.target,
         });
         if (result.code) {
           return {
             code: result.code,
-            map: result.map || null
+            map: result.map || null,
           };
         }
       }
       return null;
-    }
+    },
   };
 }
 
-function printWarnings (
+function printWarnings(
   id: string,
   result: TransformResult,
   plugin: PluginContext
@@ -124,8 +130,9 @@ function printWarnings (
     for (const warning of result.warnings) {
       let message = "[esbuild]";
       if (warning.location) {
-        message += ` (${relative(process.cwd(), id)}:${warning.location.line}:${warning.location.column
-          })`;
+        message += ` (${relative(process.cwd(), id)}:${warning.location.line}:${
+          warning.location.column
+        })`;
       }
       message += ` ${warning.text}`;
       plugin.warn(message);
