@@ -127,7 +127,7 @@ export function inferEntries(
       }
       const SOURCE_RE = new RegExp(`/(${d}${isDir ? "" : "\\.\\w+"})$`);
       return sourceFiles
-        .find((i) => i.match(SOURCE_RE)?.[1])
+        .find((i) => SOURCE_RE.test(i))
         ?.replace(/(\.d\.ts|\.\w+)$/, "");
     }, undefined as any);
 
