@@ -218,7 +218,6 @@ export async function build(
     relative(process.cwd(), resolve(options.outDir, p));
   for (const entry of ctx.buildEntries.filter((e) => !e.chunk)) {
     let totalBytes = entry.bytes || 0;
-    // consola.log(entry);
     for (const chunk of entry.chunks || []) {
       totalBytes += ctx.buildEntries.find((e) => e.path === chunk)?.bytes || 0;
     }
