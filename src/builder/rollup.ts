@@ -150,6 +150,10 @@ export async function rollupBuild(ctx: BuildContext) {
           chunks: entry.imports.filter((i) =>
             outputChunks.find((c) => c.fileName === i)
           ),
+          modules: Object.entries(entry.modules).map(([id, mod]) => ({
+            id,
+            bytes: mod.renderedLength,
+          })),
           path: entry.fileName,
           bytes: Buffer.byteLength(entry.code, "utf8"),
           exports: entry.exports,
