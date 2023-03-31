@@ -2,6 +2,47 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v1.2.0
+
+[compare changes](https://github.com/unjs/unbuild/compare/v1.1.2...v1.2.0)
+
+
+### 🚀 Enhancements
+
+  - **rollup:** Add `jsx` and `tsx` to esbuild loader defaults ([#198](https://github.com/unjs/unbuild/pull/198))
+  - **rollup:** Allow regular expressions in `externals` array ([#145](https://github.com/unjs/unbuild/pull/145))
+  - **mkdist:** Add new `pattern` option ([#139](https://github.com/unjs/unbuild/pull/139))
+  - Support esbuild `charset` option ([#190](https://github.com/unjs/unbuild/pull/190))
+  - **rollup:** Allow passing any all common esbuild options ([8e81e2a](https://github.com/unjs/unbuild/commit/8e81e2a))
+  - **rollup:** Show size of bundled npm packages in cli output ([#243](https://github.com/unjs/unbuild/pull/243))
+
+### 🩹 Fixes
+
+  - Pass missing esbuild jsx factory options ([#224](https://github.com/unjs/unbuild/pull/224))
+  - **rollup:** Handle array format for `rollup.alias.entries` option ([#220](https://github.com/unjs/unbuild/pull/220))
+  - **rollup:** Enable `interop: compat` for cjs compatibility ([#215](https://github.com/unjs/unbuild/pull/215))
+
+### 📖 Documentation
+
+  - Add `types` to default `exports` ([#226](https://github.com/unjs/unbuild/pull/226))
+  - Remove `types` field suggestion for now ([e8988ae](https://github.com/unjs/unbuild/commit/e8988ae))
+
+### 🏡 Chore
+
+  - Update lockfile ([cc99946](https://github.com/unjs/unbuild/commit/cc99946))
+  - Fix lint issues ([ee1ced8](https://github.com/unjs/unbuild/commit/ee1ced8))
+  - Recreate lockfile with pnpm 8 ([06d0044](https://github.com/unjs/unbuild/commit/06d0044))
+
+### ❤️  Contributors
+
+- Pooya Parsa ([@pi0](http://github.com/pi0))
+- Kid 
+- Ntnyq ([@ntnyq](http://github.com/ntnyq))
+- Marco Solazzi <marco.solazzi@gmail.com>
+- Zoeyzhao19 
+- Dunqing ([@Dunqing](http://github.com/Dunqing))
+- XLor <yjl9903@onekuma.cn>
+
 ## v1.1.2
 
 [compare changes](https://github.com/unjs/unbuild/compare/v1.1.1...v1.1.2)
