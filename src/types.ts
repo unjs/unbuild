@@ -86,6 +86,7 @@ export interface BuildContext {
     exports?: string[];
     chunks?: string[];
     chunk?: boolean;
+    modules?: { id: string; bytes: number }[];
   }[];
   usedImports: Set<string>;
   warnings: Set<string>;

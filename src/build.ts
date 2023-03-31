@@ -218,15 +218,15 @@ export async function build(
     relative(process.cwd(), resolve(options.outDir, p));
   for (const entry of ctx.buildEntries.filter((e) => !e.chunk)) {
     let totalBytes = entry.bytes || 0;
+    // consola.log(entry);
     for (const chunk of entry.chunks || []) {
       totalBytes += ctx.buildEntries.find((e) => e.path === chunk)?.bytes || 0;
     }
     let line =
       `  ${chalk.bold(rPath(entry.path))} (` +
       [
-        entry.bytes && `size: ${chalk.cyan(prettyBytes(entry.bytes))}`,
-        totalBytes !== entry.bytes &&
-          `total size: ${chalk.cyan(prettyBytes(totalBytes))}`,
+        totalBytes && `total size: ${chalk.cyan(prettyBytes(totalBytes))}`,
+        entry.bytes && `chunk size: ${chalk.cyan(prettyBytes(entry.bytes))}`,
         entry.exports?.length &&
           `exports: ${chalk.gray(entry.exports.join(", "))}`,
       ]
@@ -244,6 +244,21 @@ export async function build(
               "  └─ " +
                 rPath(p) +
                 (chunk.bytes ? ` (${prettyBytes(chunk?.bytes)})` : "")
+            );
+          })
+          .join("\n");
+    }
+    if (entry.modules?.length) {
+      line +=
+        "\n" +
+        entry.modules
+          .filter((m) => m.id.includes("node_modules"))
+          .sort((a, b) => (b.bytes || 0) - (a.bytes || 0))
+          .map((m) => {
+            return chalk.gray(
+              "  └─ " +
+                rPath(m.id) +
+                (m.bytes ? ` (${prettyBytes(m.bytes)})` : "")
             );
           })
           .join("\n");
