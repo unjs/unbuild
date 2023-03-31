@@ -243,7 +243,7 @@ export async function build(
             return chalk.gray(
               "  └─ " +
                 rPath(p) +
-                (chunk.bytes ? ` (${prettyBytes(chunk?.bytes)})` : "")
+                chalk.bold(chunk.bytes ? ` (${prettyBytes(chunk?.bytes)})` : "")
             );
           })
           .join("\n");
@@ -256,9 +256,9 @@ export async function build(
           .sort((a, b) => (b.bytes || 0) - (a.bytes || 0))
           .map((m) => {
             return chalk.gray(
-              "  └─ " +
+              "  📦 " +
                 rPath(m.id) +
-                (m.bytes ? ` (${prettyBytes(m.bytes)})` : "")
+                chalk.bold(m.bytes ? ` (${prettyBytes(m.bytes)})` : "")
             );
           })
           .join("\n");
