@@ -150,8 +150,7 @@ export async function rollupBuild(ctx: BuildContext) {
           chunks: entry.imports.filter((i) =>
             outputChunks.find((c) => c.fileName === i)
           ),
-          modules: entry.moduleIds.map((id) => {
-            const mod = entry.modules[id];
+          modules: Object.entries(entry.modules).map(([id, mod]) => {
             return {
               id,
               bytes: mod.renderedLength,
