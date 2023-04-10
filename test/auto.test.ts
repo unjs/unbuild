@@ -10,7 +10,7 @@ describe("inferEntries", () => {
     expect(result).to.deep.equal({
       cjs: true,
       dts: false,
-      entries: [{ input: "src/test" }],
+      entries: [{ name: "test", input: "src/test" }],
       warnings: [],
     });
   });
@@ -24,7 +24,7 @@ describe("inferEntries", () => {
     expect(result).to.deep.equal({
       cjs: false,
       dts: false,
-      entries: [{ input: "src/index" }],
+      entries: [{ name: "index", input: "src/index" }],
       warnings: [],
     });
   });
@@ -35,7 +35,7 @@ describe("inferEntries", () => {
     ).to.deep.equal({
       cjs: true,
       dts: false,
-      entries: [{ input: "src/cli" }],
+      entries: [{ name: "cli", input: "src/cli" }],
       warnings: [],
     });
     expect(
@@ -43,7 +43,7 @@ describe("inferEntries", () => {
     ).to.deep.equal({
       cjs: true,
       dts: false,
-      entries: [{ input: "src/cli" }],
+      entries: [{ name: "cli", input: "src/cli" }],
       warnings: [],
     });
     expect(
@@ -54,7 +54,7 @@ describe("inferEntries", () => {
     ).to.deep.equal({
       cjs: false,
       dts: false,
-      entries: [{ input: "src/cli" }],
+      entries: [{ name: "cli", input: "src/cli" }],
       warnings: [],
     });
   });
@@ -67,7 +67,7 @@ describe("inferEntries", () => {
     expect(result).to.deep.equal({
       cjs: false,
       dts: false,
-      entries: [{ input: "src/test" }],
+      entries: [{ name: "test", input: "src/test" }],
       warnings: [],
     });
   });
@@ -80,7 +80,9 @@ describe("inferEntries", () => {
     expect(result).to.deep.equal({
       cjs: false,
       dts: false,
-      entries: [{ input: "src/other/runtime/index" }],
+      entries: [
+        { name: "other/runtime/index", input: "src/other/runtime/index" },
+      ],
       warnings: [],
     });
   });
@@ -94,7 +96,7 @@ describe("inferEntries", () => {
     ).to.deep.equal({
       cjs: true,
       dts: false,
-      entries: [{ input: "src/test" }],
+      entries: [{ name: "test", input: "src/test" }],
       warnings: ["Could not find entrypoint for custom/handwritten.d.ts"],
     });
     expect(
@@ -109,7 +111,7 @@ describe("inferEntries", () => {
     ).to.deep.equal({
       cjs: true,
       dts: true,
-      entries: [{ input: "src/test" }],
+      entries: [{ name: "test", input: "src/test" }],
       warnings: [],
     });
     expect(
@@ -124,7 +126,7 @@ describe("inferEntries", () => {
     ).to.deep.equal({
       cjs: true,
       dts: true,
-      entries: [{ input: "src/test" }],
+      entries: [{ name: "test", input: "src/test" }],
       warnings: [],
     });
   });
@@ -143,7 +145,7 @@ describe("inferEntries", () => {
     expect(result).to.deep.equal({
       cjs: true,
       dts: true,
-      entries: [{ input: "src/test" }],
+      entries: [{ name: "test", input: "src/test" }],
       warnings: [],
     });
   });
@@ -183,7 +185,10 @@ describe("inferEntries", () => {
     ).to.deep.equal({
       cjs: true,
       dts: false,
-      entries: [{ input: "src/index" }, { input: "src/test" }],
+      entries: [
+        { name: "index", input: "src/index" },
+        { name: "test", input: "src/test" },
+      ],
       warnings: [],
     });
   });
@@ -199,7 +204,12 @@ describe("inferEntries", () => {
       cjs: false,
       dts: false,
       entries: [
-        { format: "esm", input: "src/runtime/", outDir: "./dist/runtime/" },
+        {
+          format: "esm",
+          name: "runtime/",
+          input: "src/runtime/",
+          outDir: "./dist/runtime/",
+        },
       ],
       warnings: [],
     });
@@ -212,7 +222,12 @@ describe("inferEntries", () => {
       cjs: false,
       dts: false,
       entries: [
-        { format: "esm", input: "src/runtime/", outDir: "./dist/runtime/" },
+        {
+          format: "esm",
+          name: "runtime/",
+          input: "src/runtime/",
+          outDir: "./dist/runtime/",
+        },
       ],
       warnings: [],
     });
@@ -225,7 +240,12 @@ describe("inferEntries", () => {
       cjs: true,
       dts: false,
       entries: [
-        { format: "cjs", input: "src/runtime/", outDir: "./dist/runtime/" },
+        {
+          format: "cjs",
+          name: "runtime/",
+          input: "src/runtime/",
+          outDir: "./dist/runtime/",
+        },
       ],
       warnings: [],
     });

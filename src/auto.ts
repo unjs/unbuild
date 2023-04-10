@@ -136,13 +136,15 @@ export function inferEntries(
       continue;
     }
 
+    const name = input.replace(/^.*src\//, "");
+
     if (output.type === "cjs") {
       cjs = true;
     }
 
     const entry =
       entries.find((i) => i.input === input) ||
-      entries[entries.push({ input }) - 1];
+      entries[entries.push({ name, input }) - 1];
 
     if (output.file.endsWith(".d.ts")) {
       dts = true;
