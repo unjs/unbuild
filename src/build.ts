@@ -3,7 +3,7 @@ import { promises as fsp } from "node:fs";
 import { resolve, relative, basename } from "pathe";
 import type { PackageJson } from "pkg-types";
 import chalk from "chalk";
-import consola from "consola";
+import { consola } from "consola";
 import { defu } from "defu";
 import { createHooks } from "hookable";
 import prettyBytes from "pretty-bytes";

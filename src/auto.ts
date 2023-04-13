@@ -1,5 +1,5 @@
 import { normalize, join } from "pathe";
-import consola from "consola";
+import { consola } from "consola";
 import chalk from "chalk";
 import type { PackageJson } from "pkg-types";
 import { extractExportFilenames, listRecursively, warn } from "./utils";

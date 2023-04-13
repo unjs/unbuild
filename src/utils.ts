@@ -2,7 +2,7 @@ import fsp from "node:fs/promises";
 import { readdirSync, statSync } from "node:fs";
 import { dirname, resolve } from "pathe";
 import jiti from "jiti";
-import consola from "consola";
+import { consola } from "consola";
 import type { PackageJson } from "pkg-types";
 import { autoPreset } from "./auto";
 import type { BuildPreset, BuildConfig, BuildContext } from "./types";
