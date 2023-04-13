@@ -2,8 +2,8 @@ lockfileVersion: '6.0'
 
 dependencies:
   '@rollup/plugin-alias':
-    specifier: ^4.0.4
-    version: 4.0.4(rollup@3.20.2)
+    specifier: ^5.0.0
+    version: 5.0.0(rollup@3.20.2)
   '@rollup/plugin-commonjs':
     specifier: ^24.1.0
     version: 24.1.0(rollup@3.20.2)
@@ -617,8 +617,8 @@ packages:
       tslib: 2.5.0
     dev: true
 
-  /@rollup/plugin-alias@4.0.4(rollup@3.20.2):
-    resolution: {integrity: sha512-0CaAY238SMtYAWEXXptWSR8iz8NYZnH7zNBKuJ14xFJSGwLtPgjvXYsoApAHfzYXXH1ejxpVw7WlHss3zhh9SQ==}
+  /@rollup/plugin-alias@5.0.0(rollup@3.20.2):
+    resolution: {integrity: sha512-l9hY5chSCjuFRPsnRm16twWBiSApl2uYFLsepQYwtBuAxNMQ/1dJqADld40P0Jkqm65GRTLy/AC6hnpVebtLsA==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       rollup: ^1.20.0||^2.0.0||^3.0.0
