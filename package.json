@@ -36,7 +36,7 @@
     "@rollup/plugin-replace": "^5.0.2",
     "@rollup/pluginutils": "^5.0.2",
     "chalk": "^5.2.0",
-    "consola": "^3.0.2",
+    "consola": "^3.0.1",
     "defu": "^6.1.2",
     "esbuild": "^0.17.16",
     "globby": "^13.1.4",

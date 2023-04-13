@@ -23,7 +23,7 @@ dependencies:
     specifier: ^5.2.0
     version: 5.2.0
   consola:
-    specifier: ^3.0.2
+    specifier: ^3.0.1
     version: 3.0.2
   defu:
     specifier: ^6.1.2
