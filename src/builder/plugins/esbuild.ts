@@ -81,7 +81,7 @@ export function esbuild(options: Options): Plugin {
         ...options,
         loader,
         sourcefile: id,
-        sourcemap: options.sourceMap ?? options.sourceMap,
+        sourcemap: options.sourceMap ?? options.sourcemap,
       });
 
       printWarnings(id, result, this);
