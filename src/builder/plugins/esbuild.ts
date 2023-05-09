@@ -13,7 +13,7 @@ const defaultLoaders: { [ext: string]: Loader } = {
   ".jsx": "jsx",
 };
 
-export interface Options extends Omit<CommonOptions,'sourcemap' | 'loader'> {
+export interface Options extends Omit<CommonOptions, "sourcemap" | "loader"> {
   /** alias to `sourcemap` */
   sourceMap?: boolean;
 
@@ -35,14 +35,21 @@ export interface Options extends Omit<CommonOptions,'sourcemap' | 'loader'> {
   };
 }
 
-export function esbuild({ sourceMap, include, exclude, loaders: _loaders, tsconfig,  ...esbuildOptions }: Options): Plugin {
+export function esbuild({
+  sourceMap,
+  include,
+  exclude,
+  loaders: _loaders,
+  tsconfig,
+  ...esbuildOptions
+}: Options): Plugin {
   const loaders = {
     ...defaultLoaders,
   };
 
   if (_loaders) {
     for (const key of Object.keys(_loaders)) {
-      const value =_loaders[key];
+      const value = _loaders[key];
       if (typeof value === "string") {
         loaders[key] = value;
       } else if (value === false) {

@@ -7,7 +7,7 @@ export default defineBuildConfig({
     esbuild: {
       // This option does not have any effect for now， but the build process should pass
       tsconfig: false,
-    }
+    },
   },
   entries: [
     "src/index",
