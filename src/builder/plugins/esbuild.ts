@@ -13,7 +13,7 @@ const defaultLoaders: { [ext: string]: Loader } = {
   ".jsx": "jsx",
 };
 
-export interface Options extends CommonOptions {
+export interface Options extends Omit<CommonOptions,'sourcemap' | 'loader'> {
   /** alias to `sourcemap` */
   sourceMap?: boolean;
 
@@ -35,14 +35,14 @@ export interface Options extends CommonOptions {
   };
 }
 
-export function esbuild(options: Options): Plugin {
+export function esbuild({ sourceMap, include, exclude, loaders: _loaders, tsconfig,  ...esbuildOptions }: Options): Plugin {
   const loaders = {
     ...defaultLoaders,
   };
 
-  if (options.loaders) {
-    for (const key of Object.keys(options.loaders)) {
-      const value = options.loaders[key];
+  if (_loaders) {
+    for (const key of Object.keys(_loaders)) {
+      const value =_loaders[key];
       if (typeof value === "string") {
         loaders[key] = value;
       } else if (value === false) {
@@ -58,8 +58,8 @@ export function esbuild(options: Options): Plugin {
   const EXCLUDE_REGEXP = /node_modules/;
 
   const filter = createFilter(
-    options.include || INCLUDE_REGEXP,
-    options.exclude || EXCLUDE_REGEXP
+    include || INCLUDE_REGEXP,
+    exclude || EXCLUDE_REGEXP
   );
 
   return {
@@ -78,10 +78,10 @@ export function esbuild(options: Options): Plugin {
       }
 
       const result = await transform(code, {
-        ...options,
+        ...esbuildOptions,
         loader,
         sourcefile: id,
-        sourcemap: options.sourceMap ?? options.sourceMap,
+        sourcemap: sourceMap,
       });
 
       printWarnings(id, result, this);
@@ -95,11 +95,11 @@ export function esbuild(options: Options): Plugin {
     },
 
     async renderChunk(code, { fileName }) {
-      if (options.minify && !fileName.endsWith(".d.ts")) {
+      if (esbuildOptions.minify && !fileName.endsWith(".d.ts")) {
         const result = await transform(code, {
           loader: "js",
           minify: true,
-          target: options.target,
+          target: esbuildOptions.target,
         });
         if (result.code) {
           return {

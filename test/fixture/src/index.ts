@@ -9,6 +9,8 @@ console.log(arch());
 console.log(require("node:os").arch());
 console.log(require.resolve("rollup"));
 console.log(testJSON);
+
+
 import("node:os").then((os) => console.log(os.arch()));
 
 // @ts-ignore
