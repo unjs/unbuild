@@ -8,6 +8,7 @@ import { defu } from "defu";
 import { createHooks } from "hookable";
 import prettyBytes from "pretty-bytes";
 import { globby } from "globby";
+import { readTSConfig } from 'pkg-types'
 import { dumpObject, rmdir, tryRequire, resolvePreset } from "./utils";
 import type { BuildContext, BuildConfig, BuildOptions } from "./types";
 import { validatePackage, validateDependencies } from "./validate";
@@ -80,7 +81,7 @@ export async function build(
         commonjs: {
           ignoreTryCatch: true,
         },
-        esbuild: { target: "es2020" },
+        esbuild: { target: (await readTSConfig()).compilerOptions?.target || "es2020" },
         dts: {
           // https://github.com/Swatinem/rollup-plugin-dts/issues/143
           compilerOptions: { preserveSymlinks: false },
