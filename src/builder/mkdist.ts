@@ -21,6 +21,7 @@ export async function mkdistBuild(ctx: BuildContext) {
         format: entry.format,
         cleanDist: false,
         declaration: entry.declaration,
+        pattern: entry.pattern,
         // @ts-ignore
         ext: entry.ext,
       };

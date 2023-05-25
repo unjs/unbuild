@@ -15,7 +15,7 @@ import dts from "rollup-plugin-dts";
 import replace from "@rollup/plugin-replace";
 import { resolve, dirname, normalize, extname, isAbsolute } from "pathe";
 import { resolvePath, resolveModuleExportNames } from "mlly";
-import { getpkg, tryResolve, warn } from "../utils";
+import { arrayIncludes, getpkg, tryResolve, warn } from "../utils";
 import type { BuildContext } from "../types";
 import { esbuild } from "./plugins/esbuild";
 import { JSONPlugin } from "./plugins/json";
@@ -150,6 +150,10 @@ export async function rollupBuild(ctx: BuildContext) {
           chunks: entry.imports.filter((i) =>
             outputChunks.find((c) => c.fileName === i)
           ),
+          modules: Object.entries(entry.modules).map(([id, mod]) => ({
+            id,
+            bytes: mod.renderedLength,
+          })),
           path: entry.fileName,
           bytes: Buffer.byteLength(entry.code, "utf8"),
           exports: entry.exports,
@@ -208,6 +212,7 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
           getChunkFilename(chunk, "cjs"),
         format: "cjs",
         exports: "auto",
+        interop: "compat",
         generatedCode: { constBindings: true },
         externalLiveBindings: false,
         freeze: false,
@@ -227,7 +232,7 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
 
     external(id) {
       const pkg = getpkg(id);
-      const isExplicitExternal = ctx.options.externals.includes(pkg);
+      const isExplicitExternal = arrayIncludes(ctx.options.externals, pkg);
       if (isExplicitExternal) {
         return true;
       }
@@ -268,7 +273,13 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
           entries: {
             [ctx.pkg.name!]: ctx.options.rootDir,
             ...ctx.options.alias,
-            ...ctx.options.rollup.alias.entries,
+            ...(Array.isArray(ctx.options.rollup.alias.entries)
+              ? Object.fromEntries(
+                  ctx.options.rollup.alias.entries.map((entry) => {
+                    return [entry.find, entry.replacement];
+                  })
+                )
+              : ctx.options.rollup.alias.entries),
           },
         }),
 

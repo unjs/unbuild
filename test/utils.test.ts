@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import {
+  arrayIncludes,
   extractExportFilenames,
   inferExportType,
   safetyRequireJSON,
@@ -56,5 +57,16 @@ describe("safetyRequireJSON", () => {
     expect(safetyRequireJSON('require("./a.json")')).toBe(
       "require(\"./a.json\")['default']"
     );
+  });
+});
+
+describe("arrayIncludes", () => {
+  it("handles strings", () => {
+    expect(arrayIncludes(["test1", "test2"], "test1")).to.eq(true);
+    expect(arrayIncludes(["test1", "test2"], "test3")).to.eq(false);
+  });
+  it("handles regular expressions", () => {
+    expect(arrayIncludes([/t1$/, "test2"], "test1")).to.eq(true);
+    expect(arrayIncludes([/t3$/, "test2"], "test1")).to.eq(false);
   });
 });

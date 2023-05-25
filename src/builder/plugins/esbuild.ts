@@ -2,31 +2,30 @@
 
 import { extname, relative } from "pathe";
 import type { Plugin, PluginContext } from "rollup";
-import { Loader, TransformResult, transform } from "esbuild";
+import { Loader, TransformResult, CommonOptions, transform } from "esbuild";
 import { createFilter } from "@rollup/pluginutils";
 import type { FilterPattern } from "@rollup/pluginutils";
 
 const defaultLoaders: { [ext: string]: Loader } = {
   ".ts": "ts",
   ".js": "js",
+  ".tsx": "tsx",
+  ".jsx": "jsx",
 };
 
-export interface Options {
+export interface Options extends CommonOptions {
+  /** alias to `sourcemap` */
+  sourceMap?: boolean;
+
   include?: FilterPattern;
   exclude?: FilterPattern;
-  sourceMap?: boolean;
-  minify?: boolean;
-  target: string | string[];
-  jsxFactory?: string;
-  jsxFragment?: string;
-  define?: {
-    [k: string]: string;
-  };
+
   /**
    * Use this tsconfig file instead
    * Disable it by setting to `false`
    */
   tsconfig?: string | false;
+
   /**
    * Map extension to esbuild loader
    * Note that each entry (the extension) needs to start with a dot
@@ -79,11 +78,10 @@ export function esbuild(options: Options): Plugin {
       }
 
       const result = await transform(code, {
+        ...options,
         loader,
-        target: options.target,
-        define: options.define,
-        sourcemap: options.sourceMap,
         sourcefile: id,
+        sourcemap: options.sourceMap ?? options.sourceMap,
       });
 
       printWarnings(id, result, this);

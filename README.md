@@ -132,7 +132,7 @@ export default defineBuildConfig({
 [npm-downloads-src]: https://img.shields.io/npm/dm/unbuild?style=flat-square
 [npm-downloads-href]: https://npmjs.com/package/unbuild
 
-[github-actions-src]: https://img.shields.io/github/workflow/status/unjs/unbuild/ci/main?style=flat-square
+[github-actions-src]: https://img.shields.io/github/actions/workflow/status/unjs/unbuild/ci.yml?style=flat-square
 [github-actions-href]: https://github.com/unjs/unbuild/actions?query=workflow%3Aci
 
 [codecov-src]: https://img.shields.io/codecov/c/gh/unjs/unbuild/main?style=flat-square

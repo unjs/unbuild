@@ -36,6 +36,7 @@ export interface MkdistBuildEntry extends BaseBuildEntry {
   builder: "mkdist";
   format?: "esm" | "cjs";
   ext?: "cjs" | "mjs" | "js" | "ts";
+  pattern?: string | string[];
 }
 
 export type BuildEntry =
@@ -66,7 +67,7 @@ export interface BuildOptions {
   declaration?: boolean;
   outDir: string;
   stub: boolean;
-  externals: string[];
+  externals: (string | RegExp)[];
   dependencies: string[];
   peerDependencies: string[];
   devDependencies: string[];
@@ -85,6 +86,7 @@ export interface BuildContext {
     exports?: string[];
     chunks?: string[];
     chunk?: boolean;
+    modules?: { id: string; bytes: number }[];
   }[];
   usedImports: Set<string>;
   warnings: Set<string>;

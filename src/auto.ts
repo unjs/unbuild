@@ -1,5 +1,5 @@
 import { normalize, join } from "pathe";
-import consola from "consola";
+import { consola } from "consola";
 import chalk from "chalk";
 import type { PackageJson } from "pkg-types";
 import { extractExportFilenames, listRecursively, warn } from "./utils";
@@ -125,9 +125,9 @@ export function inferEntries(
       if (source) {
         return source;
       }
-      const SOURCE_RE = new RegExp(`${d}${isDir ? "" : "\\.\\w+"}$`);
+      const SOURCE_RE = new RegExp(`(?<=/|$)${d}${isDir ? "" : "\\.\\w+"}$`);
       return sourceFiles
-        .find((i) => i.match(SOURCE_RE))
+        .find((i) => SOURCE_RE.test(i))
         ?.replace(/(\.d\.ts|\.\w+)$/, "");
     }, undefined as any);
 

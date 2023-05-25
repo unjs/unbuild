@@ -3,12 +3,11 @@ import { promises as fsp } from "node:fs";
 import { resolve, relative, basename } from "pathe";
 import type { PackageJson } from "pkg-types";
 import chalk from "chalk";
-import consola from "consola";
+import { consola } from "consola";
 import { defu } from "defu";
 import { createHooks } from "hookable";
 import prettyBytes from "pretty-bytes";
 import { globby } from "globby";
-import mkdirp from "mkdirp";
 import { dumpObject, rmdir, tryRequire, resolvePreset } from "./utils";
 import type { BuildContext, BuildConfig, BuildOptions } from "./types";
 import { validatePackage, validateDependencies } from "./validate";
@@ -170,7 +169,7 @@ export async function build(
   if (options.clean) {
     for (const dir of new Set(options.entries.map((e) => e.outDir).sort())) {
       await rmdir(dir!);
-      await mkdirp(dir!);
+      await fsp.mkdir(dir!, { recursive: true });
     }
   }
 
@@ -225,9 +224,8 @@ export async function build(
     let line =
       `  ${chalk.bold(rPath(entry.path))} (` +
       [
-        entry.bytes && `size: ${chalk.cyan(prettyBytes(entry.bytes))}`,
-        totalBytes !== entry.bytes &&
-          `total size: ${chalk.cyan(prettyBytes(totalBytes))}`,
+        totalBytes && `total size: ${chalk.cyan(prettyBytes(totalBytes))}`,
+        entry.bytes && `chunk size: ${chalk.cyan(prettyBytes(entry.bytes))}`,
         entry.exports?.length &&
           `exports: ${chalk.gray(entry.exports.join(", "))}`,
       ]
@@ -244,7 +242,22 @@ export async function build(
             return chalk.gray(
               "  └─ " +
                 rPath(p) +
-                (chunk.bytes ? ` (${prettyBytes(chunk?.bytes)})` : "")
+                chalk.bold(chunk.bytes ? ` (${prettyBytes(chunk?.bytes)})` : "")
+            );
+          })
+          .join("\n");
+    }
+    if (entry.modules?.length) {
+      line +=
+        "\n" +
+        entry.modules
+          .filter((m) => m.id.includes("node_modules"))
+          .sort((a, b) => (b.bytes || 0) - (a.bytes || 0))
+          .map((m) => {
+            return chalk.gray(
+              "  📦 " +
+                rPath(m.id) +
+                chalk.bold(m.bytes ? ` (${prettyBytes(m.bytes)})` : "")
             );
           })
           .join("\n");
