@@ -53,7 +53,7 @@ Update `package.json`:
     }
   },
   "main": "./dist/index.cjs",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/index.d.cts",
   "files": [
     "dist"
   ]
