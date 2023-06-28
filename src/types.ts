@@ -177,8 +177,10 @@ export interface BuildHooks {
   "untyped:done": (ctx: BuildContext) => void | Promise<void>;
 }
 
-export function defineBuildConfig(config: BuildConfig): BuildConfig {
-  return config;
+export function defineBuildConfig(
+  config: BuildConfig | BuildConfig[]
+): BuildConfig[] {
+  return Array.isArray(config) ? config : [config];
 }
 
 export function definePreset(preset: BuildPreset): BuildPreset {

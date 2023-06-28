@@ -21,7 +21,7 @@ Integration with [mkdist](https://github.com/unjs/mkdist) for generating bundlel
 
 ### ✨ Passive watcher
 
-Stub `dist` once using  [jiti](https://github.com/unjs/jiti) and you can try and link your project without needing to watch and rebuild during development.
+Stub `dist` once using [jiti](https://github.com/unjs/jiti) and you can try and link your project without needing to watch and rebuild during development.
 
 ### ✍ Untype Generator
 
@@ -91,27 +91,65 @@ See options [here](./src/types.ts).
 Example:
 
 ```ts
-import { defineBuildConfig } from 'unbuild'
+import { defineBuildConfig } from "unbuild";
 
 export default defineBuildConfig({
+  // If entries is not provided, will be automatically inferred from package.json
+  entries: [
+    // default
+    "./src/index",
+    // mkdist builder transpiles file-to-file keeping original sources structure
+    {
+      builder: "mkdist",
+      input: "./src/package/components/",
+      outDir: "./build/components",
+    },
+  ],
+
+  // Change outDir, default is 'dist'
+  outDir: "build",
+
+  // Generates .d.ts declaration file
+  declaration: true,
+});
+```
+
+or with multiple builds you can declare an array of configs:
+
+```ts
+import { defineBuildConfig } from "unbuild";
+
+export default defineBuildConfig([
+  {
     // If entries is not provided, will be automatically inferred from package.json
     entries: [
-        // default
-        './src/index',
-        // mkdist builder transpiles file-to-file keeping original sources structure
-        {
-            builder: 'mkdist',
-            input: './src/package/components/',
-            outDir: './build/components'
-        },
+      // default
+      "./src/index",
+      // mkdist builder transpiles file-to-file keeping original sources structure
+      {
+        builder: "mkdist",
+        input: "./src/package/components/",
+        outDir: "./build/components",
+      },
     ],
 
     // Change outDir, default is 'dist'
-    outDir: 'build',
+    outDir: "build",
 
     // Generates .d.ts declaration file
     declaration: true,
-})
+  },
+  {
+    name: "minified",
+    entries: ["./src/index"],
+    outDir: "build/min",
+    rollup: {
+      esbuild: {
+        minify: true,
+      },
+    },
+  },
+]);
 ```
 
 ## 💻 Development

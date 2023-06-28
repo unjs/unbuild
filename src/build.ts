@@ -23,72 +23,84 @@ export async function build(
   // Determine rootDir
   rootDir = resolve(process.cwd(), rootDir || ".");
 
-  // Read build.config and package.json
-  const buildConfig: BuildConfig = tryRequire("./build.config", rootDir) || {};
-  const pkg: PackageJson & Record<"unbuild" | "build", BuildConfig> =
-    tryRequire("./package.json", rootDir);
+  const buildConfig: BuildConfig | BuildConfig[] =
+    tryRequire("./build.config", rootDir) || {};
 
+  const buildConfigs = Array.isArray(buildConfig) ? buildConfig : [buildConfig];
+
+  const pkg: PackageJson & Record<"unbuild" | "build", BuildConfig> =
+    tryRequire("./package.json", rootDir) || {};
+
+  // Invoke build for every build config defined in build.config.ts
+  for (const buildConfig of buildConfigs) {
+    const config = defu(
+      buildConfig,
+      pkg.unbuild || pkg.build,
+      inputConfig
+    ) as BuildConfig;
+    await singleConfigBuild({ rootDir, stub, inputConfig: config, pkg });
+  }
+}
+
+async function singleConfigBuild({
+  inputConfig,
+  rootDir,
+  stub,
+  pkg,
+}: {
+  inputConfig: BuildConfig;
+  rootDir: string;
+  stub: boolean;
+  pkg: PackageJson & Record<"unbuild" | "build", BuildConfig>;
+}) {
   // Resolve preset
-  const preset = resolvePreset(
-    buildConfig.preset ||
-      pkg.unbuild?.preset ||
-      pkg.build?.preset ||
-      inputConfig.preset ||
-      "auto",
-    rootDir
-  );
+  const preset = resolvePreset(inputConfig.preset || "auto", rootDir);
 
   // Merge options
-  const options = defu(
-    buildConfig,
-    pkg.unbuild || pkg.build,
-    inputConfig,
-    preset,
-    <BuildOptions>{
-      name: (pkg?.name || "").split("/").pop() || "default",
-      rootDir,
-      entries: [],
-      clean: true,
-      declaration: false,
-      outDir: "dist",
-      stub,
-      externals: [
-        ...Module.builtinModules,
-        ...Module.builtinModules.map((m) => "node:" + m),
-      ],
-      dependencies: [],
-      devDependencies: [],
-      peerDependencies: [],
-      alias: {},
-      replace: {},
-      failOnWarn: true,
-      rollup: {
-        emitCJS: false,
-        cjsBridge: false,
-        inlineDependencies: false,
-        // Plugins
-        replace: {
-          preventAssignment: true,
-        },
-        alias: {},
-        resolve: {
-          preferBuiltins: true,
-        },
-        json: {
-          preferConst: true,
-        },
-        commonjs: {
-          ignoreTryCatch: true,
-        },
-        esbuild: { target: "es2020" },
-        dts: {
-          // https://github.com/Swatinem/rollup-plugin-dts/issues/143
-          compilerOptions: { preserveSymlinks: false },
-          respectExternal: true,
-        },
+  const options = defu(inputConfig, preset, <BuildOptions>{
+    name: (pkg?.name || "").split("/").pop() || "default",
+    rootDir,
+    entries: [],
+    clean: true,
+    declaration: false,
+    outDir: "dist",
+    stub,
+    externals: [
+      ...Module.builtinModules,
+      ...Module.builtinModules.map((m) => "node:" + m),
+    ],
+    dependencies: [],
+    devDependencies: [],
+    peerDependencies: [],
+    alias: {},
+    replace: {},
+    failOnWarn: true,
+    rollup: {
+      emitCJS: false,
+      cjsBridge: false,
+      inlineDependencies: false,
+      // Plugins
+      replace: {
+        preventAssignment: true,
       },
-    }
-  ) as BuildOptions;
+      alias: {},
+      resolve: {
+        preferBuiltins: true,
+      },
+      json: {
+        preferConst: true,
+      },
+      commonjs: {
+        ignoreTryCatch: true,
+      },
+      esbuild: { target: "es2020" },
+      dts: {
+        // https://github.com/Swatinem/rollup-plugin-dts/issues/143
+        compilerOptions: { preserveSymlinks: false },
+        respectExternal: true,
+      },
+    },
+  }) as BuildOptions;
 
   // Resolve dirs relative to rootDir
   options.outDir = resolve(options.rootDir, options.outDir);
@@ -109,9 +121,6 @@ export async function build(
   }
   if (inputConfig.hooks) {
     ctx.hooks.addHooks(inputConfig.hooks);
-  }
-  if (buildConfig.hooks) {
-    ctx.hooks.addHooks(buildConfig.hooks);
   }
 
   // Allow prepare and extending context
@@ -156,7 +165,7 @@ export async function build(
 
   // Start info
   consola.info(
-    chalk.cyan(`${options.stub ? "Stubbing" : "Building"} ${pkg.name}`)
+    chalk.cyan(`${options.stub ? "Stubbing" : "Building"} ${options.name}`)
   );
   if (process.env.DEBUG) {
     consola.info(`${chalk.bold("Root dir:")} ${options.rootDir}
