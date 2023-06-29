@@ -13,7 +13,7 @@ const defaultLoaders: { [ext: string]: Loader } = {
   ".jsx": "jsx",
 };
 
-export interface Options extends Omit<CommonOptions, "sourcemap" | "loader"> {
+export interface Options extends Omit<CommonOptions, "loader"> {
   /** alias to `sourcemap` */
   sourceMap?: boolean;
 
@@ -88,7 +88,7 @@ export function esbuild({
         ...esbuildOptions,
         loader,
         sourcefile: id,
-        sourcemap: sourceMap,
+        sourcemap: sourceMap ?? esbuildOptions.sourcemap,
       });
 
       printWarnings(id, result, this);
