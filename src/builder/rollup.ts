@@ -195,12 +195,17 @@ export async function rollupBuild(ctx: BuildContext) {
       chunkFileNames: (chunk) => getChunkFilename(ctx, chunk, "d.mts"),
     });
     // #endregion
-    // #region .d.ts for node10 compatibility
-    await typesBuild.write({
-      dir: resolve(ctx.options.rootDir, ctx.options.outDir),
-      entryFileNames: "[name].d.ts",
-      chunkFileNames: (chunk) => getChunkFilename(ctx, chunk, "d.ts"),
-    });
+    // #region .d.ts for node10 compatibility (TypeScript version < 4.7)
+    if (
+      ctx.options.declaration === true ||
+      ctx.options.declaration === "compatible"
+    ) {
+      await typesBuild.write({
+        dir: resolve(ctx.options.rootDir, ctx.options.outDir),
+        entryFileNames: "[name].d.ts",
+        chunkFileNames: (chunk) => getChunkFilename(ctx, chunk, "d.ts"),
+      });
+    }
     // #endregion
   }
 
