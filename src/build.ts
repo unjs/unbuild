@@ -127,6 +127,9 @@ async function _build(
   if (inputConfig.hooks) {
     ctx.hooks.addHooks(inputConfig.hooks);
   }
+  if (buildConfig.hooks) {
+    ctx.hooks.addHooks(buildConfig.hooks);
+  }
 
   // Allow prepare and extending context
   await ctx.hooks.callHook("build:prepare", ctx);
