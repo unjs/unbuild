@@ -1,4 +1,5 @@
-import { normalize, join } from "pathe";
+import { existsSync } from "node:fs";
+import { normalize, join, resolve } from "pathe";
 import { consola } from "consola";
 import chalk from "chalk";
 import type { PackageJson } from "pkg-types";
@@ -21,7 +22,7 @@ export const autoPreset = definePreset(() => {
           return;
         }
         const sourceFiles = listRecursively(join(ctx.options.rootDir, "src"));
-        const res = inferEntries(ctx.pkg, sourceFiles);
+        const res = inferEntries(ctx.pkg, sourceFiles, ctx.options.rootDir);
         for (const message of res.warnings) {
           warn(ctx, message);
         }
@@ -66,6 +67,7 @@ export const autoPreset = definePreset(() => {
 export function inferEntries(
   pkg: PackageJson,
   sourceFiles: string[],
+  rootDir?: string,
 ): InferEntriesResult {
   const warnings = [];
 
@@ -135,7 +137,9 @@ export function inferEntries(
     }, undefined as any);
 
     if (!input) {
-      warnings.push(`Could not find entrypoint for ${output.file}`);
+      if (!existsSync(resolve(rootDir || ".", output.file))) {
+        warnings.push(`Could not find entrypoint for \`${output.file}\``);
+      }
       continue;
     }
 

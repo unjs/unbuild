@@ -1,6 +1,9 @@
 {
   "name": "fixture",
   "private": "true",
+  "bin": {
+    "fixture": "./bin/cli.mjs"
+  },
   "exports": {
     ".": "./dist/index.mjs",
     "./nested/subpath": "./dist/nested/subpath.mjs"
