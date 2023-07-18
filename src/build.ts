@@ -39,8 +39,9 @@ export async function build(
     tryRequire("./package.json", rootDir) || {};
 
   // Invoke build for every build config defined in build.config.ts
+  const cleanedDirs: string[] = [];
   for (const buildConfig of buildConfigs) {
-    await _build(rootDir, stub, inputConfig, buildConfig, pkg);
+    await _build(rootDir, stub, inputConfig, buildConfig, pkg, cleanedDirs);
   }
 }
 
@@ -50,6 +51,7 @@ async function _build(
   inputConfig: BuildConfig = {},
   buildConfig: BuildConfig,
   pkg: PackageJson & Record<"unbuild" | "build", BuildConfig>,
+  cleanedDirs: string[],
 ) {
   // Resolve preset
   const preset = resolvePreset(
@@ -207,9 +209,21 @@ async function _build(
 
   // Clean dist dirs
   if (options.clean) {
-    for (const dir of new Set(options.entries.map((e) => e.outDir).sort())) {
-      await rmdir(dir!);
-      await fsp.mkdir(dir!, { recursive: true });
+    for (const dir of new Set(
+      options.entries
+        .map((e) => e.outDir)
+        .filter(Boolean)
+        .sort() as unknown as Set<string>,
+    )) {
+      if (cleanedDirs.some((c) => dir.startsWith(c))) {
+        continue;
+      }
+      cleanedDirs.push(dir);
+      consola.info(
+        `Cleaning dist directory: \`./${relative(process.cwd(), dir)}\``,
+      );
+      await rmdir(dir);
+      await fsp.mkdir(dir, { recursive: true });
     }
   }
 
