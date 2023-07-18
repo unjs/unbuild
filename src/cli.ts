@@ -25,10 +25,15 @@ const main = defineCommand({
       type: "boolean",
       description: "Minify build",
     },
+    sourcemap: {
+      type: "boolean",
+      description: "Generate sourcemaps (experimental)",
+    },
   },
   async run({ args }) {
     const rootDir = resolve(process.cwd(), args.dir || ".");
     await build(rootDir, args.stub, {
+      sourcemap: args.sourcemap,
       rollup: {
         esbuild: {
           minify: args.minify,

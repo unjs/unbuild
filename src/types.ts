@@ -1,7 +1,7 @@
 /* eslint-disable no-use-before-define */
 import type { PackageJson } from "pkg-types";
 import type { Hookable } from "hookable";
-import type { RollupOptions, RollupBuild } from "rollup";
+import type { RollupOptions, RollupBuild, OutputOptions } from "rollup";
 import type { MkdistOptions } from "mkdist";
 import type { Schema } from "untyped";
 import type { RollupReplaceOptions } from "@rollup/plugin-replace";
@@ -50,6 +50,7 @@ export interface RollupBuildOptions {
   emitCJS?: boolean;
   cjsBridge?: boolean;
   inlineDependencies?: boolean;
+  output?: OutputOptions;
   // Plugins
   replace: RollupReplaceOptions | false;
   alias: RollupAliasOptions | false;
@@ -65,6 +66,8 @@ export interface BuildOptions {
   rootDir: string;
   entries: BuildEntry[];
   clean: boolean;
+  /** @experimental */
+  sourcemap: boolean;
   /**
    * * `compatible` means "src/index.ts" will generate "dist/index.d.mts", "dist/index.d.cts" and "dist/index.d.ts".
    * * `node16` means "src/index.ts" will generate "dist/index.d.mts" and "dist/index.d.cts".
