@@ -260,7 +260,7 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
 
     external(id) {
       const pkg = getpkg(id);
-      const isExplicitExternal = arrayIncludes(ctx.options.externals, pkg);
+      const isExplicitExternal = arrayIncludes(ctx.options.externals, pkg) || arrayIncludes(ctx.options.externals, id);
       if (isExplicitExternal) {
         return true;
       }
