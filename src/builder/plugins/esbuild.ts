@@ -78,7 +78,7 @@ export function esbuild(options: Options): Plugin {
       }
 
       const result = await transform(code, {
-        ...options as any,
+        ...(options as any),
         loader,
         sourcefile: id,
         sourcemap: options.sourcemap ?? options.sourceMap,
