@@ -91,6 +91,9 @@ export function esbuild(options: EsbuildOptions): Plugin {
       if (!options.minify) {
         return null;
       }
+      if (/\.d\.(c|m)?tsx?$/.test(fileName)) {
+        return null;
+      }
       const loader = getLoader(fileName);
       if (!loader) {
         return null;
