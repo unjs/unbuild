@@ -13,7 +13,7 @@ const DefaultLoaders: { [ext: string]: Loader } = {
   ".jsx": "jsx",
 };
 
-export interface Options extends CommonOptions {
+export type ESBuildOptions = CommonOptions & {
   include?: FilterPattern;
   exclude?: FilterPattern;
 
@@ -24,9 +24,9 @@ export interface Options extends CommonOptions {
   loaders?: {
     [ext: string]: Loader | false;
   };
-}
+};
 
-export function esbuild(options: Options): Plugin {
+export function esbuild(options: ESBuildOptions): Plugin {
   // Extract esBuild options from additional options and apply defaults
   const {
     include = /\.(ts|js|tsx|jsx)$/,
