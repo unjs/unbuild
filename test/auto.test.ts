@@ -95,7 +95,7 @@ describe("inferEntries", () => {
       cjs: true,
       dts: false,
       entries: [{ input: "src/test" }],
-      warnings: ["Could not find entrypoint for custom/handwritten.d.ts"],
+      warnings: ["Could not find entrypoint for `custom/handwritten.d.ts`"],
     });
     expect(
       inferEntries(
@@ -160,7 +160,7 @@ describe("inferEntries", () => {
       cjs: false,
       entries: [],
       dts: false,
-      warnings: ["Could not find entrypoint for dist/test.js"],
+      warnings: ["Could not find entrypoint for `dist/test.js`"],
     });
   });
 
