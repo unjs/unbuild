@@ -2,6 +2,7 @@
   "name": "fixture",
   "private": "true",
   "exports": {
-    ".": "./dist/index.mjs"
+    ".": "./dist/index.mjs",
+    "./nested/subpath": "./dist/nested/subpath.mjs"
   }
 }

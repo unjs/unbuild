@@ -8,6 +8,7 @@ export default defineBuildConfig([
     },
     entries: [
       "./src/index.ts",
+      "./src/nested/subpath.ts",
       { input: "src/runtime/", outDir: "dist/runtime" },
       { input: "src/schema", builder: "untyped" },
     ],
