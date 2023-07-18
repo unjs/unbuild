@@ -7,8 +7,14 @@ import { createFilter } from "@rollup/pluginutils";
 import type { FilterPattern } from "@rollup/pluginutils";
 
 const DefaultLoaders: { [ext: string]: Loader } = {
-  ".ts": "ts",
   ".js": "js",
+  ".mjs": "js",
+  ".cjs": "js",
+
+  ".ts": "ts",
+  ".mts": "ts",
+  ".cts": "ts",
+
   ".tsx": "tsx",
   ".jsx": "jsx",
 };
@@ -46,6 +52,9 @@ export function esbuild(options: EsbuildOptions): Plugin {
       }
     }
   }
+  const getLoader = (id = "") => {
+    return loaders[extname(id)];
+  };
 
   const filter = createFilter(include, exclude);
 
@@ -57,9 +66,7 @@ export function esbuild(options: EsbuildOptions): Plugin {
         return null;
       }
 
-      const ext = extname(id);
-      const loader = loaders[ext];
-
+      const loader = getLoader(id);
       if (!loader) {
         return null;
       }
@@ -68,7 +75,6 @@ export function esbuild(options: EsbuildOptions): Plugin {
         ...esbuildOptions,
         loader,
         sourcefile: id,
-        sourcemap: options.sourcemap,
       });
 
       printWarnings(id, result, this);
@@ -82,20 +88,25 @@ export function esbuild(options: EsbuildOptions): Plugin {
     },
 
     async renderChunk(code, { fileName }) {
-      if (options.minify && !fileName.endsWith(".d.ts")) {
-        const result = await transform(code, {
-          loader: "js",
-          minify: true,
-          target: options.target,
-        });
-        if (result.code) {
-          return {
-            code: result.code,
-            map: result.map || null,
-          };
-        }
+      if (!options.minify) {
+        return null;
       }
-      return null;
+      const loader = getLoader(fileName);
+      if (!loader) {
+        return null;
+      }
+      const result = await transform(code, {
+        ...esbuildOptions,
+        loader,
+        sourcefile: fileName,
+        minify: true,
+      });
+      if (result.code) {
+        return {
+          code: result.code,
+          map: result.map || null,
+        };
+      }
     },
   };
 }
