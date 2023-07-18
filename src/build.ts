@@ -169,7 +169,10 @@ async function _build(
       entry.declaration = options.declaration;
     }
 
-    if (options.declarationMap !== undefined && entry.declarationMap === undefined) {
+    if (
+      options.declarationMap !== undefined &&
+      entry.declarationMap === undefined
+    ) {
       entry.declarationMap = options.declarationMap;
     }
 
