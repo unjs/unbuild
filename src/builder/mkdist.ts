@@ -18,12 +18,8 @@ export async function mkdistBuild(ctx: BuildContext) {
         rootDir: ctx.options.rootDir,
         srcDir: entry.input,
         distDir,
-        format: entry.format,
         cleanDist: false,
-        declaration: !!entry.declaration,
-        pattern: entry.pattern,
-        // @ts-ignore
-        ext: entry.ext,
+        ...entry,
       };
       await ctx.hooks.callHook(
         "mkdist:entry:options",

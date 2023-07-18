@@ -33,11 +33,9 @@ export interface RollupBuildEntry extends BaseBuildEntry {
   builder: "rollup";
 }
 
-export interface MkdistBuildEntry extends BaseBuildEntry {
+type _BaseAndMkdist = BaseBuildEntry & MkdistOptions;
+export interface MkdistBuildEntry extends _BaseAndMkdist {
   builder: "mkdist";
-  format?: "esm" | "cjs";
-  ext?: "cjs" | "mjs" | "js" | "ts";
-  pattern?: string | string[];
 }
 
 export type BuildEntry =
