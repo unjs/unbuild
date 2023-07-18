@@ -15,7 +15,6 @@ import dts from "rollup-plugin-dts";
 import replace from "@rollup/plugin-replace";
 import { resolve, dirname, normalize, extname, isAbsolute } from "pathe";
 import { resolvePath, resolveModuleExportNames } from "mlly";
-import type { JITIOptions } from "jiti";
 import { arrayIncludes, getpkg, tryResolve, warn } from "../utils";
 import type { BuildContext } from "../types";
 import { esbuild } from "./plugins/esbuild";
@@ -38,7 +37,13 @@ export async function rollupBuild(ctx: BuildContext) {
   if (ctx.options.stub) {
     const jitiPath = await resolvePath("jiti", { url: import.meta.url });
     const serializedJitiOptions = JSON.stringify(
-      ctx.options.stubOptions.jiti,
+      {
+        ...ctx.options.stubOptions.jiti,
+        alias: {
+          ...resolveAliases(ctx),
+          ...ctx.options.stubOptions.jiti.alias,
+        },
+      },
       null,
       2,
     );
@@ -309,17 +314,7 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
       ctx.options.rollup.alias &&
         alias({
           ...ctx.options.rollup.alias,
-          entries: {
-            [ctx.pkg.name!]: ctx.options.rootDir,
-            ...ctx.options.alias,
-            ...(Array.isArray(ctx.options.rollup.alias.entries)
-              ? Object.fromEntries(
-                  ctx.options.rollup.alias.entries.map((entry) => {
-                    return [entry.find, entry.replacement];
-                  }),
-                )
-              : ctx.options.rollup.alias.entries),
-          },
+          entries: resolveAliases(ctx),
         }),
 
       ctx.options.rollup.resolve &&
@@ -358,4 +353,31 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
       rawPlugin(),
     ].filter(Boolean),
   }) as RollupOptions;
+}
+
+function resolveAliases(ctx: BuildContext) {
+  const aliases: Record<string, string> = {
+    [ctx.pkg.name!]: ctx.options.rootDir,
+    ...ctx.options.alias,
+  };
+
+  if (ctx.options.rollup.alias) {
+    if (Array.isArray(ctx.options.rollup.alias.entries)) {
+      Object.assign(
+        aliases,
+        Object.fromEntries(
+          ctx.options.rollup.alias.entries.map((entry) => {
+            return [entry.find, entry.replacement];
+          }),
+        ),
+      );
+    } else {
+      Object.assign(
+        aliases,
+        ctx.options.rollup.alias.entries || ctx.options.rollup.alias,
+      );
+    }
+  }
+
+  return aliases;
 }
