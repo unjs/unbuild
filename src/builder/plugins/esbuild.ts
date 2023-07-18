@@ -46,6 +46,9 @@ export function esbuild(options: EsbuildOptions): Plugin {
       }
     }
   }
+  const getLoader = (id = "") => {
+    return loaders[extname(id)];
+  };
 
   const filter = createFilter(include, exclude);
 
@@ -57,9 +60,7 @@ export function esbuild(options: EsbuildOptions): Plugin {
         return null;
       }
 
-      const ext = extname(id);
-      const loader = loaders[ext];
-
+      const loader = getLoader(id);
       if (!loader) {
         return null;
       }
@@ -82,20 +83,24 @@ export function esbuild(options: EsbuildOptions): Plugin {
     },
 
     async renderChunk(code, { fileName }) {
-      if (options.minify && fileName.endsWith(".js")) {
-        const result = await transform(code, {
-          loader: "js",
-          minify: true,
-          target: options.target,
-        });
-        if (result.code) {
-          return {
-            code: result.code,
-            map: result.map || null,
-          };
-        }
+      if (!options.minify) {
+        return null;
       }
-      return null;
+      const loader = getLoader(fileName);
+      if (!loader) {
+        return null;
+      }
+      const result = await transform(code, {
+        loader,
+        minify: true,
+        target: options.target,
+      });
+      if (result.code) {
+        return {
+          code: result.code,
+          map: result.map || null,
+        };
+      }
     },
   };
 }
