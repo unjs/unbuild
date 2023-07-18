@@ -10,6 +10,7 @@ import type { RollupNodeResolveOptions } from "@rollup/plugin-node-resolve";
 import type { RollupJsonOptions } from "@rollup/plugin-json";
 import type { Options as RollupDtsOptions } from "rollup-plugin-dts";
 import type commonjs from "@rollup/plugin-commonjs";
+import type { JITIOptions } from "jiti";
 import type { EsbuildOptions } from "./builder/plugins/esbuild";
 
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -74,6 +75,7 @@ export interface BuildOptions {
   declaration?: "compatible" | "node16" | boolean;
   outDir: string;
   stub: boolean;
+  stubOptions: { jiti: Omit<JITIOptions, "transform" | "onError"> };
   externals: (string | RegExp)[];
   dependencies: string[];
   peerDependencies: string[];

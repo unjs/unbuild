@@ -75,6 +75,16 @@ async function _build(
       declaration: false,
       outDir: "dist",
       stub,
+      stubOptions: {
+        /**
+         * See https://github.com/unjs/jiti#options
+         */
+        jiti: {
+          esmResolve: true,
+          interopDefault: true,
+          alias: {},
+        },
+      },
       externals: [
         ...Module.builtinModules,
         ...Module.builtinModules.map((m) => "node:" + m),

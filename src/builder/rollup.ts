@@ -15,6 +15,7 @@ import dts from "rollup-plugin-dts";
 import replace from "@rollup/plugin-replace";
 import { resolve, dirname, normalize, extname, isAbsolute } from "pathe";
 import { resolvePath, resolveModuleExportNames } from "mlly";
+import type { JITIOptions } from "jiti";
 import { arrayIncludes, getpkg, tryResolve, warn } from "../utils";
 import type { BuildContext } from "../types";
 import { esbuild } from "./plugins/esbuild";
@@ -36,6 +37,11 @@ const DEFAULT_EXTENSIONS = [
 export async function rollupBuild(ctx: BuildContext) {
   if (ctx.options.stub) {
     const jitiPath = await resolvePath("jiti", { url: import.meta.url });
+    const serializedJitiOptions = JSON.stringify(
+      ctx.options.stubOptions.jiti,
+      null,
+      2,
+    );
 
     for (const entry of ctx.options.entries.filter(
       (entry) => entry.builder === "rollup",
@@ -64,7 +70,7 @@ export async function rollupBuild(ctx: BuildContext) {
           output + ".cjs",
           `${shebang}module.exports = require(${JSON.stringify(
             jitiPath,
-          )})(null, { interopDefault: true, esmResolve: true })(${JSON.stringify(
+          )})(null, ${serializedJitiOptions})(${JSON.stringify(
             resolvedEntry,
           )})`,
         );
@@ -91,7 +97,7 @@ export async function rollupBuild(ctx: BuildContext) {
             `import jiti from ${JSON.stringify(pathToFileURL(jitiPath).href)};`,
             "",
             `/** @type {import(${JSON.stringify(resolvedEntryWithoutExt)})} */`,
-            `const _module = jiti(null, { interopDefault: true, esmResolve: true })(${JSON.stringify(
+            `const _module = jiti(null, ${serializedJitiOptions})(${JSON.stringify(
               resolvedEntry,
             )});`,
             hasDefaultExport ? "\nexport default _module;" : "",
