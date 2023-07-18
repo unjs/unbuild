@@ -84,7 +84,7 @@ export default {
 }
 ```
 
-You can either use `unbuild` key in `package.json` or `build.config.{js,ts,json}` to specify configuration.
+You can either use `unbuild` key in `package.json` or `build.config.{js,cjs,mjs,ts,mts,cts,json}` to specify configuration.
 
 See options [here](./src/types.ts).
 
@@ -109,8 +109,14 @@ export default defineBuildConfig({
     // Change outDir, default is 'dist'
     outDir: 'build',
 
-    // Generates .d.ts declaration file
-    declaration: true,
+    /**
+     * * `compatible` means "src/index.ts" will generate "dist/index.d.mts", "dist/index.d.cts" and "dist/index.d.ts".
+     * * `node16` means "src/index.ts" will generate "dist/index.d.mts" and "dist/index.d.cts".
+     * * `true` is equivalent to `compatible`.
+     * * `false` will disable declaration generation.
+     * * `undefined` will auto detect based on "package.json". If "package.json" has "types" field, it will be `"compatible"`, otherwise `false`.
+     */
+    declaration: 'compatible',
 })
 ```
 
