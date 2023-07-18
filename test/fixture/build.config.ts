@@ -7,7 +7,7 @@ export default defineBuildConfig([
       emitCJS: true,
     },
     entries: [
-      "src/index",
+      "./src/index.ts",
       { input: "src/runtime/", outDir: "dist/runtime" },
       { input: "src/schema", builder: "untyped" },
     ],

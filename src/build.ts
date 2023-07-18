@@ -8,7 +8,13 @@ import { defu } from "defu";
 import { createHooks } from "hookable";
 import prettyBytes from "pretty-bytes";
 import { globby } from "globby";
-import { dumpObject, rmdir, tryRequire, resolvePreset } from "./utils";
+import {
+  dumpObject,
+  rmdir,
+  tryRequire,
+  resolvePreset,
+  removeExtension,
+} from "./utils";
 import type { BuildContext, BuildConfig, BuildOptions } from "./types";
 import { validatePackage, validateDependencies } from "./validate";
 import { rollupBuild } from "./builder/rollup";
@@ -141,7 +147,7 @@ async function _build(
 
   for (const entry of options.entries) {
     if (typeof entry.name !== "string") {
-      entry.name = basename(entry.input);
+      entry.name = removeExtension(basename(entry.input));
     }
 
     if (!entry.input) {
