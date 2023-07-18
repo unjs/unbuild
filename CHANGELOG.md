@@ -2,6 +2,71 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v2.0.0-rc.0
+
+[compare changes](https://github.com/unjs/unbuild/compare/v1.2.1...v2.0.0-rc.0)
+
+### 🚀 Enhancements
+
+- Generate `.d.mts` and `.d.cts` declarations ([#273](https://github.com/unjs/unbuild/pull/273))
+- Support multiple build configs ([#275](https://github.com/unjs/unbuild/pull/275))
+- Support nested subpaths ([#280](https://github.com/unjs/unbuild/pull/280))
+- Allow customizing jiti options for stub entries ([#282](https://github.com/unjs/unbuild/pull/282))
+- Support aliases for stub mode ([#283](https://github.com/unjs/unbuild/pull/283))
+- Migrate to `unjs/citty` ([#284](https://github.com/unjs/unbuild/pull/284))
+- **cli:** Support `--minify` ([#285](https://github.com/unjs/unbuild/pull/285))
+- Sourcemap support ([#286](https://github.com/unjs/unbuild/pull/286))
+
+### 🩹 Fixes
+
+- Respect directory separator when matching entries ([#214](https://github.com/unjs/unbuild/pull/214))
+- **esbuild:** Typo in `sourcemap` option ([#259](https://github.com/unjs/unbuild/pull/259))
+- Remove extensions from default output name ([#279](https://github.com/unjs/unbuild/pull/279))
+- **rollup:** Check module id against externals as well ([#270](https://github.com/unjs/unbuild/pull/270))
+- **esbuild:** Apply minify with corresponding loader ([#254](https://github.com/unjs/unbuild/pull/254))
+- **esbuild:** Do not minify declarations ([83b3ed2](https://github.com/unjs/unbuild/commit/83b3ed2))
+- **mkdist:** Allow passing all possible options ([f40a889](https://github.com/unjs/unbuild/commit/f40a889))
+- Clean dist directories only once for multi builds ([11c47c8](https://github.com/unjs/unbuild/commit/11c47c8))
+- **auto:** Avoid warning for existing files ([#287](https://github.com/unjs/unbuild/pull/287))
+
+### 💅 Refactors
+
+- **rollup:** ⚠️  Improve esbuild options handling ([#278](https://github.com/unjs/unbuild/pull/278))
+
+### 📦 Build
+
+- ⚠️  Make typescript a peer dependency ([f31c6a4](https://github.com/unjs/unbuild/commit/f31c6a4))
+
+### 🏡 Chore
+
+- **release:** V1.2.1 ([968612b](https://github.com/unjs/unbuild/commit/968612b))
+- Update badges ([#260](https://github.com/unjs/unbuild/pull/260))
+- Update all non major dependencies ([9518aa8](https://github.com/unjs/unbuild/commit/9518aa8))
+- Update dev dependencies ([a446556](https://github.com/unjs/unbuild/commit/a446556))
+- Lint code ([87e5035](https://github.com/unjs/unbuild/commit/87e5035))
+- Fix lint issue ([b711242](https://github.com/unjs/unbuild/commit/b711242))
+- Lint code ([6ac2e9f](https://github.com/unjs/unbuild/commit/6ac2e9f))
+- Add autofix ci ([075b7ad](https://github.com/unjs/unbuild/commit/075b7ad))
+- Format with prettier v3 ([40ec1d9](https://github.com/unjs/unbuild/commit/40ec1d9))
+- Update mkdist ([1234f75](https://github.com/unjs/unbuild/commit/1234f75))
+- Enable declaration for min + sourcemap fixture ([7dcda3f](https://github.com/unjs/unbuild/commit/7dcda3f))
+
+#### ⚠️  Breaking Changes
+
+- **rollup:** ⚠️  Improve esbuild options handling ([#278](https://github.com/unjs/unbuild/pull/278))
+- ⚠️  Make typescript a peer dependency ([f31c6a4](https://github.com/unjs/unbuild/commit/f31c6a4))
+
+### ❤️  Contributors
+
+- Pooya Parsa ([@pi0](http://github.com/pi0))
+- Sukka <isukkaw@gmail.com>
+- Wang Zhi ([@yfwz100](http://github.com/yfwz100))
+- Patryk Tomczyk 
+- JounQin ([@JounQin](http://github.com/JounQin))
+- ZHAO Jin-Xiang <xiaoxiangmoe@gmail.com>
+- LitoMore 
+- 科科 <bernankez@qq.com>
+
 ## v1.2.1
 
 [compare changes](https://github.com/unjs/unbuild/compare/v1.2.0...v1.2.1)
