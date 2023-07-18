@@ -1,7 +1,6 @@
 import Module from "node:module";
 import { promises as fsp } from "node:fs";
-import { isAbsolute, normalize } from "node:path";
-import { resolve, relative, basename } from "pathe";
+import { resolve, relative, isAbsolute, normalize } from "pathe";
 import type { PackageJson } from "pkg-types";
 import chalk from "chalk";
 import { consola } from "consola";
