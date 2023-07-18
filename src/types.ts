@@ -10,7 +10,7 @@ import type { RollupNodeResolveOptions } from "@rollup/plugin-node-resolve";
 import type { RollupJsonOptions } from "@rollup/plugin-json";
 import type { Options as RollupDtsOptions } from "rollup-plugin-dts";
 import type commonjs from "@rollup/plugin-commonjs";
-import type { Options as EsbuildOptions } from "./builder/plugins/esbuild";
+import type { EsbuildOptions } from "./builder/plugins/esbuild";
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type RollupCommonJSOptions = Parameters<typeof commonjs>[0] & {};
@@ -20,8 +20,7 @@ export interface BaseBuildEntry {
   input: string;
   name?: string;
   outDir?: string;
-  declaration?: boolean;
-  declarationMap?: boolean
+  declaration?: "compatible" | "node16" | boolean;
 }
 
 export interface UntypedBuildEntry extends BaseBuildEntry {
@@ -65,8 +64,15 @@ export interface BuildOptions {
   rootDir: string;
   entries: BuildEntry[];
   clean: boolean;
-  declaration?: boolean;
-  declarationMap?: boolean
+  /**
+   * * `compatible` means "src/index.ts" will generate "dist/index.d.mts", "dist/index.d.cts" and "dist/index.d.ts".
+   * * `node16` means "src/index.ts" will generate "dist/index.d.mts" and "dist/index.d.cts".
+   * * `true` is equivalent to `compatible`.
+   * * `false` will disable declaration generation.
+   * * `undefined` will auto detect based on "package.json". If "package.json" has "types" field, it will be `"compatible"`, otherwise `false`.
+   */
+  declaration?: "compatible" | "node16" | boolean;
+  declarationMap?: boolean;
   outDir: string;
   stub: boolean;
   externals: (string | RegExp)[];
@@ -88,6 +94,7 @@ export interface BuildContext {
     exports?: string[];
     chunks?: string[];
     chunk?: boolean;
+    modules?: { id: string; bytes: number }[];
   }[];
   usedImports: Set<string>;
   warnings: Set<string>;
@@ -178,8 +185,10 @@ export interface BuildHooks {
   "untyped:done": (ctx: BuildContext) => void | Promise<void>;
 }
 
-export function defineBuildConfig(config: BuildConfig): BuildConfig {
-  return config;
+export function defineBuildConfig(
+  config: BuildConfig | BuildConfig[]
+): BuildConfig[] {
+  return (Array.isArray(config) ? config : [config]).filter(Boolean);
 }
 
 export function definePreset(preset: BuildPreset): BuildPreset {

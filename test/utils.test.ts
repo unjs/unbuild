@@ -34,7 +34,7 @@ describe("extractExportFilenames", () => {
     expect(
       extractExportFilenames({
         require: { node: "test", other: { import: "this", require: "that" } },
-      })
+      }),
     ).to.deep.equal([
       { file: "test", type: "cjs" },
       { file: "this", type: "esm" },

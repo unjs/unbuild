@@ -1,14 +1,20 @@
 import Module from "node:module";
 import { promises as fsp } from "node:fs";
-import { resolve, relative, basename } from "pathe";
+import { resolve, relative, isAbsolute, normalize } from "pathe";
 import type { PackageJson } from "pkg-types";
 import chalk from "chalk";
-import consola from "consola";
+import { consola } from "consola";
 import { defu } from "defu";
 import { createHooks } from "hookable";
 import prettyBytes from "pretty-bytes";
 import { globby } from "globby";
-import { dumpObject, rmdir, tryRequire, resolvePreset } from "./utils";
+import {
+  dumpObject,
+  rmdir,
+  tryRequire,
+  resolvePreset,
+  removeExtension,
+} from "./utils";
 import type { BuildContext, BuildConfig, BuildOptions } from "./types";
 import { validatePackage, validateDependencies } from "./validate";
 import { rollupBuild } from "./builder/rollup";
@@ -18,16 +24,33 @@ import { mkdistBuild } from "./builder/mkdist";
 export async function build(
   rootDir: string,
   stub: boolean,
-  inputConfig: BuildConfig = {}
+  inputConfig: BuildConfig = {},
 ) {
   // Determine rootDir
   rootDir = resolve(process.cwd(), rootDir || ".");
 
-  // Read build.config and package.json
-  const buildConfig: BuildConfig = tryRequire("./build.config", rootDir) || {};
-  const pkg: PackageJson & Record<"unbuild" | "build", BuildConfig> =
-    tryRequire("./package.json", rootDir);
+  const _buildConfig: BuildConfig | BuildConfig[] =
+    tryRequire("./build.config", rootDir) || {};
+  const buildConfigs = (
+    Array.isArray(_buildConfig) ? _buildConfig : [_buildConfig]
+  ).filter(Boolean);
 
+  const pkg: PackageJson & Record<"unbuild" | "build", BuildConfig> =
+    tryRequire("./package.json", rootDir) || {};
+
+  // Invoke build for every build config defined in build.config.ts
+  for (const buildConfig of buildConfigs) {
+    await _build(rootDir, stub, inputConfig, buildConfig, pkg);
+  }
+}
+
+async function _build(
+  rootDir: string,
+  stub: boolean,
+  inputConfig: BuildConfig = {},
+  buildConfig: BuildConfig,
+  pkg: PackageJson & Record<"unbuild" | "build", BuildConfig>,
+) {
   // Resolve preset
   const preset = resolvePreset(
     buildConfig.preset ||
@@ -35,7 +58,7 @@ export async function build(
       pkg.build?.preset ||
       inputConfig.preset ||
       "auto",
-    rootDir
+    rootDir,
   );
 
   // Merge options
@@ -88,7 +111,7 @@ export async function build(
           respectExternal: true,
         },
       },
-    }
+    },
   ) as BuildOptions;
 
   // Resolve dirs relative to rootDir
@@ -120,12 +143,18 @@ export async function build(
 
   // Normalize entries
   options.entries = options.entries.map((entry) =>
-    typeof entry === "string" ? { input: entry } : entry
+    typeof entry === "string" ? { input: entry } : entry,
   );
 
   for (const entry of options.entries) {
     if (typeof entry.name !== "string") {
-      entry.name = basename(entry.input);
+      let relativeInput = isAbsolute(entry.input)
+        ? relative(rootDir, entry.input)
+        : normalize(entry.input);
+      if (relativeInput.startsWith("./")) {
+        relativeInput = relativeInput.slice(2);
+      }
+      entry.name = removeExtension(relativeInput.replace(/^src\//, ""));
     }
 
     if (!entry.input) {
@@ -161,7 +190,7 @@ export async function build(
 
   // Start info
   consola.info(
-    chalk.cyan(`${options.stub ? "Stubbing" : "Building"} ${pkg.name}`)
+    chalk.cyan(`${options.stub ? "Stubbing" : "Building"} ${options.name}`),
   );
   if (process.env.DEBUG) {
     consola.info(`${chalk.bold("Root dir:")} ${options.rootDir}
@@ -229,9 +258,8 @@ export async function build(
     let line =
       `  ${chalk.bold(rPath(entry.path))} (` +
       [
-        entry.bytes && `size: ${chalk.cyan(prettyBytes(entry.bytes))}`,
-        totalBytes !== entry.bytes &&
-          `total size: ${chalk.cyan(prettyBytes(totalBytes))}`,
+        totalBytes && `total size: ${chalk.cyan(prettyBytes(totalBytes))}`,
+        entry.bytes && `chunk size: ${chalk.cyan(prettyBytes(entry.bytes))}`,
         entry.exports?.length &&
           `exports: ${chalk.gray(entry.exports.join(", "))}`,
       ]
@@ -248,7 +276,24 @@ export async function build(
             return chalk.gray(
               "  └─ " +
                 rPath(p) +
-                (chunk.bytes ? ` (${prettyBytes(chunk?.bytes)})` : "")
+                chalk.bold(
+                  chunk.bytes ? ` (${prettyBytes(chunk?.bytes)})` : "",
+                ),
+            );
+          })
+          .join("\n");
+    }
+    if (entry.modules?.length) {
+      line +=
+        "\n" +
+        entry.modules
+          .filter((m) => m.id.includes("node_modules"))
+          .sort((a, b) => (b.bytes || 0) - (a.bytes || 0))
+          .map((m) => {
+            return chalk.gray(
+              "  📦 " +
+                rPath(m.id) +
+                chalk.bold(m.bytes ? ` (${prettyBytes(m.bytes)})` : ""),
             );
           })
           .join("\n");
@@ -258,8 +303,8 @@ export async function build(
   console.log(
     "Σ Total dist size (byte size):",
     chalk.cyan(
-      prettyBytes(ctx.buildEntries.reduce((a, e) => a + (e.bytes || 0), 0))
-    )
+      prettyBytes(ctx.buildEntries.reduce((a, e) => a + (e.bytes || 0), 0)),
+    ),
   );
 
   // Validate
@@ -274,11 +319,11 @@ export async function build(
   if (ctx.warnings.size > 0) {
     consola.warn(
       "Build is done with some warnings:\n\n" +
-        [...ctx.warnings].map((msg) => "- " + msg).join("\n")
+        [...ctx.warnings].map((msg) => "- " + msg).join("\n"),
     );
     if (ctx.options.failOnWarn) {
       consola.error(
-        "Exiting with code (1). You can change this behavior by setting `failOnWarn: false` ."
+        "Exiting with code (1). You can change this behavior by setting `failOnWarn: false` .",
       );
       // eslint-disable-next-line unicorn/no-process-exit
       process.exit(1);

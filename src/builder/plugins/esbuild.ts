@@ -2,34 +2,27 @@
 
 import { extname, relative } from "pathe";
 import type { Plugin, PluginContext } from "rollup";
-import { Loader, TransformResult, Charset, transform } from "esbuild";
+import { Loader, TransformResult, CommonOptions, transform } from "esbuild";
 import { createFilter } from "@rollup/pluginutils";
 import type { FilterPattern } from "@rollup/pluginutils";
 
-const defaultLoaders: { [ext: string]: Loader } = {
-  ".ts": "ts",
+const DefaultLoaders: { [ext: string]: Loader } = {
   ".js": "js",
+  ".mjs": "js",
+  ".cjs": "js",
+
+  ".ts": "ts",
+  ".mts": "ts",
+  ".cts": "ts",
+
   ".tsx": "tsx",
   ".jsx": "jsx",
 };
 
-export interface Options {
+export type EsbuildOptions = CommonOptions & {
   include?: FilterPattern;
   exclude?: FilterPattern;
-  sourceMap?: boolean;
-  minify?: boolean;
-  charset?: Charset;
-  target: string | string[];
-  jsxFactory?: string;
-  jsxFragment?: string;
-  define?: {
-    [k: string]: string;
-  };
-  /**
-   * Use this tsconfig file instead
-   * Disable it by setting to `false`
-   */
-  tsconfig?: string | false;
+
   /**
    * Map extension to esbuild loader
    * Note that each entry (the extension) needs to start with a dot
@@ -37,16 +30,21 @@ export interface Options {
   loaders?: {
     [ext: string]: Loader | false;
   };
-}
+};
 
-export function esbuild(options: Options): Plugin {
-  const loaders = {
-    ...defaultLoaders,
-  };
+export function esbuild(options: EsbuildOptions): Plugin {
+  // Extract esBuild options from additional options and apply defaults
+  const {
+    include = /\.(ts|js|tsx|jsx)$/,
+    exclude = /node_modules/,
+    loaders: loaderOptions,
+    ...esbuildOptions
+  } = options;
 
-  if (options.loaders) {
-    for (const key of Object.keys(options.loaders)) {
-      const value = options.loaders[key];
+  // Rsolve loaders
+  const loaders = { ...DefaultLoaders };
+  if (loaderOptions) {
+    for (const [key, value] of Object.entries(loaderOptions)) {
       if (typeof value === "string") {
         loaders[key] = value;
       } else if (value === false) {
@@ -54,17 +52,11 @@ export function esbuild(options: Options): Plugin {
       }
     }
   }
+  const getLoader = (id = "") => {
+    return loaders[extname(id)];
+  };
 
-  const extensions: string[] = Object.keys(loaders);
-  const INCLUDE_REGEXP = new RegExp(
-    `\\.(${extensions.map((ext) => ext.slice(1)).join("|")})$`
-  );
-  const EXCLUDE_REGEXP = /node_modules/;
-
-  const filter = createFilter(
-    options.include || INCLUDE_REGEXP,
-    options.exclude || EXCLUDE_REGEXP
-  );
+  const filter = createFilter(include, exclude);
 
   return {
     name: "esbuild",
@@ -74,22 +66,15 @@ export function esbuild(options: Options): Plugin {
         return null;
       }
 
-      const ext = extname(id);
-      const loader = loaders[ext];
-
+      const loader = getLoader(id);
       if (!loader) {
         return null;
       }
 
       const result = await transform(code, {
+        ...esbuildOptions,
         loader,
-        target: options.target,
-        define: options.define,
-        charset: options.charset,
-        sourcemap: options.sourceMap,
         sourcefile: id,
-        jsxFactory: options.jsxFactory,
-        jsxFragment: options.jsxFragment,
       });
 
       printWarnings(id, result, this);
@@ -103,20 +88,25 @@ export function esbuild(options: Options): Plugin {
     },
 
     async renderChunk(code, { fileName }) {
-      if (options.minify && !fileName.endsWith(".d.ts")) {
-        const result = await transform(code, {
-          loader: "js",
-          minify: true,
-          target: options.target,
-        });
-        if (result.code) {
-          return {
-            code: result.code,
-            map: result.map || null,
-          };
-        }
+      if (!options.minify) {
+        return null;
       }
-      return null;
+      const loader = getLoader(fileName);
+      if (!loader) {
+        return null;
+      }
+      const result = await transform(code, {
+        ...esbuildOptions,
+        loader,
+        sourcefile: fileName,
+        minify: true,
+      });
+      if (result.code) {
+        return {
+          code: result.code,
+          map: result.map || null,
+        };
+      }
     },
   };
 }
@@ -124,7 +114,7 @@ export function esbuild(options: Options): Plugin {
 function printWarnings(
   id: string,
   result: TransformResult,
-  plugin: PluginContext
+  plugin: PluginContext,
 ) {
   if (result.warnings) {
     for (const warning of result.warnings) {

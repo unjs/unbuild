@@ -9,7 +9,7 @@ import type { BuildContext, UntypedBuildEntry, UntypedOutputs } from "../types";
 
 export async function typesBuild(ctx: BuildContext) {
   const entries = ctx.options.entries.filter(
-    (entry) => entry.builder === "untyped"
+    (entry) => entry.builder === "untyped",
   ) as UntypedBuildEntry[];
   await ctx.hooks.callHook("untyped:entries", ctx, entries);
 
@@ -64,7 +64,7 @@ export async function typesBuild(ctx: BuildContext) {
       await writeFile(
         resolve(distDir, output.fileName),
         output.contents,
-        "utf8"
+        "utf8",
       );
     }
   }
