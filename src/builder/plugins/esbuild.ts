@@ -7,8 +7,14 @@ import { createFilter } from "@rollup/pluginutils";
 import type { FilterPattern } from "@rollup/pluginutils";
 
 const DefaultLoaders: { [ext: string]: Loader } = {
-  ".ts": "ts",
   ".js": "js",
+  ".mjs": "js",
+  ".cjs": "js",
+
+  ".ts": "ts",
+  ".mts": "ts",
+  ".cts": "ts",
+
   ".tsx": "tsx",
   ".jsx": "jsx",
 };
