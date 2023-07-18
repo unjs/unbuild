@@ -23,11 +23,28 @@ export async function build(
   // Determine rootDir
   rootDir = resolve(process.cwd(), rootDir || ".");
 
-  // Read build.config and package.json
-  const buildConfig: BuildConfig = tryRequire("./build.config", rootDir) || {};
-  const pkg: PackageJson & Record<"unbuild" | "build", BuildConfig> =
-    tryRequire("./package.json", rootDir);
+  const _buildConfig: BuildConfig | BuildConfig[] =
+    tryRequire("./build.config", rootDir) || {};
+  const buildConfigs = (
+    Array.isArray(_buildConfig) ? _buildConfig : [_buildConfig]
+  ).filter(Boolean);
 
+  const pkg: PackageJson & Record<"unbuild" | "build", BuildConfig> =
+    tryRequire("./package.json", rootDir) || {};
+
+  // Invoke build for every build config defined in build.config.ts
+  for (const buildConfig of buildConfigs) {
+    await _build(rootDir, stub, inputConfig, buildConfig, pkg);
+  }
+}
+
+async function _build(
+  rootDir: string,
+  stub: boolean,
+  inputConfig: BuildConfig = {},
+  buildConfig: BuildConfig,
+  pkg: PackageJson & Record<"unbuild" | "build", BuildConfig>
+) {
   // Resolve preset
   const preset = resolvePreset(
     buildConfig.preset ||
@@ -156,7 +173,7 @@ export async function build(
 
   // Start info
   consola.info(
-    chalk.cyan(`${options.stub ? "Stubbing" : "Building"} ${pkg.name}`)
+    chalk.cyan(`${options.stub ? "Stubbing" : "Building"} ${options.name}`)
   );
   if (process.env.DEBUG) {
     consola.info(`${chalk.bold("Root dir:")} ${options.rootDir}

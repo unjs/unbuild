@@ -21,7 +21,7 @@ Integration with [mkdist](https://github.com/unjs/mkdist) for generating bundlel
 
 ### ✨ Passive watcher
 
-Stub `dist` once using  [jiti](https://github.com/unjs/jiti) and you can try and link your project without needing to watch and rebuild during development.
+Stub `dist` once using [jiti](https://github.com/unjs/jiti) and you can try and link your project without needing to watch and rebuild during development.
 
 ### ✍ Untype Generator
 
@@ -38,7 +38,9 @@ CLI output also includes output size and exports for quick inspection.
 Create `src/index.ts`:
 
 ```ts
-export const log = (...args) => { console.log(...args) }
+export const log = (...args) => {
+  console.log(...args);
+};
 ```
 
 Update `package.json`:
@@ -54,9 +56,7 @@ Update `package.json`:
   },
   "main": "./dist/index.cjs",
   "types": "./dist/index.d.ts",
-  "files": [
-    "dist"
-  ]
+  "files": ["dist"]
 }
 ```
 
@@ -71,17 +71,14 @@ npx unbuild
 
 Configuration is automatically inferred from fields in `package.json` mapped to `src/` directory. For more control, continue with next section.
 
-
 ## Configuration
 
 Create `build.config.ts`:
 
 ```ts
 export default {
-  entries: [
-    './src/index'
-  ]
-}
+  entries: ["./src/index"],
+};
 ```
 
 You can either use `unbuild` key in `package.json` or `build.config.{js,cjs,mjs,ts,mts,cts,json}` to specify configuration.
@@ -91,23 +88,50 @@ See options [here](./src/types.ts).
 Example:
 
 ```ts
-import { defineBuildConfig } from 'unbuild'
+import { defineBuildConfig } from "unbuild";
 
 export default defineBuildConfig({
+  // If entries is not provided, will be automatically inferred from package.json
+  entries: [
+    // default
+    "./src/index",
+    // mkdist builder transpiles file-to-file keeping original sources structure
+    {
+      builder: "mkdist",
+      input: "./src/package/components/",
+      outDir: "./build/components",
+    },
+  ],
+
+  // Change outDir, default is 'dist'
+  outDir: "build",
+
+  // Generates .d.ts declaration file
+  declaration: true,
+});
+```
+
+Or with multiple builds you can declare an array of configs:
+
+```ts
+import { defineBuildConfig } from "unbuild";
+
+export default defineBuildConfig([
+  {
     // If entries is not provided, will be automatically inferred from package.json
     entries: [
-        // default
-        './src/index',
-        // mkdist builder transpiles file-to-file keeping original sources structure
-        {
-            builder: 'mkdist',
-            input: './src/package/components/',
-            outDir: './build/components'
-        },
+      // default
+      "./src/index",
+      // mkdist builder transpiles file-to-file keeping original sources structure
+      {
+        builder: "mkdist",
+        input: "./src/package/components/",
+        outDir: "./build/components",
+      },
     ],
 
     // Change outDir, default is 'dist'
-    outDir: 'build',
+    outDir: "build",
 
     /**
      * * `compatible` means "src/index.ts" will generate "dist/index.d.mts", "dist/index.d.cts" and "dist/index.d.ts".
@@ -116,8 +140,19 @@ export default defineBuildConfig({
      * * `false` will disable declaration generation.
      * * `undefined` will auto detect based on "package.json". If "package.json" has "types" field, it will be `"compatible"`, otherwise `false`.
      */
-    declaration: 'compatible',
-})
+    declaration: "compatible",
+  },
+  {
+    name: "minified",
+    entries: ["./src/index"],
+    outDir: "build/min",
+    rollup: {
+      esbuild: {
+        minify: true,
+      },
+    },
+  },
+]);
 ```
 
 ## 💻 Development
@@ -132,14 +167,12 @@ export default defineBuildConfig({
 [MIT](./LICENSE)
 
 <!-- Badges -->
+
 [npm-version-src]: https://img.shields.io/npm/v/unbuild?style=flat-square
 [npm-version-href]: https://npmjs.com/package/unbuild
-
 [npm-downloads-src]: https://img.shields.io/npm/dm/unbuild?style=flat-square
 [npm-downloads-href]: https://npmjs.com/package/unbuild
-
 [github-actions-src]: https://img.shields.io/github/actions/workflow/status/unjs/unbuild/ci.yml?style=flat-square
 [github-actions-href]: https://github.com/unjs/unbuild/actions?query=workflow%3Aci
-
 [codecov-src]: https://img.shields.io/codecov/c/gh/unjs/unbuild/main?style=flat-square
 [codecov-href]: https://codecov.io/gh/unjs/unbuild
