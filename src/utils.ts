@@ -172,3 +172,7 @@ export function arrayIncludes(arr: (string | RegExp)[], searchElement: string) {
       : entry === searchElement
   );
 }
+
+export function removeExtension(filename: string) {
+  return filename.replace(/\.(js|mjs|cjs|ts|mts|cts|json|jsx|tsx)$/, "");
+}

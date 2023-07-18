@@ -1,4 +1,7 @@
 {
   "name": "fixture",
-  "private": "true"
+  "private": "true",
+  "exports": {
+    ".": "./dist/index.mjs"
+  }
 }
