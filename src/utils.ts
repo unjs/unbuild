@@ -91,7 +91,7 @@ export function tryResolve(id: string, rootDir: string = process.cwd()) {
 
 export function resolvePreset(
   preset: string | BuildPreset,
-  rootDir: string
+  rootDir: string,
 ): BuildConfig {
   if (preset === "auto") {
     preset = autoPreset;
@@ -107,7 +107,7 @@ export function resolvePreset(
 export function inferExportType(
   condition: string,
   previousConditions: string[] = [],
-  filename = ""
+  filename = "",
 ): "esm" | "cjs" {
   if (filename) {
     if (filename.endsWith(".d.ts")) {
@@ -121,10 +121,12 @@ export function inferExportType(
     }
   }
   switch (condition) {
-    case "import":
+    case "import": {
       return "esm";
-    case "require":
+    }
+    case "require": {
       return "cjs";
+    }
     default: {
       if (previousConditions.length === 0) {
         // TODO: Check against type:module for default
@@ -140,7 +142,7 @@ export type OutputDescriptor = { file: string; type?: "esm" | "cjs" };
 
 export function extractExportFilenames(
   exports: PackageJson["exports"],
-  conditions: string[] = []
+  conditions: string[] = [],
 ): OutputDescriptor[] {
   if (!exports) {
     return [];
@@ -158,7 +160,7 @@ export function extractExportFilenames(
               file: exports,
               type: inferExportType(condition, conditions, exports),
             }
-          : extractExportFilenames(exports, [...conditions, condition])
+          : extractExportFilenames(exports, [...conditions, condition]),
       )
   );
 }
@@ -179,6 +181,10 @@ export function arrayIncludes(arr: (string | RegExp)[], searchElement: string) {
   return arr.some((entry) =>
     entry instanceof RegExp
       ? entry.test(searchElement)
-      : entry === searchElement
+      : entry === searchElement,
   );
+}
+
+export function removeExtension(filename: string) {
+  return filename.replace(/\.(js|mjs|cjs|ts|mts|cts|json|jsx|tsx)$/, "");
 }
