@@ -10,7 +10,7 @@ import type { RollupNodeResolveOptions } from "@rollup/plugin-node-resolve";
 import type { RollupJsonOptions } from "@rollup/plugin-json";
 import type { Options as RollupDtsOptions } from "rollup-plugin-dts";
 import type commonjs from "@rollup/plugin-commonjs";
-import type { ESBuildOptions } from "./builder/plugins/esbuild";
+import type { EsbuildOptions } from "./builder/plugins/esbuild";
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type RollupCommonJSOptions = Parameters<typeof commonjs>[0] & {};
@@ -54,7 +54,7 @@ export interface RollupBuildOptions {
   alias: RollupAliasOptions | false;
   resolve: RollupNodeResolveOptions | false;
   json: RollupJsonOptions | false;
-  esbuild: ESBuildOptions | false;
+  esbuild: EsbuildOptions | false;
   commonjs: RollupCommonJSOptions | false;
   dts: RollupDtsOptions;
 }
