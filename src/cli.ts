@@ -1,18 +1,33 @@
 #!/usr/bin/env node
+import { defineCommand, runMain } from "citty";
 import { resolve } from "pathe";
-import mri from "mri";
+import { name, version, description } from "../package.json";
 import { build } from "./build";
 
-async function main() {
-  const args = mri(process.argv.splice(2));
-  const rootDir = resolve(process.cwd(), args._[0] || ".");
-  await build(rootDir, args.stub).catch((error) => {
-    console.error(`Error building ${rootDir}: ${error}`);
-    throw error;
-  });
-}
-
-main().catch((error) => {
-  console.error(error);
-  process.exit(1);
+const main = defineCommand({
+  meta: {
+    name,
+    version,
+    description,
+  },
+  args: {
+    dir: {
+      type: "positional",
+      description: "The directory to build",
+      required: false,
+    },
+    stub: {
+      type: "boolean",
+      description: "Stub build",
+    },
+  },
+  async run({ args }) {
+    const rootDir = resolve(process.cwd(), args.dir || ".");
+    await build(rootDir, args.stub).catch((error) => {
+      console.error(`Error building ${rootDir}: ${error}`);
+      throw error;
+    });
+  },
 });
+
+runMain(main);

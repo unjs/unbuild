@@ -22,6 +22,9 @@ dependencies:
   chalk:
     specifier: ^5.3.0
     version: 5.3.0
+  citty:
+    specifier: ^0.1.2
+    version: 0.1.2
   consola:
     specifier: ^3.2.3
     version: 3.2.3
@@ -49,9 +52,6 @@ dependencies:
   mlly:
     specifier: ^1.4.0
     version: 1.4.0
-  mri:
-    specifier: ^1.2.0
-    version: 1.2.0
   pathe:
     specifier: ^1.1.1
     version: 1.1.1
@@ -75,9 +75,6 @@ dependencies:
     version: 1.3.2
 
 devDependencies:
-  '@types/mri':
-    specifier: ^1.1.1
-    version: 1.1.1
   '@types/node':
     specifier: ^20.4.2
     version: 20.4.2
@@ -738,10 +735,6 @@ packages:
 
   /@types/json5@0.0.29:
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
-    dev: true
-
-  /@types/mri@1.1.1:
-    resolution: {integrity: sha512-nJOuiTlsvmClSr3+a/trTSx4DTuY/VURsWGKSf/eeavh0LRMqdsK60ti0TlwM5iHiGOK3/Ibkxsbr7i9rzGreA==}
     dev: true
 
   /@types/node@20.4.2:
