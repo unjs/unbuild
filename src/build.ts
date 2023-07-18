@@ -95,6 +95,7 @@ async function _build(
       alias: {},
       replace: {},
       failOnWarn: true,
+      sourcemap: false,
       rollup: {
         emitCJS: false,
         cjsBridge: false,

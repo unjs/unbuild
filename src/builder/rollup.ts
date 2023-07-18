@@ -247,19 +247,22 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
     ),
 
     output: [
-      ctx.options.rollup.emitCJS && {
-        dir: resolve(ctx.options.rootDir, ctx.options.outDir),
-        entryFileNames: "[name].cjs",
-        chunkFileNames: (chunk: PreRenderedChunk) =>
-          getChunkFilename(ctx, chunk, "cjs"),
-        format: "cjs",
-        exports: "auto",
-        interop: "compat",
-        generatedCode: { constBindings: true },
-        externalLiveBindings: false,
-        freeze: false,
-      },
-      {
+      ctx.options.rollup.emitCJS &&
+        <OutputOptions>{
+          dir: resolve(ctx.options.rootDir, ctx.options.outDir),
+          entryFileNames: "[name].cjs",
+          chunkFileNames: (chunk: PreRenderedChunk) =>
+            getChunkFilename(ctx, chunk, "cjs"),
+          format: "cjs",
+          exports: "auto",
+          interop: "compat",
+          generatedCode: { constBindings: true },
+          externalLiveBindings: false,
+          freeze: false,
+          sourcemap: ctx.options.sourcemap,
+          ...ctx.options.rollup.output,
+        },
+      <OutputOptions>{
         dir: resolve(ctx.options.rootDir, ctx.options.outDir),
         entryFileNames: "[name].mjs",
         chunkFileNames: (chunk: PreRenderedChunk) =>
@@ -269,6 +272,8 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
         generatedCode: { constBindings: true },
         externalLiveBindings: false,
         freeze: false,
+        sourcemap: ctx.options.sourcemap,
+        ...ctx.options.rollup.output,
       },
     ].filter(Boolean),
 
@@ -332,6 +337,7 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
 
       ctx.options.rollup.esbuild &&
         esbuild({
+          sourcemap: ctx.options.sourcemap,
           ...ctx.options.rollup.esbuild,
         }),
 
