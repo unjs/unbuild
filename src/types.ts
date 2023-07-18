@@ -43,8 +43,7 @@ export type BuildEntry =
   | BaseBuildEntry
   | RollupBuildEntry
   | UntypedBuildEntry
-  | MkdistBuildEntry
-  | string;
+  | MkdistBuildEntry;
 
 export interface RollupBuildOptions {
   emitCJS?: boolean;
