@@ -2,48 +2,43 @@
 
 import { extname, relative } from "pathe";
 import type { Plugin, PluginContext } from "rollup";
-import { Loader, TransformResult, transform } from "esbuild";
+import { Loader, TransformResult, CommonOptions, transform } from "esbuild";
 import { createFilter } from "@rollup/pluginutils";
 import type { FilterPattern } from "@rollup/pluginutils";
 
-const defaultLoaders: { [ext: string]: Loader } = {
+const DefaultLoaders: { [ext: string]: Loader } = {
   ".ts": "ts",
-  ".js": "js"
+  ".js": "js",
+  ".tsx": "tsx",
+  ".jsx": "jsx",
 };
 
-export interface Options {
-  include?: FilterPattern
-  exclude?: FilterPattern
-  sourceMap?: boolean
-  minify?: boolean
-  target: string | string[]
-  jsxFactory?: string
-  jsxFragment?: string
-  define?: {
-    [k: string]: string
-  }
-  /**
-   * Use this tsconfig file instead
-   * Disable it by setting to `false`
-   */
-  tsconfig?: string | false
+export type EsbuildOptions = CommonOptions & {
+  include?: FilterPattern;
+  exclude?: FilterPattern;
+
   /**
    * Map extension to esbuild loader
    * Note that each entry (the extension) needs to start with a dot
    */
   loaders?: {
-    [ext: string]: Loader | false
-  }
-}
-
-export function esbuild (options: Options): Plugin {
-  const loaders = {
-    ...defaultLoaders
+    [ext: string]: Loader | false;
   };
+};
 
-  if (options.loaders) {
-    for (const key of Object.keys(options.loaders)) {
-      const value = options.loaders[key];
+export function esbuild(options: EsbuildOptions): Plugin {
+  // Extract esBuild options from additional options and apply defaults
+  const {
+    include = /\.(ts|js|tsx|jsx)$/,
+    exclude = /node_modules/,
+    loaders: loaderOptions,
+    ...esbuildOptions
+  } = options;
+
+  // Rsolve loaders
+  const loaders = { ...DefaultLoaders };
+  if (loaderOptions) {
+    for (const [key, value] of Object.entries(loaderOptions)) {
       if (typeof value === "string") {
         loaders[key] = value;
       } else if (value === false) {
@@ -52,21 +47,12 @@ export function esbuild (options: Options): Plugin {
     }
   }
 
-  const extensions: string[] = Object.keys(loaders);
-  const INCLUDE_REGEXP = new RegExp(
-    `\\.(${extensions.map(ext => ext.slice(1)).join("|")})$`
-  );
-  const EXCLUDE_REGEXP = /node_modules/;
-
-  const filter = createFilter(
-    options.include || INCLUDE_REGEXP,
-    options.exclude || EXCLUDE_REGEXP
-  );
+  const filter = createFilter(include, exclude);
 
   return {
     name: "esbuild",
 
-    async transform (code, id) {
+    async transform(code, id) {
       if (!filter(id)) {
         return null;
       }
@@ -79,11 +65,10 @@ export function esbuild (options: Options): Plugin {
       }
 
       const result = await transform(code, {
+        ...esbuildOptions,
         loader,
-        target: options.target,
-        define: options.define,
-        sourcemap: options.sourceMap,
-        sourcefile: id
+        sourcefile: id,
+        sourcemap: options.sourcemap,
       });
 
       printWarnings(id, result, this);
@@ -91,31 +76,31 @@ export function esbuild (options: Options): Plugin {
       return (
         result.code && {
           code: result.code,
-          map: result.map || null
+          map: result.map || null,
         }
       );
     },
 
-    async renderChunk (code, { fileName }) {
-      if (options.minify && !fileName.endsWith('.d.ts')) {
+    async renderChunk(code, { fileName }) {
+      if (options.minify && !fileName.endsWith(".d.ts")) {
         const result = await transform(code, {
           loader: "js",
           minify: true,
-          target: options.target
+          target: options.target,
         });
         if (result.code) {
           return {
             code: result.code,
-            map: result.map || null
+            map: result.map || null,
           };
         }
       }
       return null;
-    }
+    },
   };
 }
 
-function printWarnings (
+function printWarnings(
   id: string,
   result: TransformResult,
   plugin: PluginContext
@@ -124,8 +109,9 @@ function printWarnings (
     for (const warning of result.warnings) {
       let message = "[esbuild]";
       if (warning.location) {
-        message += ` (${relative(process.cwd(), id)}:${warning.location.line}:${warning.location.column
-          })`;
+        message += ` (${relative(process.cwd(), id)}:${warning.location.line}:${
+          warning.location.column
+        })`;
       }
       message += ` ${warning.text}`;
       plugin.warn(message);

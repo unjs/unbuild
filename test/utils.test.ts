@@ -1,5 +1,9 @@
 import { describe, it, expect } from "vitest";
-import { extractExportFilenames, inferExportType } from "../src/utils";
+import {
+  arrayIncludes,
+  extractExportFilenames,
+  inferExportType,
+} from "../src/utils";
 
 describe("inferExportType", () => {
   it("infers export type by condition", () => {
@@ -18,11 +22,34 @@ describe("inferExportType", () => {
 
 describe("extractExportFilenames", () => {
   it("handles strings", () => {
-    expect(extractExportFilenames("test")).to.deep.equal([{ file: "test", type: "esm" }]);
+    expect(extractExportFilenames("test")).to.deep.equal([
+      { file: "test", type: "esm" },
+    ]);
   });
   it("handles nested objects", () => {
-    expect(extractExportFilenames({ require: "test" })).to.deep.equal([{ file: "test", type: "cjs" }]);
+    expect(extractExportFilenames({ require: "test" })).to.deep.equal([
+      { file: "test", type: "cjs" },
+    ]);
     // @ts-ignore TODO: fix pkg-types
-    expect(extractExportFilenames({ require: { node: "test", other: { import: "this", require: "that" } } })).to.deep.equal([{ file: "test", type: "cjs" }, { file: "this", type: "esm" }, { file: "that", type: "cjs" }]);
+    expect(
+      extractExportFilenames({
+        require: { node: "test", other: { import: "this", require: "that" } },
+      })
+    ).to.deep.equal([
+      { file: "test", type: "cjs" },
+      { file: "this", type: "esm" },
+      { file: "that", type: "cjs" },
+    ]);
+  });
+});
+
+describe("arrayIncludes", () => {
+  it("handles strings", () => {
+    expect(arrayIncludes(["test1", "test2"], "test1")).to.eq(true);
+    expect(arrayIncludes(["test1", "test2"], "test3")).to.eq(false);
+  });
+  it("handles regular expressions", () => {
+    expect(arrayIncludes([/t1$/, "test2"], "test1")).to.eq(true);
+    expect(arrayIncludes([/t3$/, "test2"], "test1")).to.eq(false);
   });
 });
