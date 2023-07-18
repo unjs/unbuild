@@ -135,9 +135,14 @@ describe("inferEntries", () => {
     const result = inferEntries(
       {
         exports: {
-          types: "dist/test.d.ts",
-          import: "dist/test.mjs",
-          require: "dist/test.cjs",
+          import: {
+            types: "dist/test.d.mts",
+            default: "dist/test.mjs",
+          },
+          require: {
+            types: "dist/test.d.cts",
+            default: "dist/test.cjs",
+          },
         },
       },
       ["src/", "src/test.ts"]
@@ -179,14 +184,21 @@ describe("inferEntries", () => {
   it("handles multiple entries", () => {
     expect(
       inferEntries(
-        { exports: { ".": "./dist/index.cjs", "./test": "./dist/test.cjs" } },
-        ["src/", "src/", "src/index.ts", "src/test.mjs"]
+        {
+          exports: {
+            ".": "./dist/index.cjs",
+            "first-test": "./dist/first-test.cjs",
+            "./test": "./dist/test.cjs",
+          },
+        },
+        ["src/", "src/", "src/index.ts", "src/first-test.ts", "src/test.mjs"]
       )
     ).to.deep.equal({
       cjs: true,
       dts: false,
       entries: [
         { name: "index", input: "src/index" },
+        { name: "first-test", input: "src/first-test" },
         { name: "test", input: "src/test" },
       ],
       warnings: [],

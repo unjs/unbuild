@@ -2,7 +2,7 @@ import fsp from "node:fs/promises";
 import { readdirSync, statSync } from "node:fs";
 import { dirname, resolve } from "pathe";
 import jiti from "jiti";
-import consola from "consola";
+import { consola } from "consola";
 import type { PackageJson } from "pkg-types";
 import { autoPreset } from "./auto";
 import type { BuildPreset, BuildConfig, BuildContext } from "./types";
@@ -121,10 +121,12 @@ export function inferExportType(
     }
   }
   switch (condition) {
-    case "import":
+    case "import": {
       return "esm";
-    case "require":
+    }
+    case "require": {
       return "cjs";
+    }
     default: {
       if (previousConditions.length === 0) {
         // TODO: Check against type:module for default

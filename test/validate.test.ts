@@ -1,5 +1,5 @@
 import { fileURLToPath } from "node:url";
-import consola from "consola";
+import { consola } from "consola";
 import { join } from "pathe";
 import { describe, it, expect } from "vitest";
 import { validateDependencies, validatePackage } from "../src/validate";
@@ -78,7 +78,7 @@ describe("validateDependencies", () => {
 
   it("does not print implicit deps warning for peerDependencies", () => {
     const logs: string[] = [];
-    consola.mock((type) =>
+    consola.mockTypes((type) =>
       type === "warn" ? (str: string) => logs.push(str) : () => {}
     );
 

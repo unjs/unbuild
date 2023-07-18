@@ -1,5 +1,5 @@
 import { normalize, join } from "pathe";
-import consola from "consola";
+import { consola } from "consola";
 import chalk from "chalk";
 import type { PackageJson } from "pkg-types";
 import { extractExportFilenames, listRecursively, warn } from "./utils";
@@ -111,7 +111,10 @@ export function inferEntries(
   for (const output of outputs) {
     // Supported output file extensions are `.d.ts`, `.cjs` and `.mjs`
     // But we support any file extension here in case user has extended rollup options
-    const outputSlug = output.file.replace(/(\*[^/\\]*|\.d\.ts|\.\w+)$/, "");
+    const outputSlug = output.file.replace(
+      /(\*[^/\\]*|\.d\.(m|c)?ts|\.\w+)$/,
+      ""
+    );
     const isDir = outputSlug.endsWith("/");
 
     // Skip top level directory
@@ -125,10 +128,10 @@ export function inferEntries(
       if (source) {
         return source;
       }
-      const SOURCE_RE = new RegExp(`${d}${isDir ? "" : "\\.\\w+"}$`);
+      const SOURCE_RE = new RegExp(`(?<=/|$)${d}${isDir ? "" : "\\.\\w+"}$`);
       return sourceFiles
-        .find((i) => i.match(SOURCE_RE))
-        ?.replace(/(\.d\.ts|\.\w+)$/, "");
+        .find((i) => SOURCE_RE.test(i))
+        ?.replace(/(\.d\.(m|c)?ts|\.\w+)$/, "");
     }, undefined as any);
 
     if (!input) {
@@ -146,7 +149,7 @@ export function inferEntries(
       entries.find((i) => i.input === input) ||
       entries[entries.push({ name, input }) - 1];
 
-    if (output.file.endsWith(".d.ts")) {
+    if (/\.d\.(m|c)?ts$/.test(output.file)) {
       dts = true;
     }
 
