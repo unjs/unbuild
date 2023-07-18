@@ -16,11 +16,12 @@ export default defineBuildConfig([
       { input: "src/schema", builder: "untyped" },
     ],
   },
-  // Minified
+  // Minified with sourcemaps
   {
     name: "minified",
     entries: ["src/index"],
     outDir: "dist/min",
+    sourcemap: true,
     rollup: {
       esbuild: {
         minify: true,
