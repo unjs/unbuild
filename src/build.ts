@@ -23,84 +23,89 @@ export async function build(
   // Determine rootDir
   rootDir = resolve(process.cwd(), rootDir || ".");
 
-  const buildConfig: BuildConfig | BuildConfig[] =
+  const _buildConfig: BuildConfig | BuildConfig[] =
     tryRequire("./build.config", rootDir) || {};
-
-  const buildConfigs = Array.isArray(buildConfig) ? buildConfig : [buildConfig];
+  const buildConfigs = (
+    Array.isArray(_buildConfig) ? _buildConfig : [_buildConfig]
+  ).filter(Boolean);
 
   const pkg: PackageJson & Record<"unbuild" | "build", BuildConfig> =
     tryRequire("./package.json", rootDir) || {};
 
   // Invoke build for every build config defined in build.config.ts
   for (const buildConfig of buildConfigs) {
-    const config = defu(
-      buildConfig,
-      pkg.unbuild || pkg.build,
-      inputConfig
-    ) as BuildConfig;
-    await singleConfigBuild({ rootDir, stub, inputConfig: config, pkg });
+    await _build(rootDir, stub, inputConfig, buildConfig, pkg);
   }
 }
 
-async function singleConfigBuild({
-  inputConfig,
-  rootDir,
-  stub,
-  pkg,
-}: {
-  inputConfig: BuildConfig;
-  rootDir: string;
-  stub: boolean;
-  pkg: PackageJson & Record<"unbuild" | "build", BuildConfig>;
-}) {
+async function _build(
+  rootDir: string,
+  stub: boolean,
+  inputConfig: BuildConfig = {},
+  buildConfig: BuildConfig,
+  pkg: PackageJson & Record<"unbuild" | "build", BuildConfig>
+) {
   // Resolve preset
-  const preset = resolvePreset(inputConfig.preset || "auto", rootDir);
+  const preset = resolvePreset(
+    buildConfig.preset ||
+      pkg.unbuild?.preset ||
+      pkg.build?.preset ||
+      inputConfig.preset ||
+      "auto",
+    rootDir
+  );
 
   // Merge options
-  const options = defu(inputConfig, preset, <BuildOptions>{
-    name: (pkg?.name || "").split("/").pop() || "default",
-    rootDir,
-    entries: [],
-    clean: true,
-    declaration: false,
-    outDir: "dist",
-    stub,
-    externals: [
-      ...Module.builtinModules,
-      ...Module.builtinModules.map((m) => "node:" + m),
-    ],
-    dependencies: [],
-    devDependencies: [],
-    peerDependencies: [],
-    alias: {},
-    replace: {},
-    failOnWarn: true,
-    rollup: {
-      emitCJS: false,
-      cjsBridge: false,
-      inlineDependencies: false,
-      // Plugins
-      replace: {
-        preventAssignment: true,
-      },
+  const options = defu(
+    buildConfig,
+    pkg.unbuild || pkg.build,
+    inputConfig,
+    preset,
+    <BuildOptions>{
+      name: (pkg?.name || "").split("/").pop() || "default",
+      rootDir,
+      entries: [],
+      clean: true,
+      declaration: false,
+      outDir: "dist",
+      stub,
+      externals: [
+        ...Module.builtinModules,
+        ...Module.builtinModules.map((m) => "node:" + m),
+      ],
+      dependencies: [],
+      devDependencies: [],
+      peerDependencies: [],
       alias: {},
-      resolve: {
-        preferBuiltins: true,
+      replace: {},
+      failOnWarn: true,
+      rollup: {
+        emitCJS: false,
+        cjsBridge: false,
+        inlineDependencies: false,
+        // Plugins
+        replace: {
+          preventAssignment: true,
+        },
+        alias: {},
+        resolve: {
+          preferBuiltins: true,
+        },
+        json: {
+          preferConst: true,
+        },
+        commonjs: {
+          ignoreTryCatch: true,
+        },
+        esbuild: { target: "es2020" },
+        dts: {
+          // https://github.com/Swatinem/rollup-plugin-dts/issues/143
+          compilerOptions: { preserveSymlinks: false },
+          respectExternal: true,
+        },
       },
-      json: {
-        preferConst: true,
-      },
-      commonjs: {
-        ignoreTryCatch: true,
-      },
-      esbuild: { target: "es2020" },
-      dts: {
-        // https://github.com/Swatinem/rollup-plugin-dts/issues/143
-        compilerOptions: { preserveSymlinks: false },
-        respectExternal: true,
-      },
-    },
-  }) as BuildOptions;
+    }
+  ) as BuildOptions;
 
   // Resolve dirs relative to rootDir
   options.outDir = resolve(options.rootDir, options.outDir);
