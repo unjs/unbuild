@@ -114,7 +114,7 @@ export default defineBuildConfig({
 });
 ```
 
-or with multiple builds you can declare an array of configs:
+Or with multiple builds you can declare an array of configs:
 
 ```ts
 import { defineBuildConfig } from "unbuild";

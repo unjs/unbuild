@@ -180,7 +180,7 @@ export interface BuildHooks {
 export function defineBuildConfig(
   config: BuildConfig | BuildConfig[]
 ): BuildConfig[] {
-  return Array.isArray(config) ? config : [config];
+  return (Array.isArray(config) ? config : [config]).filter(Boolean);
 }
 
 export function definePreset(preset: BuildPreset): BuildPreset {
