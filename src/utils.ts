@@ -121,10 +121,12 @@ export function inferExportType(
     }
   }
   switch (condition) {
-    case "import":
+    case "import": {
       return "esm";
-    case "require":
+    }
+    case "require": {
       return "cjs";
+    }
     default: {
       if (previousConditions.length === 0) {
         // TODO: Check against type:module for default
