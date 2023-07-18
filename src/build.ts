@@ -1,5 +1,6 @@
 import Module from "node:module";
 import { promises as fsp } from "node:fs";
+import { isAbsolute, normalize } from "node:path";
 import { resolve, relative, basename } from "pathe";
 import type { PackageJson } from "pkg-types";
 import chalk from "chalk";
@@ -147,7 +148,13 @@ async function _build(
 
   for (const entry of options.entries) {
     if (typeof entry.name !== "string") {
-      entry.name = removeExtension(basename(entry.input));
+      let relativeInput = isAbsolute(entry.input)
+        ? relative(rootDir, entry.input)
+        : normalize(entry.input);
+      if (relativeInput.startsWith("./")) {
+        relativeInput = relativeInput.slice(2);
+      }
+      entry.name = removeExtension(relativeInput.replace(/^src\//, ""));
     }
 
     if (!entry.input) {
