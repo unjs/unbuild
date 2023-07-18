@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v1.2.1
+
+[compare changes](https://github.com/unjs/unbuild/compare/v1.2.0...v1.2.1)
+
+
+### 💅 Refactors
+
+  - Update to consola v3 ([3bb25b2](https://github.com/unjs/unbuild/commit/3bb25b2))
+
+### ❤️  Contributors
+
+- Pooya Parsa ([@pi0](http://github.com/pi0))
+
 ## v1.2.0
 
 [compare changes](https://github.com/unjs/unbuild/compare/v1.1.2...v1.2.0)
