@@ -1,6 +1,9 @@
 import { defineBuildConfig } from "../../src";
 
 export default defineBuildConfig([
+  // Auto preset
+  {},
+  // Custom preset
   {
     preset: "./build.preset",
     rollup: {
@@ -8,13 +11,12 @@ export default defineBuildConfig([
     },
     entries: [
       "./src/index.ts",
+      "./src/nested/subpath.ts",
       { input: "src/runtime/", outDir: "dist/runtime" },
       { input: "src/schema", builder: "untyped" },
     ],
   },
-  /**
-   * On top of that we run another build with a different config.
-   */
+  // Minified
   {
     name: "minified",
     entries: ["src/index"],
