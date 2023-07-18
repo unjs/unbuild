@@ -14,9 +14,6 @@ const DefaultLoaders: { [ext: string]: Loader } = {
 };
 
 export interface Options extends CommonOptions {
-  /** @deprecated Use `sourcemap` */
-  sourceMap?: boolean;
-
   include?: FilterPattern;
   exclude?: FilterPattern;
 
@@ -32,7 +29,6 @@ export interface Options extends CommonOptions {
 export function esbuild(options: Options): Plugin {
   // Extract esBuild options from additional options and apply defaults
   const {
-    sourceMap,
     include = /\.(ts|js|tsx|jsx)$/,
     exclude = /node_modules/,
     loaders: loaderOptions,
@@ -72,7 +68,7 @@ export function esbuild(options: Options): Plugin {
         ...esbuildOptions,
         loader,
         sourcefile: id,
-        sourcemap: options.sourcemap ?? sourceMap,
+        sourcemap: options.sourcemap,
       });
 
       printWarnings(id, result, this);
