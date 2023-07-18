@@ -138,12 +138,7 @@ export function inferEntries(
 
     if (!input) {
       if (!existsSync(resolve(rootDir || ".", output.file))) {
-        warnings.push(
-          `Could not find entrypoint for ${output.file} ${resolve(
-            rootDir || ".",
-            output.file,
-          )}`,
-        );
+        warnings.push(`Could not find entrypoint for ${output.file}`);
       }
       continue;
     }
