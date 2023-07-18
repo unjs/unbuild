@@ -6,7 +6,7 @@ import { Loader, TransformResult, CommonOptions, transform } from "esbuild";
 import { createFilter } from "@rollup/pluginutils";
 import type { FilterPattern } from "@rollup/pluginutils";
 
-const defaultLoaders: { [ext: string]: Loader } = {
+const DefaultLoaders: { [ext: string]: Loader } = {
   ".ts": "ts",
   ".js": "js",
   ".tsx": "tsx",
@@ -14,17 +14,11 @@ const defaultLoaders: { [ext: string]: Loader } = {
 };
 
 export interface Options extends CommonOptions {
-  /** alias to `sourcemap` */
+  /** @deprecated Use `sourcemap` */
   sourceMap?: boolean;
 
   include?: FilterPattern;
   exclude?: FilterPattern;
-
-  /**
-   * Use this tsconfig file instead
-   * Disable it by setting to `false`
-   */
-  tsconfig?: string | false;
 
   /**
    * Map extension to esbuild loader
@@ -36,13 +30,19 @@ export interface Options extends CommonOptions {
 }
 
 export function esbuild(options: Options): Plugin {
-  const loaders = {
-    ...defaultLoaders,
-  };
+  // Extract esBuild options from additional options and apply defaults
+  const {
+    sourceMap,
+    include = /\.(ts|js|tsx|jsx)$/,
+    exclude = /node_modules/,
+    loaders: loaderOptions,
+    ...esbuildOptions
+  } = options;
 
-  if (options.loaders) {
-    for (const key of Object.keys(options.loaders)) {
-      const value = options.loaders[key];
+  // Rsolve loaders
+  const loaders = { ...DefaultLoaders };
+  if (loaderOptions) {
+    for (const [key, value] of Object.entries(loaderOptions)) {
       if (typeof value === "string") {
         loaders[key] = value;
       } else if (value === false) {
@@ -51,16 +51,7 @@ export function esbuild(options: Options): Plugin {
     }
   }
 
-  const extensions: string[] = Object.keys(loaders);
-  const INCLUDE_REGEXP = new RegExp(
-    `\\.(${extensions.map((ext) => ext.slice(1)).join("|")})$`
-  );
-  const EXCLUDE_REGEXP = /node_modules/;
-
-  const filter = createFilter(
-    options.include || INCLUDE_REGEXP,
-    options.exclude || EXCLUDE_REGEXP
-  );
+  const filter = createFilter(include, exclude);
 
   return {
     name: "esbuild",
@@ -78,10 +69,10 @@ export function esbuild(options: Options): Plugin {
       }
 
       const result = await transform(code, {
-        ...(options as any),
+        ...esbuildOptions,
         loader,
         sourcefile: id,
-        sourcemap: options.sourcemap ?? options.sourceMap,
+        sourcemap: options.sourcemap ?? sourceMap,
       });
 
       printWarnings(id, result, this);
