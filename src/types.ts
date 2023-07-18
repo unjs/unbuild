@@ -10,6 +10,7 @@ import type { RollupNodeResolveOptions } from "@rollup/plugin-node-resolve";
 import type { RollupJsonOptions } from "@rollup/plugin-json";
 import type { Options as RollupDtsOptions } from "rollup-plugin-dts";
 import type commonjs from "@rollup/plugin-commonjs";
+import { JITIOptions } from "jiti";
 import type { EsbuildOptions } from "./builder/plugins/esbuild";
 
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -74,6 +75,7 @@ export interface BuildOptions {
   declaration?: "compatible" | "node16" | boolean;
   outDir: string;
   stub: boolean;
+  stubOptions: { jiti: Omit<JITIOptions, "transform" | "onError"> };
   externals: (string | RegExp)[];
   dependencies: string[];
   peerDependencies: string[];
@@ -130,62 +132,62 @@ export interface BuildHooks {
 
   "rollup:options": (
     ctx: BuildContext,
-    options: RollupOptions,
+    options: RollupOptions
   ) => void | Promise<void>;
   "rollup:build": (
     ctx: BuildContext,
-    build: RollupBuild,
+    build: RollupBuild
   ) => void | Promise<void>;
   "rollup:dts:options": (
     ctx: BuildContext,
-    options: RollupOptions,
+    options: RollupOptions
   ) => void | Promise<void>;
   "rollup:dts:build": (
     ctx: BuildContext,
-    build: RollupBuild,
+    build: RollupBuild
   ) => void | Promise<void>;
   "rollup:done": (ctx: BuildContext) => void | Promise<void>;
 
   "mkdist:entries": (
     ctx: BuildContext,
-    entries: MkdistBuildEntry[],
+    entries: MkdistBuildEntry[]
   ) => void | Promise<void>;
   "mkdist:entry:options": (
     ctx: BuildContext,
     entry: MkdistBuildEntry,
-    options: MkdistOptions,
+    options: MkdistOptions
   ) => void | Promise<void>;
   "mkdist:entry:build": (
     ctx: BuildContext,
     entry: MkdistBuildEntry,
-    output: { writtenFiles: string[] },
+    output: { writtenFiles: string[] }
   ) => void | Promise<void>;
   "mkdist:done": (ctx: BuildContext) => void | Promise<void>;
 
   "untyped:entries": (
     ctx: BuildContext,
-    entries: UntypedBuildEntry[],
+    entries: UntypedBuildEntry[]
   ) => void | Promise<void>;
   "untyped:entry:options": (
     ctx: BuildContext,
     entry: UntypedBuildEntry,
-    options: any,
+    options: any
   ) => void | Promise<void>;
   "untyped:entry:schema": (
     ctx: BuildContext,
     entry: UntypedBuildEntry,
-    schema: Schema,
+    schema: Schema
   ) => void | Promise<void>;
   "untyped:entry:outputs": (
     ctx: BuildContext,
     entry: UntypedBuildEntry,
-    outputs: UntypedOutputs,
+    outputs: UntypedOutputs
   ) => void | Promise<void>;
   "untyped:done": (ctx: BuildContext) => void | Promise<void>;
 }
 
 export function defineBuildConfig(
-  config: BuildConfig | BuildConfig[],
+  config: BuildConfig | BuildConfig[]
 ): BuildConfig[] {
   return (Array.isArray(config) ? config : [config]).filter(Boolean);
 }

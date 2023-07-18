@@ -15,6 +15,7 @@ import dts from "rollup-plugin-dts";
 import replace from "@rollup/plugin-replace";
 import { resolve, dirname, normalize, extname, isAbsolute } from "pathe";
 import { resolvePath, resolveModuleExportNames } from "mlly";
+import type { JITIOptions } from "jiti";
 import { arrayIncludes, getpkg, tryResolve, warn } from "../utils";
 import type { BuildContext } from "../types";
 import { esbuild } from "./plugins/esbuild";
@@ -36,22 +37,27 @@ const DEFAULT_EXTENSIONS = [
 export async function rollupBuild(ctx: BuildContext) {
   if (ctx.options.stub) {
     const jitiPath = await resolvePath("jiti", { url: import.meta.url });
+    const serializedJitiOptions = JSON.stringify(
+      ctx.options.stubOptions.jiti,
+      null,
+      2
+    );
 
     for (const entry of ctx.options.entries.filter(
-      (entry) => entry.builder === "rollup",
+      (entry) => entry.builder === "rollup"
     )) {
       const output = resolve(
         ctx.options.rootDir,
         ctx.options.outDir,
-        entry.name!,
+        entry.name!
       );
 
       const resolvedEntry = normalize(
-        tryResolve(entry.input, ctx.options.rootDir) || entry.input,
+        tryResolve(entry.input, ctx.options.rootDir) || entry.input
       );
       const resolvedEntryWithoutExt = resolvedEntry.slice(
         0,
-        Math.max(0, resolvedEntry.length - extname(resolvedEntry).length),
+        Math.max(0, resolvedEntry.length - extname(resolvedEntry).length)
       );
       const code = await fsp.readFile(resolvedEntry, "utf8");
       const shebang = getShebang(code);
@@ -63,10 +69,8 @@ export async function rollupBuild(ctx: BuildContext) {
         await writeFile(
           output + ".cjs",
           `${shebang}module.exports = require(${JSON.stringify(
-            jitiPath,
-          )})(null, { interopDefault: true, esmResolve: true })(${JSON.stringify(
-            resolvedEntry,
-          )})`,
+            jitiPath
+          )})(null, ${serializedJitiOptions})(${JSON.stringify(resolvedEntry)})`
         );
       }
 
@@ -76,7 +80,7 @@ export async function rollupBuild(ctx: BuildContext) {
         resolvedEntry,
         {
           extensions: DEFAULT_EXTENSIONS,
-        },
+        }
       ).catch((error) => {
         warn(ctx, `Cannot analyze ${resolvedEntry} for exports:` + error);
         return [];
@@ -91,14 +95,14 @@ export async function rollupBuild(ctx: BuildContext) {
             `import jiti from ${JSON.stringify(pathToFileURL(jitiPath).href)};`,
             "",
             `/** @type {import(${JSON.stringify(resolvedEntryWithoutExt)})} */`,
-            `const _module = jiti(null, { interopDefault: true, esmResolve: true })(${JSON.stringify(
-              resolvedEntry,
+            `const _module = jiti(null, ${serializedJitiOptions})(${JSON.stringify(
+              resolvedEntry
             )});`,
             hasDefaultExport ? "\nexport default _module;" : "",
             ...namedExports
               .filter((name) => name !== "default")
               .map((name) => `export const ${name} = _module.${name};`),
-          ].join("\n"),
+          ].join("\n")
       );
 
       // DTS Stub
@@ -108,10 +112,10 @@ export async function rollupBuild(ctx: BuildContext) {
           `export * from ${JSON.stringify(resolvedEntryWithoutExt)};`,
           hasDefaultExport
             ? `export { default } from ${JSON.stringify(
-                resolvedEntryWithoutExt,
+                resolvedEntryWithoutExt
               )};`
             : "",
-        ].join("\n"),
+        ].join("\n")
       );
 
       if (shebang) {
@@ -138,7 +142,7 @@ export async function rollupBuild(ctx: BuildContext) {
     const { output } = await buildResult.write(outputOptions);
     const chunkFileNames = new Set<string>();
     const outputChunks = output.filter(
-      (e) => e.type === "chunk",
+      (e) => e.type === "chunk"
     ) as OutputChunk[];
     for (const entry of outputChunks) {
       chunkFileNames.add(entry.fileName);
@@ -148,7 +152,7 @@ export async function rollupBuild(ctx: BuildContext) {
       if (entry.isEntry) {
         ctx.buildEntries.push({
           chunks: entry.imports.filter((i) =>
-            outputChunks.find((c) => c.fileName === i),
+            outputChunks.find((c) => c.fileName === i)
           ),
           modules: Object.entries(entry.modules).map(([id, mod]) => ({
             id,
@@ -170,7 +174,7 @@ export async function rollupBuild(ctx: BuildContext) {
     rollupOptions.plugins = rollupOptions.plugins || [];
     // TODO: Use fresh rollup options
     const shebangPlugin: any = rollupOptions.plugins.find(
-      (p) => p && p.name === "unbuild-shebang",
+      (p) => p && p.name === "unbuild-shebang"
     );
     shebangPlugin._options.preserve = false;
 
@@ -215,7 +219,7 @@ export async function rollupBuild(ctx: BuildContext) {
 const getChunkFilename = (
   ctx: BuildContext,
   chunk: PreRenderedChunk,
-  ext: string,
+  ext: string
 ) => {
   if (chunk.isDynamicEntry) {
     return `chunks/[name].${ext}`;
@@ -229,10 +233,7 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
     input: Object.fromEntries(
       ctx.options.entries
         .filter((entry) => entry.builder === "rollup")
-        .map((entry) => [
-          entry.name,
-          resolve(ctx.options.rootDir, entry.input),
-        ]),
+        .map((entry) => [entry.name, resolve(ctx.options.rootDir, entry.input)])
     ),
 
     output: [
@@ -310,7 +311,7 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
               ? Object.fromEntries(
                   ctx.options.rollup.alias.entries.map((entry) => {
                     return [entry.find, entry.replacement];
-                  }),
+                  })
                 )
               : ctx.options.rollup.alias.entries),
           },
