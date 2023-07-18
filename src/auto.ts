@@ -40,17 +40,17 @@ export const autoPreset = definePreset(() => {
                 chalk.bold(
                   e.input
                     .replace(ctx.options.rootDir + "/", "")
-                    .replace(/\/$/, "/*")
-                )
+                    .replace(/\/$/, "/*"),
+                ),
               )
-              .join(", ")
+              .join(", "),
           ),
           chalk.gray(
             ["esm", res.cjs && "cjs", res.dts && "dts"]
               .filter(Boolean)
               .map((tag) => `[${tag}]`)
-              .join(" ")
-          )
+              .join(" "),
+          ),
         );
       },
     },
@@ -65,7 +65,7 @@ export const autoPreset = definePreset(() => {
  */
 export function inferEntries(
   pkg: PackageJson,
-  sourceFiles: string[]
+  sourceFiles: string[],
 ): InferEntriesResult {
   const warnings = [];
 
@@ -113,7 +113,7 @@ export function inferEntries(
     // But we support any file extension here in case user has extended rollup options
     const outputSlug = output.file.replace(
       /(\*[^/\\]*|\.d\.(m|c)?ts|\.\w+)$/,
-      ""
+      "",
     );
     const isDir = outputSlug.endsWith("/");
 

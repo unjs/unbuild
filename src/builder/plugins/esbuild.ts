@@ -114,7 +114,7 @@ export function esbuild(options: EsbuildOptions): Plugin {
 function printWarnings(
   id: string,
   result: TransformResult,
-  plugin: PluginContext
+  plugin: PluginContext,
 ) {
   if (result.warnings) {
     for (const warning of result.warnings) {

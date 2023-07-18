@@ -5,7 +5,7 @@ import type { MkdistBuildEntry, BuildContext } from "../types";
 
 export async function mkdistBuild(ctx: BuildContext) {
   const entries = ctx.options.entries.filter(
-    (e) => e.builder === "mkdist"
+    (e) => e.builder === "mkdist",
   ) as MkdistBuildEntry[];
   await ctx.hooks.callHook("mkdist:entries", ctx, entries);
   for (const entry of entries) {
@@ -29,7 +29,7 @@ export async function mkdistBuild(ctx: BuildContext) {
         "mkdist:entry:options",
         ctx,
         entry,
-        mkdistOptions
+        mkdistOptions,
       );
       const output = await mkdist(mkdistOptions);
       ctx.buildEntries.push({

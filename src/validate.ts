@@ -8,7 +8,7 @@ import { BuildContext } from "./types";
 export function validateDependencies(ctx: BuildContext) {
   const usedDependencies = new Set<string>();
   const unusedDependencies = new Set<string>(
-    Object.keys(ctx.pkg.dependencies || {})
+    Object.keys(ctx.pkg.dependencies || {}),
   );
   const implicitDependencies = new Set<string>();
   for (const id of ctx.usedImports) {
@@ -34,14 +34,14 @@ export function validateDependencies(ctx: BuildContext) {
     warn(
       ctx,
       "Potential unused dependencies found: " +
-        [...unusedDependencies].map((id) => chalk.cyan(id)).join(", ")
+        [...unusedDependencies].map((id) => chalk.cyan(id)).join(", "),
     );
   }
   if (implicitDependencies.size > 0 && !ctx.options.rollup.inlineDependencies) {
     warn(
       ctx,
       "Potential implicit dependencies found: " +
-        [...implicitDependencies].map((id) => chalk.cyan(id)).join(", ")
+        [...implicitDependencies].map((id) => chalk.cyan(id)).join(", "),
     );
   }
 }
@@ -49,7 +49,7 @@ export function validateDependencies(ctx: BuildContext) {
 export function validatePackage(
   pkg: PackageJson,
   rootDir: string,
-  ctx: BuildContext
+  ctx: BuildContext,
 ) {
   if (!pkg) {
     return;
@@ -65,7 +65,7 @@ export function validatePackage(
       pkg.types,
       pkg.typings,
       ...extractExportFilenames(pkg.exports).map((i) => i.file),
-    ].map((i) => i && resolve(rootDir, i.replace(/\/[^/]*\*.*$/, "")))
+    ].map((i) => i && resolve(rootDir, i.replace(/\/[^/]*\*.*$/, ""))),
   );
 
   const missingOutputs = [];
@@ -80,7 +80,7 @@ export function validatePackage(
       ctx,
       `Potential missing package.json files: ${missingOutputs
         .map((o) => chalk.cyan(o))
-        .join(", ")}`
+        .join(", ")}`,
     );
   }
 }

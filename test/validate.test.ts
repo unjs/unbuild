@@ -24,7 +24,7 @@ describe("validatePackage", () => {
         },
       },
       join(fileURLToPath(import.meta.url), "../fixture"),
-      buildContext
+      buildContext,
     );
 
     const warnings = [...buildContext.warnings];
@@ -72,14 +72,14 @@ describe("validateDependencies", () => {
     });
 
     expect([...warnings][0]).to.include(
-      "Potential implicit dependencies found:"
+      "Potential implicit dependencies found:",
     );
   });
 
   it("does not print implicit deps warning for peerDependencies", () => {
     const logs: string[] = [];
     consola.mockTypes((type) =>
-      type === "warn" ? (str: string) => logs.push(str) : () => {}
+      type === "warn" ? (str: string) => logs.push(str) : () => {},
     );
 
     validateDependencies({

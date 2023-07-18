@@ -61,7 +61,7 @@
     "changelogen": "^0.5.4",
     "eslint": "^8.45.0",
     "eslint-config-unjs": "^0.2.1",
-    "prettier": "^2.8.8",
+    "prettier": "^3.0.0",
     "vitest": "^0.33.0"
   },
   "packageManager": "pnpm@8.2.0"

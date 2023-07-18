@@ -24,7 +24,7 @@ import { mkdistBuild } from "./builder/mkdist";
 export async function build(
   rootDir: string,
   stub: boolean,
-  inputConfig: BuildConfig = {}
+  inputConfig: BuildConfig = {},
 ) {
   // Determine rootDir
   rootDir = resolve(process.cwd(), rootDir || ".");
@@ -49,7 +49,7 @@ async function _build(
   stub: boolean,
   inputConfig: BuildConfig = {},
   buildConfig: BuildConfig,
-  pkg: PackageJson & Record<"unbuild" | "build", BuildConfig>
+  pkg: PackageJson & Record<"unbuild" | "build", BuildConfig>,
 ) {
   // Resolve preset
   const preset = resolvePreset(
@@ -58,7 +58,7 @@ async function _build(
       pkg.build?.preset ||
       inputConfig.preset ||
       "auto",
-    rootDir
+    rootDir,
   );
 
   // Merge options
@@ -110,7 +110,7 @@ async function _build(
           respectExternal: true,
         },
       },
-    }
+    },
   ) as BuildOptions;
 
   // Resolve dirs relative to rootDir
@@ -142,7 +142,7 @@ async function _build(
 
   // Normalize entries
   options.entries = options.entries.map((entry) =>
-    typeof entry === "string" ? { input: entry } : entry
+    typeof entry === "string" ? { input: entry } : entry,
   );
 
   for (const entry of options.entries) {
@@ -185,7 +185,7 @@ async function _build(
 
   // Start info
   consola.info(
-    chalk.cyan(`${options.stub ? "Stubbing" : "Building"} ${options.name}`)
+    chalk.cyan(`${options.stub ? "Stubbing" : "Building"} ${options.name}`),
   );
   if (process.env.DEBUG) {
     consola.info(`${chalk.bold("Root dir:")} ${options.rootDir}
@@ -271,7 +271,9 @@ async function _build(
             return chalk.gray(
               "  └─ " +
                 rPath(p) +
-                chalk.bold(chunk.bytes ? ` (${prettyBytes(chunk?.bytes)})` : "")
+                chalk.bold(
+                  chunk.bytes ? ` (${prettyBytes(chunk?.bytes)})` : "",
+                ),
             );
           })
           .join("\n");
@@ -286,7 +288,7 @@ async function _build(
             return chalk.gray(
               "  📦 " +
                 rPath(m.id) +
-                chalk.bold(m.bytes ? ` (${prettyBytes(m.bytes)})` : "")
+                chalk.bold(m.bytes ? ` (${prettyBytes(m.bytes)})` : ""),
             );
           })
           .join("\n");
@@ -296,8 +298,8 @@ async function _build(
   console.log(
     "Σ Total dist size (byte size):",
     chalk.cyan(
-      prettyBytes(ctx.buildEntries.reduce((a, e) => a + (e.bytes || 0), 0))
-    )
+      prettyBytes(ctx.buildEntries.reduce((a, e) => a + (e.bytes || 0), 0)),
+    ),
   );
 
   // Validate
@@ -312,11 +314,11 @@ async function _build(
   if (ctx.warnings.size > 0) {
     consola.warn(
       "Build is done with some warnings:\n\n" +
-        [...ctx.warnings].map((msg) => "- " + msg).join("\n")
+        [...ctx.warnings].map((msg) => "- " + msg).join("\n"),
     );
     if (ctx.options.failOnWarn) {
       consola.error(
-        "Exiting with code (1). You can change this behavior by setting `failOnWarn: false` ."
+        "Exiting with code (1). You can change this behavior by setting `failOnWarn: false` .",
       );
       // eslint-disable-next-line unicorn/no-process-exit
       process.exit(1);

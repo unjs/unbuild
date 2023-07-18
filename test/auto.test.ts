@@ -5,7 +5,7 @@ describe("inferEntries", () => {
   it("recognises main and module outputs", () => {
     const result = inferEntries(
       { main: "dist/test.cjs", module: "dist/test.mjs" },
-      ["src/", "src/test.ts"]
+      ["src/", "src/test.ts"],
     );
     expect(result).to.deep.equal({
       cjs: true,
@@ -31,7 +31,7 @@ describe("inferEntries", () => {
 
   it("handles binary outputs", () => {
     expect(
-      inferEntries({ bin: "dist/cli.cjs" }, ["src/", "src/cli.ts"])
+      inferEntries({ bin: "dist/cli.cjs" }, ["src/", "src/cli.ts"]),
     ).to.deep.equal({
       cjs: true,
       dts: false,
@@ -39,7 +39,7 @@ describe("inferEntries", () => {
       warnings: [],
     });
     expect(
-      inferEntries({ bin: { nuxt: "dist/cli.js" } }, ["src/", "src/cli.ts"])
+      inferEntries({ bin: { nuxt: "dist/cli.js" } }, ["src/", "src/cli.ts"]),
     ).to.deep.equal({
       cjs: true,
       dts: false,
@@ -50,7 +50,7 @@ describe("inferEntries", () => {
       inferEntries({ bin: { nuxt: "dist/cli.js" }, type: "module" }, [
         "src/",
         "src/cli.ts",
-      ])
+      ]),
     ).to.deep.equal({
       cjs: false,
       dts: false,
@@ -89,8 +89,8 @@ describe("inferEntries", () => {
     expect(
       inferEntries(
         { main: "dist/test.cjs", types: "custom/handwritten.d.ts" },
-        ["src/", "src/test.ts"]
-      )
+        ["src/", "src/test.ts"],
+      ),
     ).to.deep.equal({
       cjs: true,
       dts: false,
@@ -104,8 +104,8 @@ describe("inferEntries", () => {
           module: "dist/test.mjs",
           types: "dist/test.d.ts",
         },
-        ["src/", "src/test.ts"]
-      )
+        ["src/", "src/test.ts"],
+      ),
     ).to.deep.equal({
       cjs: true,
       dts: true,
@@ -119,8 +119,8 @@ describe("inferEntries", () => {
           module: "dist/test.mjs",
           typings: "dist/test.d.ts",
         },
-        ["src/", "src/test.ts"]
-      )
+        ["src/", "src/test.ts"],
+      ),
     ).to.deep.equal({
       cjs: true,
       dts: true,
@@ -143,7 +143,7 @@ describe("inferEntries", () => {
           },
         },
       },
-      ["src/", "src/test.ts"]
+      ["src/", "src/test.ts"],
     );
     expect(result).to.deep.equal({
       cjs: true,
@@ -155,7 +155,7 @@ describe("inferEntries", () => {
 
   it("gracefully handles unknown entries", () => {
     expect(
-      inferEntries({ exports: "dist/test.js" }, ["src/", "src/index.ts"])
+      inferEntries({ exports: "dist/test.js" }, ["src/", "src/index.ts"]),
     ).to.deep.equal({
       cjs: false,
       entries: [],
@@ -170,7 +170,7 @@ describe("inferEntries", () => {
         "src/",
         "src/",
         "src/index.ts",
-      ])
+      ]),
     ).to.deep.equal({
       cjs: false,
       entries: [],
@@ -189,8 +189,8 @@ describe("inferEntries", () => {
             "./test": "./dist/test.cjs",
           },
         },
-        ["src/", "src/", "src/index.ts", "src/first-test.ts", "src/test.mjs"]
-      )
+        ["src/", "src/", "src/index.ts", "src/first-test.ts", "src/test.mjs"],
+      ),
     ).to.deep.equal({
       cjs: true,
       dts: false,
@@ -209,7 +209,7 @@ describe("inferEntries", () => {
         "src/",
         "src/runtime/",
         "src/runtime/test.js",
-      ])
+      ]),
     ).to.deep.equal({
       cjs: false,
       dts: false,
@@ -222,7 +222,7 @@ describe("inferEntries", () => {
       inferEntries({ exports: { "./runtime/*": "./dist/runtime/*.mjs," } }, [
         "src/",
         "src/runtime/",
-      ])
+      ]),
     ).to.deep.equal({
       cjs: false,
       dts: false,
@@ -234,8 +234,8 @@ describe("inferEntries", () => {
     expect(
       inferEntries(
         { exports: { "./runtime/*": { require: "./dist/runtime/*" } } },
-        ["src/", "src/runtime/"]
-      )
+        ["src/", "src/runtime/"],
+      ),
     ).to.deep.equal({
       cjs: true,
       dts: false,
