@@ -78,10 +78,10 @@ export function esbuild(options: Options): Plugin {
       }
 
       const result = await transform(code, {
-        ...options,
+        ...options as any,
         loader,
         sourcefile: id,
-        sourcemap: options.sourceMap ?? options.sourcemap,
+        sourcemap: options.sourcemap ?? options.sourceMap,
       });
 
       printWarnings(id, result, this);
