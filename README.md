@@ -38,7 +38,9 @@ CLI output also includes output size and exports for quick inspection.
 Create `src/index.ts`:
 
 ```ts
-export const log = (...args) => { console.log(...args) }
+export const log = (...args) => {
+  console.log(...args);
+};
 ```
 
 Update `package.json`:
@@ -54,9 +56,7 @@ Update `package.json`:
   },
   "main": "./dist/index.cjs",
   "types": "./dist/index.d.ts",
-  "files": [
-    "dist"
-  ]
+  "files": ["dist"]
 }
 ```
 
@@ -71,20 +71,17 @@ npx unbuild
 
 Configuration is automatically inferred from fields in `package.json` mapped to `src/` directory. For more control, continue with next section.
 
-
 ## Configuration
 
 Create `build.config.ts`:
 
 ```ts
 export default {
-  entries: [
-    './src/index'
-  ]
-}
+  entries: ["./src/index"],
+};
 ```
 
-You can either use `unbuild` key in `package.json` or `build.config.{js,ts,json}` to specify configuration.
+You can either use `unbuild` key in `package.json` or `build.config.{js,cjs,mjs,ts,mts,cts,json}` to specify configuration.
 
 See options [here](./src/types.ts).
 
@@ -136,8 +133,14 @@ export default defineBuildConfig([
     // Change outDir, default is 'dist'
     outDir: "build",
 
-    // Generates .d.ts declaration file
-    declaration: true,
+    /**
+     * * `compatible` means "src/index.ts" will generate "dist/index.d.mts", "dist/index.d.cts" and "dist/index.d.ts".
+     * * `node16` means "src/index.ts" will generate "dist/index.d.mts" and "dist/index.d.cts".
+     * * `true` is equivalent to `compatible`.
+     * * `false` will disable declaration generation.
+     * * `undefined` will auto detect based on "package.json". If "package.json" has "types" field, it will be `"compatible"`, otherwise `false`.
+     */
+    declaration: "compatible",
   },
   {
     name: "minified",
@@ -164,14 +167,12 @@ export default defineBuildConfig([
 [MIT](./LICENSE)
 
 <!-- Badges -->
+
 [npm-version-src]: https://img.shields.io/npm/v/unbuild?style=flat-square
 [npm-version-href]: https://npmjs.com/package/unbuild
-
 [npm-downloads-src]: https://img.shields.io/npm/dm/unbuild?style=flat-square
 [npm-downloads-href]: https://npmjs.com/package/unbuild
-
 [github-actions-src]: https://img.shields.io/github/actions/workflow/status/unjs/unbuild/ci.yml?style=flat-square
 [github-actions-href]: https://github.com/unjs/unbuild/actions?query=workflow%3Aci
-
 [codecov-src]: https://img.shields.io/codecov/c/gh/unjs/unbuild/main?style=flat-square
 [codecov-href]: https://codecov.io/gh/unjs/unbuild

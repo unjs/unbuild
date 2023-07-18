@@ -111,7 +111,10 @@ export function inferEntries(
   for (const output of outputs) {
     // Supported output file extensions are `.d.ts`, `.cjs` and `.mjs`
     // But we support any file extension here in case user has extended rollup options
-    const outputSlug = output.file.replace(/(\*[^/\\]*|\.d\.ts|\.\w+)$/, "");
+    const outputSlug = output.file.replace(
+      /(\*[^/\\]*|\.d\.(m|c)?ts|\.\w+)$/,
+      ""
+    );
     const isDir = outputSlug.endsWith("/");
 
     // Skip top level directory
@@ -128,7 +131,7 @@ export function inferEntries(
       const SOURCE_RE = new RegExp(`(?<=/|$)${d}${isDir ? "" : "\\.\\w+"}$`);
       return sourceFiles
         .find((i) => SOURCE_RE.test(i))
-        ?.replace(/(\.d\.ts|\.\w+)$/, "");
+        ?.replace(/(\.d\.(m|c)?ts|\.\w+)$/, "");
     }, undefined as any);
 
     if (!input) {
@@ -144,7 +147,7 @@ export function inferEntries(
       entries.find((i) => i.input === input) ||
       entries[entries.push({ input }) - 1];
 
-    if (output.file.endsWith(".d.ts")) {
+    if (/\.d\.(m|c)?ts$/.test(output.file)) {
       dts = true;
     }
 

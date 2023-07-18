@@ -179,24 +179,52 @@ export async function rollupBuild(ctx: BuildContext) {
     await ctx.hooks.callHook("rollup:dts:options", ctx, rollupOptions);
     const typesBuild = await rollup(rollupOptions);
     await ctx.hooks.callHook("rollup:dts:build", ctx, typesBuild);
+    // #region cjs
+    if (ctx.options.rollup.emitCJS) {
+      await typesBuild.write({
+        dir: resolve(ctx.options.rootDir, ctx.options.outDir),
+        entryFileNames: "[name].d.cts",
+        chunkFileNames: (chunk) => getChunkFilename(ctx, chunk, "d.cts"),
+      });
+    }
+    // #endregion
+    // #region mjs
     await typesBuild.write({
       dir: resolve(ctx.options.rootDir, ctx.options.outDir),
-      format: "esm",
+      entryFileNames: "[name].d.mts",
+      chunkFileNames: (chunk) => getChunkFilename(ctx, chunk, "d.mts"),
     });
+    // #endregion
+    // #region .d.ts for node10 compatibility (TypeScript version < 4.7)
+    if (
+      ctx.options.declaration === true ||
+      ctx.options.declaration === "compatible"
+    ) {
+      await typesBuild.write({
+        dir: resolve(ctx.options.rootDir, ctx.options.outDir),
+        entryFileNames: "[name].d.ts",
+        chunkFileNames: (chunk) => getChunkFilename(ctx, chunk, "d.ts"),
+      });
+    }
+    // #endregion
   }
 
   await ctx.hooks.callHook("rollup:done", ctx);
 }
 
-export function getRollupOptions(ctx: BuildContext): RollupOptions {
-  const getChunkFilename = (chunk: PreRenderedChunk, ext: string) => {
-    if (chunk.isDynamicEntry) {
-      return `chunks/[name].${ext}`;
-    }
-    // TODO: Find a way to generate human friendly hash for short groups
-    return `shared/${ctx.options.name}.[hash].${ext}`;
-  };
+const getChunkFilename = (
+  ctx: BuildContext,
+  chunk: PreRenderedChunk,
+  ext: string
+) => {
+  if (chunk.isDynamicEntry) {
+    return `chunks/[name].${ext}`;
+  }
+  // TODO: Find a way to generate human friendly hash for short groups
+  return `shared/${ctx.options.name}.[hash].${ext}`;
+};
 
+export function getRollupOptions(ctx: BuildContext): RollupOptions {
   return (<RollupOptions>{
     input: Object.fromEntries(
       ctx.options.entries
@@ -209,7 +237,7 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
         dir: resolve(ctx.options.rootDir, ctx.options.outDir),
         entryFileNames: "[name].cjs",
         chunkFileNames: (chunk: PreRenderedChunk) =>
-          getChunkFilename(chunk, "cjs"),
+          getChunkFilename(ctx, chunk, "cjs"),
         format: "cjs",
         exports: "auto",
         interop: "compat",
@@ -221,7 +249,7 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
         dir: resolve(ctx.options.rootDir, ctx.options.outDir),
         entryFileNames: "[name].mjs",
         chunkFileNames: (chunk: PreRenderedChunk) =>
-          getChunkFilename(chunk, "mjs"),
+          getChunkFilename(ctx, chunk, "mjs"),
         format: "esm",
         exports: "auto",
         generatedCode: { constBindings: true },
