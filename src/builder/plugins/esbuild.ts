@@ -75,7 +75,6 @@ export function esbuild(options: EsbuildOptions): Plugin {
         ...esbuildOptions,
         loader,
         sourcefile: id,
-        sourcemap: options.sourcemap,
       });
 
       printWarnings(id, result, this);
@@ -97,9 +96,10 @@ export function esbuild(options: EsbuildOptions): Plugin {
         return null;
       }
       const result = await transform(code, {
+        ...esbuildOptions,
         loader,
+        sourcefile: fileName,
         minify: true,
-        target: options.target,
       });
       if (result.code) {
         return {
