@@ -19,6 +19,7 @@ import { arrayIncludes, getpkg, tryResolve, warn } from "../utils";
 import type { BuildContext } from "../types";
 import { esbuild } from "./plugins/esbuild";
 import { JSONPlugin } from "./plugins/json";
+import { metafilePlugin } from "./plugins/metafile";
 import { rawPlugin } from "./plugins/raw";
 import { cjsPlugin } from "./plugins/cjs";
 import { shebangPlugin, makeExecutable, getShebang } from "./plugins/shebang";
@@ -331,6 +332,12 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
       ctx.options.rollup.json &&
         JSONPlugin({
           ...ctx.options.rollup.json,
+        }),
+
+      ctx.options.metafile &&
+        metafilePlugin({
+          enable: ctx.options.metafile,
+          outDir: resolve(ctx.options.rootDir, ctx.options.outDir),
         }),
 
       shebangPlugin(),
