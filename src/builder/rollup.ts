@@ -36,6 +36,7 @@ const DEFAULT_EXTENSIONS = [
 export async function rollupBuild(ctx: BuildContext) {
   if (ctx.options.stub) {
     const jitiPath = await resolvePath("jiti", { url: import.meta.url });
+    const jitiPathESM = jitiPath.replace(/\.js$/, ".mjs");
     const serializedJitiOptions = JSON.stringify(
       {
         ...ctx.options.stubOptions.jiti,
@@ -99,12 +100,14 @@ export async function rollupBuild(ctx: BuildContext) {
         output + ".mjs",
         shebang +
           [
-            `import jiti from ${JSON.stringify(pathToFileURL(jitiPath).href)};`,
+            `import jiti from ${JSON.stringify(jitiPathESM)};`,
             "",
             `/** @type {import(${JSON.stringify(resolvedEntryWithoutExt)})} */`,
-            `const _module = jiti(null, ${serializedJitiOptions})(${JSON.stringify(
+            `const _module = await jiti(null, ${serializedJitiOptions})(${JSON.stringify(
               resolvedEntry,
-            )});`,
+            )}, { _import: () => import(${JSON.stringify(
+              resolvedEntry,
+            )}) });`,
             hasDefaultExport ? "\nexport default _module;" : "",
             ...namedExports
               .filter((name) => name !== "default")
