@@ -14,6 +14,7 @@ export interface MetaInfo {
 }
 
 export function metafilePlugin(opts: MetafileOptions = {}): Plugin {
+  let ctr: number = 0
   return {
     name: "unbuild-metafile",
     async buildEnd(err) {
@@ -39,7 +40,7 @@ export function metafilePlugin(opts: MetafileOptions = {}): Plugin {
           return;
         }
 
-        const outPath = resolve(opts.outDir, "graph.json");
+        const outPath = resolve(opts.outDir, `graph.${++ctr}.json`);
         await writeFile(outPath, JSON.stringify(deps), "utf8");
       }
     },
