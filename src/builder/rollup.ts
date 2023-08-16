@@ -105,9 +105,7 @@ export async function rollupBuild(ctx: BuildContext) {
             `/** @type {import(${JSON.stringify(resolvedEntryWithoutExt)})} */`,
             `const _module = await jiti(null, ${serializedJitiOptions})(${JSON.stringify(
               resolvedEntry,
-            )}, { _import: () => import(${JSON.stringify(
-              resolvedEntry,
-            )}) });`,
+            )}, { _import: () => import(${JSON.stringify(resolvedEntry)}) });`,
             hasDefaultExport ? "\nexport default _module;" : "",
             ...namedExports
               .filter((name) => name !== "default")
