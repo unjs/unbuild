@@ -188,6 +188,8 @@ export async function rollupBuild(ctx: BuildContext) {
 
     rollupOptions.plugins.push(dts(ctx.options.rollup.dts));
 
+    rollupOptions.plugins = rollupOptions.plugins.filter(p => p.name !== 'unbuild:metafile')
+
     await ctx.hooks.callHook("rollup:dts:options", ctx, rollupOptions);
     const typesBuild = await rollup(rollupOptions);
     await ctx.hooks.callHook("rollup:dts:build", ctx, typesBuild);
@@ -336,7 +338,7 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
 
       ctx.options.metafile &&
         metafilePlugin({
-          enable: ctx.options.metafile,
+          rootDir: ctx.options.rootDir,
           outDir: resolve(ctx.options.rootDir, ctx.options.outDir),
         }),
 
