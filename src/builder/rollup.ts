@@ -188,7 +188,9 @@ export async function rollupBuild(ctx: BuildContext) {
 
     rollupOptions.plugins.push(dts(ctx.options.rollup.dts));
 
-    rollupOptions.plugins = rollupOptions.plugins.filter(p => p.name !== 'unbuild:metafile')
+    rollupOptions.plugins = rollupOptions.plugins.filter(
+      (p) => p.name !== "unbuild:metafile",
+    );
 
     await ctx.hooks.callHook("rollup:dts:options", ctx, rollupOptions);
     const typesBuild = await rollup(rollupOptions);
