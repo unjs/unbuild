@@ -1,11 +1,10 @@
 import { writeFile } from "node:fs/promises";
 import type { Plugin } from "rollup";
 import { resolve } from "pathe";
-import { dumpObject } from "../../utils";
 
 export interface MetafileOptions {
-  enable?: boolean;
-  outDir?: string;
+  rootDir: string;
+  outDir: string;
 }
 
 export interface MetaInfo {
@@ -13,25 +12,20 @@ export interface MetaInfo {
   target: string;
 }
 
-export function metafilePlugin(opts: MetafileOptions = {}): Plugin {
-  let ctr: number = 0
+export function metafilePlugin(opts: MetafileOptions): Plugin {
   return {
-    name: "unbuild-metafile",
-    async buildEnd(err) {
-      if (!err && opts.enable) {
-        if (!opts.outDir) {
-          throw new Error(
-            "Missing outDir for Metafile Plugin: " + dumpObject(opts),
-          );
-        }
-
+    name: "unbuild:metafile",
+    async buildEnd() {
         const deps: MetaInfo[] = [];
 
         for (const id of this.getModuleIds()) {
           const m = this.getModuleInfo(id);
           if (m != null && !m.isExternal) {
             for (const target of m.importedIds) {
-              deps.push({ source: m.id, target });
+              deps.push({
+                source: id,
+                target
+               });
             }
           }
         }
@@ -40,9 +34,8 @@ export function metafilePlugin(opts: MetafileOptions = {}): Plugin {
           return;
         }
 
-        const outPath = resolve(opts.outDir, `graph.${++ctr}.json`);
-        await writeFile(outPath, JSON.stringify(deps), "utf8");
-      }
+        const outPath = resolve(opts.outDir, `graph.json`);
+        await writeFile(outPath, JSON.stringify(deps, null, 2), "utf8");
     },
   } as Plugin;
 }
