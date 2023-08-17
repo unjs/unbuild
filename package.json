@@ -49,7 +49,7 @@
     "pkg-types": "^1.0.3",
     "pretty-bytes": "^6.1.1",
     "rollup": "^3.28.0",
-    "rollup-plugin-dts": "^5.3.1",
+    "rollup-plugin-dts": "^6.0.0",
     "scule": "^1.0.0",
     "untyped": "^1.4.0"
   },
