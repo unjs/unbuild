@@ -69,8 +69,8 @@ dependencies:
     specifier: ^3.28.0
     version: 3.28.0
   rollup-plugin-dts:
-    specifier: ^5.3.1
-    version: 5.3.1(rollup@3.28.0)(typescript@5.1.6)
+    specifier: ^6.0.0
+    version: 6.0.0(rollup@3.28.0)(typescript@5.1.6)
   scule:
     specifier: ^1.0.0
     version: 1.0.0
@@ -3440,12 +3440,12 @@ packages:
       glob: 7.2.3
     dev: true
 
-  /rollup-plugin-dts@5.3.1(rollup@3.28.0)(typescript@5.1.6):
-    resolution: {integrity: sha512-gusMi+Z4gY/JaEQeXnB0RUdU82h1kF0WYzCWgVmV4p3hWXqelaKuCvcJawfeg+EKn2T1Ie+YWF2OiN1/L8bTVg==}
-    engines: {node: '>=v14.21.3'}
+  /rollup-plugin-dts@6.0.0(rollup@3.28.0)(typescript@5.1.6):
+    resolution: {integrity: sha512-A996xSZDAqnx/KfFttzC8mDEuyMjsRpiLCrlGc8effhK8KhE3AG0g1woQiITgFc5HSE8HWU7ccR9CiQ3vXgUlQ==}
+    engines: {node: '>=v18.17.1'}
     peerDependencies:
-      rollup: ^3.0
-      typescript: ^4.1 || ^5.0
+      rollup: ^3.25.0
+      typescript: ^4.5 || ^5.0
     dependencies:
       magic-string: 0.30.2
       rollup: 3.28.0
