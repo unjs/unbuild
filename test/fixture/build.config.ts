@@ -22,7 +22,7 @@ export default defineBuildConfig([
     entries: ["src/index"],
     outDir: "dist/min",
     sourcemap: true,
-    declaration: true,
+    declaration: "compatible",
     rollup: {
       esbuild: {
         minify: true,

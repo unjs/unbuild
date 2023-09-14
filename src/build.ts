@@ -74,7 +74,7 @@ async function _build(
       rootDir,
       entries: [],
       clean: true,
-      declaration: false,
+      declaration: undefined,
       outDir: "dist",
       stub,
       stubOptions: {
