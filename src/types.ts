@@ -47,6 +47,7 @@ export type BuildEntry =
 export interface RollupBuildOptions {
   emitCJS?: boolean;
   cjsBridge?: boolean;
+  preserveDynamicImportsCjs?: boolean;
   inlineDependencies?: boolean;
   output?: OutputOptions;
   // Plugins
@@ -56,7 +57,7 @@ export interface RollupBuildOptions {
   json: RollupJsonOptions | false;
   esbuild: EsbuildOptions | false;
   commonjs: RollupCommonJSOptions | false;
-  dts: RollupDtsOptions;
+  dts: RollupDtsOptions | false;
 }
 
 export interface BuildOptions {
