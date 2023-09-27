@@ -56,10 +56,10 @@ async function _build(
   // Resolve preset
   const preset = resolvePreset(
     buildConfig.preset ||
-    pkg.unbuild?.preset ||
-    pkg.build?.preset ||
-    inputConfig.preset ||
-    "auto",
+      pkg.unbuild?.preset ||
+      pkg.build?.preset ||
+      inputConfig.preset ||
+      "auto",
     rootDir,
   );
 
@@ -282,7 +282,7 @@ async function _build(
         totalBytes && `total size: ${chalk.cyan(prettyBytes(totalBytes))}`,
         entry.bytes && `chunk size: ${chalk.cyan(prettyBytes(entry.bytes))}`,
         entry.exports?.length &&
-        `exports: ${chalk.gray(entry.exports.join(", "))}`,
+          `exports: ${chalk.gray(entry.exports.join(", "))}`,
       ]
         .filter(Boolean)
         .join(", ") +
@@ -296,10 +296,10 @@ async function _build(
               ctx.buildEntries.find((e) => e.path === p) || ({} as any);
             return chalk.gray(
               "  └─ " +
-              rPath(p) +
-              chalk.bold(
-                chunk.bytes ? ` (${prettyBytes(chunk?.bytes)})` : "",
-              ),
+                rPath(p) +
+                chalk.bold(
+                  chunk.bytes ? ` (${prettyBytes(chunk?.bytes)})` : "",
+                ),
             );
           })
           .join("\n");
@@ -313,8 +313,8 @@ async function _build(
           .map((m) => {
             return chalk.gray(
               "  📦 " +
-              rPath(m.id) +
-              chalk.bold(m.bytes ? ` (${prettyBytes(m.bytes)})` : ""),
+                rPath(m.id) +
+                chalk.bold(m.bytes ? ` (${prettyBytes(m.bytes)})` : ""),
             );
           })
           .join("\n");
@@ -340,7 +340,7 @@ async function _build(
   if (ctx.warnings.size > 0) {
     consola.warn(
       "Build is done with some warnings:\n\n" +
-      [...ctx.warnings].map((msg) => "- " + msg).join("\n"),
+        [...ctx.warnings].map((msg) => "- " + msg).join("\n"),
     );
     if (ctx.options.failOnWarn) {
       consola.error(

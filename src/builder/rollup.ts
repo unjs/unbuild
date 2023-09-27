@@ -98,18 +98,18 @@ export async function rollupBuild(ctx: BuildContext) {
       await writeFile(
         output + ".mjs",
         shebang +
-        [
-          `import jiti from ${JSON.stringify(pathToFileURL(jitiPath).href)};`,
-          "",
-          `/** @type {import(${JSON.stringify(resolvedEntryWithoutExt)})} */`,
-          `const _module = jiti(null, ${serializedJitiOptions})(${JSON.stringify(
-            resolvedEntry,
-          )});`,
-          hasDefaultExport ? "\nexport default _module;" : "",
-          ...namedExports
-            .filter((name) => name !== "default")
-            .map((name) => `export const ${name} = _module.${name};`),
-        ].join("\n"),
+          [
+            `import jiti from ${JSON.stringify(pathToFileURL(jitiPath).href)};`,
+            "",
+            `/** @type {import(${JSON.stringify(resolvedEntryWithoutExt)})} */`,
+            `const _module = jiti(null, ${serializedJitiOptions})(${JSON.stringify(
+              resolvedEntry,
+            )});`,
+            hasDefaultExport ? "\nexport default _module;" : "",
+            ...namedExports
+              .filter((name) => name !== "default")
+              .map((name) => `export const ${name} = _module.${name};`),
+          ].join("\n"),
       );
 
       // DTS Stub
@@ -119,8 +119,8 @@ export async function rollupBuild(ctx: BuildContext) {
           `export * from ${JSON.stringify(resolvedEntryWithoutExt)};`,
           hasDefaultExport
             ? `export { default } from ${JSON.stringify(
-              resolvedEntryWithoutExt,
-            )};`
+                resolvedEntryWithoutExt,
+              )};`
             : "",
         ].join("\n"),
       );
@@ -248,20 +248,20 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
 
     output: [
       ctx.options.rollup.emitCJS &&
-      <OutputOptions>{
-        dir: resolve(ctx.options.rootDir, ctx.options.outDir),
-        entryFileNames: "[name].cjs",
-        chunkFileNames: (chunk: PreRenderedChunk) =>
-          getChunkFilename(ctx, chunk, "cjs"),
-        format: "cjs",
-        exports: "auto",
-        interop: "compat",
-        generatedCode: { constBindings: true },
-        externalLiveBindings: false,
-        freeze: false,
-        sourcemap: ctx.options.sourcemap,
-        ...ctx.options.rollup.output,
-      },
+        <OutputOptions>{
+          dir: resolve(ctx.options.rootDir, ctx.options.outDir),
+          entryFileNames: "[name].cjs",
+          chunkFileNames: (chunk: PreRenderedChunk) =>
+            getChunkFilename(ctx, chunk, "cjs"),
+          format: "cjs",
+          exports: "auto",
+          interop: "compat",
+          generatedCode: { constBindings: true },
+          externalLiveBindings: false,
+          freeze: false,
+          sourcemap: ctx.options.sourcemap,
+          ...ctx.options.rollup.output,
+        },
       <OutputOptions>{
         dir: resolve(ctx.options.rootDir, ctx.options.outDir),
         entryFileNames: "[name].mjs",
@@ -308,44 +308,44 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
 
     plugins: [
       ctx.options.rollup.replace &&
-      replace({
-        ...ctx.options.rollup.replace,
-        values: {
-          ...ctx.options.replace,
-          ...ctx.options.rollup.replace.values,
-        },
-      }),
+        replace({
+          ...ctx.options.rollup.replace,
+          values: {
+            ...ctx.options.replace,
+            ...ctx.options.rollup.replace.values,
+          },
+        }),
 
       ctx.options.rollup.alias &&
-      alias({
-        ...ctx.options.rollup.alias,
-        entries: resolveAliases(ctx),
-      }),
+        alias({
+          ...ctx.options.rollup.alias,
+          entries: resolveAliases(ctx),
+        }),
 
       ctx.options.rollup.resolve &&
-      nodeResolve({
-        extensions: DEFAULT_EXTENSIONS,
-        ...ctx.options.rollup.resolve,
-      }),
+        nodeResolve({
+          extensions: DEFAULT_EXTENSIONS,
+          ...ctx.options.rollup.resolve,
+        }),
 
       ctx.options.rollup.json &&
-      JSONPlugin({
-        ...ctx.options.rollup.json,
-      }),
+        JSONPlugin({
+          ...ctx.options.rollup.json,
+        }),
 
       shebangPlugin(),
 
       ctx.options.rollup.esbuild &&
-      esbuild({
-        sourcemap: ctx.options.sourcemap,
-        ...ctx.options.rollup.esbuild,
-      }),
+        esbuild({
+          sourcemap: ctx.options.sourcemap,
+          ...ctx.options.rollup.esbuild,
+        }),
 
       ctx.options.rollup.commonjs &&
-      commonjs({
-        extensions: DEFAULT_EXTENSIONS,
-        ...ctx.options.rollup.commonjs,
-      }),
+        commonjs({
+          extensions: DEFAULT_EXTENSIONS,
+          ...ctx.options.rollup.commonjs,
+        }),
 
       // Preserve dynamic imports for CommonJS
       ctx.options.rollup.preserveDynamicImportsCjs && {
