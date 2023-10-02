@@ -103,7 +103,8 @@ export async function rollupBuild(ctx: BuildContext) {
             `import jiti from ${JSON.stringify(jitiPathESM)};`,
             "",
             `/** @type {import(${JSON.stringify(resolvedEntryWithoutExt)})} */`,
-            `const _module = await jiti(null, ${serializedJitiOptions})(${JSON.stringify(
+            `const _jiti = jiti(null, ${serializedJitiOptions})`,
+            `const _module = await _jiti.import(${JSON.stringify(
               resolvedEntry,
             )}, { _import: () => import(${JSON.stringify(resolvedEntry)}) });`,
             hasDefaultExport ? "\nexport default _module;" : "",
