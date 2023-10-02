@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v2.0.0
+
+[compare changes](https://github.com/unjs/unbuild/compare/v2.0.0-rc.0...v2.0.0)
+
+### 🏡 Chore
+
+- Update dependencies ([33b20a4](https://github.com/unjs/unbuild/commit/33b20a4))
+- Update depedencies ([8d8a3d7](https://github.com/unjs/unbuild/commit/8d8a3d7))
+
+### 🤖 CI
+
+- Use conventional commit for autofix ([#294](https://github.com/unjs/unbuild/pull/294))
+
+### ❤️ Contributors
+
+- Pooya Parsa ([@pi0](http://github.com/pi0))
+- Daniel Roe <daniel@roe.dev>
+
 ## v2.0.0-rc.0
 
 [compare changes](https://github.com/unjs/unbuild/compare/v1.2.1...v2.0.0-rc.0)
