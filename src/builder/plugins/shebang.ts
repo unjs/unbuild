@@ -27,7 +27,7 @@ export function removeShebangPlugin(): Plugin {
   return {
     name: "unbuild-remove-shebang",
     renderChunk(code) {
-      return code.replace(SHEBANG_RE, '')
+      return code.replace(SHEBANG_RE, "");
     },
   };
 }
