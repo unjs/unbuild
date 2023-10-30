@@ -21,7 +21,12 @@ import { esbuild } from "./plugins/esbuild";
 import { JSONPlugin } from "./plugins/json";
 import { rawPlugin } from "./plugins/raw";
 import { cjsPlugin } from "./plugins/cjs";
-import { shebangPlugin, makeExecutable, getShebang } from "./plugins/shebang";
+import {
+  shebangPlugin,
+  makeExecutable,
+  getShebang,
+  removeShebangPlugin,
+} from "./plugins/shebang";
 
 const DEFAULT_EXTENSIONS = [
   ".ts",
@@ -178,14 +183,11 @@ export async function rollupBuild(ctx: BuildContext) {
 
   // Types
   if (ctx.options.declaration) {
-    rollupOptions.plugins = rollupOptions.plugins || [];
-    // TODO: Use fresh rollup options
-    const shebangPlugin: any = rollupOptions.plugins.find(
-      (p) => p && p.name === "unbuild-shebang",
-    );
-    shebangPlugin._options.preserve = false;
-
-    rollupOptions.plugins.push(dts(ctx.options.rollup.dts));
+    rollupOptions.plugins = [
+      rollupOptions.plugins,
+      dts(ctx.options.rollup.dts),
+      removeShebangPlugin(),
+    ];
 
     await ctx.hooks.callHook("rollup:dts:options", ctx, rollupOptions);
     const typesBuild = await rollup(rollupOptions);

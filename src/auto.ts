@@ -60,9 +60,8 @@ export const autoPreset = definePreset(() => {
 
 /**
  * @param {PackageJson} pkg The contents of a package.json file to serve as the source for inferred entries.
- * @param {string | string[]} source The root directory of the project.
- *   - if string, `<source>/src` will be scanned for possible source files.
- *   - if an array of source files, these will be used directly instead of accessing fs.
+ * @param {string[]} sourceFiles A list of source files to use for inferring entries.
+ * @param {string | undefined} rootDir The root directory of the project.
  */
 export function inferEntries(
   pkg: PackageJson,
