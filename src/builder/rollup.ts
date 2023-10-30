@@ -349,8 +349,7 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
           ...ctx.options.rollup.commonjs,
         }),
 
-      // Preserve dynamic imports for CommonJS
-      {
+      ctx.options.rollup.preserveDynamicImports && {
         renderDynamicImport() {
           return { left: "import(", right: ")" };
         },
