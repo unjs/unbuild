@@ -102,6 +102,7 @@ async function _build(
         emitCJS: false,
         cjsBridge: false,
         inlineDependencies: false,
+        preserveDynamicImports: true,
         // Plugins
         replace: {
           preventAssignment: true,

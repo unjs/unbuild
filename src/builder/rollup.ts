@@ -21,7 +21,12 @@ import { esbuild } from "./plugins/esbuild";
 import { JSONPlugin } from "./plugins/json";
 import { rawPlugin } from "./plugins/raw";
 import { cjsPlugin } from "./plugins/cjs";
-import { shebangPlugin, makeExecutable, getShebang } from "./plugins/shebang";
+import {
+  shebangPlugin,
+  makeExecutable,
+  getShebang,
+  removeShebangPlugin,
+} from "./plugins/shebang";
 
 const DEFAULT_EXTENSIONS = [
   ".ts",
@@ -73,11 +78,17 @@ export async function rollupBuild(ctx: BuildContext) {
       if (ctx.options.rollup.emitCJS) {
         await writeFile(
           output + ".cjs",
-          `${shebang}module.exports = require(${JSON.stringify(
-            jitiPath,
-          )})(null, ${serializedJitiOptions})(${JSON.stringify(
-            resolvedEntry,
-          )})`,
+          shebang +
+            [
+              `const jiti = require(${JSON.stringify(jitiPath)})`,
+              "",
+              `const _jiti = jiti(null, ${serializedJitiOptions})`,
+              "",
+              `/** @type {import(${JSON.stringify(
+                resolvedEntryWithoutExt,
+              )})} */`,
+              `module.exports = _jiti(${JSON.stringify(resolvedEntry)})`,
+            ].join("\n"),
         );
       }
 
@@ -101,8 +112,10 @@ export async function rollupBuild(ctx: BuildContext) {
           [
             `import jiti from ${JSON.stringify(pathToFileURL(jitiPath).href)};`,
             "",
+            `const _jiti = jiti(null, ${serializedJitiOptions})`,
+            "",
             `/** @type {import(${JSON.stringify(resolvedEntryWithoutExt)})} */`,
-            `const _module = jiti(null, ${serializedJitiOptions})(${JSON.stringify(
+            `const _module = await _jiti.import(${JSON.stringify(
               resolvedEntry,
             )});`,
             hasDefaultExport ? "\nexport default _module;" : "",
@@ -190,14 +203,11 @@ export async function rollupBuild(ctx: BuildContext) {
 
   // Types
   if (ctx.options.declaration) {
-    rollupOptions.plugins = rollupOptions.plugins || [];
-    // TODO: Use fresh rollup options
-    const shebangPlugin: any = rollupOptions.plugins.find(
-      (p) => p && p.name === "unbuild-shebang",
-    );
-    shebangPlugin._options.preserve = false;
-
-    rollupOptions.plugins.push(dts(ctx.options.rollup.dts));
+    rollupOptions.plugins = [
+      rollupOptions.plugins,
+      dts(ctx.options.rollup.dts),
+      removeShebangPlugin(),
+    ];
 
     await ctx.hooks.callHook("rollup:dts:options", ctx, rollupOptions);
     const typesBuild = await rollup(rollupOptions);
@@ -359,8 +369,7 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
           ...ctx.options.rollup.commonjs,
         }),
 
-      // Preserve dynamic imports for CommonJS
-      {
+      ctx.options.rollup.preserveDynamicImports && {
         renderDynamicImport() {
           return { left: "import(", right: ")" };
         },
