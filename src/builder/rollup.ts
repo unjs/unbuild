@@ -78,11 +78,17 @@ export async function rollupBuild(ctx: BuildContext) {
       if (ctx.options.rollup.emitCJS) {
         await writeFile(
           output + ".cjs",
-          `${shebang}module.exports = require(${JSON.stringify(
-            jitiPath,
-          )})(null, ${serializedJitiOptions})(${JSON.stringify(
-            resolvedEntry,
-          )})`,
+          shebang +
+            [
+              `const jiti = require(${JSON.stringify(jitiPath)})`,
+              "",
+              `const _jiti = jiti(null, ${serializedJitiOptions})`,
+              "",
+              `/** @type {import(${JSON.stringify(
+                resolvedEntryWithoutExt,
+              )})} */`,
+              `module.exports = _jiti(${JSON.stringify(resolvedEntry)})`,
+            ].join("\n"),
         );
       }
 
@@ -106,8 +112,10 @@ export async function rollupBuild(ctx: BuildContext) {
           [
             `import jiti from ${JSON.stringify(pathToFileURL(jitiPath).href)};`,
             "",
+            `const _jiti = jiti(null, ${serializedJitiOptions})`,
+            "",
             `/** @type {import(${JSON.stringify(resolvedEntryWithoutExt)})} */`,
-            `const _module = jiti(null, ${serializedJitiOptions})(${JSON.stringify(
+            `const _module = await _jiti.import(${JSON.stringify(
               resolvedEntry,
             )});`,
             hasDefaultExport ? "\nexport default _module;" : "",
