@@ -104,7 +104,7 @@ export async function rollupBuild(ctx: BuildContext) {
         output + ".mjs",
         shebang +
           [
-            `import jiti from ${JSON.stringify(jitiPath)};`,
+            `import jiti from ${JSON.stringify(pathToFileURL(jitiPath).href)};`,
             "",
             `/** @type {import(${JSON.stringify(resolvedEntryWithoutExt)})} */`,
             `const _jiti = jiti(null, ${serializedJitiOptions})`,
