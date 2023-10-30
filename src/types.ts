@@ -47,14 +47,7 @@ export type BuildEntry =
 export interface RollupBuildOptions {
   emitCJS?: boolean;
   cjsBridge?: boolean;
-  /**
-   * Use `preserveDynamicImportsCjs` to preserve dynamic imports in CommonJS.
-   *
-   * When is set `true`, `await import('foo')` will be preserved in CommonJS output, instead of being converted to `yield Promise.resolve(require('foo'))`.
-   *
-   * @default true
-   */
-  preserveDynamicImportsCjs?: boolean;
+  preserveDynamicImports?: boolean;
   inlineDependencies?: boolean;
   output?: OutputOptions;
   // Plugins
@@ -64,7 +57,7 @@ export interface RollupBuildOptions {
   json: RollupJsonOptions | false;
   esbuild: EsbuildOptions | false;
   commonjs: RollupCommonJSOptions | false;
-  dts: RollupDtsOptions | false;
+  dts: RollupDtsOptions;
 }
 
 export interface BuildOptions {
