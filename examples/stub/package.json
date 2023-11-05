@@ -1,0 +1,19 @@
+{
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "unbuild",
+    "build:stub": "unbuild --stub"
+  },
+  "devDependencies": {
+    "unbuild": "^2.0.0"
+  }
+}
