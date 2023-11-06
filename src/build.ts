@@ -117,7 +117,7 @@ async function _build(
         commonjs: {
           ignoreTryCatch: true,
         },
-        esbuild: { target: "es2020" },
+        esbuild: { target: "esnext" },
         dts: {
           // https://github.com/Swatinem/rollup-plugin-dts/issues/143
           compilerOptions: { preserveSymlinks: false },
