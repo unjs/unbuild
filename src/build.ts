@@ -216,7 +216,7 @@ async function _build(
         .filter(Boolean)
         .sort() as unknown as Set<string>,
     )) {
-      if (cleanedDirs.some((c) => dir.startsWith(c))) {
+      if (dir === options.rootDir || cleanedDirs.some((c) => dir.startsWith(c))) {
         continue;
       }
       cleanedDirs.push(dir);
