@@ -1,6 +1,7 @@
 import Module from "node:module";
 import { promises as fsp } from "node:fs";
 import { resolve, relative, isAbsolute, normalize } from "pathe";
+import { withTrailingSlash } from "ufo";
 import type { PackageJson } from "pkg-types";
 import chalk from "chalk";
 import { consola } from "consola";
@@ -218,6 +219,7 @@ async function _build(
     )) {
       if (
         dir === options.rootDir ||
+        options.rootDir.startsWith(withTrailingSlash(dir)) ||
         cleanedDirs.some((c) => dir.startsWith(c))
       ) {
         continue;
