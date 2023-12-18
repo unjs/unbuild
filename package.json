@@ -51,6 +51,7 @@
     "rollup": "^4.6.1",
     "rollup-plugin-dts": "^6.1.0",
     "scule": "^1.1.1",
+    "ufo": "^1.3.2",
     "untyped": "^1.4.0"
   },
   "devDependencies": {
