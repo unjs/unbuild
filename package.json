@@ -22,7 +22,8 @@
     "lint": "eslint --ext .ts,.js . && prettier -c src test",
     "lint:fix": "eslint --fix --ext .ts,.js . && prettier -w src test",
     "prepack": "pnpm unbuild",
-    "release": "vitest run && changelogen --release && git push --follow-tags && npm publish",
+    "release": "pnpm test && changelogen --release && git push --follow-tags && npm publish",
+    "prerelease": "pnpm test && changelogen --prerelease --release && git push --follow-tags && npm publish",
     "stub": "pnpm unbuild --stub",
     "test": "pnpm lint && vitest run --coverage",
     "unbuild": "jiti ./src/cli"
