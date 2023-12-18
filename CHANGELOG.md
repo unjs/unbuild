@@ -2,6 +2,48 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v3.0.0-rc.1
+
+[compare changes](https://github.com/unjs/unbuild/compare/v2.0.0...v3.0.0-rc.1)
+
+### 🚀 Enhancements
+
+- ⚠️  Upgrade to rollup v4 ([#327](https://github.com/unjs/unbuild/pull/327))
+- Support disabling `preserveDynamicImports` ([#322](https://github.com/unjs/unbuild/pull/322))
+- **rollup:** ⚠️  Default to `esnext` build target ([#335](https://github.com/unjs/unbuild/pull/335))
+
+### 🩹 Fixes
+
+- Don't clean root directory if set as `outDir` ([#343](https://github.com/unjs/unbuild/pull/343))
+
+### 💅 Refactors
+
+- Use `jiti.import` for esm stubs and improve templates ([#300](https://github.com/unjs/unbuild/pull/300))
+
+### 📖 Documentation
+
+- Update jsdocs for `inferEntries` ([#310](https://github.com/unjs/unbuild/pull/310))
+
+### 🏡 Chore
+
+- Update dependencies ([83ea4f0](https://github.com/unjs/unbuild/commit/83ea4f0))
+- Update dependencies ([4d69ebe](https://github.com/unjs/unbuild/commit/4d69ebe))
+- Add prerelease script ([9c48ca4](https://github.com/unjs/unbuild/commit/9c48ca4))
+
+#### ⚠️ Breaking Changes
+
+- ⚠️  Upgrade to rollup v4 ([#327](https://github.com/unjs/unbuild/pull/327))
+- **rollup:** ⚠️  Default to `esnext` build target ([#335](https://github.com/unjs/unbuild/pull/335))
+
+### ❤️ Contributors
+
+- Pooya Parsa ([@pi0](http://github.com/pi0))
+- Daniel Roe <daniel@roe.dev>
+- Anthony Fu <anthonyfu117@hotmail.com>
+- Brendon Matos <brendonferreiradm@gmail.com>
+- Estéban ([@Barbapapazes](http://github.com/Barbapapazes))
+- 翠 / Green <green@sapphi.red>
+
 ## v2.0.0
 
 [compare changes](https://github.com/unjs/unbuild/compare/v2.0.0-rc.0...v2.0.0)
