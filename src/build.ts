@@ -10,7 +10,7 @@ import { defu } from "defu";
 import { createHooks } from "hookable";
 import prettyBytes from "pretty-bytes";
 import { globby } from "globby";
-import { watch as rollupWatch } from "rollup";
+import { RollupOptions, watch as rollupWatch } from "rollup";
 import {
   dumpObject,
   rmdir,
@@ -43,6 +43,7 @@ export async function build(
 
   // Invoke build for every build config defined in build.config.ts
   const cleanedDirs: string[] = [];
+  const rollupOptions: RollupOptions[] = [];
   for (const buildConfig of buildConfigs) {
     await _build(
       rootDir,
@@ -52,7 +53,12 @@ export async function build(
       buildConfig,
       pkg,
       cleanedDirs,
+      rollupOptions,
     );
+  }
+
+  if (devMode === "watch") {
+    watch(rollupOptions);
   }
 }
 
@@ -64,6 +70,7 @@ async function _build(
   buildConfig: BuildConfig,
   pkg: PackageJson & Record<"unbuild" | "build", BuildConfig>,
   cleanedDirs: string[],
+  rollupOptions: RollupOptions[],
 ) {
   // Resolve preset
   const preset = resolvePreset(
@@ -268,19 +275,11 @@ async function _build(
   }
 
   if (options.watch) {
-    const rollupOptions = getRollupOptions(ctx);
-    await ctx.hooks.callHook("rollup:options", ctx, rollupOptions);
-
-    const watcher = rollupWatch({
-      ...rollupOptions,
-    });
-
-    watcher.on("change", (id, { event }) => {
-      consola.info(`${path.relative(".", id)} was ${event}d`);
-    });
-    watcher.on("restart", () => {
-      console.log("Rebuilding...");
-    });
+    const _rollupOptions = getRollupOptions(ctx);
+    await ctx.hooks.callHook("rollup:options", ctx, _rollupOptions);
+    rollupOptions.push(_rollupOptions);
+    await ctx.hooks.callHook("build:done", ctx);
+    return;
   }
 
   // Done info
@@ -384,4 +383,38 @@ async function _build(
       process.exit(1);
     }
   }
+}
+
+export function watch(rollupOptions: RollupOptions[]) {
+  const watcher = rollupWatch(rollupOptions);
+
+  let inputs: string[] = [];
+
+  rollupOptions.forEach((rollupOption) => {
+    inputs = [
+      ...inputs,
+      ...(Array.isArray(rollupOption.input)
+        ? rollupOption.input
+        : typeof rollupOption.input === "string"
+          ? [rollupOption.input]
+          : Object.keys(rollupOption.input || {})),
+    ];
+  });
+  console.log("");
+  consola.info(`Starting watchers for entries:`);
+  inputs.forEach((input) => {
+    console.log(chalk.gray(`  └─ ${path.relative(process.cwd(), input)}`));
+  });
+
+  watcher.on("change", (id, { event }) => {
+    consola.info(`${chalk.cyan(path.relative(".", id))} was ${event}d`);
+  });
+  watcher.on("restart", () => {
+    consola.info(chalk.gray("Rebuilding bundle"));
+  });
+  watcher.on("event", (event) => {
+    if (event.code === "END") {
+      consola.success(chalk.green("Rebuild finished\n"));
+    }
+  });
 }
