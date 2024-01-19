@@ -1,7 +1,12 @@
 /* eslint-disable no-use-before-define */
 import type { PackageJson } from "pkg-types";
 import type { Hookable } from "hookable";
-import type { RollupOptions, RollupBuild, OutputOptions } from "rollup";
+import type {
+  RollupOptions,
+  RollupBuild,
+  OutputOptions,
+  RollupWatchOptions,
+} from "rollup";
 import type { MkdistOptions } from "mkdist";
 import type { Schema } from "untyped";
 import type { RollupReplaceOptions } from "@rollup/plugin-replace";
@@ -46,6 +51,7 @@ export type BuildEntry =
 
 export interface RollupBuildOptions {
   emitCJS?: boolean;
+  watch: boolean;
   cjsBridge?: boolean;
   preserveDynamicImports?: boolean;
   inlineDependencies?: boolean;
@@ -77,6 +83,7 @@ export interface BuildOptions {
   declaration?: "compatible" | "node16" | boolean;
   outDir: string;
   stub: boolean;
+  watch: boolean;
   stubOptions: { jiti: Omit<JITIOptions, "transform" | "onError"> };
   externals: (string | RegExp)[];
   dependencies: string[];

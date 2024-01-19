@@ -17,9 +17,14 @@ const main = defineCommand({
       description: "The directory to build",
       required: false,
     },
+    watch: {
+      type: "boolean",
+      description: "Watch the src dir and rebuild on change",
+      required: false,
+    },
     stub: {
       type: "boolean",
-      description: "Stub build",
+      description: "Stub the package for JIT compilation",
     },
     minify: {
       type: "boolean",
@@ -32,7 +37,9 @@ const main = defineCommand({
   },
   async run({ args }) {
     const rootDir = resolve(process.cwd(), args.dir || ".");
-    await build(rootDir, args.stub, {
+    const devMode = args.watch ? "watch" : (args.stub ? "stub" : false);
+
+    await build(rootDir, devMode, {
       sourcemap: args.sourcemap,
       rollup: {
         esbuild: {

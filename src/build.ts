@@ -9,6 +9,7 @@ import { defu } from "defu";
 import { createHooks } from "hookable";
 import prettyBytes from "pretty-bytes";
 import { globby } from "globby";
+import { watch as rollupWatch } from "rollup";
 import {
   dumpObject,
   rmdir,
@@ -18,13 +19,13 @@ import {
 } from "./utils";
 import type { BuildContext, BuildConfig, BuildOptions } from "./types";
 import { validatePackage, validateDependencies } from "./validate";
-import { rollupBuild } from "./builder/rollup";
+import { getRollupOptions, rollupBuild } from "./builder/rollup";
 import { typesBuild } from "./builder/untyped";
 import { mkdistBuild } from "./builder/mkdist";
 
 export async function build(
   rootDir: string,
-  stub: boolean,
+  devMode: "watch" | "stub" | boolean,
   inputConfig: BuildConfig = {},
 ) {
   // Determine rootDir
@@ -42,12 +43,21 @@ export async function build(
   // Invoke build for every build config defined in build.config.ts
   const cleanedDirs: string[] = [];
   for (const buildConfig of buildConfigs) {
-    await _build(rootDir, stub, inputConfig, buildConfig, pkg, cleanedDirs);
+    await _build(
+      rootDir,
+      devMode === "watch",
+      devMode === "stub",
+      inputConfig,
+      buildConfig,
+      pkg,
+      cleanedDirs,
+    );
   }
 }
 
 async function _build(
   rootDir: string,
+  watch: boolean,
   stub: boolean,
   inputConfig: BuildConfig = {},
   buildConfig: BuildConfig,
@@ -78,6 +88,7 @@ async function _build(
       declaration: false,
       outDir: "dist",
       stub,
+      watch,
       stubOptions: {
         /**
          * See https://github.com/unjs/jiti#options
@@ -101,6 +112,7 @@ async function _build(
       sourcemap: false,
       rollup: {
         emitCJS: false,
+        watch: false,
         cjsBridge: false,
         inlineDependencies: false,
         preserveDynamicImports: true,
@@ -252,6 +264,19 @@ async function _build(
   if (options.stub) {
     await ctx.hooks.callHook("build:done", ctx);
     return;
+  }
+
+  if (options.watch) {
+    const rollupOptions = getRollupOptions(ctx);
+    await ctx.hooks.callHook("rollup:options", ctx, rollupOptions);
+
+    const watcher = rollupWatch({
+      ...rollupOptions,
+    });
+
+    watcher.on("event", (event) => {
+      console.log("event.code", event.code);
+    });
   }
 
   // Done info
