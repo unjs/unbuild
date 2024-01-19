@@ -1,5 +1,6 @@
 import Module from "node:module";
 import { promises as fsp } from "node:fs";
+import path from "node:path";
 import { resolve, relative, isAbsolute, normalize } from "pathe";
 import { withTrailingSlash } from "ufo";
 import type { PackageJson } from "pkg-types";
@@ -274,8 +275,11 @@ async function _build(
       ...rollupOptions,
     });
 
-    watcher.on("event", (event) => {
-      console.log("event.code", event.code);
+    watcher.on("change", (id, { event }) => {
+      consola.info(`${path.relative(".", id)} was ${event}d`);
+    });
+    watcher.on("restart", () => {
+      console.log("Rebuilding...");
     });
   }
 
