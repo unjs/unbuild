@@ -10,7 +10,8 @@ import { defu } from "defu";
 import { createHooks } from "hookable";
 import prettyBytes from "pretty-bytes";
 import { globby } from "globby";
-import { RollupOptions, watch as rollupWatch } from "rollup";
+import type { RollupOptions } from "rollup";
+import { watch as rollupWatch } from "rollup";
 import {
   dumpObject,
   rmdir,
@@ -390,21 +391,21 @@ export function watch(rollupOptions: RollupOptions[]) {
 
   let inputs: string[] = [];
 
-  rollupOptions.forEach((rollupOption) => {
+  for (const rollupOption of rollupOptions) {
     inputs = [
       ...inputs,
       ...(Array.isArray(rollupOption.input)
         ? rollupOption.input
-        : typeof rollupOption.input === "string"
+        : (typeof rollupOption.input === "string"
           ? [rollupOption.input]
-          : Object.keys(rollupOption.input || {})),
+          : Object.keys(rollupOption.input || {}))),
     ];
-  });
+  }
   console.log("");
   consola.info(`Starting watchers for entries:`);
-  inputs.forEach((input) => {
+  for (const input of inputs) {
     console.log(chalk.gray(`  └─ ${path.relative(process.cwd(), input)}`));
-  });
+  }
 
   watcher.on("change", (id, { event }) => {
     consola.info(`${chalk.cyan(path.relative(".", id))} was ${event}d`);
