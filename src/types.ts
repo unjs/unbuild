@@ -45,18 +45,42 @@ export type BuildEntry =
   | MkdistBuildEntry;
 
 export interface RollupBuildOptions {
+  // whether to generate a CJS format file.
   emitCJS?: boolean;
+  //whether create a bridging file to support interoperability between CommonJS and ES6 modules.
   cjsBridge?: boolean;
+  // While retaining dynamic imports
   preserveDynamicImports?: boolean;
+  // Which inline all dependencies.Only ESM dependencies and make them development dependencies.
   inlineDependencies?: boolean;
   output?: OutputOptions;
-  // Plugins
+  /**
+   * Plugins: [@rollup/plugin-replace](https://www.npmjs.com/package/@rollup/plugin-replace)
+   */
   replace: RollupReplaceOptions | false;
+  /**
+   * Plugins: [@rollup/plugin-alias](https://www.npmjs.com/package/@rollup/plugin-alias)
+   */
   alias: RollupAliasOptions | false;
+  /**
+   * Plugins: [@rollup/plugin-node-resolve](https://www.npmjs.com/package/@rollup/plugin-node-resolve)
+   */
   resolve: RollupNodeResolveOptions | false;
+  /**
+   * Plugins: [@rollup/plugin-json](https://www.npmjs.com/package/@rollup/plugin-json)
+   */
   json: RollupJsonOptions | false;
+  /**
+   * Plugins: [esbuild](https://www.npmjs.com/package/esbuild)
+   */
   esbuild: EsbuildOptions | false;
+  /**
+ * Plugins: [@rollup/plugin-commonjs](https://www.npmjs.com/package/@rollup/plugin-commonjs)
+ */
   commonjs: RollupCommonJSOptions | false;
+  /**
+   * Plugins: [rollup-plugin-dts](https://www.npmjs.com/package/rollup-plugin-dts)
+   */
   dts: RollupDtsOptions;
 }
 
@@ -64,8 +88,12 @@ export interface BuildOptions {
   name: string;
   rootDir: string;
   entries: BuildEntry[];
+  // Whether to clean the output directory before building.
   clean: boolean;
-  /** @experimental */
+  /** 
+   * @experimental
+   * Generate source mapping file.
+   */
   sourcemap: boolean;
   /**
    * * `compatible` means "src/index.ts" will generate "dist/index.d.mts", "dist/index.d.cts" and "dist/index.d.ts".
@@ -75,21 +103,50 @@ export interface BuildOptions {
    * * `undefined` will auto detect based on "package.json". If "package.json" has "types" field, it will be `"compatible"`, otherwise `false`.
    */
   declaration?: "compatible" | "node16" | boolean;
+  // Whether to generate declaration files.
   outDir: string;
+  /**
+   * Whether to generate declaration files.
+   * [stubbing](https://antfu.me/posts/publish-esm-and-cjs#stubbing)
+   */
   stub: boolean;
+  /**
+   * Stub options, where [jiti](https://github.com/unjs/jiti) 
+   * is an object of type `Omit<JITIOptions, "transform" | "onError">`.
+   */
   stubOptions: { jiti: Omit<JITIOptions, "transform" | "onError"> };
+  /**
+   * Used to specify which modules or libraries should be considered external dependencies 
+   * and not included in the final build product.
+   */
   externals: (string | RegExp)[];
   dependencies: string[];
   peerDependencies: string[];
   devDependencies: string[];
+  /**
+   * Create aliases for module imports to reference modules in code using more concise paths. 
+   * Allow you to specify an alias for the module path.
+   */
   alias: { [find: string]: string };
+  /**
+   * Replace the text in the source code with rules.
+   */
   replace: { [find: string]: string };
+  /**
+   * Terminate the build process when a warning appears
+   */
   failOnWarn?: boolean;
+  /**
+   * [Rollup](https://rollupjs.org/configuration-options) Build Options
+   */
   rollup: RollupBuildOptions;
 }
 
 export interface BuildContext {
   options: BuildOptions;
+  /**
+   * [pkg-types](https://github.com/unjs/pkg-types#readme).
+   */
   pkg: PackageJson;
   buildEntries: {
     path: string;
@@ -108,10 +165,20 @@ export type BuildPreset = BuildConfig | (() => BuildConfig);
 
 type DeepPartial<T> = { [P in keyof T]?: DeepPartial<T[P]> };
 
+/**
+ * In addition to basic `entries`, `presets`, and `hooks`,
+ * there are also all the properties of `BuildOptions` except for BuildOptions's `entries`.
+ */
 export interface BuildConfig
   extends DeepPartial<Omit<BuildOptions, "entries">> {
+  // Specify the entry file or entry module during the construction process.
   entries?: (BuildEntry | string)[];
+  // Used to specify the preset build configuration.
   preset?: string | BuildPreset;
+  /**
+   * Used to define hook functions during the construction process to perform custom operations during specific construction stages. 
+   * This configuration allows you to insert custom logic during the build process to meet specific requirements or perform additional operations.
+   */
   hooks?: Partial<BuildHooks>;
 }
 
