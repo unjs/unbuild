@@ -97,7 +97,10 @@ async function _build(
       declaration: false,
       outDir: "dist",
       stub,
-      watch,
+      watch: {
+        exclude: "node_modules/**",
+        include: "src/**",
+      },
       stubOptions: {
         /**
          * See https://github.com/unjs/jiti#options
@@ -275,7 +278,7 @@ async function _build(
     return;
   }
 
-  if (options.watch) {
+  if (watch) {
     const _rollupOptions = getRollupOptions(ctx);
     await ctx.hooks.callHook("rollup:options", ctx, _rollupOptions);
     rollupOptions.push(_rollupOptions);

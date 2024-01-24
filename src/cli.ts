@@ -20,7 +20,6 @@ const main = defineCommand({
     watch: {
       type: "boolean",
       description: "Watch the src dir and rebuild on change",
-      required: false,
     },
     stub: {
       type: "boolean",

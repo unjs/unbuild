@@ -5,7 +5,7 @@ import type {
   RollupOptions,
   RollupBuild,
   OutputOptions,
-  RollupWatchOptions,
+  WatcherOptions,
 } from "rollup";
 import type { MkdistOptions } from "mkdist";
 import type { Schema } from "untyped";
@@ -83,7 +83,7 @@ export interface BuildOptions {
   declaration?: "compatible" | "node16" | boolean;
   outDir: string;
   stub: boolean;
-  watch: boolean;
+  watch: WatcherOptions;
   stubOptions: { jiti: Omit<JITIOptions, "transform" | "onError"> };
   externals: (string | RegExp)[];
   dependencies: string[];
