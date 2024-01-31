@@ -39,11 +39,11 @@
     "citty": "^0.1.5",
     "consola": "^3.2.3",
     "defu": "^6.1.4",
-    "esbuild": "^0.19.12",
+    "esbuild": "^0.20.0",
     "globby": "^14.0.0",
     "hookable": "^5.5.3",
     "jiti": "^1.21.0",
-    "magic-string": "^0.30.5",
+    "magic-string": "^0.30.6",
     "mkdist": "^1.4.0",
     "mlly": "^1.5.0",
     "pathe": "^1.1.2",
@@ -56,14 +56,14 @@
     "untyped": "^1.4.2"
   },
   "devDependencies": {
-    "@types/node": "^20.11.6",
-    "@vitest/coverage-v8": "^1.2.1",
+    "@types/node": "^20.11.14",
+    "@vitest/coverage-v8": "^1.2.2",
     "changelogen": "^0.5.5",
     "eslint": "^8.56.0",
     "eslint-config-unjs": "^0.2.1",
     "prettier": "^3.2.4",
     "typescript": "^5.3.3",
-    "vitest": "^1.2.1"
+    "vitest": "^1.2.2"
   },
   "peerDependencies": {
     "typescript": "^5.3.3"
@@ -73,5 +73,5 @@
       "optional": true
     }
   },
-  "packageManager": "pnpm@8.14.3"
+  "packageManager": "pnpm@8.15.1"
 }
