@@ -15,6 +15,17 @@ export default defineBuildConfig([
       { input: "src/runtime/", outDir: "dist/runtime" },
       { input: "src/schema", builder: "untyped" },
     ],
+    stubOptions: {
+      jiti: {
+        transformOptions: {
+          babel: {
+            plugins: [
+              ["@babel/plugin-transform-class-properties"],
+            ],
+          },
+        },
+      },
+    },
   },
   // Minified with sourcemaps
   {
