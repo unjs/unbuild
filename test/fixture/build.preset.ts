@@ -1,7 +1,7 @@
 import { definePreset } from "../../src";
 
 export default definePreset({
-  declaration: true,
+  declaration: "compatible",
   rollup: {
     cjsBridge: true,
   },

@@ -30,8 +30,10 @@ export const autoPreset = definePreset(() => {
         if (res.cjs) {
           ctx.options.rollup.emitCJS = true;
         }
-        if (res.dts) {
-          ctx.options.declaration = res.dts;
+        if (ctx.options.declaration === undefined) {
+          // Enable auto detect based on "package.json"
+          // If "package.json" has "types" field, it will be "compatible", otherwise false.
+          ctx.options.declaration = res.dts ? "compatible" : false;
         }
         consola.info(
           "Automatically detected entries:",
