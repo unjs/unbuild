@@ -19,9 +19,7 @@ export default defineBuildConfig([
       jiti: {
         transformOptions: {
           babel: {
-            plugins: [
-              ["@babel/plugin-transform-class-properties"],
-            ],
+            plugins: [["@babel/plugin-transform-class-properties"]],
           },
         },
       },
