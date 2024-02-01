@@ -1,0 +1,18 @@
+{
+	"type": "module",
+	"exports": {
+		".": {
+			"import": "./dist/data.mjs"
+		}
+	},
+	"main": "./dist/data.mjs",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "unbuild"
+	},
+	"devDependencies": {
+		"unbuild": "^2.0.0"
+	}
+}
