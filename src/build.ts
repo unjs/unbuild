@@ -1,5 +1,6 @@
 import Module from "node:module";
 import { promises as fsp } from "node:fs";
+import path from "node:path";
 import { resolve, relative, isAbsolute, normalize } from "pathe";
 import { withTrailingSlash } from "ufo";
 import type { PackageJson } from "pkg-types";
@@ -9,6 +10,8 @@ import { defu } from "defu";
 import { createHooks } from "hookable";
 import prettyBytes from "pretty-bytes";
 import { globby } from "globby";
+import type { RollupOptions } from "rollup";
+import { watch as rollupWatch } from "rollup";
 import {
   dumpObject,
   rmdir,
@@ -18,13 +21,13 @@ import {
 } from "./utils";
 import type { BuildContext, BuildConfig, BuildOptions } from "./types";
 import { validatePackage, validateDependencies } from "./validate";
-import { rollupBuild } from "./builder/rollup";
+import { getRollupOptions, rollupBuild } from "./builder/rollup";
 import { typesBuild } from "./builder/untyped";
 import { mkdistBuild } from "./builder/mkdist";
 
 export async function build(
   rootDir: string,
-  stub: boolean,
+  devMode: "watch" | "stub" | boolean,
   inputConfig: BuildConfig = {},
 ) {
   // Determine rootDir
@@ -41,18 +44,34 @@ export async function build(
 
   // Invoke build for every build config defined in build.config.ts
   const cleanedDirs: string[] = [];
+  const rollupOptions: RollupOptions[] = [];
   for (const buildConfig of buildConfigs) {
-    await _build(rootDir, stub, inputConfig, buildConfig, pkg, cleanedDirs);
+    await _build(
+      rootDir,
+      devMode === "watch",
+      devMode === "stub",
+      inputConfig,
+      buildConfig,
+      pkg,
+      cleanedDirs,
+      rollupOptions,
+    );
+  }
+
+  if (devMode === "watch") {
+    watch(rollupOptions);
   }
 }
 
 async function _build(
   rootDir: string,
+  watch: boolean,
   stub: boolean,
   inputConfig: BuildConfig = {},
   buildConfig: BuildConfig,
   pkg: PackageJson & Record<"unbuild" | "build", BuildConfig>,
   cleanedDirs: string[],
+  rollupOptions: RollupOptions[],
 ) {
   // Resolve preset
   const preset = resolvePreset(
@@ -78,6 +97,10 @@ async function _build(
       declaration: false,
       outDir: "dist",
       stub,
+      watch: {
+        exclude: "node_modules/**",
+        include: "src/**",
+      },
       stubOptions: {
         /**
          * See https://github.com/unjs/jiti#options
@@ -101,6 +124,7 @@ async function _build(
       sourcemap: false,
       rollup: {
         emitCJS: false,
+        watch: false,
         cjsBridge: false,
         inlineDependencies: false,
         preserveDynamicImports: true,
@@ -254,6 +278,14 @@ async function _build(
     return;
   }
 
+  if (watch) {
+    const _rollupOptions = getRollupOptions(ctx);
+    await ctx.hooks.callHook("rollup:options", ctx, _rollupOptions);
+    rollupOptions.push(_rollupOptions);
+    await ctx.hooks.callHook("build:done", ctx);
+    return;
+  }
+
   // Done info
   consola.success(chalk.green("Build succeeded for " + options.name));
 
@@ -355,4 +387,38 @@ async function _build(
       process.exit(1);
     }
   }
+}
+
+export function watch(rollupOptions: RollupOptions[]) {
+  const watcher = rollupWatch(rollupOptions);
+
+  let inputs: string[] = [];
+
+  for (const rollupOption of rollupOptions) {
+    inputs = [
+      ...inputs,
+      ...(Array.isArray(rollupOption.input)
+        ? rollupOption.input
+        : (typeof rollupOption.input === "string"
+          ? [rollupOption.input]
+          : Object.keys(rollupOption.input || {}))),
+    ];
+  }
+  console.log("");
+  consola.info(`Starting watchers for entries:`);
+  for (const input of inputs) {
+    console.log(chalk.gray(`  └─ ${path.relative(process.cwd(), input)}`));
+  }
+
+  watcher.on("change", (id, { event }) => {
+    consola.info(`${chalk.cyan(path.relative(".", id))} was ${event}d`);
+  });
+  watcher.on("restart", () => {
+    consola.info(chalk.gray("Rebuilding bundle"));
+  });
+  watcher.on("event", (event) => {
+    if (event.code === "END") {
+      consola.success(chalk.green("Rebuild finished\n"));
+    }
+  });
 }
