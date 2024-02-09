@@ -29,4 +29,12 @@ export default defineBuildConfig([
       },
     },
   },
+  // With sourcemaps and metafile
+  {
+    name: "metafile",
+    entries: ["src/index"],
+    outDir: "dist",
+    sourcemap: true,
+    metafile: true,
+  },
 ]);

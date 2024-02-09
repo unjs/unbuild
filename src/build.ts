@@ -99,6 +99,7 @@ async function _build(
       replace: {},
       failOnWarn: true,
       sourcemap: false,
+      metafile: false,
       rollup: {
         emitCJS: false,
         cjsBridge: false,

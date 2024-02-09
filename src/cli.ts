@@ -29,11 +29,16 @@ const main = defineCommand({
       type: "boolean",
       description: "Generate sourcemaps (experimental)",
     },
+    metafile: {
+      type: "boolean",
+      description: "Generate meta file (experimental)",
+    },
   },
   async run({ args }) {
     const rootDir = resolve(process.cwd(), args.dir || ".");
     await build(rootDir, args.stub, {
       sourcemap: args.sourcemap,
+      metafile: args.metafile,
       rollup: {
         esbuild: {
           minify: args.minify,
