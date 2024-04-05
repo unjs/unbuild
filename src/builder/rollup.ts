@@ -288,6 +288,14 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
     ].filter(Boolean),
 
     external(id) {
+      const transformAliases = (id: string): string => {
+        for (const [find, replacement] of Object.entries(resolveAliases(ctx))) {
+          if(id.startsWith(find)) 
+            return id.replace(find, replacement)
+        }
+        return id
+      }
+      id = transformAliases(id)
       const pkg = getpkg(id);
       const isExplicitExternal =
         arrayIncludes(ctx.options.externals, pkg) ||
