@@ -21,6 +21,7 @@ import { validatePackage, validateDependencies } from "./validate";
 import { rollupBuild } from "./builder/rollup";
 import { typesBuild } from "./builder/untyped";
 import { mkdistBuild } from "./builder/mkdist";
+import { copyBuild } from "./builder/copy";
 
 export async function build(
   rootDir: string,
@@ -247,6 +248,9 @@ async function _build(
 
   // rollup
   await rollupBuild(ctx);
+
+  // copy
+  await copyBuild(ctx);
 
   // Skip rest for stub
   if (options.stub) {

@@ -40,6 +40,7 @@
     "consola": "^3.2.3",
     "defu": "^6.1.4",
     "esbuild": "^0.20.2",
+    "fs-extra": "^11.2.0",
     "globby": "^14.0.1",
     "hookable": "^5.5.3",
     "jiti": "^1.21.0",
@@ -56,6 +57,7 @@
     "untyped": "^1.4.2"
   },
   "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
     "@types/node": "^20.12.5",
     "@vitest/coverage-v8": "^1.4.0",
     "changelogen": "^0.5.5",
