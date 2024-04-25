@@ -1,6 +1,6 @@
+import { promises as fsp } from "node:fs";
 import { relative, resolve } from "pathe";
 import { globby } from "globby";
-import { copy } from "fs-extra";
 import { symlink, rmdir, warn } from "../utils";
 import type { CopyBuildEntry, BuildContext } from "../types";
 
@@ -24,7 +24,7 @@ export async function copyBuild(ctx: BuildContext) {
         paths.map(async (path) => {
           const src = resolve(ctx.options.rootDir, entry.input, path);
           const dist = resolve(ctx.options.rootDir, distDir, path);
-          await copy(src, dist);
+          await fsp.copyFile(src, dist);
           return dist;
         }),
       );
