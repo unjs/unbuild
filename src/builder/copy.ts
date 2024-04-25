@@ -4,6 +4,8 @@ import { globby } from "globby";
 import { symlink, rmdir, warn } from "../utils";
 import type { CopyBuildEntry, BuildContext } from "../types";
 
+const copy = fsp.cp || fsp.copyFile;
+
 export async function copyBuild(ctx: BuildContext) {
   const entries = ctx.options.entries.filter(
     (e) => e.builder === "copy",
@@ -24,7 +26,7 @@ export async function copyBuild(ctx: BuildContext) {
         paths.map(async (path) => {
           const src = resolve(ctx.options.rootDir, entry.input, path);
           const dist = resolve(ctx.options.rootDir, distDir, path);
-          await fsp.copyFile(src, dist);
+          await copy(src, dist);
           return dist;
         }),
       );
