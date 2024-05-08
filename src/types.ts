@@ -67,6 +67,8 @@ export interface BuildOptions {
   clean: boolean;
   /** @experimental */
   sourcemap: boolean;
+  /** @experimental */
+  metafile: boolean;
   /**
    * * `compatible` means "src/index.ts" will generate "dist/index.d.mts", "dist/index.d.cts" and "dist/index.d.ts".
    * * `node16` means "src/index.ts" will generate "dist/index.d.mts" and "dist/index.d.cts".

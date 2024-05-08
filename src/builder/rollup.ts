@@ -19,6 +19,7 @@ import { arrayIncludes, getpkg, tryResolve, warn } from "../utils";
 import type { BuildContext } from "../types";
 import { esbuild } from "./plugins/esbuild";
 import { JSONPlugin } from "./plugins/json";
+import { metafilePlugin } from "./plugins/metafile";
 import { rawPlugin } from "./plugins/raw";
 import { cjsPlugin } from "./plugins/cjs";
 import {
@@ -197,6 +198,10 @@ export async function rollupBuild(ctx: BuildContext) {
       removeShebangPlugin(),
     ];
 
+    rollupOptions.plugins = rollupOptions.plugins.filter(
+      (p) => p.name !== "unbuild:metafile",
+    );
+
     await ctx.hooks.callHook("rollup:dts:options", ctx, rollupOptions);
     const typesBuild = await rollup(rollupOptions);
     await ctx.hooks.callHook("rollup:dts:build", ctx, typesBuild);
@@ -341,6 +346,12 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
       ctx.options.rollup.json &&
         JSONPlugin({
           ...ctx.options.rollup.json,
+        }),
+
+      ctx.options.metafile &&
+        metafilePlugin({
+          rootDir: ctx.options.rootDir,
+          outDir: resolve(ctx.options.rootDir, ctx.options.outDir),
         }),
 
       shebangPlugin(),

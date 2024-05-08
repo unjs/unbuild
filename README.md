@@ -27,6 +27,10 @@ Stub `dist` once using [jiti](https://github.com/unjs/jiti) and you can try and 
 
 Integration with [untyped](https://github.com/unjs/untyped).
 
+### 📊 Analyze bundle size
+
+Generate rollup build metadata in JSON format to visualize with [Bundle Buddy](https://www.bundle-buddy.com).
+
 ### ✔️ Secure builds
 
 Automatically check for various build issues such as potential **missing** and **unused** [dependencies](https://docs.npmjs.com/cli/v7/configuring-npm/package-json#dependencies) and fail CI.
