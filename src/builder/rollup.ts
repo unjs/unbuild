@@ -473,14 +473,14 @@ function resolveAliases(ctx: BuildContext) {
 }
 
 // TODO: use pathe utils to handle nested aliases
-function resolveAlias (id: string, aliases: Record<string, string>): string  {
+function resolveAlias(id: string, aliases: Record<string, string>): string {
   for (const [find, replacement] of Object.entries(aliases)) {
     if (id.startsWith(find)) {
-      return id.replace(find, replacement)
+      return id.replace(find, replacement);
     }
   }
   return id;
-};
+}
 
 export function _watch(rollupOptions: RollupOptions) {
   const watcher = rollupWatch(rollupOptions);
