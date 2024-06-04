@@ -62,6 +62,7 @@ export async function rollupBuild(ctx: BuildContext) {
         entry.name!,
       );
 
+      const isESM = ctx.pkg.type === "module";
       const resolvedEntry = normalize(
         tryResolve(entry.input, ctx.options.rootDir) || entry.input,
       );
@@ -69,6 +70,9 @@ export async function rollupBuild(ctx: BuildContext) {
         0,
         Math.max(0, resolvedEntry.length - extname(resolvedEntry).length),
       );
+      const resolvedEntryForTypeImport = isESM
+        ? `${resolvedEntry.replace(/(\.m?)(ts)$/, "$1js")}`
+        : resolvedEntryWithoutExt;
       const code = await fsp.readFile(resolvedEntry, "utf8");
       const shebang = getShebang(code);
 
@@ -85,7 +89,7 @@ export async function rollupBuild(ctx: BuildContext) {
               `const _jiti = jiti(null, ${serializedJitiOptions})`,
               "",
               `/** @type {import(${JSON.stringify(
-                resolvedEntryWithoutExt,
+                resolvedEntryForTypeImport,
               )})} */`,
               `module.exports = _jiti(${JSON.stringify(resolvedEntry)})`,
             ].join("\n"),
@@ -114,7 +118,7 @@ export async function rollupBuild(ctx: BuildContext) {
             "",
             `const _jiti = jiti(null, ${serializedJitiOptions})`,
             "",
-            `/** @type {import(${JSON.stringify(resolvedEntryWithoutExt)})} */`,
+            `/** @type {import(${JSON.stringify(resolvedEntryForTypeImport)})} */`,
             `const _module = await _jiti.import(${JSON.stringify(
               resolvedEntry,
             )});`,
@@ -129,10 +133,10 @@ export async function rollupBuild(ctx: BuildContext) {
       await writeFile(
         output + ".d.ts",
         [
-          `export * from ${JSON.stringify(resolvedEntryWithoutExt)};`,
+          `export * from ${JSON.stringify(resolvedEntryForTypeImport)};`,
           hasDefaultExport
             ? `export { default } from ${JSON.stringify(
-                resolvedEntryWithoutExt,
+                resolvedEntryForTypeImport,
               )};`
             : "",
         ].join("\n"),
