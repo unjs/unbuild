@@ -29,7 +29,6 @@ import { esbuild } from "./plugins/esbuild";
 import { JSONPlugin } from "./plugins/json";
 import { rawPlugin } from "./plugins/raw";
 import { cjsPlugin } from "./plugins/cjs";
-import { klona } from "klona/full";
 import {
   shebangPlugin,
   makeExecutable,
@@ -42,6 +41,8 @@ import chalk from "chalk";
 const DEFAULT_EXTENSIONS = [
   ".ts",
   ".tsx",
+  ".mts",
+  ".cts",
   ".mjs",
   ".cjs",
   ".js",
