@@ -13,8 +13,16 @@ import { nodeResolve } from "@rollup/plugin-node-resolve";
 import alias from "@rollup/plugin-alias";
 import dts from "rollup-plugin-dts";
 import replace from "@rollup/plugin-replace";
-import { resolve, dirname, normalize, extname, isAbsolute } from "pathe";
+import {
+  resolve,
+  dirname,
+  normalize,
+  extname,
+  isAbsolute,
+  relative,
+} from "pathe";
 import { resolvePath, resolveModuleExportNames } from "mlly";
+import { watch as rollupWatch } from "rollup";
 import { arrayIncludes, getpkg, tryResolve, warn } from "../utils";
 import type { BuildContext } from "../types";
 import { esbuild } from "./plugins/esbuild";
@@ -27,10 +35,14 @@ import {
   getShebang,
   removeShebangPlugin,
 } from "./plugins/shebang";
+import consola from "consola";
+import chalk from "chalk";
 
 const DEFAULT_EXTENSIONS = [
   ".ts",
   ".tsx",
+  ".mts",
+  ".cts",
   ".mjs",
   ".cjs",
   ".js",
@@ -97,6 +109,7 @@ export async function rollupBuild(ctx: BuildContext) {
         entry.name!,
       );
 
+      const isESM = ctx.pkg.type === "module";
       const resolvedEntry = normalize(
         tryResolve(entry.input, ctx.options.rootDir) || entry.input,
       );
@@ -104,6 +117,9 @@ export async function rollupBuild(ctx: BuildContext) {
         0,
         Math.max(0, resolvedEntry.length - extname(resolvedEntry).length),
       );
+      const resolvedEntryForTypeImport = isESM
+        ? `${resolvedEntry.replace(/(\.m?)(ts)$/, "$1js")}`
+        : resolvedEntryWithoutExt;
       const code = await fsp.readFile(resolvedEntry, "utf8");
       const shebang = getShebang(code);
 
@@ -124,7 +140,7 @@ export async function rollupBuild(ctx: BuildContext) {
               `const _jiti = jiti(null, ${serializedJitiOptions})`,
               "",
               `/** @type {import(${JSON.stringify(
-                resolvedEntryWithoutExt,
+                resolvedEntryForTypeImport,
               )})} */`,
               `module.exports = _jiti(${JSON.stringify(resolvedEntry)})`,
             ].join("\n"),
@@ -156,7 +172,7 @@ export async function rollupBuild(ctx: BuildContext) {
             "",
             `const _jiti = jiti(null, ${serializedJitiOptions})`,
             "",
-            `/** @type {import(${JSON.stringify(resolvedEntryWithoutExt)})} */`,
+            `/** @type {import(${JSON.stringify(resolvedEntryForTypeImport)})} */`,
             `const _module = await _jiti.import(${JSON.stringify(
               resolvedEntry,
             )});`,
@@ -171,10 +187,10 @@ export async function rollupBuild(ctx: BuildContext) {
       await writeFile(
         output + ".d.ts",
         [
-          `export * from ${JSON.stringify(resolvedEntryWithoutExt)};`,
+          `export * from ${JSON.stringify(resolvedEntryForTypeImport)};`,
           hasDefaultExport
             ? `export { default } from ${JSON.stringify(
-                resolvedEntryWithoutExt,
+                resolvedEntryForTypeImport,
               )};`
             : "",
         ].join("\n"),
@@ -229,6 +245,16 @@ export async function rollupBuild(ctx: BuildContext) {
     for (const chunkFileName of chunkFileNames) {
       ctx.usedImports.delete(chunkFileName);
     }
+  }
+
+  // Watch
+  if (ctx.options.watch) {
+    _watch(rollupOptions);
+    // TODO: Clone rollup options to continue types watching
+    if (ctx.options.declaration && ctx.options.watch) {
+      consola.warn("`rollup` DTS builder does not support watch mode yet.");
+    }
+    return;
   }
 
   // Types
@@ -437,4 +463,38 @@ function resolveAliases(ctx: BuildContext) {
   }
 
   return aliases;
+}
+
+export function _watch(rollupOptions: RollupOptions) {
+  const watcher = rollupWatch(rollupOptions);
+
+  let inputs: string[];
+  if (Array.isArray(rollupOptions.input)) {
+    inputs = rollupOptions.input;
+  } else if (typeof rollupOptions.input === "string") {
+    inputs = [rollupOptions.input];
+  } else {
+    inputs = Object.keys(rollupOptions.input || {});
+  }
+  consola.info(
+    `[unbuild] [rollup] Starting watchers for entries: ${inputs.map((input) => "./" + relative(process.cwd(), input)).join(", ")}`,
+  );
+
+  consola.warn(
+    "[unbuild] [rollup] Watch mode is experimental and may be unstable",
+  );
+
+  watcher.on("change", (id, { event }) => {
+    consola.info(`${chalk.cyan(relative(".", id))} was ${event}d`);
+  });
+
+  watcher.on("restart", () => {
+    consola.info(chalk.gray("[unbuild] [rollup] Rebuilding bundle"));
+  });
+
+  watcher.on("event", (event) => {
+    if (event.code === "END") {
+      consola.success(chalk.green("[unbuild] [rollup] Rebuild finished\n"));
+    }
+  });
 }
