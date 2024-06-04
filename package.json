@@ -19,8 +19,8 @@
   "scripts": {
     "build": "pnpm unbuild",
     "dev": "pnpm unbuild test/fixture",
-    "lint": "eslint --ext .ts,.js . && prettier -c src test",
-    "lint:fix": "eslint --fix --ext .ts,.js . && prettier -w src test",
+    "lint": "eslint . && prettier -c src test examples",
+    "lint:fix": "eslint --fix . && prettier -w src test examples",
     "prepack": "pnpm unbuild",
     "release": "pnpm test && changelogen --release && git push --follow-tags && npm publish",
     "prerelease": "pnpm test && changelogen --prerelease --release && git push --follow-tags && npm publish --tag rc",
@@ -30,48 +30,49 @@
   },
   "dependencies": {
     "@rollup/plugin-alias": "^5.1.0",
-    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-commonjs": "^25.0.8",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-replace": "^5.0.5",
     "@rollup/pluginutils": "^5.1.0",
     "chalk": "^5.3.0",
-    "citty": "^0.1.5",
+    "citty": "^0.1.6",
     "consola": "^3.2.3",
     "defu": "^6.1.4",
-    "esbuild": "^0.19.11",
-    "globby": "^14.0.0",
+    "esbuild": "^0.21.4",
+    "globby": "^14.0.1",
     "hookable": "^5.5.3",
     "jiti": "^1.21.0",
-    "magic-string": "^0.30.5",
-    "mkdist": "^1.4.0",
-    "mlly": "^1.5.0",
+    "magic-string": "^0.30.10",
+    "mkdist": "^1.5.1",
+    "mlly": "^1.7.0",
     "pathe": "^1.1.2",
-    "pkg-types": "^1.0.3",
+    "pkg-types": "^1.1.1",
     "pretty-bytes": "^6.1.1",
-    "rollup": "^4.9.5",
-    "rollup-plugin-dts": "^6.1.0",
-    "scule": "^1.2.0",
-    "ufo": "^1.3.2",
-    "untyped": "^1.4.0"
+    "rollup": "^4.18.0",
+    "rollup-plugin-dts": "^6.1.1",
+    "scule": "^1.3.0",
+    "ufo": "^1.5.3",
+    "untyped": "^1.4.2"
   },
   "devDependencies": {
-    "@types/node": "^20.11.0",
-    "@vitest/coverage-v8": "^1.2.0",
+    "@types/node": "^20.14.1",
+    "@vitest/coverage-v8": "^1.6.0",
     "changelogen": "^0.5.5",
-    "eslint": "^8.56.0",
-    "eslint-config-unjs": "^0.2.1",
-    "prettier": "^3.2.1",
-    "typescript": "^5.3.3",
-    "vitest": "^1.2.0"
+    "eslint": "^9.4.0",
+    "eslint-config-unjs": "^0.3.2",
+    "prettier": "^3.3.0",
+    "typescript": "^5.4.5",
+    "vitest": "^1.6.0",
+    "unbuild": "workspace:."
   },
   "peerDependencies": {
-    "typescript": "^5.3.3"
+    "typescript": "^5.4.5"
   },
   "peerDependenciesMeta": {
     "typescript": {
       "optional": true
     }
   },
-  "packageManager": "pnpm@8.14.1"
+  "packageManager": "pnpm@9.0.6"
 }
