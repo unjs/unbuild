@@ -1,6 +1,7 @@
 {
   "name": "fixture",
   "private": "true",
+  "type": "module",
   "bin": {
     "fixture": "./bin/cli.mjs"
   },

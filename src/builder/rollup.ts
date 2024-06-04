@@ -142,17 +142,22 @@ export async function rollupBuild(ctx: BuildContext) {
       );
 
       // DTS Stub
-      await writeFile(
-        output + ".d.ts",
-        [
+      if (ctx.options.declaration) {
+        const dtsContent = [
           `export * from ${JSON.stringify(resolvedEntryForTypeImport)};`,
           hasDefaultExport
-            ? `export { default } from ${JSON.stringify(
-                resolvedEntryForTypeImport,
-              )};`
+            ? `export { default } from ${JSON.stringify(resolvedEntryForTypeImport)};`
             : "",
-        ].join("\n"),
-      );
+        ].join("\n");
+        await writeFile(output + ".d.cts", dtsContent);
+        await writeFile(output + ".d.mts", dtsContent);
+        if (
+          ctx.options.declaration === "compatible" ||
+          ctx.options.declaration === true
+        ) {
+          await writeFile(output + ".d.ts", dtsContent);
+        }
+      }
 
       if (shebang) {
         await makeExecutable(output + ".cjs");

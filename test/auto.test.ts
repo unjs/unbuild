@@ -19,7 +19,7 @@ describe("inferEntries", () => {
     const result = inferEntries({ module: "dist/index.mjs" }, [
       "src/",
       "src/event/index.ts",
-      "src/index.ts",
+      "src/index.mts",
     ]);
     expect(result).to.deep.equal({
       cjs: false,
@@ -155,7 +155,7 @@ describe("inferEntries", () => {
 
   it("gracefully handles unknown entries", () => {
     expect(
-      inferEntries({ exports: "dist/test.js" }, ["src/", "src/index.ts"]),
+      inferEntries({ exports: "dist/test.js" }, ["src/", "src/index.mts"]),
     ).to.deep.equal({
       cjs: false,
       entries: [],
@@ -169,7 +169,7 @@ describe("inferEntries", () => {
       inferEntries({ exports: { "./*": "./*" } }, [
         "src/",
         "src/",
-        "src/index.ts",
+        "src/index.mts",
       ]),
     ).to.deep.equal({
       cjs: false,
@@ -189,7 +189,7 @@ describe("inferEntries", () => {
             "./test": "./dist/test.cjs",
           },
         },
-        ["src/", "src/", "src/index.ts", "src/first-test.ts", "src/test.mjs"],
+        ["src/", "src/", "src/index.mts", "src/first-test.ts", "src/test.mjs"],
       ),
     ).to.deep.equal({
       cjs: true,

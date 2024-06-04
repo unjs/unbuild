@@ -10,7 +10,7 @@ export default defineBuildConfig([
       emitCJS: true,
     },
     entries: [
-      "./src/index.ts",
+      "./src/index.mts",
       "./src/nested/subpath.ts",
       { input: "src/runtime/", outDir: "dist/runtime" },
       {
@@ -28,7 +28,7 @@ export default defineBuildConfig([
     entries: ["src/index"],
     outDir: "dist/min",
     sourcemap: true,
-    declaration: true,
+    declaration: "compatible",
     rollup: {
       esbuild: {
         minify: true,
