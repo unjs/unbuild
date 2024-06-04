@@ -130,6 +130,10 @@ async function _build(
         cjsBridge: false,
         inlineDependencies: false,
         preserveDynamicImports: true,
+        output: {
+          // https://v8.dev/features/import-attributes
+          importAttributesKey: "with",
+        },
         // Plugins
         replace: {
           preventAssignment: true,
