@@ -10,7 +10,7 @@ export default defineBuildConfig([
       emitCJS: true,
     },
     entries: [
-      "./src/index.ts",
+      "./src/index.mts",
       "./src/nested/subpath.ts",
       { input: "src/runtime/", outDir: "dist/runtime" },
       {

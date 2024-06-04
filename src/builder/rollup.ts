@@ -131,21 +131,14 @@ export async function rollupBuild(ctx: BuildContext) {
 
       // DTS Stub
       if (ctx.options.declaration) {
-        const entry = resolvedEntry
-          .replace(/\.ts$/, ".js")
-          .replace(/\.mts$/, ".cts")
-          .replace(/\.mjs$/, ".cjs");
-
         const dtsContent = [
-          `export * from ${JSON.stringify(entry)};`,
+          `export * from ${JSON.stringify(resolvedEntryForTypeImport)};`,
           hasDefaultExport
-            ? `export { default } from ${JSON.stringify(entry)};`
+            ? `export { default } from ${JSON.stringify(resolvedEntryForTypeImport)};`
             : "",
         ].join("\n");
-
         await writeFile(output + ".d.cts", dtsContent);
         await writeFile(output + ".d.mts", dtsContent);
-        // .d.ts for node10 compatibility (TypeScript version < 4.7)
         if (
           ctx.options.declaration === "compatible" ||
           ctx.options.declaration === true
