@@ -1,6 +1,7 @@
 import Module from "node:module";
 import { promises as fsp } from "node:fs";
 import { resolve, relative, isAbsolute, normalize } from "pathe";
+import { withTrailingSlash } from "ufo";
 import type { PackageJson } from "pkg-types";
 import chalk from "chalk";
 import { consola } from "consola";
@@ -20,6 +21,7 @@ import { validatePackage, validateDependencies } from "./validate";
 import { rollupBuild } from "./builder/rollup";
 import { typesBuild } from "./builder/untyped";
 import { mkdistBuild } from "./builder/mkdist";
+import { copyBuild } from "./builder/copy";
 
 export async function build(
   rootDir: string,
@@ -117,7 +119,7 @@ async function _build(
         commonjs: {
           ignoreTryCatch: true,
         },
-        esbuild: { target: "es2020" },
+        esbuild: { target: "esnext" },
         dts: {
           // https://github.com/Swatinem/rollup-plugin-dts/issues/143
           compilerOptions: { preserveSymlinks: false },
@@ -216,7 +218,11 @@ async function _build(
         .filter(Boolean)
         .sort() as unknown as Set<string>,
     )) {
-      if (cleanedDirs.some((c) => dir.startsWith(c))) {
+      if (
+        dir === options.rootDir ||
+        options.rootDir.startsWith(withTrailingSlash(dir)) ||
+        cleanedDirs.some((c) => dir.startsWith(c))
+      ) {
         continue;
       }
       cleanedDirs.push(dir);
@@ -242,6 +248,9 @@ async function _build(
 
   // rollup
   await rollupBuild(ctx);
+
+  // copy
+  await copyBuild(ctx);
 
   // Skip rest for stub
   if (options.stub) {
