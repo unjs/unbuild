@@ -13,7 +13,12 @@ export default defineBuildConfig([
       "./src/index.ts",
       "./src/nested/subpath.ts",
       { input: "src/runtime/", outDir: "dist/runtime" },
-      { input: "src/", outDir: "dist/json/", builder: "copy", pattern: "**/*.json" },
+      {
+        input: "src/",
+        outDir: "dist/json/",
+        builder: "copy",
+        pattern: "**/*.json",
+      },
       { input: "src/schema", builder: "untyped" },
     ],
   },
