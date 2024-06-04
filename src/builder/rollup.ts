@@ -272,6 +272,7 @@ const getChunkFilename = (
 };
 
 export function getRollupOptions(ctx: BuildContext): RollupOptions {
+  const _aliases = resolveAliases(ctx);
   return (<RollupOptions>{
     input: Object.fromEntries(
       ctx.options.entries
@@ -315,8 +316,8 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
 
     external(id) {
       const transformAliases = (id: string): string => {
-        for (const [find, replacement] of Object.entries(resolveAliases(ctx))) {
-          if(id.startsWith(find)) 
+        for (const [find, replacement] of Object.entries(_aliases)) {
+          if(id.startsWith(find))
             return id.replace(find, replacement)
         }
         return id
@@ -363,7 +364,7 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
       ctx.options.rollup.alias &&
         alias({
           ...ctx.options.rollup.alias,
-          entries: resolveAliases(ctx),
+          entries: _aliases
         }),
 
       ctx.options.rollup.resolve &&
