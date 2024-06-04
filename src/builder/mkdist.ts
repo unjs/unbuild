@@ -2,6 +2,7 @@ import { relative } from "pathe";
 import { mkdist, MkdistOptions } from "mkdist";
 import { symlink, rmdir } from "../utils";
 import type { MkdistBuildEntry, BuildContext } from "../types";
+import consola from "consola";
 
 export async function mkdistBuild(ctx: BuildContext) {
   const entries = ctx.options.entries.filter(
@@ -36,4 +37,8 @@ export async function mkdistBuild(ctx: BuildContext) {
     }
   }
   await ctx.hooks.callHook("mkdist:done", ctx);
+
+  if (entries.length > 0 && ctx.options.watch) {
+    consola.warn("`mkdist` builder does not support watch mode yet.");
+  }
 }

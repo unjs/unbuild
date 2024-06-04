@@ -17,7 +17,7 @@ export const autoPreset = definePreset(() => {
   return {
     hooks: {
       "build:prepare"(ctx) {
-        // Disable auto if entries already provided of pkg not available
+        // Disable auto if entries already provided or pkg not available
         if (!ctx.pkg || ctx.options.entries.length > 0) {
           return;
         }
@@ -129,7 +129,9 @@ export function inferEntries(
       if (source) {
         return source;
       }
-      const SOURCE_RE = new RegExp(`(?<=/|$)${d}${isDir ? "" : "\\.\\w+"}$`);
+      const SOURCE_RE = new RegExp(
+        `(?<=/|$)${d}${isDir ? "" : String.raw`\.\w+`}$`,
+      );
       return sourceFiles
         .find((i) => SOURCE_RE.test(i))
         ?.replace(/(\.d\.(m|c)?ts|\.\w+)$/, "");
