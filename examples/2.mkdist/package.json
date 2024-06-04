@@ -1,6 +1,7 @@
 {
+  "name": "unbuild-example-mkdist",
+  "version": "1.0.0",
   "type": "module",
-  "bin": "./dist/index.mjs",
   "exports": {
     ".": {
       "import": {
@@ -11,15 +12,24 @@
         "types": "./dist/index.d.cts",
         "default": "./dist/index.cjs"
       }
+    },
+    "./plugins/*": {
+      "import": {
+        "types": "./dist/plugins/*.d.mts",
+        "default": "./dist/plugins/*.mjs"
+      },
+      "require": {
+        "types": "./dist/plugins/*.d.cts",
+        "default": "./dist/plugins/*.cjs"
+      }
     }
   },
-  "types": "./dist/index.d.ts",
-  "main": "./dist/index.cjs",
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "unbuild"
+    "build": "unbuild",
+    "build:stub": "unbuild --stub"
   },
   "devDependencies": {
     "unbuild": "^2.0.0"

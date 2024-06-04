@@ -6,8 +6,8 @@ export default defineBuildConfig({
     {
       builder: "untyped",
       input: "src/index.ts",
-      outDir: "docs",
-      name: "examples",
+      outDir: "schema",
+      name: "schema",
     },
   ],
   declaration: true,

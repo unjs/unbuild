@@ -105,6 +105,9 @@ importers:
       typescript:
         specifier: ^5.4.5
         version: 5.4.5
+      unbuild:
+        specifier: workspace:.
+        version: 'link:'
       vitest:
         specifier: ^1.6.0
         version: 1.6.0(@types/node@20.14.1)

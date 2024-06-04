@@ -1,6 +1,7 @@
 {
+  "name": "unbuild-example-zero-config",
+  "version": "1.0.0",
   "type": "module",
-  "bin": "./dist/index.mjs",
   "exports": {
     ".": {
       "import": {
@@ -11,15 +12,24 @@
         "types": "./dist/index.d.cts",
         "default": "./dist/index.cjs"
       }
+    },
+    "./utils": {
+      "import": {
+        "types": "./dist/utils.d.mts",
+        "default": "./dist/utils.mjs"
+      },
+      "require": {
+        "types": "./dist/utils.d.cts",
+        "default": "./dist/utils.cjs"
+      }
     }
   },
-  "types": "./dist/index.d.ts",
-  "main": "./dist/index.cjs",
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "unbuild"
+    "build": "unbuild",
+    "build:stub": "unbuild --stub"
   },
   "devDependencies": {
     "unbuild": "^2.0.0"

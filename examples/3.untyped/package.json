@@ -1,4 +1,6 @@
 {
+  "name": "unbuild-example-untyped",
+  "version": "1.0.0",
   "type": "module",
   "exports": {
     ".": {
@@ -12,8 +14,6 @@
       }
     }
   },
-  "types": "./dist/index.d.ts",
-  "main": "./dist/index.cjs",
   "files": [
     "dist"
   ],
