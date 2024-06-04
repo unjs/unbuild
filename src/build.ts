@@ -1,6 +1,5 @@
 import Module from "node:module";
 import { promises as fsp } from "node:fs";
-import path from "node:path";
 import { resolve, relative, isAbsolute, normalize } from "pathe";
 import { withTrailingSlash } from "ufo";
 import type { PackageJson } from "pkg-types";
@@ -11,7 +10,6 @@ import { createHooks } from "hookable";
 import prettyBytes from "pretty-bytes";
 import { globby } from "globby";
 import type { RollupOptions } from "rollup";
-import { watch as rollupWatch } from "rollup";
 import {
   dumpObject,
   rmdir,
@@ -61,10 +59,6 @@ export async function build(
       _stubMode,
       _watchMode,
     );
-  }
-
-  if (_watchMode) {
-    _watch(rollupOptions);
   }
 }
 
@@ -283,17 +277,8 @@ async function _build(
   // copy
   await copyBuild(ctx);
 
-  // Skip rest for stub
-  if (options.stub) {
-    await ctx.hooks.callHook("build:done", ctx);
-    return;
-  }
-
-  // Start in watch mode
-  if (_watchMode) {
-    const _rollupOptions = getRollupOptions(ctx);
-    await ctx.hooks.callHook("rollup:options", ctx, _rollupOptions);
-    rollupOptions.push(_rollupOptions);
+  // Skip rest for stub and watch mode
+  if (options.stub || options.watch) {
     await ctx.hooks.callHook("build:done", ctx);
     return;
   }
@@ -401,38 +386,3 @@ async function _build(
   }
 }
 
-export function _watch(rollupOptions: RollupOptions[]) {
-  const watcher = rollupWatch(rollupOptions);
-
-  consola.warn("[unbuild] watch mode is experimental.");
-
-  let inputs: string[] = [];
-
-  for (const rollupOption of rollupOptions) {
-    inputs = [
-      ...inputs,
-      ...(Array.isArray(rollupOption.input)
-        ? rollupOption.input
-        : typeof rollupOption.input === "string"
-          ? [rollupOption.input]
-          : Object.keys(rollupOption.input || {})),
-    ];
-  }
-  console.log("");
-  consola.info(`Starting watchers for entries:`);
-  for (const input of inputs) {
-    console.log(chalk.gray(`  └─ ${path.relative(process.cwd(), input)}`));
-  }
-
-  watcher.on("change", (id, { event }) => {
-    consola.info(`${chalk.cyan(path.relative(".", id))} was ${event}d`);
-  });
-  watcher.on("restart", () => {
-    consola.info(chalk.gray("Rebuilding bundle"));
-  });
-  watcher.on("event", (event) => {
-    if (event.code === "END") {
-      consola.success(chalk.green("Rebuild finished\n"));
-    }
-  });
-}
