@@ -3,6 +3,7 @@ import { relative, resolve } from "pathe";
 import { globby } from "globby";
 import { symlink, rmdir, warn } from "../utils";
 import type { CopyBuildEntry, BuildContext } from "../types";
+import consola from "consola";
 
 const copy = fsp.cp || fsp.copyFile;
 
@@ -51,4 +52,8 @@ export async function copyBuild(ctx: BuildContext) {
     }
   }
   await ctx.hooks.callHook("copy:done", ctx);
+
+  if (entries.length > 0 && ctx.options.watch) {
+    consola.warn("`untyped` builder does not support watch mode yet.");
+  }
 }

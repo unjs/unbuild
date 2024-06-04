@@ -9,6 +9,7 @@ import { defu } from "defu";
 import { createHooks } from "hookable";
 import prettyBytes from "pretty-bytes";
 import { globby } from "globby";
+import type { RollupOptions } from "rollup";
 import {
   dumpObject,
   rmdir,
@@ -18,7 +19,7 @@ import {
 } from "./utils";
 import type { BuildContext, BuildConfig, BuildOptions } from "./types";
 import { validatePackage, validateDependencies } from "./validate";
-import { rollupBuild } from "./builder/rollup";
+import { getRollupOptions, rollupBuild } from "./builder/rollup";
 import { typesBuild } from "./builder/untyped";
 import { mkdistBuild } from "./builder/mkdist";
 import { copyBuild } from "./builder/copy";
@@ -42,18 +43,34 @@ export async function build(
 
   // Invoke build for every build config defined in build.config.ts
   const cleanedDirs: string[] = [];
+  const rollupOptions: RollupOptions[] = [];
+
+  const _watchMode = inputConfig.watch === true;
+  const _stubMode = !_watchMode && (stub || inputConfig.stub === true);
+
   for (const buildConfig of buildConfigs) {
-    await _build(rootDir, stub, inputConfig, buildConfig, pkg, cleanedDirs);
+    await _build(
+      rootDir,
+      inputConfig,
+      buildConfig,
+      pkg,
+      cleanedDirs,
+      rollupOptions,
+      _stubMode,
+      _watchMode,
+    );
   }
 }
 
 async function _build(
   rootDir: string,
-  stub: boolean,
   inputConfig: BuildConfig = {},
   buildConfig: BuildConfig,
   pkg: PackageJson & Record<"unbuild" | "build", BuildConfig>,
   cleanedDirs: string[],
+  rollupOptions: RollupOptions[],
+  _stubMode: boolean,
+  _watchMode: boolean,
 ) {
   // Resolve preset
   const preset = resolvePreset(
@@ -78,7 +95,7 @@ async function _build(
       clean: true,
       declaration: false,
       outDir: "dist",
-      stub,
+      stub: _stubMode,
       stubOptions: {
         /**
          * See https://github.com/unjs/jiti#options
@@ -89,6 +106,13 @@ async function _build(
           alias: {},
         },
       },
+      watch: _watchMode,
+      watchOptions: _watchMode
+        ? {
+            exclude: "node_modules/**",
+            include: "src/**",
+          }
+        : undefined,
       externals: [
         ...Module.builtinModules,
         ...Module.builtinModules.map((m) => "node:" + m),
@@ -102,6 +126,7 @@ async function _build(
       sourcemap: false,
       rollup: {
         emitCJS: false,
+        watch: false,
         cjsBridge: false,
         inlineDependencies: false,
         preserveDynamicImports: true,
@@ -252,8 +277,8 @@ async function _build(
   // copy
   await copyBuild(ctx);
 
-  // Skip rest for stub
-  if (options.stub) {
+  // Skip rest for stub and watch mode
+  if (options.stub || options.watch) {
     await ctx.hooks.callHook("build:done", ctx);
     return;
   }
