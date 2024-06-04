@@ -60,7 +60,6 @@ export interface RollupBuildOptions {
    */
   emitCJS?: boolean;
 
-
   /**
    * Enable experimental active watcher
    *

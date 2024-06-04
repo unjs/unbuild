@@ -36,7 +36,7 @@ const main = defineCommand({
   },
   async run({ args }) {
     const rootDir = resolve(process.cwd(), args.dir || ".");
-    const devMode = args.watch ? "watch" : (args.stub ? "stub" : false);
+    const devMode = args.watch ? "watch" : args.stub ? "stub" : false;
 
     await build(rootDir, devMode, {
       sourcemap: args.sourcemap,

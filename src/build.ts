@@ -403,9 +403,9 @@ export function watch(rollupOptions: RollupOptions[]) {
       ...inputs,
       ...(Array.isArray(rollupOption.input)
         ? rollupOption.input
-        : (typeof rollupOption.input === "string"
+        : typeof rollupOption.input === "string"
           ? [rollupOption.input]
-          : Object.keys(rollupOption.input || {}))),
+          : Object.keys(rollupOption.input || {})),
     ];
   }
   console.log("");
