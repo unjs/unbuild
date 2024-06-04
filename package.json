@@ -19,8 +19,8 @@
   "scripts": {
     "build": "pnpm unbuild",
     "dev": "pnpm unbuild test/fixture",
-    "lint": "eslint --ext .ts,.js . && prettier -c src test",
-    "lint:fix": "eslint --fix --ext .ts,.js . && prettier -w src test",
+    "lint": "eslint . && prettier -c src test",
+    "lint:fix": "eslint --fix . && prettier -w src test",
     "prepack": "pnpm unbuild",
     "release": "pnpm test && changelogen --release && git push --follow-tags && npm publish",
     "prerelease": "pnpm test && changelogen --prerelease --release && git push --follow-tags && npm publish --tag rc",
@@ -59,8 +59,8 @@
     "@types/node": "^20.12.8",
     "@vitest/coverage-v8": "^1.5.3",
     "changelogen": "^0.5.5",
-    "eslint": "^8.57.0",
-    "eslint-config-unjs": "^0.2.1",
+    "eslint": "^9.4.0",
+    "eslint-config-unjs": "^0.3.2",
     "prettier": "^3.2.5",
     "typescript": "^5.4.5",
     "vitest": "^1.5.3"

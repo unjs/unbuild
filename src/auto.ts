@@ -129,7 +129,9 @@ export function inferEntries(
       if (source) {
         return source;
       }
-      const SOURCE_RE = new RegExp(`(?<=/|$)${d}${isDir ? "" : "\\.\\w+"}$`);
+      const SOURCE_RE = new RegExp(
+        `(?<=/|$)${d}${isDir ? "" : String.raw`\.\w+`}$`,
+      );
       return sourceFiles
         .find((i) => SOURCE_RE.test(i))
         ?.replace(/(\.d\.(m|c)?ts|\.\w+)$/, "");

@@ -1,4 +1,3 @@
-/* eslint-disable no-use-before-define */
 import type { PackageJson } from "pkg-types";
 import type { Hookable } from "hookable";
 import type { RollupOptions, RollupBuild, OutputOptions } from "rollup";
