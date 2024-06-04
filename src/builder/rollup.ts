@@ -362,13 +362,7 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
     ].filter(Boolean),
 
     external(id) {
-      const transformAliases = (id: string): string => {
-        for (const [find, replacement] of Object.entries(_aliases)) {
-          if (id.startsWith(find)) return id.replace(find, replacement);
-        }
-        return id;
-      };
-      id = transformAliases(id);
+      id = resolveAlias(id, _aliases);
       const pkg = getpkg(id);
       const isExplicitExternal =
         arrayIncludes(ctx.options.externals, pkg) ||
@@ -477,6 +471,16 @@ function resolveAliases(ctx: BuildContext) {
 
   return aliases;
 }
+
+// TODO: use pathe utils to handle nested aliases
+function resolveAlias (id: string, aliases: Record<string, string>): string  {
+  for (const [find, replacement] of Object.entries(aliases)) {
+    if (id.startsWith(find)) {
+      return id.replace(find, replacement)
+    }
+  }
+  return id;
+};
 
 export function _watch(rollupOptions: RollupOptions) {
   const watcher = rollupWatch(rollupOptions);
