@@ -2,6 +2,57 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v3.0.0-rc.2
+
+[compare changes](https://github.com/unjs/unbuild/compare/v3.0.0-rc.1...v3.0.0-rc.2)
+
+### 🚀 Enhancements
+
+- Support `copy` builder ([#389](https://github.com/unjs/unbuild/pull/389))
+- Experimental active watcher for rollup ([#364](https://github.com/unjs/unbuild/pull/364))
+- **rollup:** Add `.mts` and `.cts` to supported extensions ([633ffe9](https://github.com/unjs/unbuild/commit/633ffe9))
+- Support custom jiti plugins for stub mode ([#368](https://github.com/unjs/unbuild/pull/368))
+
+### 🩹 Fixes
+
+- Generate stub types of with explicit extension import if pkg type is `module` ([#371](https://github.com/unjs/unbuild/pull/371))
+- Correct dts generation for stub mode ([#314](https://github.com/unjs/unbuild/pull/314))
+- **rollup:** Handle aliases when checking for externals ([#384](https://github.com/unjs/unbuild/pull/384))
+- **rollup:** Update `importAttributesKey` to `with` ([27bcba8](https://github.com/unjs/unbuild/commit/27bcba8))
+
+### 📖 Documentation
+
+- Add more jsdocs ([#363](https://github.com/unjs/unbuild/pull/363))
+- Add examples ([#334](https://github.com/unjs/unbuild/pull/334))
+
+### 🏡 Chore
+
+- **release:** V3.0.0-rc.1 ([0419efa](https://github.com/unjs/unbuild/commit/0419efa))
+- Update prerelease script ([94615cf](https://github.com/unjs/unbuild/commit/94615cf))
+- Fix typo in comments ([#393](https://github.com/unjs/unbuild/pull/393))
+- Update eslint to v9 ([f085607](https://github.com/unjs/unbuild/commit/f085607))
+- Update dependencies ([5de86d7](https://github.com/unjs/unbuild/commit/5de86d7))
+- Apply automated lint fixes ([225338e](https://github.com/unjs/unbuild/commit/225338e))
+- Update ci ([8b39cfd](https://github.com/unjs/unbuild/commit/8b39cfd))
+
+### 🤖 CI
+
+- Test against node v18 ([7bc5321](https://github.com/unjs/unbuild/commit/7bc5321))
+
+### ❤️ Contributors
+
+- Pooya Parsa ([@pi0](http://github.com/pi0))
+- S3xysteak ([@s3xysteak](http://github.com/s3xysteak))
+- Weng <157215725@qq.com>
+- ZHAO Jin-Xiang <xiaoxiangmoe@gmail.com>
+- Joe McKenney ([@joemckenney](http://github.com/joemckenney))
+- Estéban <e.soubiran25@gmail.com>
+- Yasuhiro SHIMIZU <the.phantom.bane@gmail.com>
+- 阿菜 Cai <1064425721@qq.com>
+- Marco Solazzi <marco.solazzi@gmail.com>
+- Shoma-mano ([@shoma-mano](http://github.com/shoma-mano))
+- Daniel Roe ([@danielroe](http://github.com/danielroe))
+
 ## v3.0.0-rc.1
 
 [compare changes](https://github.com/unjs/unbuild/compare/v2.0.0...v3.0.0-rc.1)
