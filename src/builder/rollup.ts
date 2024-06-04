@@ -70,7 +70,9 @@ export async function rollupBuild(ctx: BuildContext) {
         0,
         Math.max(0, resolvedEntry.length - extname(resolvedEntry).length),
       );
-      const resolvedEntryForTypeImport = isESM ? `${resolvedEntry.replace(/(\.m?)(ts)$/, "$1js")}` : resolvedEntryWithoutExt;
+      const resolvedEntryForTypeImport = isESM
+        ? `${resolvedEntry.replace(/(\.m?)(ts)$/, "$1js")}`
+        : resolvedEntryWithoutExt;
       const code = await fsp.readFile(resolvedEntry, "utf8");
       const shebang = getShebang(code);
 
