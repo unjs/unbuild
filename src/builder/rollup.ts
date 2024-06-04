@@ -53,6 +53,9 @@ const DEFAULT_EXTENSIONS = [
 export async function rollupBuild(ctx: BuildContext) {
   if (ctx.options.stub) {
     const jitiPath = await resolvePath("jiti", { url: import.meta.url });
+    const babelPlugins = ctx.options.stubOptions.jiti.transformOptions?.babel
+      ?.plugins as any;
+    const importedBabelPlugins: Array<string> = [];
     const serializedJitiOptions = JSON.stringify(
       {
         ...ctx.options.stubOptions.jiti,
@@ -60,9 +63,41 @@ export async function rollupBuild(ctx: BuildContext) {
           ...resolveAliases(ctx),
           ...ctx.options.stubOptions.jiti.alias,
         },
+        transformOptions: {
+          ...ctx.options.stubOptions.jiti.transformOptions,
+          babel: {
+            ...ctx.options.stubOptions.jiti.transformOptions?.babel,
+            plugins: "__$BABEL_PLUGINS",
+          },
+        },
       },
       null,
       2,
+    ).replace(
+      '"__$BABEL_PLUGINS"',
+      Array.isArray(babelPlugins)
+        ? "[" +
+            babelPlugins
+              .map((plugin: string | Array<any>, i) => {
+                if (Array.isArray(plugin)) {
+                  const [name, ...args] = plugin;
+                  importedBabelPlugins.push(name);
+                  return (
+                    `[` +
+                    [
+                      `plugin${i}`,
+                      ...args.map((val) => JSON.stringify(val)),
+                    ].join(", ") +
+                    "]"
+                  );
+                } else {
+                  importedBabelPlugins.push(plugin);
+                  return `plugin${i}`;
+                }
+              })
+              .join(",") +
+            "]"
+        : "[]",
     );
 
     for (const entry of ctx.options.entries.filter(
@@ -97,6 +132,10 @@ export async function rollupBuild(ctx: BuildContext) {
           shebang +
             [
               `const jiti = require(${JSON.stringify(jitiPath)})`,
+              ...importedBabelPlugins.map(
+                (plugin, i) =>
+                  `const plugin${i} = require(${JSON.stringify(plugin)})`,
+              ),
               "",
               `const _jiti = jiti(null, ${serializedJitiOptions})`,
               "",
@@ -127,6 +166,9 @@ export async function rollupBuild(ctx: BuildContext) {
         shebang +
           [
             `import jiti from ${JSON.stringify(pathToFileURL(jitiPath).href)};`,
+            ...importedBabelPlugins.map(
+              (plugin, i) => `import plugin${i} from ${JSON.stringify(plugin)}`,
+            ),
             "",
             `const _jiti = jiti(null, ${serializedJitiOptions})`,
             "",
