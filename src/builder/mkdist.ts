@@ -39,6 +39,6 @@ export async function mkdistBuild(ctx: BuildContext) {
   await ctx.hooks.callHook("mkdist:done", ctx);
 
   if (entries.length > 0 && ctx.options.watch) {
-    consola.warn('`mkdist` builder does not support watch mode yet.')
+    consola.warn("`mkdist` builder does not support watch mode yet.");
   }
 }

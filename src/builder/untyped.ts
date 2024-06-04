@@ -72,6 +72,6 @@ export async function typesBuild(ctx: BuildContext) {
   await ctx.hooks.callHook("untyped:done", ctx);
 
   if (entries.length > 0 && ctx.options.watch) {
-    consola.warn('`untyped` builder does not support watch mode yet.')
+    consola.warn("`untyped` builder does not support watch mode yet.");
   }
 }

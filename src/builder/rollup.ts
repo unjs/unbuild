@@ -13,7 +13,14 @@ import { nodeResolve } from "@rollup/plugin-node-resolve";
 import alias from "@rollup/plugin-alias";
 import dts from "rollup-plugin-dts";
 import replace from "@rollup/plugin-replace";
-import { resolve, dirname, normalize, extname, isAbsolute, relative } from "pathe";
+import {
+  resolve,
+  dirname,
+  normalize,
+  extname,
+  isAbsolute,
+  relative,
+} from "pathe";
 import { resolvePath, resolveModuleExportNames } from "mlly";
 import { watch as rollupWatch } from "rollup";
 import { arrayIncludes, getpkg, tryResolve, warn } from "../utils";
@@ -202,9 +209,9 @@ export async function rollupBuild(ctx: BuildContext) {
     _watch(rollupOptions);
     // TODO: Clone rollup options to continue types watching
     if (ctx.options.declaration && ctx.options.watch) {
-      consola.warn('`rollup` DTS builder does not support watch mode yet.')
+      consola.warn("`rollup` DTS builder does not support watch mode yet.");
     }
-    return
+    return;
   }
 
   // Types
@@ -426,10 +433,13 @@ export function _watch(rollupOptions: RollupOptions) {
   } else {
     inputs = Object.keys(rollupOptions.input || {});
   }
-  consola.info(`[unbuild] [rollup] Starting watchers for entries: ${inputs.map(input => './' + relative(process.cwd(), input)).join(", ")}`);
+  consola.info(
+    `[unbuild] [rollup] Starting watchers for entries: ${inputs.map((input) => "./" + relative(process.cwd(), input)).join(", ")}`,
+  );
 
-  consola.warn("[unbuild] [rollup] Watch mode is experimental and may be unstable");
-
+  consola.warn(
+    "[unbuild] [rollup] Watch mode is experimental and may be unstable",
+  );
 
   watcher.on("change", (id, { event }) => {
     consola.info(`${chalk.cyan(relative(".", id))} was ${event}d`);
