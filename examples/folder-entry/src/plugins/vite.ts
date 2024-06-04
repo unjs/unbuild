@@ -1,3 +1,3 @@
 export default function vitePlugin(): string {
-  return 'Hello Vite!'
+  return "Hello Vite!";
 }

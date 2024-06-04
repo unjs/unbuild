@@ -1,23 +1,23 @@
-import { defineBuildConfig } from 'unbuild'
+import { defineBuildConfig } from "unbuild";
 
 export default defineBuildConfig({
   entries: [
-    'src/index.ts',
+    "src/index.ts",
     {
-      input: 'src/plugins/',
-      outDir: 'dist/plugins/',
-      format: 'esm',
+      input: "src/plugins/",
+      outDir: "dist/plugins/",
+      format: "esm",
     },
     {
-      input: 'src/plugins/',
-      outDir: 'dist/plugins/',
-      format: 'cjs',
+      input: "src/plugins/",
+      outDir: "dist/plugins/",
+      format: "cjs",
       ext: "cjs",
-      declaration: false
-    }
+      declaration: false,
+    },
   ],
   declaration: true,
   rollup: {
     emitCJS: true,
-  }
-})
+  },
+});

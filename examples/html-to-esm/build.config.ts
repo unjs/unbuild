@@ -1,12 +1,10 @@
-import { defineBuildConfig } from 'unbuild'
+import { defineBuildConfig } from "unbuild";
 
 export default defineBuildConfig({
-  entries: [
-    'src/index.html'
-  ],
+  entries: ["src/index.html"],
   rollup: {
     output: {
-      exports: 'named',
-    }
+      exports: "named",
+    },
   },
-})
+});

@@ -19,8 +19,8 @@
   "scripts": {
     "build": "pnpm unbuild",
     "dev": "pnpm unbuild test/fixture",
-    "lint": "eslint . && prettier -c src test",
-    "lint:fix": "eslint --fix . && prettier -w src test",
+    "lint": "eslint . && prettier -c src test examples",
+    "lint:fix": "eslint --fix . && prettier -w src test examples",
     "prepack": "pnpm unbuild",
     "release": "pnpm test && changelogen --release && git push --follow-tags && npm publish",
     "prerelease": "pnpm test && changelogen --prerelease --release && git push --follow-tags && npm publish --tag rc",

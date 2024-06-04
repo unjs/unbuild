@@ -1,14 +1,14 @@
-import { defineBuildConfig } from 'unbuild'
+import { defineBuildConfig } from "unbuild";
 
 export default defineBuildConfig({
   entries: [
     {
-      input: 'src/data.json',
-    }
+      input: "src/data.json",
+    },
   ],
   rollup: {
     output: {
-      exports: 'named'
-    }
-  }
-})
+      exports: "named",
+    },
+  },
+});
