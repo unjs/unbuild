@@ -20,7 +20,7 @@ describe("validatePackage", () => {
         module: "dist/mod",
         exports: {
           "./runtime/*": "./runtime/*.mjs",
-          ".": { node: "./src/index.ts" },
+          ".": { node: "./src/index.mts" },
         },
       },
       join(fileURLToPath(import.meta.url), "../fixture"),
@@ -30,7 +30,7 @@ describe("validatePackage", () => {
     const warnings = [...buildContext.warnings];
 
     expect(warnings[0]).to.include("Potential missing");
-    expect(warnings[0]).not.to.include("src/index.ts");
+    expect(warnings[0]).not.to.include("src/index.mts");
 
     for (const file of ["dist/test", "dist/cli", "dist/mod", "runtime"]) {
       expect(warnings[0]).to.include(file);
