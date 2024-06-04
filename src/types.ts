@@ -1,6 +1,11 @@
 import type { PackageJson } from "pkg-types";
 import type { Hookable } from "hookable";
-import type { RollupOptions, RollupBuild, OutputOptions } from "rollup";
+import type {
+  RollupOptions,
+  RollupBuild,
+  OutputOptions,
+  WatcherOptions,
+} from "rollup";
 import type { MkdistOptions } from "mkdist";
 import type { Schema } from "untyped";
 import type { RollupReplaceOptions } from "@rollup/plugin-replace";
@@ -54,6 +59,13 @@ export interface RollupBuildOptions {
    * If enabled, unbuild generates a CommonJS build in addition to the ESM build.
    */
   emitCJS?: boolean;
+
+  /**
+   * Enable experimental active watcher
+   *
+   * @experimental
+   */
+  watch?: boolean;
 
   /**
    * If enabled, unbuild generates CommonJS polyfills for ESM builds.
@@ -168,10 +180,22 @@ export interface BuildOptions {
   outDir: string;
 
   /**
-   * Whether to generate declaration files.
-   * [stubbing](https://antfu.me/posts/publish-esm-and-cjs#stubbing)
+   * Whether to build with JIT stubs.
+   * Read more: [stubbing](https://antfu.me/posts/publish-esm-and-cjs#stubbing)
    */
   stub: boolean;
+
+  /**
+   * Whether to build and actively watch the file changes.
+   *
+   * @experimental This feature is experimental and incomplete.
+   */
+  watch: boolean;
+
+  /**
+   * Watch mode options.
+   */
+  watchOptions: WatcherOptions;
 
   /**
    * Stub options, where [jiti](https://github.com/unjs/jiti)

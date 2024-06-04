@@ -6,6 +6,7 @@ import untypedPlugin from "untyped/babel-plugin";
 import jiti from "jiti";
 import { pascalCase } from "scule";
 import type { BuildContext, UntypedBuildEntry, UntypedOutputs } from "../types";
+import consola from "consola";
 
 export async function typesBuild(ctx: BuildContext) {
   const entries = ctx.options.entries.filter(
@@ -69,4 +70,8 @@ export async function typesBuild(ctx: BuildContext) {
     }
   }
   await ctx.hooks.callHook("untyped:done", ctx);
+
+  if (entries.length > 0 && ctx.options.watch) {
+    consola.warn("`untyped` builder does not support watch mode yet.");
+  }
 }
