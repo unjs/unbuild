@@ -19,7 +19,7 @@ const main = defineCommand({
     },
     watch: {
       type: "boolean",
-      description: "Watch the src dir and rebuild on change",
+      description: "Watch the src dir and rebuild on change (experimental)",
     },
     stub: {
       type: "boolean",
@@ -36,10 +36,10 @@ const main = defineCommand({
   },
   async run({ args }) {
     const rootDir = resolve(process.cwd(), args.dir || ".");
-    const devMode = args.watch ? "watch" : args.stub ? "stub" : false;
-
-    await build(rootDir, devMode, {
+    await build(rootDir, args.stub, {
       sourcemap: args.sourcemap,
+      stub: args.stub,
+      watch: args.watch,
       rollup: {
         esbuild: {
           minify: args.minify,

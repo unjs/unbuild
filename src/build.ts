@@ -28,7 +28,7 @@ import { copyBuild } from "./builder/copy";
 
 export async function build(
   rootDir: string,
-  devMode: "watch" | "stub" | boolean,
+  stub: boolean,
   inputConfig: BuildConfig = {},
 ) {
   // Determine rootDir
@@ -46,33 +46,37 @@ export async function build(
   // Invoke build for every build config defined in build.config.ts
   const cleanedDirs: string[] = [];
   const rollupOptions: RollupOptions[] = [];
+
+  const _watchMode = inputConfig.watch === true;
+  const _stubMode = !_watchMode && (stub || inputConfig.stub === true);
+
   for (const buildConfig of buildConfigs) {
     await _build(
       rootDir,
-      devMode === "watch",
-      devMode === "stub",
       inputConfig,
       buildConfig,
       pkg,
       cleanedDirs,
       rollupOptions,
+      _stubMode,
+      _watchMode,
     );
   }
 
-  if (devMode === "watch") {
-    watch(rollupOptions);
+  if (_watchMode) {
+    _watch(rollupOptions);
   }
 }
 
 async function _build(
   rootDir: string,
-  watch: boolean,
-  stub: boolean,
   inputConfig: BuildConfig = {},
   buildConfig: BuildConfig,
   pkg: PackageJson & Record<"unbuild" | "build", BuildConfig>,
   cleanedDirs: string[],
   rollupOptions: RollupOptions[],
+  _stubMode: boolean,
+  _watchMode: boolean,
 ) {
   // Resolve preset
   const preset = resolvePreset(
@@ -97,11 +101,7 @@ async function _build(
       clean: true,
       declaration: false,
       outDir: "dist",
-      stub,
-      watch: {
-        exclude: "node_modules/**",
-        include: "src/**",
-      },
+      stub: _stubMode,
       stubOptions: {
         /**
          * See https://github.com/unjs/jiti#options
@@ -112,6 +112,13 @@ async function _build(
           alias: {},
         },
       },
+      watch: _watchMode,
+      watchOptions: _watchMode
+        ? {
+            exclude: "node_modules/**",
+            include: "src/**",
+          }
+        : undefined,
       externals: [
         ...Module.builtinModules,
         ...Module.builtinModules.map((m) => "node:" + m),
@@ -282,7 +289,8 @@ async function _build(
     return;
   }
 
-  if (watch) {
+  // Start in watch mode
+  if (_watchMode) {
     const _rollupOptions = getRollupOptions(ctx);
     await ctx.hooks.callHook("rollup:options", ctx, _rollupOptions);
     rollupOptions.push(_rollupOptions);
@@ -393,8 +401,10 @@ async function _build(
   }
 }
 
-export function watch(rollupOptions: RollupOptions[]) {
+export function _watch(rollupOptions: RollupOptions[]) {
   const watcher = rollupWatch(rollupOptions);
+
+  consola.warn("[unbuild] watch mode is experimental.");
 
   let inputs: string[] = [];
 
