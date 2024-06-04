@@ -16,7 +16,7 @@ import type { EsbuildOptions } from "./builder/plugins/esbuild";
 export type RollupCommonJSOptions = Parameters<typeof commonjs>[0] & {};
 
 export interface BaseBuildEntry {
-  builder?: "untyped" | "rollup" | "mkdist";
+  builder?: "untyped" | "rollup" | "mkdist" | "copy";
   input: string;
   name?: string;
   outDir?: string;
@@ -37,11 +37,17 @@ export interface MkdistBuildEntry extends _BaseAndMkdist {
   builder: "mkdist";
 }
 
+export interface CopyBuildEntry extends BaseBuildEntry {
+  builder: "copy";
+  pattern?: string | string[];
+}
+
 export type BuildEntry =
   | BaseBuildEntry
   | RollupBuildEntry
   | UntypedBuildEntry
-  | MkdistBuildEntry;
+  | MkdistBuildEntry
+  | CopyBuildEntry;
 
 export interface RollupBuildOptions {
   emitCJS?: boolean;
@@ -185,6 +191,12 @@ export interface BuildHooks {
     outputs: UntypedOutputs,
   ) => void | Promise<void>;
   "untyped:done": (ctx: BuildContext) => void | Promise<void>;
+
+  "copy:entries": (
+    ctx: BuildContext,
+    entries: CopyBuildEntry[],
+  ) => void | Promise<void>;
+  "copy:done": (ctx: BuildContext) => void | Promise<void>;
 }
 
 export function defineBuildConfig(
