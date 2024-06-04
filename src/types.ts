@@ -62,7 +62,7 @@ export interface RollupBuildOptions {
 
   /**
    * Preserve dynamic imports as-is
-  */
+   */
   preserveDynamicImports?: boolean;
 
   /**
@@ -246,7 +246,7 @@ export interface BuildConfig
   extends DeepPartial<Omit<BuildOptions, "entries">> {
   /**
    * Specify the entry file or entry module during the construction process.
-  */
+   */
   entries?: (BuildEntry | string)[];
 
   /**
