@@ -19,8 +19,8 @@
   "scripts": {
     "build": "pnpm unbuild",
     "dev": "pnpm unbuild test/fixture",
-    "lint": "eslint . && prettier -c src test",
-    "lint:fix": "eslint --fix . && prettier -w src test",
+    "lint": "eslint . && prettier -c src test examples",
+    "lint:fix": "eslint --fix . && prettier -w src test examples",
     "prepack": "pnpm unbuild",
     "release": "pnpm test && changelogen --release && git push --follow-tags && npm publish",
     "prerelease": "pnpm test && changelogen --prerelease --release && git push --follow-tags && npm publish --tag rc",
@@ -63,7 +63,8 @@
     "eslint-config-unjs": "^0.3.2",
     "prettier": "^3.3.0",
     "typescript": "^5.4.5",
-    "vitest": "^1.6.0"
+    "vitest": "^1.6.0",
+    "unbuild": "workspace:."
   },
   "peerDependencies": {
     "typescript": "^5.4.5"
