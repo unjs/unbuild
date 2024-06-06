@@ -21,7 +21,11 @@ Integration with [mkdist](https://github.com/unjs/mkdist) for generating bundlel
 
 ### ✨ Passive watcher
 
-Stub `dist` once using [jiti](https://github.com/unjs/jiti) and you can try and link your project without needing to watch and rebuild during development.
+Stub `dist` once using [jiti](https://github.com/unjs/jiti) and you can try and link your project without needing to watch and rebuild during development. By calling the following command only once, You are able to play and test out with your library with the up-to-date code!
+
+```ts
+unbuild --stub
+```
 
 ### ✍ Untype Generator
 
