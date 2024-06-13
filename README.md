@@ -31,6 +31,18 @@ unbuild --stub
 
 Integration with [untyped](https://github.com/unjs/untyped).
 
+### 🌐 Sourcemap
+
+Support for Sourcemap.
+
+```ts
+export default {
+  // ...
+  sourcemap: true
+};
+
+```
+
 ### ✔️ Secure builds
 
 Automatically check for various build issues such as potential **missing** and **unused** [dependencies](https://docs.npmjs.com/cli/v7/configuring-npm/package-json#dependencies) and fail CI.
@@ -165,6 +177,28 @@ export default defineBuildConfig([
 - Enable [Corepack](https://github.com/nodejs/corepack) using `corepack enable` (use `npm i -g corepack` for Node.js < 16.10)
 - Install dependencies using `pnpm install`
 - Run interactive tests using `pnpm dev`
+
+## Other Troubleshooting
+
+### Decorators support
+
+In `build.config.ts`
+
+```ts
+import { defineBuildConfig } from 'unbuild';
+
+export default defineBuildConfig({
+  rollup: {
+    esbuild: {
+      tsconfigRaw: {
+        compilerOptions: {
+          experimentalDecorators: true,
+        },
+      },
+    },
+  },
+});
+```
 
 ## License
 
