@@ -39,12 +39,12 @@
     "citty": "^0.1.6",
     "consola": "^3.2.3",
     "defu": "^6.1.4",
-    "esbuild": "^0.21.4",
+    "esbuild": "^0.21.5",
     "globby": "^14.0.1",
     "hookable": "^5.5.3",
-    "jiti": "^1.21.3",
+    "jiti": "^1.21.6",
     "magic-string": "^0.30.10",
-    "mkdist": "^1.5.1",
+    "mkdist": "^1.5.3",
     "mlly": "^1.7.1",
     "pathe": "^1.1.2",
     "pkg-types": "^1.1.1",
@@ -57,14 +57,13 @@
   },
   "devDependencies": {
     "@babel/plugin-transform-class-properties": "^7.24.7",
-    "@types/node": "^20.14.2",
+    "@types/node": "^20.14.9",
     "@vitest/coverage-v8": "^1.6.0",
     "changelogen": "^0.5.5",
-    "eslint": "^9.4.0",
+    "eslint": "^9.5.0",
     "eslint-config-unjs": "^0.3.2",
-    "prettier": "^3.3.1",
-    "typescript": "^5.4.5",
-    "unbuild": "workspace:.",
+    "prettier": "^3.3.2",
+    "typescript": "^5.5.2",
     "vitest": "^1.6.0"
   },
   "peerDependencies": {
@@ -75,5 +74,5 @@
       "optional": true
     }
   },
-  "packageManager": "pnpm@9.2.0"
+  "packageManager": "pnpm@9.4.0"
 }
