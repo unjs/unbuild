@@ -1,12 +1,7 @@
 import { writeFile, mkdir } from "node:fs/promises";
 import { promises as fsp } from "node:fs";
 import { pathToFileURL } from "node:url";
-import type {
-  RollupOptions,
-  OutputOptions,
-  OutputChunk,
-  PreRenderedChunk,
-} from "rollup";
+import type { OutputOptions, OutputChunk, PreRenderedChunk } from "rollup";
 import { rollup } from "rollup";
 import commonjs from "@rollup/plugin-commonjs";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
@@ -24,7 +19,7 @@ import {
 import { resolvePath, resolveModuleExportNames } from "mlly";
 import { watch as rollupWatch } from "rollup";
 import { arrayIncludes, getpkg, tryResolve, warn } from "../utils";
-import type { BuildContext } from "../types";
+import type { BuildContext, RollupOptions } from "../types";
 import { esbuild } from "./plugins/esbuild";
 import { JSONPlugin } from "./plugins/json";
 import { rawPlugin } from "./plugins/raw";
@@ -265,7 +260,7 @@ export async function rollupBuild(ctx: BuildContext) {
   // Types
   if (ctx.options.declaration) {
     rollupOptions.plugins = [
-      rollupOptions.plugins,
+      ...rollupOptions.plugins,
       dts(ctx.options.rollup.dts),
       removeShebangPlugin(),
     ];

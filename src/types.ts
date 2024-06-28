@@ -1,10 +1,11 @@
 import type { PackageJson } from "pkg-types";
 import type { Hookable } from "hookable";
 import type {
-  RollupOptions,
+  RollupOptions as _RollupOptions,
   RollupBuild,
   OutputOptions,
   WatcherOptions,
+  InputPluginOption,
 } from "rollup";
 import type { MkdistOptions } from "mkdist";
 import type { Schema } from "untyped";
@@ -295,6 +296,10 @@ export interface UntypedOutputs {
   schema: UntypedOutput;
   defaults: UntypedOutput;
   declaration?: UntypedOutput;
+}
+
+export interface RollupOptions extends _RollupOptions {
+  plugins: InputPluginOption[];
 }
 
 export interface BuildHooks {
