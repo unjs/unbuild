@@ -35,7 +35,7 @@ export type EsbuildOptions = CommonOptions & {
 export function esbuild(options: EsbuildOptions): Plugin {
   // Extract esBuild options from additional options and apply defaults
   const {
-    include = /\.(ts|js|tsx|jsx)$/,
+    include = new RegExp(Object.keys(DefaultLoaders).join("|")),
     exclude = /node_modules/,
     loaders: loaderOptions,
     ...esbuildOptions
