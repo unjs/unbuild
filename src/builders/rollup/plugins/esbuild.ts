@@ -107,12 +107,10 @@ export function esbuild(options: EsbuildOptions): Plugin {
         sourcefile: fileName,
         minify: true,
       });
-      if (result.code) {
-        return {
-          code: result.code,
-          map: result.map || null,
-        };
-      }
+      return {
+        code: result.code,
+        map: result.map || null,
+      };
     },
   };
 }
