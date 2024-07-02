@@ -48,8 +48,8 @@ importers:
         specifier: ^5.5.3
         version: 5.5.3
       jiti:
-        specifier: ^1.21.6
-        version: 1.21.6
+        specifier: ^2.0.0-beta.3
+        version: 2.0.0-beta.3
       magic-string:
         specifier: ^0.30.10
         version: 0.30.10
@@ -1577,8 +1577,8 @@ packages:
     resolution: {integrity: sha512-GCfE1mtsHGOELCU8e/Z7YWzpmybrx/+dSTfLrvY8qRmaY6zXTKWn6WQIjaAFw069icm6GVMNkgu0NzI4iPZUNw==}
     engines: {node: '>=10'}
 
-  istanbul-lib-source-maps@5.0.5:
-    resolution: {integrity: sha512-gKf4eJ8bHmSX/ljiOCpnd8vtmHTwG71uugm0kXYd5aqFCl6z8cj8k7QduXSwU6QOst6LCdSXTlaoc8W4554crQ==}
+  istanbul-lib-source-maps@5.0.6:
+    resolution: {integrity: sha512-yg2d+Em4KizZC5niWhQaIomgf5WlL4vOOjZ5xGCmF8SnPE/mDWWXgvRExdcpCgh9lLRRa1/fSYp2ymmbJ1pI+A==}
     engines: {node: '>=10'}
 
   istanbul-reports@3.1.7:
@@ -1591,6 +1591,10 @@ packages:
 
   jiti@1.21.6:
     resolution: {integrity: sha512-2yTgeWTWzMWkHu6Jp9NKgePDaYHbntiwvYuuJLbbN9vl7DC9DvXKOB2BC3ZZ92D3cvV/aflH0osDfwpHepQ53w==}
+    hasBin: true
+
+  jiti@2.0.0-beta.3:
+    resolution: {integrity: sha512-pmfRbVRs/7khFrSAYnSiJ8C0D5GvzkE4Ey2pAvUcJsw1ly/p+7ut27jbJrjY79BpAJQJ4gXYFtK6d1Aub+9baQ==}
     hasBin: true
 
   js-tokens@4.0.0:
@@ -3172,7 +3176,7 @@ snapshots:
       debug: 4.3.5
       istanbul-lib-coverage: 3.2.2
       istanbul-lib-report: 3.0.1
-      istanbul-lib-source-maps: 5.0.5
+      istanbul-lib-source-maps: 5.0.6
       istanbul-reports: 3.1.7
       magic-string: 0.30.10
       magicast: 0.3.4
@@ -4051,7 +4055,7 @@ snapshots:
       make-dir: 4.0.0
       supports-color: 7.2.0
 
-  istanbul-lib-source-maps@5.0.5:
+  istanbul-lib-source-maps@5.0.6:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
       debug: 4.3.5
@@ -4071,6 +4075,8 @@ snapshots:
       '@pkgjs/parseargs': 0.11.0
 
   jiti@1.21.6: {}
+
+  jiti@2.0.0-beta.3: {}
 
   js-tokens@4.0.0: {}
 

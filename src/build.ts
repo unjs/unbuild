@@ -13,7 +13,7 @@ import type { RollupOptions } from "rollup";
 import {
   dumpObject,
   rmdir,
-  tryRequire,
+  jiti,
   resolvePreset,
   removeExtension,
 } from "./utils";
@@ -33,13 +33,17 @@ export async function build(
   rootDir = resolve(process.cwd(), rootDir || ".");
 
   const _buildConfig: BuildConfig | BuildConfig[] =
-    tryRequire("./build.config", rootDir) || {};
+    (await jiti.import("./build.config", { parentURL: rootDir, try: true })) ||
+    {};
   const buildConfigs = (
     Array.isArray(_buildConfig) ? _buildConfig : [_buildConfig]
   ).filter(Boolean);
 
-  const pkg: PackageJson & Record<"unbuild" | "build", BuildConfig> =
-    tryRequire("./package.json", rootDir) || {};
+  const pkg: PackageJson & Partial<Record<"unbuild" | "build", BuildConfig>> =
+    ((await jiti.import("./package.json", {
+      parentURL: rootDir,
+      try: true,
+    })) as PackageJson) || ({} as PackageJson);
 
   // Invoke build for every build config defined in build.config.ts
   const cleanedDirs: string[] = [];
@@ -66,14 +70,14 @@ async function _build(
   rootDir: string,
   inputConfig: BuildConfig = {},
   buildConfig: BuildConfig,
-  pkg: PackageJson & Record<"unbuild" | "build", BuildConfig>,
+  pkg: PackageJson & Partial<Record<"unbuild" | "build", BuildConfig>>,
   cleanedDirs: string[],
   rollupOptions: RollupOptions[],
   _stubMode: boolean,
   _watchMode: boolean,
 ) {
   // Resolve preset
-  const preset = resolvePreset(
+  const preset = await resolvePreset(
     buildConfig.preset ||
       pkg.unbuild?.preset ||
       pkg.build?.preset ||
@@ -98,11 +102,9 @@ async function _build(
       stub: _stubMode,
       stubOptions: {
         /**
-         * See https://github.com/unjs/jiti#options
+         * See https://github.com/unjs/jiti#%EF%B8%8F-options
          */
         jiti: {
-          esmResolve: true,
-          interopDefault: true,
           alias: {},
         },
       },

@@ -18,7 +18,7 @@ import {
 } from "pathe";
 import { resolvePath, resolveModuleExportNames } from "mlly";
 import { watch as rollupWatch } from "rollup";
-import { arrayIncludes, getpkg, tryResolve, warn } from "../utils";
+import { arrayIncludes, getpkg, jiti, warn } from "../utils";
 import type { BuildContext, RollupOptions } from "../types";
 import { esbuild } from "./plugins/esbuild";
 import { JSONPlugin } from "./plugins/json";
@@ -106,7 +106,10 @@ export async function rollupBuild(ctx: BuildContext) {
 
       const isESM = ctx.pkg.type === "module";
       const resolvedEntry = normalize(
-        tryResolve(entry.input, ctx.options.rootDir) || entry.input,
+        jiti.esmResolve(entry.input, {
+          parentURL: ctx.options.rootDir,
+          try: true,
+        }) || entry.input,
       );
       const resolvedEntryWithoutExt = resolvedEntry.slice(
         0,
@@ -126,18 +129,18 @@ export async function rollupBuild(ctx: BuildContext) {
           output + ".cjs",
           shebang +
             [
-              `const jiti = require(${JSON.stringify(jitiPath)})`,
+              `const { createJiti } = require(${JSON.stringify(jitiPath)})`,
               ...importedBabelPlugins.map(
                 (plugin, i) =>
                   `const plugin${i} = require(${JSON.stringify(plugin)})`,
               ),
               "",
-              `const _jiti = jiti(null, ${serializedJitiOptions})`,
+              `const jiti = createJiti(__filename, ${serializedJitiOptions})`,
               "",
               `/** @type {import(${JSON.stringify(
                 resolvedEntryForTypeImport,
               )})} */`,
-              `module.exports = _jiti(${JSON.stringify(resolvedEntry)})`,
+              `module.exports = jiti(${JSON.stringify(resolvedEntry)})`,
             ].join("\n"),
         );
       }
@@ -160,15 +163,15 @@ export async function rollupBuild(ctx: BuildContext) {
         output + ".mjs",
         shebang +
           [
-            `import jiti from ${JSON.stringify(pathToFileURL(jitiPath).href)};`,
+            `import { createJiti } from ${JSON.stringify(pathToFileURL(jitiPath).href)};`,
             ...importedBabelPlugins.map(
               (plugin, i) => `import plugin${i} from ${JSON.stringify(plugin)}`,
             ),
             "",
-            `const _jiti = jiti(null, ${serializedJitiOptions})`,
+            `const jiti = createJiti(import.meta.url, ${serializedJitiOptions})`,
             "",
             `/** @type {import(${JSON.stringify(resolvedEntryForTypeImport)})} */`,
-            `const _module = await _jiti.import(${JSON.stringify(
+            `const _module = await jiti.import(${JSON.stringify(
               resolvedEntry,
             )});`,
             hasDefaultExport ? "\nexport default _module;" : "",
