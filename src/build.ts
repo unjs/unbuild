@@ -148,6 +148,7 @@ async function _build(
           compilerOptions: { preserveSymlinks: false },
           respectExternal: true,
         },
+        isolatedDecl: false, // Experimental
       },
     },
   ) as BuildOptions;

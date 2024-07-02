@@ -80,6 +80,9 @@ importers:
       ufo:
         specifier: ^1.5.3
         version: 1.5.3
+      unplugin-isolated-decl:
+        specifier: ^0.4.0
+        version: 0.4.0(rollup@4.18.0)(typescript@5.5.3)
       untyped:
         specifier: ^1.4.2
         version: 1.4.2
@@ -607,6 +610,46 @@ packages:
   '@nodelib/fs.walk@1.2.8':
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
+
+  '@oxc-transform/binding-darwin-arm64@0.15.1':
+    resolution: {integrity: sha512-rwrJOwLEFXK/9VXfw03MKEYZdVbhsO4OAhXKwWmJ+I6uy8FrrEaidYWYRfdri1iCD5+R8zYLaUig40LQny8v0Q==}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@oxc-transform/binding-darwin-x64@0.15.1':
+    resolution: {integrity: sha512-XSTa5HzpAsn9prhmAFuEHqAv1K7YTNqxhbT0XI0qjttzfNhePrpKcx5TUgXZ4i8kFryiF0cAtEAifdiBRTLPkA==}
+    cpu: [x64]
+    os: [darwin]
+
+  '@oxc-transform/binding-linux-arm64-gnu@0.15.1':
+    resolution: {integrity: sha512-3eQKiaD80pnXujNP3viYw9g8LV9QMHqv4DW17vSxp/JNydjaR/3lfPU2wsNnUu5UgTKNFsrdbcbJchoUStspsw==}
+    cpu: [arm64]
+    os: [linux]
+
+  '@oxc-transform/binding-linux-arm64-musl@0.15.1':
+    resolution: {integrity: sha512-TDqjxdgpJqjuVFrn8iekClA4ryDs0xlBQbk4Es8zsAM8cKFLWHO7XyDzvSQ8RfP3xcdkC+TauTZzPpXyJfldag==}
+    cpu: [arm64]
+    os: [linux]
+
+  '@oxc-transform/binding-linux-x64-gnu@0.15.1':
+    resolution: {integrity: sha512-yYfzqENFsi42oftdSq7x5WA8tBZK66dDjmwAdmEq8IBlzmF4Qq5cW5btJ57FQX8LjFKkJgGwRFYrUVL7MM9AXA==}
+    cpu: [x64]
+    os: [linux]
+
+  '@oxc-transform/binding-linux-x64-musl@0.15.1':
+    resolution: {integrity: sha512-u0YjPDNPvOMRxwFADi9/m2LoFiaYXFz2s95QoDe5GR8A+dQPJD+8rfrMgr1CSL9oErPAQVCJDw4LV+IESAYyQw==}
+    cpu: [x64]
+    os: [linux]
+
+  '@oxc-transform/binding-win32-arm64-msvc@0.15.1':
+    resolution: {integrity: sha512-vEMe7uhBmzvy9SwtJzb+koT16sTnRO8HkgfavXnKcyyzO1hsjrHm+98kgO95KhSo+0kgGEOq78PKM0H9Y31htw==}
+    cpu: [arm64]
+    os: [win32]
+
+  '@oxc-transform/binding-win32-x64-msvc@0.15.1':
+    resolution: {integrity: sha512-KhgWbOZXSE8OYEHnLGiF/VZzA/LobMQ67cxXdEqjN9FuYDAcR5oparNgTYZhxmj70Nav3VmDbDK0EGy4VezxXg==}
+    cpu: [x64]
+    os: [win32]
 
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
@@ -1853,6 +1896,9 @@ packages:
     resolution: {integrity: sha512-6IpQ7mKUxRcZNLIObR0hz7lxsapSSIYNZJwXPGeF0mTVqGKFIXj1DQcMoT22S3ROcLyY/rz0PWaWZ9ayWmad9g==}
     engines: {node: '>= 0.8.0'}
 
+  oxc-transform@0.15.1:
+    resolution: {integrity: sha512-pr0myS11rcOYdCHN1TbttJBIraRkQ3AlzRsC8FwkJrQihIHBEak9XfT3IBwhC9jJ3CEPbDNCQcB/WDtzTWDjXA==}
+
   p-limit@2.3.0:
     resolution: {integrity: sha512-//88mFWSJx8lxCzwdAABTJL2MyWB12+eIY7MDL2SqLmAkeKU9qxRvWuSyTjm3FUmpBEMuFfckAIqEaVGUDxb6w==}
     engines: {node: '>=6'}
@@ -2419,6 +2465,22 @@ packages:
     resolution: {integrity: sha512-gptHNQghINnc/vTGIk0SOFGFNXw7JVrlRUtConJRlvaw6DuX0wO5Jeko9sWrMBhh+PsYAZ7oXAiOnf/UKogyiw==}
     engines: {node: '>= 10.0.0'}
 
+  unplugin-isolated-decl@0.4.0:
+    resolution: {integrity: sha512-lr67Jqa2guE+aeCu1MwRxer3GoiEVz4eyEukfctXgo9H4VHlErOE7guHbg1GqOj3rW3NS+8neBPNXpuKWkSBMA==}
+    engines: {node: '>=18.12.0'}
+    peerDependencies:
+      '@swc/core': ^1.6.6
+      typescript: ^5.5.2
+    peerDependenciesMeta:
+      '@swc/core':
+        optional: true
+      typescript:
+        optional: true
+
+  unplugin@1.11.0:
+    resolution: {integrity: sha512-3r7VWZ/webh0SGgJScpWl2/MRCZK5d3ZYFcNaeci/GQ7Teop7zf0Nl2pUuz7G21BwPd9pcUPOC5KmJ2L3WgC5g==}
+    engines: {node: '>=14.0.0'}
+
   untildify@4.0.0:
     resolution: {integrity: sha512-KK8xQ1mkzZeg9inewmFVDNkg3l5LUhoq9kN6iWYB/CC9YMG8HA+c1Q8HwDe6dEX7kErrEVNVBO3fWsVq5iDgtw==}
     engines: {node: '>=8'}
@@ -2499,6 +2561,13 @@ packages:
         optional: true
       jsdom:
         optional: true
+
+  webpack-sources@3.2.3:
+    resolution: {integrity: sha512-/DyMEOrDgLKKIG0fmvtz+4dUX/3Ghozwgm6iPp8KRhvn+eQf9+Q7GWxVNMk3+uCPWfdXYC4ExGBckIXdFEfH1w==}
+    engines: {node: '>=10.13.0'}
+
+  webpack-virtual-modules@0.6.2:
+    resolution: {integrity: sha512-66/V2i5hQanC51vBQKPH4aI8NMAcBW59FVBs+rC7eGHupMyfn34q7rZIE+ETlJ+XTevqfUhVVBgSUNSW2flEUQ==}
 
   which@2.0.2:
     resolution: {integrity: sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==}
@@ -2965,6 +3034,30 @@ snapshots:
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.17.1
+
+  '@oxc-transform/binding-darwin-arm64@0.15.1':
+    optional: true
+
+  '@oxc-transform/binding-darwin-x64@0.15.1':
+    optional: true
+
+  '@oxc-transform/binding-linux-arm64-gnu@0.15.1':
+    optional: true
+
+  '@oxc-transform/binding-linux-arm64-musl@0.15.1':
+    optional: true
+
+  '@oxc-transform/binding-linux-x64-gnu@0.15.1':
+    optional: true
+
+  '@oxc-transform/binding-linux-x64-musl@0.15.1':
+    optional: true
+
+  '@oxc-transform/binding-win32-arm64-msvc@0.15.1':
+    optional: true
+
+  '@oxc-transform/binding-win32-x64-msvc@0.15.1':
+    optional: true
 
   '@pkgjs/parseargs@0.11.0':
     optional: true
@@ -4332,6 +4425,17 @@ snapshots:
       type-check: 0.4.0
       word-wrap: 1.2.5
 
+  oxc-transform@0.15.1:
+    optionalDependencies:
+      '@oxc-transform/binding-darwin-arm64': 0.15.1
+      '@oxc-transform/binding-darwin-x64': 0.15.1
+      '@oxc-transform/binding-linux-arm64-gnu': 0.15.1
+      '@oxc-transform/binding-linux-arm64-musl': 0.15.1
+      '@oxc-transform/binding-linux-x64-gnu': 0.15.1
+      '@oxc-transform/binding-linux-x64-musl': 0.15.1
+      '@oxc-transform/binding-win32-arm64-msvc': 0.15.1
+      '@oxc-transform/binding-win32-x64-msvc': 0.15.1
+
   p-limit@2.3.0:
     dependencies:
       p-try: 2.2.0
@@ -4850,6 +4954,23 @@ snapshots:
 
   universalify@2.0.1: {}
 
+  unplugin-isolated-decl@0.4.0(rollup@4.18.0)(typescript@5.5.3):
+    dependencies:
+      '@rollup/pluginutils': 5.1.0(rollup@4.18.0)
+      oxc-transform: 0.15.1
+      unplugin: 1.11.0
+    optionalDependencies:
+      typescript: 5.5.3
+    transitivePeerDependencies:
+      - rollup
+
+  unplugin@1.11.0:
+    dependencies:
+      acorn: 8.12.0
+      chokidar: 3.6.0
+      webpack-sources: 3.2.3
+      webpack-virtual-modules: 0.6.2
+
   untildify@4.0.0: {}
 
   untyped@1.4.2:
@@ -4939,6 +5060,10 @@ snapshots:
       - sugarss
       - supports-color
       - terser
+
+  webpack-sources@3.2.3: {}
+
+  webpack-virtual-modules@0.6.2: {}
 
   which@2.0.2:
     dependencies:

@@ -76,7 +76,8 @@ export async function rollupBuild(ctx: BuildContext) {
   }
 
   // Types
-  if (ctx.options.declaration) {
+  consola.log(ctx.options.declaration, ctx.options.rollup.isolatedDecl);
+  if (ctx.options.declaration && !ctx.options.rollup.isolatedDecl) {
     rollupOptions.plugins = [
       ...rollupOptions.plugins,
       dts(ctx.options.rollup.dts),

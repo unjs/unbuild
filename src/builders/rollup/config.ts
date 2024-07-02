@@ -1,5 +1,6 @@
 import type { OutputOptions, PreRenderedChunk } from "rollup";
 import commonjs from "@rollup/plugin-commonjs";
+import isolatedDeclPlugin from "unplugin-isolated-decl/rolldown";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import alias from "@rollup/plugin-alias";
 import replace from "@rollup/plugin-replace";
@@ -141,6 +142,10 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
       ctx.options.rollup.cjsBridge && cjsPlugin({}),
 
       rawPlugin(),
+
+      ctx.options.declaration &&
+        ctx.options.rollup.isolatedDecl &&
+        isolatedDeclPlugin(ctx.options.rollup.isolatedDecl),
     ].filter(Boolean),
   }) as RollupOptions;
 }
