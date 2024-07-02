@@ -3,7 +3,7 @@ import type { BuildEntry, BuildPreset, MkdistBuildEntry } from "./types";
 import { existsSync } from "node:fs";
 import { normalize, join, resolve } from "pathe";
 import { consola } from "consola";
-import chalk from "chalk";
+import { colors } from "consola/utils";
 import { definePreset } from "./types";
 import { extractExportFilenames, listRecursively, warn } from "./utils";
 
@@ -38,10 +38,10 @@ export const autoPreset: BuildPreset = definePreset(() => {
         }
         consola.info(
           "Automatically detected entries:",
-          chalk.cyan(
+          colors.cyan(
             ctx.options.entries
               .map((e) =>
-                chalk.bold(
+                colors.bold(
                   e.input
                     .replace(ctx.options.rootDir + "/", "")
                     .replace(/\/$/, "/*"),
@@ -49,7 +49,7 @@ export const autoPreset: BuildPreset = definePreset(() => {
               )
               .join(", "),
           ),
-          chalk.gray(
+          colors.gray(
             ["esm", res.cjs && "cjs", res.dts && "dts"]
               .filter(Boolean)
               .map((tag) => `[${tag}]`)

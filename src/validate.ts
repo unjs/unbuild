@@ -1,7 +1,7 @@
 import type { PackageJson } from "pkg-types";
 import type { BuildContext } from "./types";
 import { existsSync } from "node:fs";
-import chalk from "chalk";
+import { colors } from "consola/utils";
 import { resolve } from "pathe";
 import { arrayIncludes, extractExportFilenames, getpkg, warn } from "./utils";
 
@@ -34,14 +34,14 @@ export function validateDependencies(ctx: BuildContext): void {
     warn(
       ctx,
       "Potential unused dependencies found: " +
-        [...unusedDependencies].map((id) => chalk.cyan(id)).join(", "),
+        [...unusedDependencies].map((id) => colors.cyan(id)).join(", "),
     );
   }
   if (implicitDependencies.size > 0 && !ctx.options.rollup.inlineDependencies) {
     warn(
       ctx,
       "Potential implicit dependencies found: " +
-        [...implicitDependencies].map((id) => chalk.cyan(id)).join(", "),
+        [...implicitDependencies].map((id) => colors.cyan(id)).join(", "),
     );
   }
 }
@@ -79,7 +79,7 @@ export function validatePackage(
     warn(
       ctx,
       `Potential missing package.json files: ${missingOutputs
-        .map((o) => chalk.cyan(o))
+        .map((o) => colors.cyan(o))
         .join(", ")}`,
     );
   }

@@ -3,7 +3,7 @@ import { promises as fsp } from "node:fs";
 import { resolve, relative, isAbsolute, normalize } from "pathe";
 import { withTrailingSlash } from "ufo";
 import type { PackageJson } from "pkg-types";
-import chalk from "chalk";
+import { colors } from "consola/utils";
 import { consola } from "consola";
 import { defu } from "defu";
 import { createHooks } from "hookable";
@@ -228,11 +228,11 @@ async function _build(
 
   // Start info
   consola.info(
-    chalk.cyan(`${options.stub ? "Stubbing" : "Building"} ${options.name}`),
+    colors.cyan(`${options.stub ? "Stubbing" : "Building"} ${options.name}`),
   );
   if (process.env.DEBUG) {
-    consola.info(`${chalk.bold("Root dir:")} ${options.rootDir}
-  ${chalk.bold("Entries:")}
+    consola.info(`${colors.bold("Root dir:")} ${options.rootDir}
+  ${colors.bold("Entries:")}
   ${options.entries.map((entry) => "  " + dumpObject(entry)).join("\n  ")}
 `);
   }
@@ -286,7 +286,7 @@ async function _build(
   }
 
   // Done info
-  consola.success(chalk.green("Build succeeded for " + options.name));
+  consola.success(colors.green("Build succeeded for " + options.name));
 
   // Find all dist files and add missing entries as chunks
   const outFiles = await globby("**", { cwd: options.outDir });
@@ -313,12 +313,12 @@ async function _build(
       totalBytes += ctx.buildEntries.find((e) => e.path === chunk)?.bytes || 0;
     }
     let line =
-      `  ${chalk.bold(rPath(entry.path))} (` +
+      `  ${colors.bold(rPath(entry.path))} (` +
       [
-        totalBytes && `total size: ${chalk.cyan(prettyBytes(totalBytes))}`,
-        entry.bytes && `chunk size: ${chalk.cyan(prettyBytes(entry.bytes))}`,
+        totalBytes && `total size: ${colors.cyan(prettyBytes(totalBytes))}`,
+        entry.bytes && `chunk size: ${colors.cyan(prettyBytes(entry.bytes))}`,
         entry.exports?.length &&
-          `exports: ${chalk.gray(entry.exports.join(", "))}`,
+          `exports: ${colors.gray(entry.exports.join(", "))}`,
       ]
         .filter(Boolean)
         .join(", ") +
@@ -330,10 +330,10 @@ async function _build(
           .map((p) => {
             const chunk =
               ctx.buildEntries.find((e) => e.path === p) || ({} as any);
-            return chalk.gray(
+            return colors.gray(
               "  └─ " +
                 rPath(p) +
-                chalk.bold(
+                colors.bold(
                   chunk.bytes ? ` (${prettyBytes(chunk?.bytes)})` : "",
                 ),
             );
@@ -347,19 +347,19 @@ async function _build(
           .filter((m) => m.id.includes("node_modules"))
           .sort((a, b) => (b.bytes || 0) - (a.bytes || 0))
           .map((m) => {
-            return chalk.gray(
+            return colors.gray(
               "  📦 " +
                 rPath(m.id) +
-                chalk.bold(m.bytes ? ` (${prettyBytes(m.bytes)})` : ""),
+                colors.bold(m.bytes ? ` (${prettyBytes(m.bytes)})` : ""),
             );
           })
           .join("\n");
     }
-    consola.log(entry.chunk ? chalk.gray(line) : line);
+    consola.log(entry.chunk ? colors.gray(line) : line);
   }
   console.log(
     "Σ Total dist size (byte size):",
-    chalk.cyan(
+    colors.cyan(
       prettyBytes(ctx.buildEntries.reduce((a, e) => a + (e.bytes || 0), 0)),
     ),
   );

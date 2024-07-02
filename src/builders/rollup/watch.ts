@@ -2,7 +2,7 @@ import { relative } from "pathe";
 import { watch as _rollupWatch } from "rollup";
 import type { RollupOptions } from "../../types";
 import consola from "consola";
-import chalk from "chalk";
+import { colors } from "consola/utils";
 
 export function rollupWatch(rollupOptions: RollupOptions): void {
   const watcher = _rollupWatch(rollupOptions);
@@ -24,16 +24,16 @@ export function rollupWatch(rollupOptions: RollupOptions): void {
   );
 
   watcher.on("change", (id, { event }) => {
-    consola.info(`${chalk.cyan(relative(".", id))} was ${event}d`);
+    consola.info(`${colors.cyan(relative(".", id))} was ${event}d`);
   });
 
   watcher.on("restart", () => {
-    consola.info(chalk.gray("[unbuild] [rollup] Rebuilding bundle"));
+    consola.info(colors.gray("[unbuild] [rollup] Rebuilding bundle"));
   });
 
   watcher.on("event", (event) => {
     if (event.code === "END") {
-      consola.success(chalk.green("[unbuild] [rollup] Rebuild finished\n"));
+      consola.success(colors.green("[unbuild] [rollup] Rebuild finished\n"));
     }
   });
 }
