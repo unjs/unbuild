@@ -1,9 +1,9 @@
+import type { PackageJson } from "pkg-types";
+import type { BuildContext } from "./types";
 import { existsSync } from "node:fs";
 import chalk from "chalk";
 import { resolve } from "pathe";
-import { PackageJson } from "pkg-types";
 import { arrayIncludes, extractExportFilenames, getpkg, warn } from "./utils";
-import { BuildContext } from "./types";
 
 export function validateDependencies(ctx: BuildContext): void {
   const usedDependencies = new Set<string>();

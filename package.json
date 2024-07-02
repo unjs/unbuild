@@ -4,6 +4,7 @@
   "description": "A unified javascript build system",
   "repository": "unjs/unbuild",
   "license": "MIT",
+  "type": "module",
   "exports": {
     ".": {
       "import": "./dist/index.mjs"
@@ -24,7 +25,8 @@
     "prepack": "pnpm unbuild",
     "release": "pnpm test && changelogen --release --prerelease --publish && git push --follow-tags",
     "stub": "pnpm unbuild --stub",
-    "test": "pnpm lint && vitest run --coverage",
+    "test": "pnpm lint && pnpm test:types && vitest run --coverage",
+    "test:types": "tsc --noEmit",
     "unbuild": "jiti ./src/cli"
   },
   "dependencies": {

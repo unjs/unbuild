@@ -1,10 +1,10 @@
 // Based on https://github.com/egoist/rollup-plugin-esbuild and nitropack fork (MIT)
-
-import { extname, relative } from "pathe";
 import type { Plugin, PluginContext } from "rollup";
-import { Loader, TransformResult, CommonOptions, transform } from "esbuild";
-import { createFilter } from "@rollup/pluginutils";
 import type { FilterPattern } from "@rollup/pluginutils";
+import type { Loader, TransformResult, CommonOptions } from "esbuild";
+import { transform } from "esbuild";
+import { extname, relative } from "pathe";
+import { createFilter } from "@rollup/pluginutils";
 
 const DefaultLoaders: { [ext: string]: Loader } = {
   ".js": "js",
