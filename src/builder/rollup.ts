@@ -1,6 +1,5 @@
 import { writeFile, mkdir } from "node:fs/promises";
 import { promises as fsp } from "node:fs";
-import { pathToFileURL } from "node:url";
 import type { OutputOptions, OutputChunk, PreRenderedChunk } from "rollup";
 import { rollup } from "rollup";
 import commonjs from "@rollup/plugin-commonjs";
@@ -16,7 +15,7 @@ import {
   isAbsolute,
   relative,
 } from "pathe";
-import { resolvePath, resolveModuleExportNames } from "mlly";
+import { resolvePath, pathToFileURL, resolveModuleExportNames } from "mlly";
 import { watch as rollupWatch } from "rollup";
 import { arrayIncludes, getpkg, warn } from "../utils";
 import type { BuildContext, RollupOptions } from "../types";
@@ -47,7 +46,6 @@ const DEFAULT_EXTENSIONS = [
 
 export async function rollupBuild(ctx: BuildContext) {
   if (ctx.options.stub) {
-    const jitiPath = await resolvePath("jiti", { url: import.meta.url });
     const babelPlugins = ctx.options.stubOptions.jiti.transformOptions?.babel
       ?.plugins as any;
     const importedBabelPlugins: Array<string> = [];
@@ -122,11 +120,18 @@ export async function rollupBuild(ctx: BuildContext) {
 
       // CJS Stub
       if (ctx.options.rollup.emitCJS) {
+        const jitiCJSPath = relative(
+          dirname(output),
+          await resolvePath("jiti", {
+            url: import.meta.url,
+            conditions: ["node", "require"],
+          }),
+        );
         await writeFile(
           output + ".cjs",
           shebang +
             [
-              `const { createJiti } = require(${JSON.stringify(jitiPath)})`,
+              `const { createJiti } = require(${JSON.stringify(jitiCJSPath)})`,
               ...importedBabelPlugins.map(
                 (plugin, i) =>
                   `const plugin${i} = require(${JSON.stringify(plugin)})`,
@@ -156,11 +161,19 @@ export async function rollupBuild(ctx: BuildContext) {
       const hasDefaultExport =
         namedExports.includes("default") || namedExports.length === 0;
 
+      const jitiESMPath = relative(
+        dirname(output),
+        await resolvePath("jiti", {
+          url: import.meta.url,
+          conditions: ["node", "import"],
+        }),
+      );
+
       await writeFile(
         output + ".mjs",
         shebang +
           [
-            `import { createJiti } from ${JSON.stringify(pathToFileURL(jitiPath).href)};`,
+            `import { createJiti } from ${JSON.stringify(jitiESMPath)};`,
             ...importedBabelPlugins.map(
               (plugin, i) => `import plugin${i} from ${JSON.stringify(plugin)}`,
             ),
