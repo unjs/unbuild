@@ -28,7 +28,7 @@ export async function build(
   rootDir = resolve(process.cwd(), rootDir || ".");
 
   // Create jiti instance for loading initial config
-  const jiti = createJiti(rootDir);
+  const jiti = createJiti(rootDir, { interopDefault: true });
 
   const _buildConfig: BuildConfig | BuildConfig[] =
     (await jiti.import("./build.config", { try: true })) || {};
@@ -156,7 +156,7 @@ async function _build(
   options.outDir = resolve(options.rootDir, options.outDir);
 
   // Create shared jiti instance for context
-  const jiti = createJiti(options.rootDir, options.stubOptions.jiti);
+  const jiti = createJiti(options.rootDir, { interopDefault: true });
 
   // Build context
   const ctx: BuildContext = {
