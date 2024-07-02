@@ -133,7 +133,7 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
         }),
 
       ctx.options.rollup.preserveDynamicImports && {
-        renderDynamicImport() {
+        renderDynamicImport(): { left: string; right: string } {
           return { left: "import(", right: ")" };
         },
       },

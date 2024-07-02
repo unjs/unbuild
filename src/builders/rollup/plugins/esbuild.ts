@@ -52,7 +52,7 @@ export function esbuild(options: EsbuildOptions): Plugin {
       }
     }
   }
-  const getLoader = (id = "") => {
+  const getLoader = (id = ""): Loader | undefined => {
     return loaders[extname(id)];
   };
 
@@ -61,7 +61,7 @@ export function esbuild(options: EsbuildOptions): Plugin {
   return {
     name: "esbuild",
 
-    async transform(code, id) {
+    async transform(code, id): Promise<null | { code: string; map: any }> {
       if (!filter(id)) {
         return null;
       }
@@ -79,15 +79,18 @@ export function esbuild(options: EsbuildOptions): Plugin {
 
       printWarnings(id, result, this);
 
-      return (
-        result.code && {
-          code: result.code,
-          map: result.map || null,
-        }
-      );
+      return result.code
+        ? {
+            code: result.code,
+            map: result.map || null,
+          }
+        : null;
     },
 
-    async renderChunk(code, { fileName }) {
+    async renderChunk(
+      code,
+      { fileName },
+    ): Promise<null | undefined | { code: string; map: any }> {
       if (!options.minify) {
         return null;
       }
@@ -118,7 +121,7 @@ function printWarnings(
   id: string,
   result: TransformResult,
   plugin: PluginContext,
-) {
+): void {
   if (result.warnings) {
     for (const warning of result.warnings) {
       let message = "[esbuild]";

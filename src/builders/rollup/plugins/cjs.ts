@@ -28,7 +28,7 @@ const require = __cjs_mod__.createRequire(import.meta.url);
 `;
 
 // Shim __dirname, __filename and require
-function CJSToESM(code: string) {
+function CJSToESM(code: string): { code: string; map: any } | null {
   if (code.includes(CJSShim) || !CJSyntaxRe.test(code)) {
     return null;
   }
