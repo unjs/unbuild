@@ -1,9 +1,9 @@
+import type { BuildEntry } from "../src/types.ts";
 import { fileURLToPath } from "node:url";
 import { consola } from "consola";
 import { join } from "pathe";
 import { describe, it, expect } from "vitest";
 import { validateDependencies, validatePackage } from "../src/validate";
-import { BuildEntry } from "../src/types";
 
 describe("validatePackage", () => {
   it("detects missing files", () => {
