@@ -3,7 +3,7 @@ import { fileURLToPath } from "node:url";
 import { consola } from "consola";
 import { join } from "pathe";
 import { describe, it, expect } from "vitest";
-import { validateDependencies, validatePackage } from "../src/validate.ts";
+import { validateDependencies, validatePackage } from "../src/validate";
 
 describe("validatePackage", () => {
   it("detects missing files", () => {
