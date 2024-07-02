@@ -1,10 +1,11 @@
+import type { PackageJson } from "pkg-types";
+import type { BuildEntry, BuildPreset, MkdistBuildEntry } from "./types";
 import { existsSync } from "node:fs";
 import { normalize, join, resolve } from "pathe";
 import { consola } from "consola";
 import chalk from "chalk";
-import type { PackageJson } from "pkg-types";
+import { definePreset } from "./types";
 import { extractExportFilenames, listRecursively, warn } from "./utils";
-import { BuildEntry, definePreset, MkdistBuildEntry } from "./types";
 
 type InferEntriesResult = {
   entries: BuildEntry[];
@@ -13,7 +14,7 @@ type InferEntriesResult = {
   warnings: string[];
 };
 
-export const autoPreset = definePreset(() => {
+export const autoPreset: BuildPreset = definePreset(() => {
   return {
     hooks: {
       "build:prepare"(ctx): void {
