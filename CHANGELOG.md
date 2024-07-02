@@ -2,6 +2,40 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v3.0.0-rc.3
+
+[compare changes](https://github.com/unjs/unbuild/compare/v3.0.0-rc.2...v3.0.0-rc.3)
+
+### 🚀 Enhancements
+
+- Upgrade to jiti v2 beta ([#409](https://github.com/unjs/unbuild/pull/409))
+
+### 🩹 Fixes
+
+- Type `RollupOptions.plugins` as array ([62fa930](https://github.com/unjs/unbuild/commit/62fa930))
+- Add all loader extensions to esbuild include ([8ab22ff](https://github.com/unjs/unbuild/commit/8ab22ff))
+- Enable jiti `interopDefault` for config loader and internals (ref: #409) ([#409](https://github.com/unjs/unbuild/issues/409))
+
+### 💅 Refactors
+
+- Overhaul builders structure ([#410](https://github.com/unjs/unbuild/pull/410))
+- Add explicit return types ([#412](https://github.com/unjs/unbuild/pull/412))
+- Use `colors` from `consola/utils` ([6a8f36d](https://github.com/unjs/unbuild/commit/6a8f36d))
+
+### 🏡 Chore
+
+- Upgrade `@rollup/plugin-commonjs` to 26 ([9392ec3](https://github.com/unjs/unbuild/commit/9392ec3))
+- Update deps ([d886ad5](https://github.com/unjs/unbuild/commit/d886ad5))
+- Update release script ([8ce4090](https://github.com/unjs/unbuild/commit/8ce4090))
+- Remove unused imports ([04c2b5c](https://github.com/unjs/unbuild/commit/04c2b5c))
+- Add explicit type for var exports ([af26e40](https://github.com/unjs/unbuild/commit/af26e40))
+- Stricter type checks ([#413](https://github.com/unjs/unbuild/pull/413))
+- Add publishTag to release script ([577484c](https://github.com/unjs/unbuild/commit/577484c))
+
+### ❤️ Contributors
+
+- Pooya Parsa ([@pi0](http://github.com/pi0))
+
 ## v3.0.0-rc.2
 
 [compare changes](https://github.com/unjs/unbuild/compare/v3.0.0-rc.1...v3.0.0-rc.2)
