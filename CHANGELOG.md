@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v3.0.0-rc.4
+
+[compare changes](https://github.com/unjs/unbuild/compare/v3.0.0-rc.3...v3.0.0-rc.4)
+
+### 🩹 Fixes
+
+- **rollup:** Keep empty (type-only) modules ([a9158e2](https://github.com/unjs/unbuild/commit/a9158e2))
+
+### ❤️ Contributors
+
+- Pooya Parsa ([@pi0](http://github.com/pi0))
+
 ## v3.0.0-rc.3
 
 [compare changes](https://github.com/unjs/unbuild/compare/v3.0.0-rc.2...v3.0.0-rc.3)
