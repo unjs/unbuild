@@ -14,6 +14,7 @@ import type { RollupAliasOptions } from "@rollup/plugin-alias";
 import type { RollupNodeResolveOptions } from "@rollup/plugin-node-resolve";
 import type { RollupJsonOptions } from "@rollup/plugin-json";
 import type { Options as RollupDtsOptions } from "rollup-plugin-dts";
+import type { Options as RollupDeclOptions } from "unplugin-isolated-decl";
 import type commonjs from "@rollup/plugin-commonjs";
 import type { Jiti, JitiOptions } from "jiti";
 import type { EsbuildOptions } from "./builders/rollup/plugins/esbuild";
@@ -136,6 +137,15 @@ export interface RollupBuildOptions {
    * Read more: [rollup-plugin-dts](https://www.npmjs.com/package/rollup-plugin-dts)
    */
   dts: RollupDtsOptions;
+
+  /**
+   * Isolated declarations plugin options
+   *
+   * @experimental Set to an empty object to enable the plugin and disable `dts`.
+   *
+   * Read more: [unplugin-isolated-decl](https://github.com/unplugin/unplugin-isolated-decl)
+   */
+  isolatedDecl: RollupDeclOptions | false;
 }
 
 export interface BuildOptions {

@@ -76,7 +76,7 @@ export async function rollupBuild(ctx: BuildContext): Promise<void> {
   }
 
   // Types
-  if (ctx.options.declaration) {
+  if (ctx.options.declaration && !ctx.options.rollup.isolatedDecl) {
     rollupOptions.plugins = [
       ...rollupOptions.plugins,
       dts(ctx.options.rollup.dts),
