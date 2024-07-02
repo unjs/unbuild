@@ -9,7 +9,11 @@ import {
 // @ts-ignore
 import untypedPlugin from "untyped/babel-plugin";
 import { pascalCase } from "scule";
-import type { BuildContext, UntypedBuildEntry, UntypedOutputs } from "../types";
+import type {
+  BuildContext,
+  UntypedBuildEntry,
+  UntypedOutputs,
+} from "../../types";
 import consola from "consola";
 
 export async function typesBuild(ctx: BuildContext) {

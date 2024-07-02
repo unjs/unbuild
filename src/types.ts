@@ -16,7 +16,7 @@ import type { RollupJsonOptions } from "@rollup/plugin-json";
 import type { Options as RollupDtsOptions } from "rollup-plugin-dts";
 import type commonjs from "@rollup/plugin-commonjs";
 import type { Jiti, JitiOptions } from "jiti";
-import type { EsbuildOptions } from "./builder/plugins/esbuild";
+import type { EsbuildOptions } from "./builders/rollup/plugins/esbuild";
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type RollupCommonJSOptions = Parameters<typeof commonjs>[0] & {};

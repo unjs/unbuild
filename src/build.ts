@@ -13,10 +13,10 @@ import type { RollupOptions } from "rollup";
 import { dumpObject, rmdir, resolvePreset, removeExtension } from "./utils";
 import type { BuildContext, BuildConfig, BuildOptions } from "./types";
 import { validatePackage, validateDependencies } from "./validate";
-import { getRollupOptions, rollupBuild } from "./builder/rollup";
-import { typesBuild } from "./builder/untyped";
-import { mkdistBuild } from "./builder/mkdist";
-import { copyBuild } from "./builder/copy";
+import { rollupBuild } from "./builders/rollup";
+import { typesBuild } from "./builders/untyped";
+import { mkdistBuild } from "./builders/mkdist";
+import { copyBuild } from "./builders/copy";
 import { createJiti } from "jiti";
 
 export async function build(
@@ -42,7 +42,6 @@ export async function build(
 
   // Invoke build for every build config defined in build.config.ts
   const cleanedDirs: string[] = [];
-  const rollupOptions: RollupOptions[] = [];
 
   const _watchMode = inputConfig.watch === true;
   const _stubMode = !_watchMode && (stub || inputConfig.stub === true);
@@ -54,7 +53,6 @@ export async function build(
       buildConfig,
       pkg,
       cleanedDirs,
-      rollupOptions,
       _stubMode,
       _watchMode,
     );
@@ -67,7 +65,6 @@ async function _build(
   buildConfig: BuildConfig,
   pkg: PackageJson & Partial<Record<"unbuild" | "build", BuildConfig>>,
   cleanedDirs: string[],
-  rollupOptions: RollupOptions[],
   _stubMode: boolean,
   _watchMode: boolean,
 ) {

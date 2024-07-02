@@ -1,7 +1,7 @@
 import { relative } from "pathe";
 import { mkdist, MkdistOptions } from "mkdist";
-import { symlink, rmdir } from "../utils";
-import type { MkdistBuildEntry, BuildContext } from "../types";
+import { symlink, rmdir } from "../../utils";
+import type { MkdistBuildEntry, BuildContext } from "../../types";
 import consola from "consola";
 
 export async function mkdistBuild(ctx: BuildContext) {

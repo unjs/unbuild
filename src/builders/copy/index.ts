@@ -1,8 +1,8 @@
 import { promises as fsp } from "node:fs";
 import { relative, resolve } from "pathe";
 import { globby } from "globby";
-import { symlink, rmdir, warn } from "../utils";
-import type { CopyBuildEntry, BuildContext } from "../types";
+import { symlink, rmdir, warn } from "../../utils";
+import type { CopyBuildEntry, BuildContext } from "../../types";
 import consola from "consola";
 
 const copy = fsp.cp || fsp.copyFile;
