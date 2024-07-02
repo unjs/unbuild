@@ -65,8 +65,6 @@ export function listRecursively(path: string) {
   return [...filenames];
 }
 
-export const jiti = createJiti(import.meta.url);
-
 export async function resolvePreset(
   preset: string | BuildPreset,
   rootDir: string,
@@ -74,7 +72,7 @@ export async function resolvePreset(
   if (preset === "auto") {
     preset = autoPreset;
   } else if (typeof preset === "string") {
-    preset = (await jiti.import(preset, { parentURL: rootDir })) || {};
+    preset = (await createJiti(rootDir).import(preset)) || {};
   }
   if (typeof preset === "function") {
     preset = preset();

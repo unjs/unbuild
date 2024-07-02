@@ -18,7 +18,7 @@ import {
 } from "pathe";
 import { resolvePath, resolveModuleExportNames } from "mlly";
 import { watch as rollupWatch } from "rollup";
-import { arrayIncludes, getpkg, jiti, warn } from "../utils";
+import { arrayIncludes, getpkg, warn } from "../utils";
 import type { BuildContext, RollupOptions } from "../types";
 import { esbuild } from "./plugins/esbuild";
 import { JSONPlugin } from "./plugins/json";
@@ -106,10 +106,7 @@ export async function rollupBuild(ctx: BuildContext) {
 
       const isESM = ctx.pkg.type === "module";
       const resolvedEntry = normalize(
-        jiti.esmResolve(entry.input, {
-          parentURL: ctx.options.rootDir,
-          try: true,
-        }) || entry.input,
+        ctx.jiti.esmResolve(entry.input, { try: true }) || entry.input,
       );
       const resolvedEntryWithoutExt = resolvedEntry.slice(
         0,

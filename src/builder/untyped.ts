@@ -8,7 +8,6 @@ import {
 } from "untyped";
 // @ts-ignore
 import untypedPlugin from "untyped/babel-plugin";
-import { createJiti } from "jiti";
 import { pascalCase } from "scule";
 import type { BuildContext, UntypedBuildEntry, UntypedOutputs } from "../types";
 import consola from "consola";
@@ -31,11 +30,9 @@ export async function typesBuild(ctx: BuildContext) {
     };
     await ctx.hooks.callHook("untyped:entry:options", ctx, entry, options);
 
-    const jiti = createJiti(ctx.options.rootDir, options.jiti);
-
     const distDir = entry.outDir!;
     const srcConfig =
-      ((await jiti.import(resolve(ctx.options.rootDir, entry.input), {
+      ((await ctx.jiti.import(resolve(ctx.options.rootDir, entry.input), {
         try: true,
       })) as InputObject) || ({} as InputObject);
 
