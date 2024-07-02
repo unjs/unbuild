@@ -1,7 +1,7 @@
 import type { PreRenderedChunk } from "rollup";
 import type { BuildContext } from "../../types";
 
-export const DEFAULT_EXTENSIONS = [
+export const DEFAULT_EXTENSIONS: string[] = [
   ".ts",
   ".tsx",
   ".mts",
