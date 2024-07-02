@@ -1,8 +1,8 @@
-import type { OutputOptions, OutputChunk, PreRenderedChunk } from "rollup";
+import type { OutputOptions, OutputChunk } from "rollup";
 import { rollup } from "rollup";
 import dts from "rollup-plugin-dts";
-import { resolve, relative } from "pathe";
-import type { BuildContext, RollupOptions } from "../../types";
+import { resolve } from "pathe";
+import type { BuildContext } from "../../types";
 import { removeShebangPlugin } from "./plugins/shebang";
 import consola from "consola";
 import { getRollupOptions } from "./config";
