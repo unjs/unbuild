@@ -20,6 +20,7 @@ export const config = {
     height: 10,
   },
   tags: {
-    $resolve: (val?: string[]) => ["tag1", ...(val || [])].filter(Boolean),
+    $resolve: (val?: string[]): string[] =>
+      ["tag1", ...(val || [])].filter(Boolean),
   },
 };

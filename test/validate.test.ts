@@ -18,6 +18,7 @@ describe("validatePackage", () => {
           "./cli": "./dist/cli",
         },
         module: "dist/mod",
+        // @ts-expect-error TODO: fix pkg-types
         exports: {
           "./runtime/*": "./runtime/*.mjs",
           ".": { node: "./src/index.mts" },
@@ -60,6 +61,7 @@ describe("validateDependencies", () => {
         stub: false,
         alias: {},
         replace: {},
+        // @ts-expect-error
         rollup: {
           replace: false,
           alias: false,
@@ -79,7 +81,11 @@ describe("validateDependencies", () => {
   it("does not print implicit deps warning for peerDependencies", () => {
     const logs: string[] = [];
     consola.mockTypes((type) =>
-      type === "warn" ? (str: string) => logs.push(str) : () => {},
+      type === "warn"
+        ? (str: string): void => {
+            logs.push(str);
+          }
+        : (): void => {},
     );
 
     validateDependencies({
@@ -99,6 +105,7 @@ describe("validateDependencies", () => {
         stub: false,
         alias: {},
         replace: {},
+        // @ts-expect-error
         rollup: {
           replace: false,
           alias: false,

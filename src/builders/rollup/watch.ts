@@ -4,7 +4,7 @@ import type { RollupOptions } from "../../types";
 import consola from "consola";
 import chalk from "chalk";
 
-export function rollupWatch(rollupOptions: RollupOptions) {
+export function rollupWatch(rollupOptions: RollupOptions): void {
   const watcher = _rollupWatch(rollupOptions);
 
   let inputs: string[];

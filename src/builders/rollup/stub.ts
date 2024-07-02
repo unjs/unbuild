@@ -7,7 +7,7 @@ import type { BuildContext } from "../../types";
 import { makeExecutable, getShebang } from "./plugins/shebang";
 import { DEFAULT_EXTENSIONS, resolveAliases } from "./utils";
 
-export async function rollupStub(ctx: BuildContext) {
+export async function rollupStub(ctx: BuildContext): Promise<void> {
   const babelPlugins = ctx.options.stubOptions.jiti.transformOptions?.babel
     ?.plugins as any;
   const importedBabelPlugins: Array<string> = [];

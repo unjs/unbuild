@@ -7,7 +7,7 @@ import consola from "consola";
 
 const copy = fsp.cp || fsp.copyFile;
 
-export async function copyBuild(ctx: BuildContext) {
+export async function copyBuild(ctx: BuildContext): Promise<void> {
   const entries = ctx.options.entries.filter(
     (e) => e.builder === "copy",
   ) as CopyBuildEntry[];

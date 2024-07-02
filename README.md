@@ -37,7 +37,7 @@ CLI output also includes output size and exports for quick inspection.
 
 Create `src/index.ts`:
 
-```ts
+```js
 export const log = (...args) => {
   console.log(...args);
 };
@@ -75,7 +75,7 @@ Configuration is automatically inferred from fields in `package.json` mapped to 
 
 Create `build.config.ts`:
 
-```ts
+```js
 export default {
   entries: ["./src/index"],
 };
@@ -87,7 +87,7 @@ See options [here](./src/types.ts).
 
 Example:
 
-```ts
+```js
 import { defineBuildConfig } from "unbuild";
 
 export default defineBuildConfig({
@@ -113,7 +113,7 @@ export default defineBuildConfig({
 
 Or with multiple builds you can declare an array of configs:
 
-```ts
+```js
 import { defineBuildConfig } from "unbuild";
 
 export default defineBuildConfig([

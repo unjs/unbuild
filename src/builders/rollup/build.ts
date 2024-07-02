@@ -10,7 +10,7 @@ import { getChunkFilename } from "./utils";
 import { rollupStub } from "./stub";
 import { rollupWatch } from "./watch";
 
-export async function rollupBuild(ctx: BuildContext) {
+export async function rollupBuild(ctx: BuildContext): Promise<void> {
   // Stub mode
   if (ctx.options.stub) {
     await rollupStub(ctx);

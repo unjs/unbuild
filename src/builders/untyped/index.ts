@@ -16,7 +16,7 @@ import type {
 } from "../../types";
 import consola from "consola";
 
-export async function typesBuild(ctx: BuildContext) {
+export async function typesBuild(ctx: BuildContext): Promise<void> {
   const entries = ctx.options.entries.filter(
     (entry) => entry.builder === "untyped",
   ) as UntypedBuildEntry[];
