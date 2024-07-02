@@ -79,12 +79,10 @@ export function esbuild(options: EsbuildOptions): Plugin {
 
       printWarnings(id, result, this);
 
-      return result.code
-        ? {
-            code: result.code,
-            map: result.map || null,
-          }
-        : null;
+      return {
+        code: result.code || "",
+        map: result.map || null,
+      };
     },
 
     async renderChunk(
@@ -108,7 +106,7 @@ export function esbuild(options: EsbuildOptions): Plugin {
         minify: true,
       });
       return {
-        code: result.code,
+        code: result.code || "",
         map: result.map || null,
       };
     },
