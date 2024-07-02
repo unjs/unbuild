@@ -38,7 +38,7 @@
     "citty": "^0.1.6",
     "consola": "^3.2.3",
     "defu": "^6.1.4",
-    "esbuild": "^0.22.0",
+    "esbuild": "^0.23.0",
     "globby": "^14.0.2",
     "hookable": "^5.5.3",
     "jiti": "^2.0.0-beta.3",
@@ -66,7 +66,7 @@
     "vitest": "^1.6.0"
   },
   "peerDependencies": {
-    "typescript": "^5.5.2"
+    "typescript": "^5.5.3"
   },
   "peerDependenciesMeta": {
     "typescript": {
