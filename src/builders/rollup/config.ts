@@ -114,6 +114,11 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
           ...ctx.options.rollup.resolve,
         }),
 
+      // Should be before esbuild to preserve source
+      ctx.options.declaration &&
+        ctx.options.rollup.isolatedDecl &&
+        isolatedDeclPlugin(ctx.options.rollup.isolatedDecl),
+
       ctx.options.rollup.json &&
         JSONPlugin({
           ...ctx.options.rollup.json,
@@ -142,10 +147,6 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
       ctx.options.rollup.cjsBridge && cjsPlugin({}),
 
       rawPlugin(),
-
-      ctx.options.declaration &&
-        ctx.options.rollup.isolatedDecl &&
-        isolatedDeclPlugin(ctx.options.rollup.isolatedDecl),
     ].filter(Boolean),
   }) as RollupOptions;
 }
