@@ -23,7 +23,7 @@ export async function build(
   rootDir: string,
   stub: boolean,
   inputConfig: BuildConfig = {},
-) {
+): Promise<void> {
   // Determine rootDir
   rootDir = resolve(process.cwd(), rootDir || ".");
 
@@ -67,7 +67,7 @@ async function _build(
   cleanedDirs: string[],
   _stubMode: boolean,
   _watchMode: boolean,
-) {
+): Promise<void> {
   // Resolve preset
   const preset = await resolvePreset(
     buildConfig.preset ||
@@ -305,7 +305,7 @@ async function _build(
     }
   }
 
-  const rPath = (p: string) =>
+  const rPath = (p: string): string =>
     relative(process.cwd(), resolve(options.outDir, p));
   for (const entry of ctx.buildEntries.filter((e) => !e.chunk)) {
     let totalBytes = entry.bytes || 0;

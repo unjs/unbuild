@@ -16,7 +16,7 @@ type InferEntriesResult = {
 export const autoPreset = definePreset(() => {
   return {
     hooks: {
-      "build:prepare"(ctx) {
+      "build:prepare"(ctx): void {
         // Disable auto if entries already provided or pkg not available
         if (!ctx.pkg || ctx.options.entries.length > 0) {
           return;
@@ -167,7 +167,7 @@ export function inferEntries(
   return { entries, cjs, dts, warnings };
 }
 
-export const getEntrypointPaths = (path: string) => {
+export const getEntrypointPaths = (path: string): string[] => {
   const segments = normalize(path).split("/");
   return segments
     .map((_, index) => segments.slice(index).join("/"))

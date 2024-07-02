@@ -13,7 +13,7 @@ export const DEFAULT_EXTENSIONS = [
   ".json",
 ];
 
-export function resolveAliases(ctx: BuildContext) {
+export function resolveAliases(ctx: BuildContext): Record<string, string> {
   const aliases: Record<string, string> = {
     [ctx.pkg.name!]: ctx.options.rootDir,
     ...ctx.options.alias,
@@ -57,7 +57,7 @@ export function getChunkFilename(
   ctx: BuildContext,
   chunk: PreRenderedChunk,
   ext: string,
-) {
+): string {
   if (chunk.isDynamicEntry) {
     return `chunks/[name].${ext}`;
   }

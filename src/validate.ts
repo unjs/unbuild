@@ -5,7 +5,7 @@ import { PackageJson } from "pkg-types";
 import { arrayIncludes, extractExportFilenames, getpkg, warn } from "./utils";
 import { BuildContext } from "./types";
 
-export function validateDependencies(ctx: BuildContext) {
+export function validateDependencies(ctx: BuildContext): void {
   const usedDependencies = new Set<string>();
   const unusedDependencies = new Set<string>(
     Object.keys(ctx.pkg.dependencies || {}),
@@ -50,7 +50,7 @@ export function validatePackage(
   pkg: PackageJson,
   rootDir: string,
   ctx: BuildContext,
-) {
+): void {
   if (!pkg) {
     return;
   }

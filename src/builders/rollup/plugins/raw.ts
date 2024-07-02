@@ -17,7 +17,7 @@ export function rawPlugin(opts: RawLoaderOptions = {}): Plugin {
   const filter = createFilter(opts.include, opts.exclude);
   return {
     name: "unbuild-raw",
-    transform(code, id) {
+    transform(code, id): { code: string; map: any } | undefined {
       if (filter(id)) {
         return {
           code: `export default ${JSON.stringify(code)}`,
