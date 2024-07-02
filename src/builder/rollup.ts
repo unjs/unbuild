@@ -1,6 +1,5 @@
 import { writeFile, mkdir } from "node:fs/promises";
 import { promises as fsp } from "node:fs";
-import { pathToFileURL } from "node:url";
 import type { OutputOptions, OutputChunk, PreRenderedChunk } from "rollup";
 import { rollup } from "rollup";
 import commonjs from "@rollup/plugin-commonjs";
@@ -16,9 +15,9 @@ import {
   isAbsolute,
   relative,
 } from "pathe";
-import { resolvePath, resolveModuleExportNames } from "mlly";
+import { resolvePath, pathToFileURL, resolveModuleExportNames } from "mlly";
 import { watch as rollupWatch } from "rollup";
-import { arrayIncludes, getpkg, tryResolve, warn } from "../utils";
+import { arrayIncludes, getpkg, warn } from "../utils";
 import type { BuildContext, RollupOptions } from "../types";
 import { esbuild } from "./plugins/esbuild";
 import { JSONPlugin } from "./plugins/json";
@@ -47,7 +46,6 @@ const DEFAULT_EXTENSIONS = [
 
 export async function rollupBuild(ctx: BuildContext) {
   if (ctx.options.stub) {
-    const jitiPath = await resolvePath("jiti", { url: import.meta.url });
     const babelPlugins = ctx.options.stubOptions.jiti.transformOptions?.babel
       ?.plugins as any;
     const importedBabelPlugins: Array<string> = [];
@@ -106,7 +104,7 @@ export async function rollupBuild(ctx: BuildContext) {
 
       const isESM = ctx.pkg.type === "module";
       const resolvedEntry = normalize(
-        tryResolve(entry.input, ctx.options.rootDir) || entry.input,
+        ctx.jiti.esmResolve(entry.input, { try: true }) || entry.input,
       );
       const resolvedEntryWithoutExt = resolvedEntry.slice(
         0,
@@ -122,22 +120,29 @@ export async function rollupBuild(ctx: BuildContext) {
 
       // CJS Stub
       if (ctx.options.rollup.emitCJS) {
+        const jitiCJSPath = relative(
+          dirname(output),
+          await resolvePath("jiti", {
+            url: import.meta.url,
+            conditions: ["node", "require"],
+          }),
+        );
         await writeFile(
           output + ".cjs",
           shebang +
             [
-              `const jiti = require(${JSON.stringify(jitiPath)})`,
+              `const { createJiti } = require(${JSON.stringify(jitiCJSPath)})`,
               ...importedBabelPlugins.map(
                 (plugin, i) =>
                   `const plugin${i} = require(${JSON.stringify(plugin)})`,
               ),
               "",
-              `const _jiti = jiti(null, ${serializedJitiOptions})`,
+              `const jiti = createJiti(__filename, ${serializedJitiOptions})`,
               "",
               `/** @type {import(${JSON.stringify(
                 resolvedEntryForTypeImport,
               )})} */`,
-              `module.exports = _jiti(${JSON.stringify(resolvedEntry)})`,
+              `module.exports = jiti(${JSON.stringify(resolvedEntry)})`,
             ].join("\n"),
         );
       }
@@ -156,19 +161,27 @@ export async function rollupBuild(ctx: BuildContext) {
       const hasDefaultExport =
         namedExports.includes("default") || namedExports.length === 0;
 
+      const jitiESMPath = relative(
+        dirname(output),
+        await resolvePath("jiti", {
+          url: import.meta.url,
+          conditions: ["node", "import"],
+        }),
+      );
+
       await writeFile(
         output + ".mjs",
         shebang +
           [
-            `import jiti from ${JSON.stringify(pathToFileURL(jitiPath).href)};`,
+            `import { createJiti } from ${JSON.stringify(jitiESMPath)};`,
             ...importedBabelPlugins.map(
               (plugin, i) => `import plugin${i} from ${JSON.stringify(plugin)}`,
             ),
             "",
-            `const _jiti = jiti(null, ${serializedJitiOptions})`,
+            `const jiti = createJiti(import.meta.url, ${serializedJitiOptions})`,
             "",
             `/** @type {import(${JSON.stringify(resolvedEntryForTypeImport)})} */`,
-            `const _module = await _jiti.import(${JSON.stringify(
+            `const _module = await jiti.import(${JSON.stringify(
               resolvedEntry,
             )});`,
             hasDefaultExport ? "\nexport default _module;" : "",

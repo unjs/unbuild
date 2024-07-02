@@ -10,19 +10,14 @@ import { createHooks } from "hookable";
 import prettyBytes from "pretty-bytes";
 import { globby } from "globby";
 import type { RollupOptions } from "rollup";
-import {
-  dumpObject,
-  rmdir,
-  tryRequire,
-  resolvePreset,
-  removeExtension,
-} from "./utils";
+import { dumpObject, rmdir, resolvePreset, removeExtension } from "./utils";
 import type { BuildContext, BuildConfig, BuildOptions } from "./types";
 import { validatePackage, validateDependencies } from "./validate";
 import { getRollupOptions, rollupBuild } from "./builder/rollup";
 import { typesBuild } from "./builder/untyped";
 import { mkdistBuild } from "./builder/mkdist";
 import { copyBuild } from "./builder/copy";
+import { createJiti } from "jiti";
 
 export async function build(
   rootDir: string,
@@ -32,14 +27,18 @@ export async function build(
   // Determine rootDir
   rootDir = resolve(process.cwd(), rootDir || ".");
 
+  // Create jiti instance for loading initial config
+  const jiti = createJiti(rootDir);
+
   const _buildConfig: BuildConfig | BuildConfig[] =
-    tryRequire("./build.config", rootDir) || {};
+    (await jiti.import("./build.config", { try: true })) || {};
   const buildConfigs = (
     Array.isArray(_buildConfig) ? _buildConfig : [_buildConfig]
   ).filter(Boolean);
 
-  const pkg: PackageJson & Record<"unbuild" | "build", BuildConfig> =
-    tryRequire("./package.json", rootDir) || {};
+  const pkg: PackageJson & Partial<Record<"unbuild" | "build", BuildConfig>> =
+    ((await jiti.import("./package.json", { try: true })) as PackageJson) ||
+    ({} as PackageJson);
 
   // Invoke build for every build config defined in build.config.ts
   const cleanedDirs: string[] = [];
@@ -66,14 +65,14 @@ async function _build(
   rootDir: string,
   inputConfig: BuildConfig = {},
   buildConfig: BuildConfig,
-  pkg: PackageJson & Record<"unbuild" | "build", BuildConfig>,
+  pkg: PackageJson & Partial<Record<"unbuild" | "build", BuildConfig>>,
   cleanedDirs: string[],
   rollupOptions: RollupOptions[],
   _stubMode: boolean,
   _watchMode: boolean,
 ) {
   // Resolve preset
-  const preset = resolvePreset(
+  const preset = await resolvePreset(
     buildConfig.preset ||
       pkg.unbuild?.preset ||
       pkg.build?.preset ||
@@ -98,11 +97,9 @@ async function _build(
       stub: _stubMode,
       stubOptions: {
         /**
-         * See https://github.com/unjs/jiti#options
+         * See https://github.com/unjs/jiti#%EF%B8%8F-options
          */
         jiti: {
-          esmResolve: true,
-          interopDefault: true,
           alias: {},
         },
       },
@@ -161,9 +158,13 @@ async function _build(
   // Resolve dirs relative to rootDir
   options.outDir = resolve(options.rootDir, options.outDir);
 
+  // Create shared jiti instance for context
+  const jiti = createJiti(options.rootDir, options.stubOptions.jiti);
+
   // Build context
   const ctx: BuildContext = {
     options,
+    jiti,
     warnings: new Set(),
     pkg,
     buildEntries: [],

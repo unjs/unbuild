@@ -15,7 +15,7 @@ import type { RollupNodeResolveOptions } from "@rollup/plugin-node-resolve";
 import type { RollupJsonOptions } from "@rollup/plugin-json";
 import type { Options as RollupDtsOptions } from "rollup-plugin-dts";
 import type commonjs from "@rollup/plugin-commonjs";
-import type { JITIOptions } from "jiti";
+import type { Jiti, JitiOptions } from "jiti";
 import type { EsbuildOptions } from "./builder/plugins/esbuild";
 
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -200,9 +200,9 @@ export interface BuildOptions {
 
   /**
    * Stub options, where [jiti](https://github.com/unjs/jiti)
-   * is an object of type `Omit<JITIOptions, "transform" | "onError">`.
+   * is an object of type `Omit<JitiOptions, "transform" | "onError">`.
    */
-  stubOptions: { jiti: Omit<JITIOptions, "transform" | "onError"> };
+  stubOptions: { jiti: Omit<JitiOptions, "transform" | "onError"> };
 
   /**
    * Used to specify which modules or libraries should be considered external dependencies
@@ -240,11 +240,8 @@ export interface BuildOptions {
 
 export interface BuildContext {
   options: BuildOptions;
-  /**
-   * Read more: [pkg-types](https://github.com/unjs/pkg-types#readme).
-   */
   pkg: PackageJson;
-
+  jiti: Jiti;
   buildEntries: {
     path: string;
     bytes?: number;

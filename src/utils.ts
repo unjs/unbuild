@@ -1,7 +1,7 @@
 import fsp from "node:fs/promises";
 import { readdirSync, statSync } from "node:fs";
 import { dirname, resolve } from "pathe";
-import jiti from "jiti";
+import { createJiti } from "jiti";
 import { consola } from "consola";
 import type { PackageJson } from "pkg-types";
 import { autoPreset } from "./auto";
@@ -65,38 +65,14 @@ export function listRecursively(path: string) {
   return [...filenames];
 }
 
-export function tryRequire(id: string, rootDir: string = process.cwd()) {
-  const _require = jiti(rootDir, { interopDefault: true, esmResolve: true });
-  try {
-    return _require(id);
-  } catch (error: any) {
-    if (error.code !== "MODULE_NOT_FOUND") {
-      console.error(`Error trying import ${id} from ${rootDir}`, error);
-    }
-    return {};
-  }
-}
-
-export function tryResolve(id: string, rootDir: string = process.cwd()) {
-  const _require = jiti(rootDir, { interopDefault: true, esmResolve: true });
-  try {
-    return _require.resolve(id);
-  } catch (error: any) {
-    if (error.code !== "MODULE_NOT_FOUND") {
-      console.error(`Error trying import ${id} from ${rootDir}`, error);
-    }
-    return id;
-  }
-}
-
-export function resolvePreset(
+export async function resolvePreset(
   preset: string | BuildPreset,
   rootDir: string,
-): BuildConfig {
+): Promise<BuildConfig> {
   if (preset === "auto") {
     preset = autoPreset;
   } else if (typeof preset === "string") {
-    preset = tryRequire(preset, rootDir) || {};
+    preset = (await createJiti(rootDir).import(preset)) || {};
   }
   if (typeof preset === "function") {
     preset = preset();

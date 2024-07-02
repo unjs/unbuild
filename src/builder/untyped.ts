@@ -1,9 +1,13 @@
 import { writeFile } from "node:fs/promises";
 import { resolve } from "pathe";
-import { resolveSchema, generateTypes, generateMarkdown } from "untyped";
+import {
+  resolveSchema,
+  generateTypes,
+  generateMarkdown,
+  type InputObject,
+} from "untyped";
 // @ts-ignore
 import untypedPlugin from "untyped/babel-plugin";
-import jiti from "jiti";
 import { pascalCase } from "scule";
 import type { BuildContext, UntypedBuildEntry, UntypedOutputs } from "../types";
 import consola from "consola";
@@ -17,8 +21,6 @@ export async function typesBuild(ctx: BuildContext) {
   for (const entry of entries) {
     const options = {
       jiti: {
-        esmResolve: true,
-        interopDefault: true,
         transformOptions: {
           babel: {
             plugins: [untypedPlugin],
@@ -28,10 +30,11 @@ export async function typesBuild(ctx: BuildContext) {
     };
     await ctx.hooks.callHook("untyped:entry:options", ctx, entry, options);
 
-    const _require = jiti(ctx.options.rootDir, options.jiti);
-
     const distDir = entry.outDir!;
-    const srcConfig = _require(resolve(ctx.options.rootDir, entry.input));
+    const srcConfig =
+      ((await ctx.jiti.import(resolve(ctx.options.rootDir, entry.input), {
+        try: true,
+      })) as InputObject) || ({} as InputObject);
 
     const defaults = entry.defaults || {};
     const schema = await resolveSchema(srcConfig, defaults);
