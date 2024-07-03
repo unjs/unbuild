@@ -15,6 +15,7 @@ import type {
   UntypedOutputs,
 } from "../../types";
 import consola from "consola";
+import { createJiti } from "jiti";
 
 export async function typesBuild(ctx: BuildContext): Promise<void> {
   const entries = ctx.options.entries.filter(
@@ -25,6 +26,7 @@ export async function typesBuild(ctx: BuildContext): Promise<void> {
   for (const entry of entries) {
     const options = {
       jiti: {
+        interopDefault: true,
         transformOptions: {
           babel: {
             plugins: [untypedPlugin],
@@ -34,9 +36,11 @@ export async function typesBuild(ctx: BuildContext): Promise<void> {
     };
     await ctx.hooks.callHook("untyped:entry:options", ctx, entry, options);
 
+    const untypedJiti = createJiti(ctx.options.rootDir, options.jiti);
+
     const distDir = entry.outDir!;
     const srcConfig =
-      ((await ctx.jiti.import(resolve(ctx.options.rootDir, entry.input), {
+      ((await untypedJiti.import(resolve(ctx.options.rootDir, entry.input), {
         try: true,
       })) as InputObject) || ({} as InputObject);
 
