@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v3.0.0-rc.6
+
+[compare changes](https://github.com/unjs/unbuild/compare/v3.0.0-rc.5...v3.0.0-rc.6)
+
+### 🩹 Fixes
+
+- **untyped:** Use custom jiti instance ([00ded57](https://github.com/unjs/unbuild/commit/00ded57))
+
+### 🏡 Chore
+
+- Eslint ignore `test/fixture/dist` ([66a8db3](https://github.com/unjs/unbuild/commit/66a8db3))
+
+### ❤️ Contributors
+
+- Pooya Parsa ([@pi0](http://github.com/pi0))
+
 ## v3.0.0-rc.5
 
 [compare changes](https://github.com/unjs/unbuild/compare/v3.0.0-rc.4...v3.0.0-rc.5)
