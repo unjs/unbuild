@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v3.0.0-rc.7
+
+[compare changes](https://github.com/unjs/unbuild/compare/v3.0.0-rc.6...v3.0.0-rc.7)
+
+### 💅 Refactors
+
+- Replace `globby` w/ `fast-glob` ([#418](https://github.com/unjs/unbuild/pull/418))
+
+### 🏡 Chore
+
+- Removed resolved @ts-expect-error ([733a914](https://github.com/unjs/unbuild/commit/733a914))
+- Update deps ([6e3be15](https://github.com/unjs/unbuild/commit/6e3be15))
+
+### ❤️ Contributors
+
+- Pooya Parsa ([@pi0](http://github.com/pi0))
+- Sukka <isukkaw@gmail.com>
+
 ## v3.0.0-rc.6
 
 [compare changes](https://github.com/unjs/unbuild/compare/v3.0.0-rc.5...v3.0.0-rc.6)
