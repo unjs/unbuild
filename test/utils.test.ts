@@ -27,12 +27,10 @@ describe("extractExportFilenames", () => {
     ]);
   });
   it("handles nested objects", () => {
-    // @ts-expect-error - fix pkg-types
     expect(extractExportFilenames({ require: "test" })).to.deep.equal([
       { file: "test", type: "cjs" },
     ]);
     expect(
-      // @ts-expect-error - fix pkg-types
       extractExportFilenames({
         require: { node: "test", other: { import: "this", require: "that" } },
       }),

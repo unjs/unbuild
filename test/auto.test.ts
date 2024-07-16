@@ -132,7 +132,6 @@ describe("inferEntries", () => {
   it("handles types within exports`", () => {
     const result = inferEntries(
       {
-        // @ts-expect-error - fix pkg-types
         exports: {
           import: {
             types: "dist/test.d.mts",
@@ -167,7 +166,6 @@ describe("inferEntries", () => {
 
   it("ignores top-level exports", () => {
     expect(
-      // @ts-expect-error - fix pkg-types
       inferEntries({ exports: { "./*": "./*" } }, [
         "src/",
         "src/",
@@ -185,7 +183,6 @@ describe("inferEntries", () => {
     expect(
       inferEntries(
         {
-          // @ts-expect-error - fix pkg-types
           exports: {
             ".": "./dist/index.cjs",
             "first-test": "./dist/first-test.cjs",
@@ -222,7 +219,6 @@ describe("inferEntries", () => {
       warnings: [],
     });
     expect(
-      // @ts-expect-error - fix pkg-types
       inferEntries({ exports: { "./runtime/*": "./dist/runtime/*.mjs," } }, [
         "src/",
         "src/runtime/",
@@ -237,7 +233,6 @@ describe("inferEntries", () => {
     });
     expect(
       inferEntries(
-        // @ts-expect-error - fix pkg-types
         { exports: { "./runtime/*": { require: "./dist/runtime/*" } } },
         ["src/", "src/runtime/"],
       ),

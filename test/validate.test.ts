@@ -18,7 +18,6 @@ describe("validatePackage", () => {
           "./cli": "./dist/cli",
         },
         module: "dist/mod",
-        // @ts-expect-error TODO: fix pkg-types
         exports: {
           "./runtime/*": "./runtime/*.mjs",
           ".": { node: "./src/index.mts" },
