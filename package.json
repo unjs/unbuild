@@ -42,14 +42,14 @@
     "esbuild": "^0.23.0",
     "fast-glob": "^3.3.2",
     "hookable": "^5.5.3",
-    "jiti": "^2.0.0-beta.3",
+    "jiti": "2.0.0-beta.3",
     "magic-string": "^0.30.10",
-    "mkdist": "^1.5.3",
+    "mkdist": "^1.5.4",
     "mlly": "^1.7.1",
     "pathe": "^1.1.2",
-    "pkg-types": "^1.1.2",
+    "pkg-types": "^1.1.3",
     "pretty-bytes": "^6.1.1",
-    "rollup": "^4.18.0",
+    "rollup": "^4.18.1",
     "rollup-plugin-dts": "^6.1.1",
     "scule": "^1.3.0",
     "ufo": "^1.5.3",
@@ -57,14 +57,14 @@
   },
   "devDependencies": {
     "@babel/plugin-transform-class-properties": "^7.24.7",
-    "@types/node": "^20.14.9",
-    "@vitest/coverage-v8": "^1.6.0",
+    "@types/node": "^20.14.10",
+    "@vitest/coverage-v8": "^2.0.3",
     "changelogen": "^0.5.5",
-    "eslint": "^9.6.0",
+    "eslint": "^9.7.0",
     "eslint-config-unjs": "^0.3.2",
-    "prettier": "^3.3.2",
+    "prettier": "^3.3.3",
     "typescript": "^5.5.3",
-    "vitest": "^1.6.0"
+    "vitest": "^2.0.3"
   },
   "peerDependencies": {
     "typescript": "^5.5.3"
