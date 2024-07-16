@@ -1,6 +1,6 @@
 import { promises as fsp } from "node:fs";
 import { relative, resolve } from "pathe";
-import { globby } from "globby";
+import fg from "fast-glob";
 import { symlink, rmdir, warn } from "../../utils";
 import type { CopyBuildEntry, BuildContext } from "../../types";
 import consola from "consola";
@@ -18,7 +18,7 @@ export async function copyBuild(ctx: BuildContext): Promise<void> {
       await rmdir(distDir);
       await symlink(entry.input, distDir);
     } else {
-      const paths = await globby(entry.pattern || ["**"], {
+      const paths = await fg(entry.pattern || ["**"], {
         cwd: resolve(ctx.options.rootDir, entry.input),
         absolute: false,
       });
