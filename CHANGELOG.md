@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v3.0.0-rc.8
+
+[compare changes](https://github.com/unjs/unbuild/compare/v3.0.0-rc.7...v3.0.0-rc.8)
+
+### 🩹 Fixes
+
+- Normalize resolved path ([2640083](https://github.com/unjs/unbuild/commit/2640083))
+
+### 💅 Refactors
+
+- Replace fast-glob with tinyglobby ([#426](https://github.com/unjs/unbuild/pull/426))
+
+### 📖 Documentation
+
+- Fix tiny typo ([#414](https://github.com/unjs/unbuild/pull/414))
+
+### 🏡 Chore
+
+- Update dependencies ([2f815ef](https://github.com/unjs/unbuild/commit/2f815ef))
+
+### ❤️ Contributors
+
+- Pooya Parsa ([@pi0](http://github.com/pi0))
+- Superchupu ([@SuperchupuDev](http://github.com/SuperchupuDev))
+- @beer ([@iiio2](http://github.com/iiio2))
+
 ## v3.0.0-rc.7
 
 [compare changes](https://github.com/unjs/unbuild/compare/v3.0.0-rc.6...v3.0.0-rc.7)
