@@ -8,7 +8,7 @@ import { consola } from "consola";
 import { defu } from "defu";
 import { createHooks } from "hookable";
 import prettyBytes from "pretty-bytes";
-import fg from "fast-glob";
+import { glob } from "tinyglobby";
 import type { RollupOptions } from "rollup";
 import { dumpObject, rmdir, resolvePreset, removeExtension } from "./utils";
 import type { BuildContext, BuildConfig, BuildOptions } from "./types";
@@ -289,7 +289,7 @@ async function _build(
   consola.success(colors.green("Build succeeded for " + options.name));
 
   // Find all dist files and add missing entries as chunks
-  const outFiles = await fg("**", { cwd: options.outDir });
+  const outFiles = await glob(["**"], { cwd: options.outDir });
   for (const file of outFiles) {
     let entry = ctx.buildEntries.find((e) => e.path === file);
     if (!entry) {
