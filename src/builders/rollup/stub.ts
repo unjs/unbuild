@@ -1,7 +1,7 @@
 import { writeFile, mkdir } from "node:fs/promises";
 import { promises as fsp } from "node:fs";
-import { resolve, dirname, normalize, extname, relative } from "pathe";
-import { resolvePath, resolveModuleExportNames } from "mlly";
+import { resolve, dirname, extname, relative } from "pathe";
+import { resolvePath, resolveModuleExportNames, fileURLToPath } from "mlly";
 import { warn } from "../../utils";
 import type { BuildContext } from "../../types";
 import { makeExecutable, getShebang } from "./plugins/shebang";
@@ -65,9 +65,7 @@ export async function rollupStub(ctx: BuildContext): Promise<void> {
     );
 
     const isESM = ctx.pkg.type === "module";
-    const resolvedEntry = normalize(
-      ctx.jiti.esmResolve(entry.input, { try: true }) || entry.input,
-    );
+    const resolvedEntry = fileURLToPath(ctx.jiti.esmResolve(entry.input)!);
     const resolvedEntryWithoutExt = resolvedEntry.slice(
       0,
       Math.max(0, resolvedEntry.length - extname(resolvedEntry).length),
