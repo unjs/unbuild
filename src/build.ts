@@ -97,6 +97,7 @@ async function _build(
          * See https://github.com/unjs/jiti#%EF%B8%8F-options
          */
         jiti: {
+          interopDefault: true,
           alias: {},
         },
       },
