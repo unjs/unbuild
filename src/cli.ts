@@ -17,6 +17,10 @@ const main = defineCommand({
       description: "The directory to build",
       required: false,
     },
+    config: {
+      type: "string",
+      description: "The configuration file to use (defaults to ./build.config)",
+    },
     watch: {
       type: "boolean",
       description: "Watch the src dir and rebuild on change (experimental)",
@@ -36,16 +40,24 @@ const main = defineCommand({
   },
   async run({ args }) {
     const rootDir = resolve(process.cwd(), args.dir || ".");
-    await build(rootDir, args.stub, {
-      sourcemap: args.sourcemap,
-      stub: args.stub,
-      watch: args.watch,
-      rollup: {
-        esbuild: {
-          minify: args.minify,
+    const configPath = args.config
+      ? resolve(process.cwd(), args.config)
+      : undefined;
+    await build(
+      rootDir,
+      args.stub,
+      {
+        sourcemap: args.sourcemap,
+        stub: args.stub,
+        watch: args.watch,
+        rollup: {
+          esbuild: {
+            minify: args.minify,
+          },
         },
       },
-    }).catch((error) => {
+      configPath,
+    ).catch((error) => {
       consola.error(`Error building ${rootDir}: ${error}`);
       throw error;
     });
