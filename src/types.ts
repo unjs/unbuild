@@ -18,7 +18,6 @@ import type commonjs from "@rollup/plugin-commonjs";
 import type { Jiti, JitiOptions } from "jiti";
 import type { EsbuildOptions } from "./builders/rollup/plugins/esbuild";
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export type RollupCommonJSOptions = Parameters<typeof commonjs>[0] & {};
 
 export interface BaseBuildEntry {
