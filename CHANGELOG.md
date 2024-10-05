@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v3.0.0-rc.10
+
+[compare changes](https://github.com/unjs/unbuild/compare/v3.0.0-rc.9...v3.0.0-rc.10)
+
+### 🚀 Enhancements
+
+- Add `--config` to the CLI ([#440](https://github.com/unjs/unbuild/pull/440))
+
+### 🩹 Fixes
+
+- Update to jiti 2.3 ([9147c3e](https://github.com/unjs/unbuild/commit/9147c3e))
+- Untyped declaration output is optional ([5820182](https://github.com/unjs/unbuild/commit/5820182))
+
+### 📖 Documentation
+
+- Add more usage info ([#401](https://github.com/unjs/unbuild/pull/401))
+
+### 🏡 Chore
+
+- Update deps ([c5e0b89](https://github.com/unjs/unbuild/commit/c5e0b89))
+- Remove extra default check ([b380758](https://github.com/unjs/unbuild/commit/b380758))
+- Enable automd ([2ea153a](https://github.com/unjs/unbuild/commit/2ea153a))
+- Update mkdist ([877906f](https://github.com/unjs/unbuild/commit/877906f))
+
+### ❤️ Contributors
+
+- Pooya Parsa ([@pi0](http://github.com/pi0))
+- 阿菜 Cai <1064425721@qq.com>
+- Joaquín Sánchez ([@userquin](http://github.com/userquin))
+
 ## v3.0.0-rc.9
 
 [compare changes](https://github.com/unjs/unbuild/compare/v3.0.0-rc.8...v3.0.0-rc.9)
