@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v3.0.0-rc.9
+
+[compare changes](https://github.com/unjs/unbuild/compare/v3.0.0-rc.8...v3.0.0-rc.9)
+
+### 🩹 Fixes
+
+- **stub:** Enable `interopDefault` by default ([8e6f7e4](https://github.com/unjs/unbuild/commit/8e6f7e4))
+- **config:** Only take default export ([fefafec](https://github.com/unjs/unbuild/commit/fefafec))
+
+### 🏡 Chore
+
+- Remove unused dep ([1a65aef](https://github.com/unjs/unbuild/commit/1a65aef))
+- Update dependencies ([f7ab6ce](https://github.com/unjs/unbuild/commit/f7ab6ce))
+- Lint ([262a35a](https://github.com/unjs/unbuild/commit/262a35a))
+
+### ❤️ Contributors
+
+- Pooya Parsa ([@pi0](http://github.com/pi0))
+
 ## v3.0.0-rc.8
 
 [compare changes](https://github.com/unjs/unbuild/compare/v3.0.0-rc.7...v3.0.0-rc.8)

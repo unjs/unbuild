@@ -29,17 +29,23 @@ export async function build(
   rootDir = resolve(process.cwd(), rootDir || ".");
 
   // Create jiti instance for loading initial config
-  const jiti = createJiti(rootDir, { interopDefault: true });
+  const jiti = createJiti(rootDir);
 
   const _buildConfig: BuildConfig | BuildConfig[] =
-    (await jiti.import(configPath ?? "./build.config", { try: true })) || {};
+    (await jiti.import(configPath ?? "./build.config", {
+      try: true,
+      default: true,
+    })) || {};
+
   const buildConfigs = (
     Array.isArray(_buildConfig) ? _buildConfig : [_buildConfig]
   ).filter(Boolean);
 
   const pkg: PackageJson & Partial<Record<"unbuild" | "build", BuildConfig>> =
-    ((await jiti.import("./package.json", { try: true })) as PackageJson) ||
-    ({} as PackageJson);
+    ((await jiti.import("./package.json", {
+      try: true,
+      default: true,
+    })) as PackageJson) || ({} as PackageJson);
 
   // Invoke build for every build config defined in build.config.ts
   const cleanedDirs: string[] = [];
