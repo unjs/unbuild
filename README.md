@@ -1,9 +1,11 @@
 # unbuild
 
-[![npm version][npm-version-src]][npm-version-href]
-[![npm downloads][npm-downloads-src]][npm-downloads-href]
-[![Github Actions][github-actions-src]][github-actions-href]
-[![Codecov][codecov-src]][codecov-href]
+<!-- automd:badges -->
+
+[![npm version](https://img.shields.io/npm/v/unbuild)](https://npmjs.com/package/unbuild)
+[![npm downloads](https://img.shields.io/npm/dm/unbuild)](https://npm.chart.dev/unbuild)
+
+<!-- /automd -->
 
 > A unified JavaScript build system
 
