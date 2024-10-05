@@ -23,7 +23,7 @@ Integration with [mkdist](https://github.com/unjs/mkdist) for generating bundlel
 
 ### ✨ Passive watcher
 
-Stub `dist` once using [jiti](https://github.com/unjs/jiti) and you can try and link your project without needing to watch and rebuild during development.
+Stub `dist` once using `unbuild --stub` (powered by [jiti](https://github.com/unjs/jiti)) and you can try and link your project without needing to watch and rebuild during development.
 
 ### ✍ Untype Generator
 
@@ -50,6 +50,10 @@ Update `package.json`:
 ```json
 {
   "type": "module",
+  "scripts": {
+    "build": "unbuild",
+    "prepack": "unbuild"
+  },
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
@@ -155,6 +159,38 @@ export default defineBuildConfig([
     },
   },
 ]);
+```
+
+## Recipes
+
+### Decorators support
+
+In `build.config.ts`
+
+```ts
+import { defineBuildConfig } from "unbuild";
+
+export default defineBuildConfig({
+  rollup: {
+    esbuild: {
+      tsconfigRaw: {
+        compilerOptions: {
+          experimentalDecorators: true,
+        },
+      },
+    },
+  },
+});
+```
+
+### Generate sourcemaps
+
+```ts
+import { defineBuildConfig } from "unbuild";
+
+export default defineBuildConfig({
+  sourcemap: true,
+});
 ```
 
 ## 💻 Development
