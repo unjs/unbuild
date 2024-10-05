@@ -32,7 +32,7 @@ export async function build(
 
   const _buildConfig: BuildConfig | BuildConfig[] =
     (await jiti.import(inputConfig?.config || "./build.config", {
-      try: true,
+      try: !inputConfig.config,
       default: true,
     })) || {};
 
