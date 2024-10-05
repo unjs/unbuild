@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v3.0.0-rc.11
+
+[compare changes](https://github.com/unjs/unbuild/compare/v3.0.0-rc.10...v3.0.0-rc.11)
+
+### 🩹 Fixes
+
+- **untyped:** Use schema module default export if is the only export ([cc26726](https://github.com/unjs/unbuild/commit/cc26726))
+
+### ❤️ Contributors
+
+- Pooya Parsa ([@pi0](http://github.com/pi0))
+
 ## v3.0.0-rc.10
 
 [compare changes](https://github.com/unjs/unbuild/compare/v3.0.0-rc.9...v3.0.0-rc.10)
