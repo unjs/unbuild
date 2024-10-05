@@ -25,6 +25,7 @@ export default defineBuildConfig([
       jiti: {
         transformOptions: {
           babel: {
+            // @ts-expect-error - type complexity
             plugins: [["@babel/plugin-transform-class-properties"]],
           },
         },

@@ -3,47 +3,51 @@ import { promises as fsp } from "node:fs";
 import { resolve, relative, isAbsolute, normalize } from "pathe";
 import { withTrailingSlash } from "ufo";
 import type { PackageJson } from "pkg-types";
-import chalk from "chalk";
+import { colors } from "consola/utils";
 import { consola } from "consola";
 import { defu } from "defu";
 import { createHooks } from "hookable";
 import prettyBytes from "pretty-bytes";
-import { globby } from "globby";
+import { glob } from "tinyglobby";
 import type { RollupOptions } from "rollup";
-import {
-  dumpObject,
-  rmdir,
-  tryRequire,
-  resolvePreset,
-  removeExtension,
-} from "./utils";
+import { dumpObject, rmdir, resolvePreset, removeExtension } from "./utils";
 import type { BuildContext, BuildConfig, BuildOptions } from "./types";
 import { validatePackage, validateDependencies } from "./validate";
-import { getRollupOptions, rollupBuild } from "./builder/rollup";
-import { typesBuild } from "./builder/untyped";
-import { mkdistBuild } from "./builder/mkdist";
-import { copyBuild } from "./builder/copy";
+import { rollupBuild } from "./builders/rollup";
+import { typesBuild } from "./builders/untyped";
+import { mkdistBuild } from "./builders/mkdist";
+import { copyBuild } from "./builders/copy";
+import { createJiti } from "jiti";
 
 export async function build(
   rootDir: string,
   stub: boolean,
-  inputConfig: BuildConfig = {},
-) {
+  inputConfig: BuildConfig & { config?: string } = {},
+): Promise<void> {
   // Determine rootDir
   rootDir = resolve(process.cwd(), rootDir || ".");
 
+  // Create jiti instance for loading initial config
+  const jiti = createJiti(rootDir);
+
   const _buildConfig: BuildConfig | BuildConfig[] =
-    tryRequire("./build.config", rootDir) || {};
+    (await jiti.import(inputConfig?.config || "./build.config", {
+      try: !inputConfig.config,
+      default: true,
+    })) || {};
+
   const buildConfigs = (
     Array.isArray(_buildConfig) ? _buildConfig : [_buildConfig]
   ).filter(Boolean);
 
-  const pkg: PackageJson & Record<"unbuild" | "build", BuildConfig> =
-    tryRequire("./package.json", rootDir) || {};
+  const pkg: PackageJson & Partial<Record<"unbuild" | "build", BuildConfig>> =
+    ((await jiti.import("./package.json", {
+      try: true,
+      default: true,
+    })) as PackageJson) || ({} as PackageJson);
 
   // Invoke build for every build config defined in build.config.ts
   const cleanedDirs: string[] = [];
-  const rollupOptions: RollupOptions[] = [];
 
   const _watchMode = inputConfig.watch === true;
   const _stubMode = !_watchMode && (stub || inputConfig.stub === true);
@@ -55,7 +59,6 @@ export async function build(
       buildConfig,
       pkg,
       cleanedDirs,
-      rollupOptions,
       _stubMode,
       _watchMode,
     );
@@ -66,14 +69,13 @@ async function _build(
   rootDir: string,
   inputConfig: BuildConfig = {},
   buildConfig: BuildConfig,
-  pkg: PackageJson & Record<"unbuild" | "build", BuildConfig>,
+  pkg: PackageJson & Partial<Record<"unbuild" | "build", BuildConfig>>,
   cleanedDirs: string[],
-  rollupOptions: RollupOptions[],
   _stubMode: boolean,
   _watchMode: boolean,
-) {
+): Promise<void> {
   // Resolve preset
-  const preset = resolvePreset(
+  const preset = await resolvePreset(
     buildConfig.preset ||
       pkg.unbuild?.preset ||
       pkg.build?.preset ||
@@ -98,10 +100,9 @@ async function _build(
       stub: _stubMode,
       stubOptions: {
         /**
-         * See https://github.com/unjs/jiti#options
+         * See https://github.com/unjs/jiti#%EF%B8%8F-options
          */
         jiti: {
-          esmResolve: true,
           interopDefault: true,
           alias: {},
         },
@@ -161,9 +162,13 @@ async function _build(
   // Resolve dirs relative to rootDir
   options.outDir = resolve(options.rootDir, options.outDir);
 
+  // Create shared jiti instance for context
+  const jiti = createJiti(options.rootDir, { interopDefault: true });
+
   // Build context
   const ctx: BuildContext = {
     options,
+    jiti,
     warnings: new Set(),
     pkg,
     buildEntries: [],
@@ -230,11 +235,11 @@ async function _build(
 
   // Start info
   consola.info(
-    chalk.cyan(`${options.stub ? "Stubbing" : "Building"} ${options.name}`),
+    colors.cyan(`${options.stub ? "Stubbing" : "Building"} ${options.name}`),
   );
   if (process.env.DEBUG) {
-    consola.info(`${chalk.bold("Root dir:")} ${options.rootDir}
-  ${chalk.bold("Entries:")}
+    consola.info(`${colors.bold("Root dir:")} ${options.rootDir}
+  ${colors.bold("Entries:")}
   ${options.entries.map((entry) => "  " + dumpObject(entry)).join("\n  ")}
 `);
   }
@@ -288,10 +293,10 @@ async function _build(
   }
 
   // Done info
-  consola.success(chalk.green("Build succeeded for " + options.name));
+  consola.success(colors.green("Build succeeded for " + options.name));
 
   // Find all dist files and add missing entries as chunks
-  const outFiles = await globby("**", { cwd: options.outDir });
+  const outFiles = await glob(["**"], { cwd: options.outDir });
   for (const file of outFiles) {
     let entry = ctx.buildEntries.find((e) => e.path === file);
     if (!entry) {
@@ -307,7 +312,7 @@ async function _build(
     }
   }
 
-  const rPath = (p: string) =>
+  const rPath = (p: string): string =>
     relative(process.cwd(), resolve(options.outDir, p));
   for (const entry of ctx.buildEntries.filter((e) => !e.chunk)) {
     let totalBytes = entry.bytes || 0;
@@ -315,12 +320,12 @@ async function _build(
       totalBytes += ctx.buildEntries.find((e) => e.path === chunk)?.bytes || 0;
     }
     let line =
-      `  ${chalk.bold(rPath(entry.path))} (` +
+      `  ${colors.bold(rPath(entry.path))} (` +
       [
-        totalBytes && `total size: ${chalk.cyan(prettyBytes(totalBytes))}`,
-        entry.bytes && `chunk size: ${chalk.cyan(prettyBytes(entry.bytes))}`,
+        totalBytes && `total size: ${colors.cyan(prettyBytes(totalBytes))}`,
+        entry.bytes && `chunk size: ${colors.cyan(prettyBytes(entry.bytes))}`,
         entry.exports?.length &&
-          `exports: ${chalk.gray(entry.exports.join(", "))}`,
+          `exports: ${colors.gray(entry.exports.join(", "))}`,
       ]
         .filter(Boolean)
         .join(", ") +
@@ -332,10 +337,10 @@ async function _build(
           .map((p) => {
             const chunk =
               ctx.buildEntries.find((e) => e.path === p) || ({} as any);
-            return chalk.gray(
+            return colors.gray(
               "  └─ " +
                 rPath(p) +
-                chalk.bold(
+                colors.bold(
                   chunk.bytes ? ` (${prettyBytes(chunk?.bytes)})` : "",
                 ),
             );
@@ -349,19 +354,19 @@ async function _build(
           .filter((m) => m.id.includes("node_modules"))
           .sort((a, b) => (b.bytes || 0) - (a.bytes || 0))
           .map((m) => {
-            return chalk.gray(
+            return colors.gray(
               "  📦 " +
                 rPath(m.id) +
-                chalk.bold(m.bytes ? ` (${prettyBytes(m.bytes)})` : ""),
+                colors.bold(m.bytes ? ` (${prettyBytes(m.bytes)})` : ""),
             );
           })
           .join("\n");
     }
-    consola.log(entry.chunk ? chalk.gray(line) : line);
+    consola.log(entry.chunk ? colors.gray(line) : line);
   }
   console.log(
     "Σ Total dist size (byte size):",
-    chalk.cyan(
+    colors.cyan(
       prettyBytes(ctx.buildEntries.reduce((a, e) => a + (e.bytes || 0), 0)),
     ),
   );

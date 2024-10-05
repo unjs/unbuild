@@ -1,14 +1,23 @@
 import { writeFile } from "node:fs/promises";
 import { resolve } from "pathe";
-import { resolveSchema, generateTypes, generateMarkdown } from "untyped";
+import {
+  resolveSchema,
+  generateTypes,
+  generateMarkdown,
+  type InputObject,
+} from "untyped";
 // @ts-ignore
 import untypedPlugin from "untyped/babel-plugin";
-import jiti from "jiti";
 import { pascalCase } from "scule";
-import type { BuildContext, UntypedBuildEntry, UntypedOutputs } from "../types";
+import type {
+  BuildContext,
+  UntypedBuildEntry,
+  UntypedOutputs,
+} from "../../types";
 import consola from "consola";
+import { createJiti } from "jiti";
 
-export async function typesBuild(ctx: BuildContext) {
+export async function typesBuild(ctx: BuildContext): Promise<void> {
   const entries = ctx.options.entries.filter(
     (entry) => entry.builder === "untyped",
   ) as UntypedBuildEntry[];
@@ -17,7 +26,6 @@ export async function typesBuild(ctx: BuildContext) {
   for (const entry of entries) {
     const options = {
       jiti: {
-        esmResolve: true,
         interopDefault: true,
         transformOptions: {
           babel: {
@@ -28,10 +36,13 @@ export async function typesBuild(ctx: BuildContext) {
     };
     await ctx.hooks.callHook("untyped:entry:options", ctx, entry, options);
 
-    const _require = jiti(ctx.options.rootDir, options.jiti);
+    const untypedJiti = createJiti(ctx.options.rootDir, options.jiti);
 
     const distDir = entry.outDir!;
-    const srcConfig = _require(resolve(ctx.options.rootDir, entry.input));
+    const srcConfig =
+      ((await untypedJiti.import(resolve(ctx.options.rootDir, entry.input), {
+        try: true,
+      })) as InputObject) || ({} as InputObject);
 
     const defaults = entry.defaults || {};
     const schema = await resolveSchema(srcConfig, defaults);
@@ -62,6 +73,7 @@ export async function typesBuild(ctx: BuildContext) {
     };
     await ctx.hooks.callHook("untyped:entry:outputs", ctx, entry, outputs);
     for (const output of Object.values(outputs)) {
+      if (!output) continue; // declaration is optional
       await writeFile(
         resolve(distDir, output.fileName),
         output.contents,

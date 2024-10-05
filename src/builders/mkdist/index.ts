@@ -1,10 +1,10 @@
 import { relative } from "pathe";
-import { mkdist, MkdistOptions } from "mkdist";
-import { symlink, rmdir } from "../utils";
-import type { MkdistBuildEntry, BuildContext } from "../types";
+import { mkdist, type MkdistOptions } from "mkdist";
+import { symlink, rmdir } from "../../utils";
+import type { MkdistBuildEntry, BuildContext } from "../../types";
 import consola from "consola";
 
-export async function mkdistBuild(ctx: BuildContext) {
+export async function mkdistBuild(ctx: BuildContext): Promise<void> {
   const entries = ctx.options.entries.filter(
     (e) => e.builder === "mkdist",
   ) as MkdistBuildEntry[];

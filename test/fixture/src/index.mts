@@ -6,6 +6,7 @@ console.log("__dirname", __dirname);
 console.log("import.meta.url", import.meta.url);
 
 console.log(arch());
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 console.log(require("node:os").arch());
 console.log(require.resolve("rollup"));
 console.log(testJSON);

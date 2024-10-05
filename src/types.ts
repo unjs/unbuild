@@ -1,10 +1,11 @@
 import type { PackageJson } from "pkg-types";
 import type { Hookable } from "hookable";
 import type {
-  RollupOptions,
+  RollupOptions as _RollupOptions,
   RollupBuild,
   OutputOptions,
   WatcherOptions,
+  InputPluginOption,
 } from "rollup";
 import type { MkdistOptions } from "mkdist";
 import type { Schema } from "untyped";
@@ -14,10 +15,9 @@ import type { RollupNodeResolveOptions } from "@rollup/plugin-node-resolve";
 import type { RollupJsonOptions } from "@rollup/plugin-json";
 import type { Options as RollupDtsOptions } from "rollup-plugin-dts";
 import type commonjs from "@rollup/plugin-commonjs";
-import type { JITIOptions } from "jiti";
-import type { EsbuildOptions } from "./builder/plugins/esbuild";
+import type { Jiti, JitiOptions } from "jiti";
+import type { EsbuildOptions } from "./builders/rollup/plugins/esbuild";
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export type RollupCommonJSOptions = Parameters<typeof commonjs>[0] & {};
 
 export interface BaseBuildEntry {
@@ -199,9 +199,9 @@ export interface BuildOptions {
 
   /**
    * Stub options, where [jiti](https://github.com/unjs/jiti)
-   * is an object of type `Omit<JITIOptions, "transform" | "onError">`.
+   * is an object of type `Omit<JitiOptions, "transform" | "onError">`.
    */
-  stubOptions: { jiti: Omit<JITIOptions, "transform" | "onError"> };
+  stubOptions: { jiti: Omit<JitiOptions, "transform" | "onError"> };
 
   /**
    * Used to specify which modules or libraries should be considered external dependencies
@@ -239,11 +239,8 @@ export interface BuildOptions {
 
 export interface BuildContext {
   options: BuildOptions;
-  /**
-   * Read more: [pkg-types](https://github.com/unjs/pkg-types#readme).
-   */
   pkg: PackageJson;
-
+  jiti: Jiti;
   buildEntries: {
     path: string;
     bytes?: number;
@@ -295,6 +292,10 @@ export interface UntypedOutputs {
   schema: UntypedOutput;
   defaults: UntypedOutput;
   declaration?: UntypedOutput;
+}
+
+export interface RollupOptions extends _RollupOptions {
+  plugins: InputPluginOption[];
 }
 
 export interface BuildHooks {

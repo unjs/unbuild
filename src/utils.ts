@@ -1,17 +1,17 @@
 import fsp from "node:fs/promises";
 import { readdirSync, statSync } from "node:fs";
 import { dirname, resolve } from "pathe";
-import jiti from "jiti";
+import { createJiti } from "jiti";
 import { consola } from "consola";
 import type { PackageJson } from "pkg-types";
 import { autoPreset } from "./auto";
 import type { BuildPreset, BuildConfig, BuildContext } from "./types";
 
-export async function ensuredir(path: string) {
+export async function ensuredir(path: string): Promise<void> {
   await fsp.mkdir(dirname(path), { recursive: true });
 }
 
-export function warn(ctx: BuildContext, message: string) {
+export function warn(ctx: BuildContext, message: string): void {
   if (ctx.warnings.has(message)) {
     return;
   }
@@ -19,7 +19,11 @@ export function warn(ctx: BuildContext, message: string) {
   ctx.warnings.add(message);
 }
 
-export async function symlink(from: string, to: string, force = true) {
+export async function symlink(
+  from: string,
+  to: string,
+  force = true,
+): Promise<void> {
   await ensuredir(to);
   if (force) {
     await fsp.unlink(to).catch(() => {});
@@ -27,7 +31,7 @@ export async function symlink(from: string, to: string, force = true) {
   await fsp.symlink(from, to, "junction");
 }
 
-export function dumpObject(obj: Record<string, any>) {
+export function dumpObject(obj: Record<string, any>): string {
   return (
     "{ " +
     Object.keys(obj)
@@ -37,19 +41,19 @@ export function dumpObject(obj: Record<string, any>) {
   );
 }
 
-export function getpkg(id = "") {
+export function getpkg(id = ""): string {
   const s = id.split("/");
   return s[0][0] === "@" ? `${s[0]}/${s[1]}` : s[0];
 }
 
-export async function rmdir(dir: string) {
+export async function rmdir(dir: string): Promise<void> {
   await fsp.unlink(dir).catch(() => {});
   await fsp.rm(dir, { recursive: true, force: true }).catch(() => {});
 }
 
-export function listRecursively(path: string) {
+export function listRecursively(path: string): string[] {
   const filenames = new Set<string>();
-  const walk = (path: string) => {
+  const walk = (path: string): void => {
     const files = readdirSync(path);
     for (const file of files) {
       const fullPath = resolve(path, file);
@@ -65,38 +69,16 @@ export function listRecursively(path: string) {
   return [...filenames];
 }
 
-export function tryRequire(id: string, rootDir: string = process.cwd()) {
-  const _require = jiti(rootDir, { interopDefault: true, esmResolve: true });
-  try {
-    return _require(id);
-  } catch (error: any) {
-    if (error.code !== "MODULE_NOT_FOUND") {
-      console.error(`Error trying import ${id} from ${rootDir}`, error);
-    }
-    return {};
-  }
-}
-
-export function tryResolve(id: string, rootDir: string = process.cwd()) {
-  const _require = jiti(rootDir, { interopDefault: true, esmResolve: true });
-  try {
-    return _require.resolve(id);
-  } catch (error: any) {
-    if (error.code !== "MODULE_NOT_FOUND") {
-      console.error(`Error trying import ${id} from ${rootDir}`, error);
-    }
-    return id;
-  }
-}
-
-export function resolvePreset(
+export async function resolvePreset(
   preset: string | BuildPreset,
   rootDir: string,
-): BuildConfig {
+): Promise<BuildConfig> {
   if (preset === "auto") {
     preset = autoPreset;
   } else if (typeof preset === "string") {
-    preset = tryRequire(preset, rootDir) || {};
+    preset =
+      (await createJiti(rootDir, { interopDefault: true }).import(preset)) ||
+      {};
   }
   if (typeof preset === "function") {
     preset = preset();
@@ -165,7 +147,10 @@ export function extractExportFilenames(
   );
 }
 
-export function arrayIncludes(arr: (string | RegExp)[], searchElement: string) {
+export function arrayIncludes(
+  arr: (string | RegExp)[],
+  searchElement: string,
+): boolean {
   return arr.some((entry) =>
     entry instanceof RegExp
       ? entry.test(searchElement)
@@ -173,6 +158,6 @@ export function arrayIncludes(arr: (string | RegExp)[], searchElement: string) {
   );
 }
 
-export function removeExtension(filename: string) {
+export function removeExtension(filename: string): string {
   return filename.replace(/\.(js|mjs|cjs|ts|mts|cts|json|jsx|tsx)$/, "");
 }

@@ -1,10 +1,11 @@
+import type { PackageJson } from "pkg-types";
+import type { BuildEntry, BuildPreset, MkdistBuildEntry } from "./types";
 import { existsSync } from "node:fs";
 import { normalize, join, resolve } from "pathe";
 import { consola } from "consola";
-import chalk from "chalk";
-import type { PackageJson } from "pkg-types";
+import { colors } from "consola/utils";
+import { definePreset } from "./types";
 import { extractExportFilenames, listRecursively, warn } from "./utils";
-import { BuildEntry, definePreset, MkdistBuildEntry } from "./types";
 
 type InferEntriesResult = {
   entries: BuildEntry[];
@@ -13,10 +14,10 @@ type InferEntriesResult = {
   warnings: string[];
 };
 
-export const autoPreset = definePreset(() => {
+export const autoPreset: BuildPreset = definePreset(() => {
   return {
     hooks: {
-      "build:prepare"(ctx) {
+      "build:prepare"(ctx): void {
         // Disable auto if entries already provided or pkg not available
         if (!ctx.pkg || ctx.options.entries.length > 0) {
           return;
@@ -37,10 +38,10 @@ export const autoPreset = definePreset(() => {
         }
         consola.info(
           "Automatically detected entries:",
-          chalk.cyan(
+          colors.cyan(
             ctx.options.entries
               .map((e) =>
-                chalk.bold(
+                colors.bold(
                   e.input
                     .replace(ctx.options.rootDir + "/", "")
                     .replace(/\/$/, "/*"),
@@ -48,7 +49,7 @@ export const autoPreset = definePreset(() => {
               )
               .join(", "),
           ),
-          chalk.gray(
+          colors.gray(
             ["esm", res.cjs && "cjs", res.dts && "dts"]
               .filter(Boolean)
               .map((tag) => `[${tag}]`)
@@ -167,7 +168,7 @@ export function inferEntries(
   return { entries, cjs, dts, warnings };
 }
 
-export const getEntrypointPaths = (path: string) => {
+export const getEntrypointPaths = (path: string): string[] => {
   const segments = normalize(path).split("/");
   return segments
     .map((_, index) => segments.slice(index).join("/"))

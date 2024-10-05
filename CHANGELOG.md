@@ -2,6 +2,143 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v3.0.0-rc.9
+
+[compare changes](https://github.com/unjs/unbuild/compare/v3.0.0-rc.8...v3.0.0-rc.9)
+
+### 🩹 Fixes
+
+- **stub:** Enable `interopDefault` by default ([8e6f7e4](https://github.com/unjs/unbuild/commit/8e6f7e4))
+- **config:** Only take default export ([fefafec](https://github.com/unjs/unbuild/commit/fefafec))
+
+### 🏡 Chore
+
+- Remove unused dep ([1a65aef](https://github.com/unjs/unbuild/commit/1a65aef))
+- Update dependencies ([f7ab6ce](https://github.com/unjs/unbuild/commit/f7ab6ce))
+- Lint ([262a35a](https://github.com/unjs/unbuild/commit/262a35a))
+
+### ❤️ Contributors
+
+- Pooya Parsa ([@pi0](http://github.com/pi0))
+
+## v3.0.0-rc.8
+
+[compare changes](https://github.com/unjs/unbuild/compare/v3.0.0-rc.7...v3.0.0-rc.8)
+
+### 🩹 Fixes
+
+- Normalize resolved path ([2640083](https://github.com/unjs/unbuild/commit/2640083))
+
+### 💅 Refactors
+
+- Replace fast-glob with tinyglobby ([#426](https://github.com/unjs/unbuild/pull/426))
+
+### 📖 Documentation
+
+- Fix tiny typo ([#414](https://github.com/unjs/unbuild/pull/414))
+
+### 🏡 Chore
+
+- Update dependencies ([2f815ef](https://github.com/unjs/unbuild/commit/2f815ef))
+
+### ❤️ Contributors
+
+- Pooya Parsa ([@pi0](http://github.com/pi0))
+- Superchupu ([@SuperchupuDev](http://github.com/SuperchupuDev))
+- @beer ([@iiio2](http://github.com/iiio2))
+
+## v3.0.0-rc.7
+
+[compare changes](https://github.com/unjs/unbuild/compare/v3.0.0-rc.6...v3.0.0-rc.7)
+
+### 💅 Refactors
+
+- Replace `globby` w/ `fast-glob` ([#418](https://github.com/unjs/unbuild/pull/418))
+
+### 🏡 Chore
+
+- Removed resolved @ts-expect-error ([733a914](https://github.com/unjs/unbuild/commit/733a914))
+- Update deps ([6e3be15](https://github.com/unjs/unbuild/commit/6e3be15))
+
+### ❤️ Contributors
+
+- Pooya Parsa ([@pi0](http://github.com/pi0))
+- Sukka <isukkaw@gmail.com>
+
+## v3.0.0-rc.6
+
+[compare changes](https://github.com/unjs/unbuild/compare/v3.0.0-rc.5...v3.0.0-rc.6)
+
+### 🩹 Fixes
+
+- **untyped:** Use custom jiti instance ([00ded57](https://github.com/unjs/unbuild/commit/00ded57))
+
+### 🏡 Chore
+
+- Eslint ignore `test/fixture/dist` ([66a8db3](https://github.com/unjs/unbuild/commit/66a8db3))
+
+### ❤️ Contributors
+
+- Pooya Parsa ([@pi0](http://github.com/pi0))
+
+## v3.0.0-rc.5
+
+[compare changes](https://github.com/unjs/unbuild/compare/v3.0.0-rc.4...v3.0.0-rc.5)
+
+### 🩹 Fixes
+
+- **rollup:** Keep empty type-only modules ([7a6469b](https://github.com/unjs/unbuild/commit/7a6469b))
+
+### ❤️ Contributors
+
+- Pooya Parsa ([@pi0](http://github.com/pi0))
+
+## v3.0.0-rc.4
+
+[compare changes](https://github.com/unjs/unbuild/compare/v3.0.0-rc.3...v3.0.0-rc.4)
+
+### 🩹 Fixes
+
+- **rollup:** Keep empty (type-only) modules ([a9158e2](https://github.com/unjs/unbuild/commit/a9158e2))
+
+### ❤️ Contributors
+
+- Pooya Parsa ([@pi0](http://github.com/pi0))
+
+## v3.0.0-rc.3
+
+[compare changes](https://github.com/unjs/unbuild/compare/v3.0.0-rc.2...v3.0.0-rc.3)
+
+### 🚀 Enhancements
+
+- Upgrade to jiti v2 beta ([#409](https://github.com/unjs/unbuild/pull/409))
+
+### 🩹 Fixes
+
+- Type `RollupOptions.plugins` as array ([62fa930](https://github.com/unjs/unbuild/commit/62fa930))
+- Add all loader extensions to esbuild include ([8ab22ff](https://github.com/unjs/unbuild/commit/8ab22ff))
+- Enable jiti `interopDefault` for config loader and internals (ref: #409) ([#409](https://github.com/unjs/unbuild/issues/409))
+
+### 💅 Refactors
+
+- Overhaul builders structure ([#410](https://github.com/unjs/unbuild/pull/410))
+- Add explicit return types ([#412](https://github.com/unjs/unbuild/pull/412))
+- Use `colors` from `consola/utils` ([6a8f36d](https://github.com/unjs/unbuild/commit/6a8f36d))
+
+### 🏡 Chore
+
+- Upgrade `@rollup/plugin-commonjs` to 26 ([9392ec3](https://github.com/unjs/unbuild/commit/9392ec3))
+- Update deps ([d886ad5](https://github.com/unjs/unbuild/commit/d886ad5))
+- Update release script ([8ce4090](https://github.com/unjs/unbuild/commit/8ce4090))
+- Remove unused imports ([04c2b5c](https://github.com/unjs/unbuild/commit/04c2b5c))
+- Add explicit type for var exports ([af26e40](https://github.com/unjs/unbuild/commit/af26e40))
+- Stricter type checks ([#413](https://github.com/unjs/unbuild/pull/413))
+- Add publishTag to release script ([577484c](https://github.com/unjs/unbuild/commit/577484c))
+
+### ❤️ Contributors
+
+- Pooya Parsa ([@pi0](http://github.com/pi0))
+
 ## v3.0.0-rc.2
 
 [compare changes](https://github.com/unjs/unbuild/compare/v3.0.0-rc.1...v3.0.0-rc.2)

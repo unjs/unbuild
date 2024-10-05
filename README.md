@@ -1,11 +1,13 @@
 # unbuild
 
-[![npm version][npm-version-src]][npm-version-href]
-[![npm downloads][npm-downloads-src]][npm-downloads-href]
-[![Github Actions][github-actions-src]][github-actions-href]
-[![Codecov][codecov-src]][codecov-href]
+<!-- automd:badges -->
 
-> A unified javascript build system
+[![npm version](https://img.shields.io/npm/v/unbuild)](https://npmjs.com/package/unbuild)
+[![npm downloads](https://img.shields.io/npm/dm/unbuild)](https://npm.chart.dev/unbuild)
+
+<!-- /automd -->
+
+> A unified JavaScript build system
 
 ### 📦 Optimized bundler
 
@@ -53,7 +55,7 @@ CLI output also includes output size and exports for quick inspection.
 
 Create `src/index.ts`:
 
-```ts
+```js
 export const log = (...args) => {
   console.log(...args);
 };
@@ -91,7 +93,7 @@ Configuration is automatically inferred from fields in `package.json` mapped to 
 
 Create `build.config.ts`:
 
-```ts
+```js
 export default {
   entries: ["./src/index"],
 };
@@ -103,7 +105,7 @@ See options [here](./src/types.ts).
 
 Example:
 
-```ts
+```js
 import { defineBuildConfig } from "unbuild";
 
 export default defineBuildConfig({
@@ -129,7 +131,7 @@ export default defineBuildConfig({
 
 Or with multiple builds you can declare an array of configs:
 
-```ts
+```js
 import { defineBuildConfig } from "unbuild";
 
 export default defineBuildConfig([

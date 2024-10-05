@@ -30,7 +30,6 @@ describe("extractExportFilenames", () => {
     expect(extractExportFilenames({ require: "test" })).to.deep.equal([
       { file: "test", type: "cjs" },
     ]);
-    // @ts-ignore TODO: fix pkg-types
     expect(
       extractExportFilenames({
         require: { node: "test", other: { import: "this", require: "that" } },

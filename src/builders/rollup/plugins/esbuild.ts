@@ -1,10 +1,10 @@
 // Based on https://github.com/egoist/rollup-plugin-esbuild and nitropack fork (MIT)
-
-import { extname, relative } from "pathe";
 import type { Plugin, PluginContext } from "rollup";
-import { Loader, TransformResult, CommonOptions, transform } from "esbuild";
-import { createFilter } from "@rollup/pluginutils";
 import type { FilterPattern } from "@rollup/pluginutils";
+import type { Loader, TransformResult, CommonOptions } from "esbuild";
+import { transform } from "esbuild";
+import { extname, relative } from "pathe";
+import { createFilter } from "@rollup/pluginutils";
 
 const DefaultLoaders: { [ext: string]: Loader } = {
   ".js": "js",
@@ -35,7 +35,7 @@ export type EsbuildOptions = CommonOptions & {
 export function esbuild(options: EsbuildOptions): Plugin {
   // Extract esBuild options from additional options and apply defaults
   const {
-    include = /\.(ts|js|tsx|jsx)$/,
+    include = new RegExp(Object.keys(DefaultLoaders).join("|")),
     exclude = /node_modules/,
     loaders: loaderOptions,
     ...esbuildOptions
@@ -52,7 +52,7 @@ export function esbuild(options: EsbuildOptions): Plugin {
       }
     }
   }
-  const getLoader = (id = "") => {
+  const getLoader = (id = ""): Loader | undefined => {
     return loaders[extname(id)];
   };
 
@@ -61,7 +61,7 @@ export function esbuild(options: EsbuildOptions): Plugin {
   return {
     name: "esbuild",
 
-    async transform(code, id) {
+    async transform(code, id): Promise<null | { code: string; map: any }> {
       if (!filter(id)) {
         return null;
       }
@@ -79,15 +79,16 @@ export function esbuild(options: EsbuildOptions): Plugin {
 
       printWarnings(id, result, this);
 
-      return (
-        result.code && {
-          code: result.code,
-          map: result.map || null,
-        }
-      );
+      return {
+        code: result.code || "",
+        map: result.map || null,
+      };
     },
 
-    async renderChunk(code, { fileName }) {
+    async renderChunk(
+      code,
+      { fileName },
+    ): Promise<null | undefined | { code: string; map: any }> {
       if (!options.minify) {
         return null;
       }
@@ -104,12 +105,10 @@ export function esbuild(options: EsbuildOptions): Plugin {
         sourcefile: fileName,
         minify: true,
       });
-      if (result.code) {
-        return {
-          code: result.code,
-          map: result.map || null,
-        };
-      }
+      return {
+        code: result.code || "",
+        map: result.map || null,
+      };
     },
   };
 }
@@ -118,7 +117,7 @@ function printWarnings(
   id: string,
   result: TransformResult,
   plugin: PluginContext,
-) {
+): void {
   if (result.warnings) {
     for (const warning of result.warnings) {
       let message = "[esbuild]";
