@@ -19,7 +19,11 @@ const main = defineCommand({
     },
     config: {
       type: "string",
-      description: "The configuration file to use (defaults to ./build.config)",
+      description: [
+        "The configuration file to use relative to the current working directory.",
+        "                 Unbuild tries to read `build.config` from the build `DIR` by default.",
+        "",
+      ].join("\n"),
     },
     watch: {
       type: "boolean",
