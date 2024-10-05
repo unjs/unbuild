@@ -42,7 +42,7 @@ const main = defineCommand({
     const rootDir = resolve(process.cwd(), args.dir || ".");
     await build(rootDir, args.stub, {
       sourcemap: args.sourcemap,
-      config: args.config,
+      config: args.config ? resolve(args.config) : undefined,
       stub: args.stub,
       watch: args.watch,
       rollup: {
