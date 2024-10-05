@@ -8,8 +8,5 @@
   "exports": {
     ".": "./dist/index.mjs",
     "./nested/subpath": "./dist/nested/subpath.mjs"
-  },
-  "scripts": {
-    "build:custom": "node ../../dist/cli.mjs --config ./custom.config.ts"
   }
 }
