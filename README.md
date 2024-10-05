@@ -23,27 +23,11 @@ Integration with [mkdist](https://github.com/unjs/mkdist) for generating bundlel
 
 ### ✨ Passive watcher
 
-Stub `dist` once using [jiti](https://github.com/unjs/jiti) and you can try and link your project without needing to watch and rebuild during development. By calling the following command only once, You are able to play and test out with your library with the up-to-date code!
-
-```ts
-unbuild --stub
-```
+Stub `dist` once using `unbuild --stub` (powered by [unjs/jiti](https://github.com/unjs/jiti)) and you can try and link your project without needing to watch and rebuild during development. By calling the following command only once, You are able to play and test out with your library with the up-to-date code!
 
 ### ✍ Untype Generator
 
 Integration with [untyped](https://github.com/unjs/untyped).
-
-### 🌐 Sourcemap
-
-Support for Sourcemap.
-
-```ts
-export default {
-  // ...
-  sourcemap: true
-};
-
-```
 
 ### ✔️ Secure builds
 
@@ -173,21 +157,14 @@ export default defineBuildConfig([
 ]);
 ```
 
-## 💻 Development
-
-- Clone this repository
-- Enable [Corepack](https://github.com/nodejs/corepack) using `corepack enable` (use `npm i -g corepack` for Node.js < 16.10)
-- Install dependencies using `pnpm install`
-- Run interactive tests using `pnpm dev`
-
-## Other Troubleshooting
+## Recipes
 
 ### Decorators support
 
 In `build.config.ts`
 
 ```ts
-import { defineBuildConfig } from 'unbuild';
+import { defineBuildConfig } from "unbuild";
 
 export default defineBuildConfig({
   rollup: {
@@ -201,6 +178,23 @@ export default defineBuildConfig({
   },
 });
 ```
+
+### Generate sourcemaps
+
+```ts
+import { defineBuildConfig } from "unbuild";
+
+export default defineBuildConfig({
+  sourcemap: true,
+});
+```
+
+## 💻 Development
+
+- Clone this repository
+- Enable [Corepack](https://github.com/nodejs/corepack) using `corepack enable` (use `npm i -g corepack` for Node.js < 16.10)
+- Install dependencies using `pnpm install`
+- Run interactive tests using `pnpm dev`
 
 ## License
 
