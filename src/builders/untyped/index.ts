@@ -39,13 +39,19 @@ export async function typesBuild(ctx: BuildContext): Promise<void> {
     const untypedJiti = createJiti(ctx.options.rootDir, options.jiti);
 
     const distDir = entry.outDir!;
-    const srcConfig =
+
+    let rawSchema =
       ((await untypedJiti.import(resolve(ctx.options.rootDir, entry.input), {
         try: true,
       })) as InputObject) || ({} as InputObject);
 
+    const rawSchemaKeys = Object.keys(rawSchema);
+    if (rawSchemaKeys.length === 1 && rawSchemaKeys[0] === "default") {
+      rawSchema = (rawSchema as any).default;
+    }
+
     const defaults = entry.defaults || {};
-    const schema = await resolveSchema(srcConfig, defaults);
+    const schema = await resolveSchema(rawSchema, defaults);
 
     await ctx.hooks.callHook("untyped:entry:schema", ctx, entry, schema);
 
