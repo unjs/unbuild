@@ -30,9 +30,9 @@ export async function build(
   // Create jiti instance for loading initial config
   const jiti = createJiti(rootDir);
 
-  let _buildConfig: BuildConfig | BuildConfig[] =
+  const _buildConfig: BuildConfig | BuildConfig[] =
     (await jiti.import("./build.config", { try: true, default: true })) || {};
-  _buildConfig = (_buildConfig as any).default || _buildConfig;
+
   const buildConfigs = (
     Array.isArray(_buildConfig) ? _buildConfig : [_buildConfig]
   ).filter(Boolean);
