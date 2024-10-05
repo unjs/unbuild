@@ -73,6 +73,7 @@ export async function typesBuild(ctx: BuildContext): Promise<void> {
     };
     await ctx.hooks.callHook("untyped:entry:outputs", ctx, entry, outputs);
     for (const output of Object.values(outputs)) {
+      if (!output) continue; // declaration is optional
       await writeFile(
         resolve(distDir, output.fileName),
         output.contents,
