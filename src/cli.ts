@@ -40,24 +40,17 @@ const main = defineCommand({
   },
   async run({ args }) {
     const rootDir = resolve(process.cwd(), args.dir || ".");
-    const configPath = args.config
-      ? resolve(process.cwd(), args.config)
-      : undefined;
-    await build(
-      rootDir,
-      args.stub,
-      {
-        sourcemap: args.sourcemap,
-        stub: args.stub,
-        watch: args.watch,
-        rollup: {
-          esbuild: {
-            minify: args.minify,
-          },
+    await build(rootDir, args.stub, {
+      sourcemap: args.sourcemap,
+      config: args.config,
+      stub: args.stub,
+      watch: args.watch,
+      rollup: {
+        esbuild: {
+          minify: args.minify,
         },
       },
-      configPath,
-    ).catch((error) => {
+    }).catch((error) => {
       consola.error(`Error building ${rootDir}: ${error}`);
       throw error;
     });

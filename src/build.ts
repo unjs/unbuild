@@ -22,8 +22,7 @@ import { createJiti } from "jiti";
 export async function build(
   rootDir: string,
   stub: boolean,
-  inputConfig: BuildConfig = {},
-  configPath?: string,
+  inputConfig: BuildConfig & { config?: string } = {},
 ): Promise<void> {
   // Determine rootDir
   rootDir = resolve(process.cwd(), rootDir || ".");
@@ -32,7 +31,7 @@ export async function build(
   const jiti = createJiti(rootDir);
 
   const _buildConfig: BuildConfig | BuildConfig[] =
-    (await jiti.import(configPath ?? "./build.config", {
+    (await jiti.import(inputConfig?.config || "./build.config", {
       try: true,
       default: true,
     })) || {};
