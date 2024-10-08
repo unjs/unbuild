@@ -11,7 +11,7 @@
 
 ### 📦 Optimized bundler
 
-Robust [rollup](https://rollupjs.org) based bundler that supports typescript and generates commonjs and module formats + type declarations.
+Robust [rollup](https://rollupjs.org) based bundler that supports TypeScript and generates commonjs and module formats + type declarations.
 
 ### 🪄 Automated config
 
