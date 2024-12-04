@@ -1,24 +1,16 @@
 import type { PackageJson } from "pkg-types";
 import type { Hookable } from "hookable";
-import type {
-  RollupOptions as _RollupOptions,
-  RollupBuild,
-  OutputOptions,
-  WatcherOptions,
-  InputPluginOption,
-} from "rollup";
-import type { MkdistOptions } from "mkdist";
-import type { Schema } from "untyped";
-import type { RollupReplaceOptions } from "@rollup/plugin-replace";
-import type { RollupAliasOptions } from "@rollup/plugin-alias";
-import type { RollupNodeResolveOptions } from "@rollup/plugin-node-resolve";
-import type { RollupJsonOptions } from "@rollup/plugin-json";
-import type { Options as RollupDtsOptions } from "rollup-plugin-dts";
-import type commonjs from "@rollup/plugin-commonjs";
+import type { RollupOptions as _RollupOptions, WatcherOptions } from "rollup";
 import type { Jiti, JitiOptions } from "jiti";
-import type { EsbuildOptions } from "./builders/rollup/plugins/esbuild";
-
-export type RollupCommonJSOptions = Parameters<typeof commonjs>[0] & {};
+import type {
+  RollupBuildEntry,
+  RollupBuildOptions,
+  RollupHooks,
+  RollupOptions,
+} from "./builders/rollup/types";
+import type { MkdistBuildEntry, MkdistHooks } from "./builders/mkdist/types";
+import type { CopyBuildEntry, CopyHooks } from "./builders/copy/types";
+import type { UntypedBuildEntry, UntypedHooks } from "./builders/untyped/types";
 
 export interface BaseBuildEntry {
   builder?: "untyped" | "rollup" | "mkdist" | "copy";
@@ -28,24 +20,19 @@ export interface BaseBuildEntry {
   declaration?: "compatible" | "node16" | boolean;
 }
 
-export interface UntypedBuildEntry extends BaseBuildEntry {
-  builder: "untyped";
-  defaults?: Record<string, any>;
-}
-
-export interface RollupBuildEntry extends BaseBuildEntry {
-  builder: "rollup";
-}
-
-type _BaseAndMkdist = BaseBuildEntry & MkdistOptions;
-export interface MkdistBuildEntry extends _BaseAndMkdist {
-  builder: "mkdist";
-}
-
-export interface CopyBuildEntry extends BaseBuildEntry {
-  builder: "copy";
-  pattern?: string | string[];
-}
+/** Bundler types */
+export type {
+  RollupBuildEntry,
+  RollupBuildOptions,
+  RollupOptions,
+} from "./builders/rollup/types";
+export type { MkdistBuildEntry } from "./builders/mkdist/types";
+export type { CopyBuildEntry } from "./builders/copy/types";
+export type {
+  UntypedBuildEntry,
+  UntypedOutput,
+  UntypedOutputs,
+} from "./builders/untyped/types";
 
 export type BuildEntry =
   | BaseBuildEntry
@@ -53,89 +40,6 @@ export type BuildEntry =
   | UntypedBuildEntry
   | MkdistBuildEntry
   | CopyBuildEntry;
-
-export interface RollupBuildOptions {
-  /**
-   * If enabled, unbuild generates a CommonJS build in addition to the ESM build.
-   */
-  emitCJS?: boolean;
-
-  /**
-   * Enable experimental active watcher
-   *
-   * @experimental
-   */
-  watch?: boolean;
-
-  /**
-   * If enabled, unbuild generates CommonJS polyfills for ESM builds.
-   */
-  cjsBridge?: boolean;
-
-  /**
-   * Preserve dynamic imports as-is
-   */
-  preserveDynamicImports?: boolean;
-
-  /**
-   * Inline dependencies nor explicitly set in "dependencies" or "peerDependencies" or as marked externals to the bundle.
-   */
-  inlineDependencies?: boolean;
-
-  /**
-   * Rollup [Output Options](https://rollupjs.org/configuration-options)
-   */
-  output?: OutputOptions;
-
-  /**
-   * Replace plugin options
-   * Set to `false` to disable the plugin.
-   * Read more: [@rollup/plugin-replace](https://www.npmjs.com/package/@rollup/plugin-replace)
-   */
-  replace: RollupReplaceOptions | false;
-
-  /**
-   * Alias plugin options
-   * Set to `false` to disable the plugin.
-   * Read more: [@rollup/plugin-alias](https://www.npmjs.com/package/@rollup/plugin-alias)
-   */
-  alias: RollupAliasOptions | false;
-
-  /**
-   * Resolve plugin options
-   * Set to `false` to disable the plugin.
-   * Read more: [@rollup/plugin-node-resolve](https://www.npmjs.com/package/@rollup/plugin-node-resolve)
-   */
-  resolve: RollupNodeResolveOptions | false;
-
-  /**
-   * JSON plugin options
-   * Set to `false` to disable the plugin.
-   * Read more: [@rollup/plugin-json](https://www.npmjs.com/package/@rollup/plugin-json)
-   */
-  json: RollupJsonOptions | false;
-
-  /**
-   * ESBuild plugin options
-   * Set to `false` to disable the plugin.
-   * Read more: [esbuild](https://www.npmjs.com/package/esbuild)
-   */
-  esbuild: EsbuildOptions | false;
-
-  /**
-   * CommonJS plugin options
-   * Set to `false` to disable the plugin.
-   * Read more: [@rollup/plugin-commonjs](https://www.npmjs.com/package/@rollup/plugin-commonjs)
-   */
-  commonjs: RollupCommonJSOptions | false;
-
-  /**
-   * DTS plugin options
-   * Set to `false` to disable the plugin.
-   * Read more: [rollup-plugin-dts](https://www.npmjs.com/package/rollup-plugin-dts)
-   */
-  dts: RollupDtsOptions;
-}
 
 export interface BuildOptions {
   /**
@@ -282,87 +186,14 @@ export interface BuildConfig
   hooks?: Partial<BuildHooks>;
 }
 
-export interface UntypedOutput {
-  fileName: string;
-  contents: string;
-}
-
-export interface UntypedOutputs {
-  markdown: UntypedOutput;
-  schema: UntypedOutput;
-  defaults: UntypedOutput;
-  declaration?: UntypedOutput;
-}
-
-export interface RollupOptions extends _RollupOptions {
-  plugins: InputPluginOption[];
-}
-
-export interface BuildHooks {
+export interface BuildHooks
+  extends CopyHooks,
+    UntypedHooks,
+    MkdistHooks,
+    RollupHooks {
   "build:prepare": (ctx: BuildContext) => void | Promise<void>;
   "build:before": (ctx: BuildContext) => void | Promise<void>;
   "build:done": (ctx: BuildContext) => void | Promise<void>;
-
-  "rollup:options": (
-    ctx: BuildContext,
-    options: RollupOptions,
-  ) => void | Promise<void>;
-  "rollup:build": (
-    ctx: BuildContext,
-    build: RollupBuild,
-  ) => void | Promise<void>;
-  "rollup:dts:options": (
-    ctx: BuildContext,
-    options: RollupOptions,
-  ) => void | Promise<void>;
-  "rollup:dts:build": (
-    ctx: BuildContext,
-    build: RollupBuild,
-  ) => void | Promise<void>;
-  "rollup:done": (ctx: BuildContext) => void | Promise<void>;
-
-  "mkdist:entries": (
-    ctx: BuildContext,
-    entries: MkdistBuildEntry[],
-  ) => void | Promise<void>;
-  "mkdist:entry:options": (
-    ctx: BuildContext,
-    entry: MkdistBuildEntry,
-    options: MkdistOptions,
-  ) => void | Promise<void>;
-  "mkdist:entry:build": (
-    ctx: BuildContext,
-    entry: MkdistBuildEntry,
-    output: { writtenFiles: string[] },
-  ) => void | Promise<void>;
-  "mkdist:done": (ctx: BuildContext) => void | Promise<void>;
-
-  "untyped:entries": (
-    ctx: BuildContext,
-    entries: UntypedBuildEntry[],
-  ) => void | Promise<void>;
-  "untyped:entry:options": (
-    ctx: BuildContext,
-    entry: UntypedBuildEntry,
-    options: any,
-  ) => void | Promise<void>;
-  "untyped:entry:schema": (
-    ctx: BuildContext,
-    entry: UntypedBuildEntry,
-    schema: Schema,
-  ) => void | Promise<void>;
-  "untyped:entry:outputs": (
-    ctx: BuildContext,
-    entry: UntypedBuildEntry,
-    outputs: UntypedOutputs,
-  ) => void | Promise<void>;
-  "untyped:done": (ctx: BuildContext) => void | Promise<void>;
-
-  "copy:entries": (
-    ctx: BuildContext,
-    entries: CopyBuildEntry[],
-  ) => void | Promise<void>;
-  "copy:done": (ctx: BuildContext) => void | Promise<void>;
 }
 
 export function defineBuildConfig(
