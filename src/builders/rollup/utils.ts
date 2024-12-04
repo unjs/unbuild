@@ -1,4 +1,5 @@
-import type { PreRenderedChunk } from "rollup";
+import type { PreRenderedChunk as _RollupPreRenderedChunk } from "rollup";
+import type { PreRenderedChunk as _RolldownPreRenderedChunk } from "rolldown";
 import type { BuildContext } from "../../types";
 
 export const DEFAULT_EXTENSIONS: string[] = [
@@ -55,7 +56,7 @@ export function resolveAlias(
 
 export function getChunkFilename(
   ctx: BuildContext,
-  chunk: PreRenderedChunk,
+  chunk: _RollupPreRenderedChunk | _RolldownPreRenderedChunk,
   ext: string,
 ): string {
   if (chunk.isDynamicEntry) {

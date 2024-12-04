@@ -64,6 +64,7 @@
     "eslint": "^9.14.0",
     "eslint-config-unjs": "^0.4.1",
     "prettier": "^3.3.3",
+    "rolldown": "^0.15.0",
     "typescript": "^5.6.3",
     "vitest": "^2.1.4"
   },

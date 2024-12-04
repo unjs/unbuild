@@ -21,7 +21,7 @@ import type { EsbuildOptions } from "./builders/rollup/plugins/esbuild";
 export type RollupCommonJSOptions = Parameters<typeof commonjs>[0] & {};
 
 export interface BaseBuildEntry {
-  builder?: "untyped" | "rollup" | "mkdist" | "copy";
+  builder?: "untyped" | "rollup" | "mkdist" | "copy" | "rolldown";
   input: string;
   name?: string;
   outDir?: string;
@@ -42,6 +42,10 @@ export interface MkdistBuildEntry extends _BaseAndMkdist {
   builder: "mkdist";
 }
 
+export interface RolldownBuildEntry extends BaseBuildEntry {
+  bundler: "rolldown";
+}
+
 export interface CopyBuildEntry extends BaseBuildEntry {
   builder: "copy";
   pattern?: string | string[];
@@ -52,7 +56,8 @@ export type BuildEntry =
   | RollupBuildEntry
   | UntypedBuildEntry
   | MkdistBuildEntry
-  | CopyBuildEntry;
+  | CopyBuildEntry
+  | RolldownBuildEntry;
 
 export interface RollupBuildOptions {
   /**
@@ -259,6 +264,8 @@ export type BuildPreset = BuildConfig | (() => BuildConfig);
 
 type DeepPartial<T> = { [P in keyof T]?: DeepPartial<T[P]> };
 
+export type ExperimentalKeys = "rolldown";
+
 /**
  * In addition to basic `entries`, `presets`, and `hooks`,
  * there are also all the properties of `BuildOptions` except for BuildOptions's `entries`.
@@ -280,6 +287,13 @@ export interface BuildConfig
    * This configuration allows you to insert custom logic during the build process to meet specific requirements or perform additional operations.
    */
   hooks?: Partial<BuildHooks>;
+
+  /**
+   * Specify experimental features.
+   */
+  experimental?: {
+    [K in ExperimentalKeys]?: boolean;
+  }
 }
 
 export interface UntypedOutput {

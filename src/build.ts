@@ -16,6 +16,7 @@ import { validatePackage, validateDependencies } from "./validate";
 import { rollupBuild } from "./builders/rollup";
 import { typesBuild } from "./builders/untyped";
 import { mkdistBuild } from "./builders/mkdist";
+import { rolldownBuild } from "./builders/rolldown";
 import { copyBuild } from "./builders/copy";
 import { createJiti } from "jiti";
 
@@ -211,7 +212,13 @@ async function _build(
     }
 
     if (!entry.builder) {
-      entry.builder = entry.input.endsWith("/") ? "mkdist" : "rollup";
+      if (entry.input.endsWith("/")) {
+        entry.builder = "mkdist";
+      } else if (buildConfig?.experimental?.rolldown) {
+        entry.builder = "rolldown";
+      } else {
+        entry.builder = "rollup";
+      }
     }
 
     if (options.declaration !== undefined && entry.declaration === undefined) {
@@ -280,8 +287,15 @@ async function _build(
   // mkdist
   await mkdistBuild(ctx);
 
-  // rollup
-  await rollupBuild(ctx);
+  // rollup - avoid to start proces if rolldown is enabled
+  if (!buildConfig?.experimental?.rolldown) {
+    await rollupBuild(ctx);
+  }
+
+  // rolldown
+  if (buildConfig?.experimental?.rolldown) {
+    await rolldownBuild(ctx);
+  }
 
   // copy
   await copyBuild(ctx);
