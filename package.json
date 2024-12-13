@@ -43,7 +43,7 @@
     "hookable": "^5.5.3",
     "jiti": "^2.4.1",
     "magic-string": "^0.30.15",
-    "mkdist": "^2.0.0",
+    "mkdist": "^2.0.1",
     "mlly": "^1.7.3",
     "pathe": "^1.1.2",
     "pkg-types": "^1.2.1",

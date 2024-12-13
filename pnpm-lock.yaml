@@ -48,8 +48,8 @@ importers:
         specifier: ^0.30.15
         version: 0.30.15
       mkdist:
-        specifier: ^2.0.0
-        version: 2.0.0(typescript@5.7.2)
+        specifier: ^2.0.1
+        version: 2.0.1(typescript@5.7.2)
       mlly:
         specifier: ^1.7.3
         version: 1.7.3
@@ -1789,8 +1789,8 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
-  mkdist@2.0.0:
-    resolution: {integrity: sha512-Py9YaBIg2ch1qV6erN2cf6XcAvZC7rfpV/HPNDlh2YxwgEek9ZCLYbGzFbOksXukNzSIkiYl6z3Km4RdIyA4pA==}
+  mkdist@2.0.1:
+    resolution: {integrity: sha512-inFY4oabZuwSS+R5NsswuEtSmksxPffLwTHufANmxJ1UL7oYnRZNb7WVZSkmrJMoPnyZK9Ru7vzDqGpoDdmrSw==}
     hasBin: true
     peerDependencies:
       sass: ^1.83.0
@@ -4182,7 +4182,7 @@ snapshots:
 
   mkdirp@1.0.4: {}
 
-  mkdist@2.0.0(typescript@5.7.2):
+  mkdist@2.0.1(typescript@5.7.2):
     dependencies:
       autoprefixer: 10.4.20(postcss@8.4.49)
       citty: 0.1.6
