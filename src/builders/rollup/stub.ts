@@ -145,7 +145,7 @@ export async function rollupStub(ctx: BuildContext): Promise<void> {
             resolvedEntry,
           )});`,
           hasDefaultExport
-            ? "\nexport default _module.default || _module;"
+            ? "\nexport default _module?.default ?? _module;"
             : "",
           ...namedExports
             .filter((name) => name !== "default")
