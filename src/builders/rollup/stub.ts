@@ -144,7 +144,9 @@ export async function rollupStub(ctx: BuildContext): Promise<void> {
           `const _module = await jiti.import(${JSON.stringify(
             resolvedEntry,
           )});`,
-          hasDefaultExport ? "\nexport default _module;" : "",
+          hasDefaultExport
+            ? "\nexport default _module?.default ?? _module;"
+            : "",
           ...namedExports
             .filter((name) => name !== "default")
             .map((name) => `export const ${name} = _module.${name};`),
