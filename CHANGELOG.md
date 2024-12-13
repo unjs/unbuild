@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v3.0.1
+
+[compare changes](https://github.com/unjs/unbuild/compare/v3.0.0...v3.0.1)
+
+### 🩹 Fixes
+
+- **rollup:** De-default default export from stub ([#455](https://github.com/unjs/unbuild/pull/455))
+
+### 🏡 Chore
+
+- Update changeloge.md ([577b841](https://github.com/unjs/unbuild/commit/577b841))
+
+### ❤️ Contributors
+
+- Daniel Roe ([@danielroe](http://github.com/danielroe))
+- Pooya Parsa ([@pi0](http://github.com/pi0))
+
 ## v3.0.0
 
 See [github release notes](https://github.com/unjs/unbuild/releases/edit/v3.0.0).
