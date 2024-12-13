@@ -2,6 +2,43 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v3.0.0
+
+[compare changes](https://github.com/unjs/unbuild/compare/v3.0.0-rc.10...v3.0.0)
+
+### 🩹 Fixes
+
+- **untyped:** Use schema module default export if is the only export ([cc26726](https://github.com/unjs/unbuild/commit/cc26726))
+
+### 💅 Refactors
+
+- Split types for bundlers ([#453](https://github.com/unjs/unbuild/pull/453))
+
+### 📖 Documentation
+
+- Fix formatting ([#441](https://github.com/unjs/unbuild/pull/441))
+
+### 📦 Build
+
+- ⚠️  Mkdist v2 ([024344b](https://github.com/unjs/unbuild/commit/024344b))
+
+### 🏡 Chore
+
+- **release:** V3.0.0-rc.11 ([1b93d43](https://github.com/unjs/unbuild/commit/1b93d43))
+- Update deps ([a44a716](https://github.com/unjs/unbuild/commit/a44a716))
+- Update mkdist ([40ae3c5](https://github.com/unjs/unbuild/commit/40ae3c5))
+- Update release script ([214bd88](https://github.com/unjs/unbuild/commit/214bd88))
+
+#### ⚠️ Breaking Changes
+
+- ⚠️  Mkdist v2 ([024344b](https://github.com/unjs/unbuild/commit/024344b))
+
+### ❤️ Contributors
+
+- Pooya Parsa ([@pi0](http://github.com/pi0))
+- @beer ([@iiio2](http://github.com/iiio2))
+- Oskar Lebuda ([@OskarLebuda](http://github.com/OskarLebuda))
+
 ## v3.0.0-rc.11
 
 [compare changes](https://github.com/unjs/unbuild/compare/v3.0.0-rc.10...v3.0.0-rc.11)
