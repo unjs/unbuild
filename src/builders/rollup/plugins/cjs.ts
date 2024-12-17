@@ -21,7 +21,7 @@ export function fixCJSExportTypePlugin(): Plugin {
     renderChunk(code, info, opts) {
       if (
         info.type !== "chunk" ||
-        !info.fileName.endsWith('.d.cts') ||
+        !info.fileName.endsWith(".d.cts") ||
         !info.isEntry ||
         info.exports?.length !== 1 ||
         info.exports[0] !== "default"
