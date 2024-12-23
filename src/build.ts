@@ -274,17 +274,16 @@ async function _build(
   //   await symlink(resolve(ctx.rootDir), nodemodulesDir).catch(() => {})
   // }
 
-  // untyped
-  await typesBuild(ctx);
-
-  // mkdist
-  await mkdistBuild(ctx);
-
-  // rollup
-  await rollupBuild(ctx);
-
-  // copy
-  await copyBuild(ctx);
+  await Promise.all([
+    // untyped
+    typesBuild(ctx),
+    // mkdist
+    mkdistBuild(ctx),
+    // rollup
+    rollupBuild(ctx),
+    // copy
+    copyBuild(ctx),
+  ]);
 
   // Skip rest for stub and watch mode
   if (options.stub || options.watch) {
