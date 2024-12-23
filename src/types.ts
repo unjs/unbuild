@@ -5,8 +5,7 @@ import type { Jiti, JitiOptions } from "jiti";
 import type {
   RollupBuildEntry,
   RollupBuildOptions,
-  RollupHooks,
-  RollupOptions,
+  RollupHooks
 } from "./builders/rollup/types";
 import type { MkdistBuildEntry, MkdistHooks } from "./builders/mkdist/types";
 import type { CopyBuildEntry, CopyHooks } from "./builders/copy/types";

@@ -9,7 +9,6 @@ import { defu } from "defu";
 import { createHooks } from "hookable";
 import prettyBytes from "pretty-bytes";
 import { glob } from "tinyglobby";
-import type { RollupOptions } from "rollup";
 import { dumpObject, rmdir, resolvePreset, removeExtension } from "./utils";
 import type { BuildContext, BuildConfig, BuildOptions } from "./types";
 import { validatePackage, validateDependencies } from "./validate";
