@@ -21,6 +21,6 @@
     "build": "unbuild"
   },
   "devDependencies": {
-    "unbuild": "^2.0.0"
+    "unbuild": "workspace:*"
   }
 }
