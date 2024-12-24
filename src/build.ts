@@ -156,7 +156,7 @@ async function _build(
           respectExternal: true,
         },
       },
-      parallel: false
+      parallel: false,
     },
   ) as BuildOptions;
 

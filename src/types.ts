@@ -141,9 +141,9 @@ export interface BuildOptions {
   rollup: RollupBuildOptions;
 
   /**
-  * @experimental
-  * Run build in parallel
-  */
+   * @experimental
+   * Run build in parallel
+   */
   parallel: boolean;
 }
 
