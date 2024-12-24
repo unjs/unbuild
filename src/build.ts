@@ -156,6 +156,7 @@ async function _build(
           respectExternal: true,
         },
       },
+      parallel: false
     },
   ) as BuildOptions;
 
@@ -274,7 +275,7 @@ async function _build(
   //   await symlink(resolve(ctx.rootDir), nodemodulesDir).catch(() => {})
   // }
 
-  await Promise.all([
+  const buildTasks = [
     // untyped
     typesBuild(ctx),
     // mkdist
@@ -283,7 +284,16 @@ async function _build(
     rollupBuild(ctx),
     // copy
     copyBuild(ctx),
-  ]);
+  ];
+
+  // Run build tasks in parallel
+  if (options.parallel) {
+    await Promise.all(buildTasks);
+  } else {
+    for (const task of buildTasks) {
+      await task;
+    }
+  }
 
   // Skip rest for stub and watch mode
   if (options.stub || options.watch) {

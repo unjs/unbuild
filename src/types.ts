@@ -139,6 +139,12 @@ export interface BuildOptions {
    * [Rollup](https://rollupjs.org/configuration-options) Build Options
    */
   rollup: RollupBuildOptions;
+
+  /**
+  * @experimental
+  * Run build in parallel
+  */
+  parallel: boolean;
 }
 
 export interface BuildContext {

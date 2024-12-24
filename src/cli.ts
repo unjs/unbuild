@@ -41,6 +41,10 @@ const main = defineCommand({
       type: "boolean",
       description: "Generate sourcemaps (experimental)",
     },
+    parallel: {
+      type: "boolean",
+      description: "Run build in parallel (experimental)",
+    },
   },
   async run({ args }) {
     const rootDir = resolve(process.cwd(), args.dir || ".");
