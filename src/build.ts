@@ -277,21 +277,23 @@ async function _build(
 
   const buildTasks = [
     // untyped
-    typesBuild(ctx),
+    (): Promise<void> => typesBuild(ctx),
     // mkdist
-    mkdistBuild(ctx),
+    (): Promise<void> => mkdistBuild(ctx),
     // rollup
-    rollupBuild(ctx),
+    (): Promise<void> => rollupBuild(ctx),
     // copy
-    copyBuild(ctx),
+    (): Promise<void> => copyBuild(ctx),
   ];
 
-  // Run build tasks in parallel
+  // Run build tasks
   if (options.parallel) {
-    await Promise.all(buildTasks);
+    // Start all tasks in parallel
+    await Promise.all(buildTasks.map((task) => task()));
   } else {
+    // Run tasks sequentially
     for (const task of buildTasks) {
-      await task;
+      await task();
     }
   }
 
