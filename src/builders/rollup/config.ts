@@ -110,6 +110,7 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
       ctx.options.rollup.resolve &&
         nodeResolve({
           extensions: DEFAULT_EXTENSIONS,
+          exportConditions: ["production"],
           ...ctx.options.rollup.resolve,
         }),
 
