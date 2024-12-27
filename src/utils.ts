@@ -77,8 +77,9 @@ export async function resolvePreset(
     preset = autoPreset;
   } else if (typeof preset === "string") {
     preset =
-      (await createJiti(rootDir, { interopDefault: true }).import(preset)) ||
-      {};
+      (await createJiti(rootDir, { interopDefault: true }).import(preset, {
+        default: true,
+      })) || {};
   }
   if (typeof preset === "function") {
     preset = preset();
