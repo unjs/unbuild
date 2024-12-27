@@ -167,7 +167,9 @@ export function inferPkgExternals(pkg: PackageJson): (string | RegExp)[] {
   const externals: (string | RegExp)[] = [
     ...Object.keys(pkg.dependencies || {}),
     ...Object.keys(pkg.peerDependencies || {}),
-    ...Object.keys(pkg.devDependencies || {}),
+    ...Object.keys(pkg.devDependencies || {}).filter((dep) =>
+      dep.startsWith("@types/"),
+    ),
     ...Object.keys(pkg.optionalDependencies || {}),
   ];
 
