@@ -9,7 +9,13 @@ import { defu } from "defu";
 import { createHooks } from "hookable";
 import prettyBytes from "pretty-bytes";
 import { glob } from "tinyglobby";
-import { dumpObject, rmdir, resolvePreset, removeExtension } from "./utils";
+import {
+  dumpObject,
+  rmdir,
+  resolvePreset,
+  removeExtension,
+  inferPkgExternals,
+} from "./utils";
 import type { BuildContext, BuildConfig, BuildOptions } from "./types";
 import { validatePackage, validateDependencies } from "./validate";
 import { rollupBuild } from "./builders/rollup";
@@ -228,7 +234,8 @@ async function _build(
   options.devDependencies = Object.keys(pkg.devDependencies || {});
 
   // Add all dependencies as externals
-  options.externals.push(...options.dependencies, ...options.peerDependencies);
+  options.externals.push(...inferPkgExternals(pkg));
+  options.externals = [...new Set(options.externals)];
 
   // Call build:before
   await ctx.hooks.callHook("build:before", ctx);

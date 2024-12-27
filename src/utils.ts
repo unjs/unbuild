@@ -162,3 +162,41 @@ export function arrayIncludes(
 export function removeExtension(filename: string): string {
   return filename.replace(/\.(js|mjs|cjs|ts|mts|cts|json|jsx|tsx)$/, "");
 }
+
+export function inferPkgExternals(pkg: PackageJson): (string | RegExp)[] {
+  const externals: (string | RegExp)[] = [
+    ...Object.keys(pkg.dependencies || {}),
+    ...Object.keys(pkg.peerDependencies || {}),
+    ...Object.keys(pkg.devDependencies || {}),
+    ...Object.keys(pkg.optionalDependencies || {}),
+  ];
+
+  if (pkg.name) {
+    externals.push(pkg.name);
+    if (pkg.exports) {
+      for (const subpath of Object.keys(pkg.exports)) {
+        if (subpath.startsWith("./")) {
+          externals.push(pathToRegex(`${pkg.name}/${subpath.slice(2)}`));
+        }
+      }
+    }
+  }
+
+  if (pkg.imports) {
+    for (const importName of Object.keys(pkg.imports)) {
+      if (importName.startsWith("#")) {
+        externals.push(pathToRegex(importName));
+      }
+    }
+  }
+
+  return [...new Set(externals)];
+}
+
+function pathToRegex(path: string): string | RegExp {
+  return path.includes("*")
+    ? new RegExp(
+        `^${path.replace(/\./g, String.raw`\.`).replace(/\*/g, ".*")}$`,
+      )
+    : path;
+}

@@ -3,6 +3,7 @@ import {
   arrayIncludes,
   extractExportFilenames,
   inferExportType,
+  inferPkgExternals,
 } from "../src/utils";
 
 describe("inferExportType", () => {
@@ -50,5 +51,40 @@ describe("arrayIncludes", () => {
   it("handles regular expressions", () => {
     expect(arrayIncludes([/t1$/, "test2"], "test1")).to.eq(true);
     expect(arrayIncludes([/t3$/, "test2"], "test1")).to.eq(false);
+  });
+});
+
+describe("inferPkgExternals", () => {
+  it("infers externals from package.json", () => {
+    expect(
+      inferPkgExternals({
+        name: "test",
+        dependencies: { react: "17.0.0" },
+        peerDependencies: { "react-dom": "17.0.0" },
+        devDependencies: { "@types/react": "17.0.0" },
+        optionalDependencies: { test: "1.0.0", optional: "1.0.0" },
+        exports: {
+          ".": "index.js",
+          "./extra/utils": "utils.js",
+          "./drivers/*.js": "drivers/*.js",
+          invalid: "invalid.js",
+        },
+        imports: {
+          "#*": "src/*",
+          "#test": "test.js",
+          invalid: "invalid.js",
+        },
+      }),
+    ).to.deep.equal([
+      "react",
+      "react-dom",
+      "@types/react",
+      "test",
+      "optional",
+      "test/extra/utils",
+      /^test\/drivers\/.*\.js$/,
+      /^#.*$/,
+      "#test",
+    ]);
   });
 });
