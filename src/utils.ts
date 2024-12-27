@@ -198,6 +198,6 @@ function pathToRegex(path: string): string | RegExp {
     return path;
   }
   return new RegExp(
-    path.replace(/\./g, String.raw`\.`).replace(/\*/g, ".*") + "$",
+    `^${path.replace(/\./g, String.raw`\.`).replace(/\*/g, ".*")}$`,
   );
 }

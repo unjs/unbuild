@@ -82,8 +82,8 @@ describe("inferPkgExternals", () => {
       "test",
       "optional",
       "test/extra/utils",
-      /test\/drivers\/.*\.js$/,
-      /#.*$/,
+      /^test\/drivers\/.*\.js$/,
+      /^#.*$/,
       "#test",
     ]);
   });
