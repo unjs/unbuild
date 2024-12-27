@@ -194,10 +194,9 @@ export function inferPkgExternals(pkg: PackageJson): (string | RegExp)[] {
 }
 
 function pathToRegex(path: string): string | RegExp {
-  if (!path.includes("*")) {
-    return path;
-  }
-  return new RegExp(
-    `^${path.replace(/\./g, String.raw`\.`).replace(/\*/g, ".*")}$`,
-  );
+  return path.includes("*")
+    ? new RegExp(
+        `^${path.replace(/\./g, String.raw`\.`).replace(/\*/g, ".*")}$`,
+      )
+    : path;
 }
