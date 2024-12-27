@@ -141,7 +141,7 @@ export interface BuildOptions {
   rollup: RollupBuildOptions;
 
   /**
-   * Run different kinds of builds (untyped, mkdist, rollup, copy) in parallel
+   * Run different types of builds (untyped, mkdist, Rollup, copy) simultaneously.
    */
   parallel: boolean;
 }

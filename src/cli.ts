@@ -43,7 +43,8 @@ const main = defineCommand({
     },
     parallel: {
       type: "boolean",
-      description: "Run build in parallel (experimental)",
+      description:
+        "Run different types of builds (untyped, mkdist, Rollup, copy) simultaneously.",
     },
   },
   async run({ args }) {
