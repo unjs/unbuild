@@ -155,6 +155,7 @@ async function _build(
           respectExternal: true,
         },
       },
+      parallel: false,
     },
   ) as BuildOptions;
 
@@ -273,17 +274,20 @@ async function _build(
   //   await symlink(resolve(ctx.rootDir), nodemodulesDir).catch(() => {})
   // }
 
-  // untyped
-  await typesBuild(ctx);
+  const buildTasks = [
+    typesBuild, // untyped
+    mkdistBuild, // mkdist
+    rollupBuild, // rollup
+    copyBuild, // copy
+  ] as const;
 
-  // mkdist
-  await mkdistBuild(ctx);
-
-  // rollup
-  await rollupBuild(ctx);
-
-  // copy
-  await copyBuild(ctx);
+  if (options.parallel) {
+    await Promise.all(buildTasks.map((task) => task(ctx)));
+  } else {
+    for (const task of buildTasks) {
+      await task(ctx);
+    }
+  }
 
   // Skip rest for stub and watch mode
   if (options.stub || options.watch) {

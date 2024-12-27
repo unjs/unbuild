@@ -138,6 +138,11 @@ export interface BuildOptions {
    * [Rollup](https://rollupjs.org/configuration-options) Build Options
    */
   rollup: RollupBuildOptions;
+
+  /**
+   * Run different types of builds (untyped, mkdist, Rollup, copy) simultaneously.
+   */
+  parallel: boolean;
 }
 
 export interface BuildContext {
