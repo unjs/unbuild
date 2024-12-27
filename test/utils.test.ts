@@ -61,7 +61,7 @@ describe("inferPkgExternals", () => {
         name: "test",
         dependencies: { react: "17.0.0" },
         peerDependencies: { "react-dom": "17.0.0" },
-        devDependencies: { "@types/react": "17.0.0" },
+        devDependencies: { "@types/react": "17.0.0", webpack: "*" },
         optionalDependencies: { test: "1.0.0", optional: "1.0.0" },
         exports: {
           ".": "index.js",
