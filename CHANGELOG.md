@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v3.1.0
+
+[compare changes](https://github.com/unjs/unbuild/compare/v3.0.1...v3.1.0)
+
+### 🚀 Enhancements
+
+- Support parallel builds ([af19b1b](https://github.com/unjs/unbuild/commit/af19b1b))
+- Infer externals from package `name`, `exports` and `imports` ([#469](https://github.com/unjs/unbuild/pull/469))
+- **rollup:** Resolve with `production` condition ([#470](https://github.com/unjs/unbuild/pull/470))
+
+### 🩹 Fixes
+
+- Resolve preset on directory ([#465](https://github.com/unjs/unbuild/pull/465))
+- Only externalize `@types/` from `devDependencies` ([#471](https://github.com/unjs/unbuild/pull/471))
+
+### 🏡 Chore
+
+- Remove unused imports ([#463](https://github.com/unjs/unbuild/pull/463))
+- Apply automated updates ([f724382](https://github.com/unjs/unbuild/commit/f724382))
+
+### ❤️ Contributors
+
+- Pooya Parsa ([@pi0](http://github.com/pi0))
+- Sunny-117 <zhiqiangfu6@gmail.com>
+- Christian Preston ([@cpreston321](http://github.com/cpreston321))
+- Sunny ([@Sunny-117](http://github.com/Sunny-117))
+
 ## v3.0.1
 
 [compare changes](https://github.com/unjs/unbuild/compare/v3.0.0...v3.0.1)
