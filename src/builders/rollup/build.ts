@@ -9,6 +9,7 @@ import { getRollupOptions } from "./config";
 import { getChunkFilename } from "./utils";
 import { rollupStub } from "./stub";
 import { rollupWatch } from "./watch";
+import { fixCJSExportTypePlugin } from "./plugins/cjs";
 
 export async function rollupBuild(ctx: BuildContext): Promise<void> {
   // Stub mode
@@ -81,7 +82,8 @@ export async function rollupBuild(ctx: BuildContext): Promise<void> {
       ...rollupOptions.plugins,
       dts(ctx.options.rollup.dts),
       removeShebangPlugin(),
-    ];
+      ctx.options.rollup.emitCJS && fixCJSExportTypePlugin(),
+    ].filter(Boolean);
 
     await ctx.hooks.callHook("rollup:dts:options", ctx, rollupOptions);
     const typesBuild = await rollup(rollupOptions);

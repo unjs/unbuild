@@ -14,6 +14,29 @@ export function cjsPlugin(_opts?: any): Plugin {
   } as Plugin;
 }
 
+// Ported from https://github.com/egoist/tsup/blob/cd03e1e00ec2bd6676ae1837cbc7e618ab6a2362/src/rollup.ts#L92-L109
+export function fixCJSExportTypePlugin(): Plugin {
+  return {
+    name: "unbuild-fix-cjs-export-type",
+    renderChunk(code, info, opts) {
+      if (
+        info.type !== "chunk" ||
+        !info.fileName.endsWith(".d.cts") ||
+        !info.isEntry ||
+        info.exports?.length !== 1 ||
+        info.exports[0] !== "default"
+      ) {
+        return;
+      }
+
+      return code.replace(
+        /(?<=(?<=[;}]|^)\s*export\s*){\s*([\w$]+)\s*as\s+default\s*}/,
+        `= $1`,
+      );
+    },
+  } as Plugin;
+}
+
 const CJSyntaxRe = /__filename|__dirname|require\(|require\.resolve\(/;
 
 const CJSShim = `
