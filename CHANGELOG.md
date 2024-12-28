@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v3.2.0
+
+[compare changes](https://github.com/unjs/unbuild/compare/v3.1.0...v3.2.0)
+
+### 🚀 Enhancements
+
+- **mkdist:** Fail build if `mkdist` errors in creating declarations ([#473](https://github.com/unjs/unbuild/pull/473))
+
+### 🩹 Fixes
+
+- Correct `.d.cts` default export type ([#458](https://github.com/unjs/unbuild/pull/458))
+
+### 🏡 Chore
+
+- Update deps ([4536320](https://github.com/unjs/unbuild/commit/4536320))
+
+### ❤️ Contributors
+
+- Kricsleo ([@kricsleo](http://github.com/kricsleo))
+- Daniel Roe ([@danielroe](http://github.com/danielroe))
+- Pooya Parsa ([@pi0](http://github.com/pi0))
+
 ## v3.1.0
 
 [compare changes](https://github.com/unjs/unbuild/compare/v3.0.1...v3.1.0)
