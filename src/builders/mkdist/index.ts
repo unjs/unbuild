@@ -1,6 +1,6 @@
 import { relative } from "pathe";
 import { mkdist, type MkdistOptions } from "mkdist";
-import { symlink, rmdir } from "../../utils";
+import { symlink, rmdir, warn } from "../../utils";
 import type { MkdistBuildEntry, BuildContext } from "../../types";
 import consola from "consola";
 
@@ -34,6 +34,14 @@ export async function mkdistBuild(ctx: BuildContext): Promise<void> {
         chunks: output.writtenFiles.map((p) => relative(ctx.options.outDir, p)),
       });
       await ctx.hooks.callHook("mkdist:entry:build", ctx, entry, output);
+      if (output.errors) {
+        for (const error of output.errors) {
+          warn(
+            ctx,
+            `mkdist build failed for \`${relative(ctx.options.rootDir, error.filename)}\`:\n${error.errors.map((e) => `  - ${e}`).join("\n")}`,
+          );
+        }
+      }
     }
   }
   await ctx.hooks.callHook("mkdist:done", ctx);
