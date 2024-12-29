@@ -1,5 +1,5 @@
 import type { Plugin } from "rollup";
-import { findExports, findStaticImports, findTypeExports } from "mlly";
+import { findExports, findStaticImports } from "mlly";
 import MagicString from "magic-string";
 
 export function cjsPlugin(_opts?: any): Plugin {
