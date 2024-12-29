@@ -1,5 +1,5 @@
 import type { Plugin } from "rollup";
-import { findStaticImports } from "mlly";
+import { findExports, findStaticImports, findTypeExports } from "mlly";
 import MagicString from "magic-string";
 
 export function cjsPlugin(_opts?: any): Plugin {
@@ -14,25 +14,56 @@ export function cjsPlugin(_opts?: any): Plugin {
   } as Plugin;
 }
 
-// Ported from https://github.com/egoist/tsup/blob/cd03e1e00ec2bd6676ae1837cbc7e618ab6a2362/src/rollup.ts#L92-L109
 export function fixCJSExportTypePlugin(): Plugin {
+  const regexp = /export\s*\{([^}]*)\}/;
   return {
     name: "unbuild-fix-cjs-export-type",
     renderChunk(code, info, opts) {
       if (
         info.type !== "chunk" ||
-        !info.fileName.endsWith(".d.cts") ||
+        !(
+          info.fileName.endsWith(".d.ts") || info.fileName.endsWith(".d.cts")
+        ) ||
         !info.isEntry ||
-        info.exports?.length !== 1 ||
-        info.exports[0] !== "default"
+        !info.exports?.length ||
+        !info.exports.includes("default")
       ) {
         return;
       }
 
-      return code.replace(
-        /(?<=(?<=[;}]|^)\s*export\s*){\s*([\w$]+)\s*as\s+default\s*}/,
-        `= $1`,
+      const defaultExport = findExports(code).find((e) =>
+        e.names.includes("default"),
       );
+      if (!defaultExport) {
+        return;
+      }
+
+      const match = defaultExport.code.match(regexp);
+      if (!match?.length) {
+        return;
+      }
+
+      let defaultAlias: string | undefined;
+      const exportsEntries: string[] = [];
+
+      for (const exp of match[1].split(",").map((e) => e.trim())) {
+        if (exp.endsWith(" as default")) {
+          defaultAlias = exp.replace(" as default", "");
+        } else {
+          exportsEntries.push(exp);
+        }
+      }
+
+      if (!defaultAlias) {
+        return;
+      }
+
+      const newExports =
+        exportsEntries.length > 0
+          ? `export = ${defaultAlias};\nexport { ${exportsEntries.join(", ")} }`
+          : `export = ${defaultAlias}`;
+
+      return code.replace(defaultExport.code, newExports);
     },
   } as Plugin;
 }

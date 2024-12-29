@@ -24,6 +24,16 @@
       }
     }
   },
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "utils": [
+        "dist/utils.d.ts"
+      ]
+    }
+  },
   "files": [
     "dist"
   ],
