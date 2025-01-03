@@ -57,7 +57,7 @@
   },
   "devDependencies": {
     "@babel/plugin-transform-class-properties": "^7.25.9",
-    "@types/node": "^22.10.2",
+    "@types/node": "^22.10.5",
     "@vitest/coverage-v8": "^2.1.8",
     "automd": "^0.3.12",
     "changelogen": "^0.5.7",
@@ -75,5 +75,5 @@
       "optional": true
     }
   },
-  "packageManager": "pnpm@9.15.1"
+  "packageManager": "pnpm@9.15.2"
 }
