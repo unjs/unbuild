@@ -79,6 +79,12 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
       ) {
         return false;
       }
+      const isExplicitlyInlined =
+        arrayIncludes(ctx.options.inline, pkg) ||
+        arrayIncludes(ctx.options.inline, id);
+      if (isExplicitlyInlined) {
+        return false;
+      }
       if (!isExplicitExternal) {
         warn(ctx, `Inlined implicit external ${id}`);
       }

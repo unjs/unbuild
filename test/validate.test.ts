@@ -50,6 +50,7 @@ describe("validateDependencies", () => {
       usedImports: new Set(["pkg-a/core"]),
       options: {
         externals: [],
+        inline: [],
         dependencies: ["react"],
         peerDependencies: [],
         devDependencies: [],
@@ -94,6 +95,7 @@ describe("validateDependencies", () => {
       usedImports: new Set(["pkg-a/core"]),
       options: {
         externals: [],
+        inline: [],
         dependencies: ["react"],
         peerDependencies: ["pkg-a"],
         devDependencies: [],

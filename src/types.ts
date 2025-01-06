@@ -112,6 +112,11 @@ export interface BuildOptions {
    */
   externals: (string | RegExp)[];
 
+  /**
+   * Used to specify which modules or libraries should be inlined within the final build product.
+   */
+  inline: (string | RegExp)[];
+
   dependencies: string[];
 
   peerDependencies: string[];

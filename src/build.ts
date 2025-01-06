@@ -15,6 +15,7 @@ import {
   resolvePreset,
   removeExtension,
   inferPkgExternals,
+  inferPkgInlinedDeps,
 } from "./utils";
 import type { BuildContext, BuildConfig, BuildOptions } from "./types";
 import { validatePackage, validateDependencies } from "./validate";
@@ -123,6 +124,7 @@ async function _build(
         ...Module.builtinModules,
         ...Module.builtinModules.map((m) => "node:" + m),
       ],
+      inline: [],
       dependencies: [],
       devDependencies: [],
       peerDependencies: [],
@@ -236,6 +238,9 @@ async function _build(
   // Add all dependencies as externals
   options.externals.push(...inferPkgExternals(pkg));
   options.externals = [...new Set(options.externals)];
+
+  options.inline.push(...inferPkgInlinedDeps(pkg));
+  options.inline = [...new Set(options.inline)];
 
   // Call build:before
   await ctx.hooks.callHook("build:before", ctx);
