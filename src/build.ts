@@ -15,7 +15,6 @@ import {
   resolvePreset,
   removeExtension,
   inferPkgExternals,
-  inferPkgInlinedDeps,
 } from "./utils";
 import type { BuildContext, BuildConfig, BuildOptions } from "./types";
 import { validatePackage, validateDependencies } from "./validate";
@@ -135,7 +134,7 @@ async function _build(
         emitCJS: false,
         watch: false,
         cjsBridge: false,
-        inlineDependencies: inferPkgInlinedDeps(pkg),
+        inlineDependencies: false,
         preserveDynamicImports: true,
         output: {
           // https://v8.dev/features/import-attributes

@@ -163,10 +163,6 @@ export function removeExtension(filename: string): string {
   return filename.replace(/\.(js|mjs|cjs|ts|mts|cts|json|jsx|tsx)$/, "");
 }
 
-export function inferPkgInlinedDeps(pkg: PackageJson): string[] {
-  return [...(pkg.bundledDependencies || [])];
-}
-
 export function inferPkgExternals(pkg: PackageJson): (string | RegExp)[] {
   const externals: (string | RegExp)[] = [
     ...Object.keys(pkg.dependencies || {}),

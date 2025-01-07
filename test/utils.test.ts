@@ -4,7 +4,6 @@ import {
   extractExportFilenames,
   inferExportType,
   inferPkgExternals,
-  inferPkgInlinedDeps,
 } from "../src/utils";
 
 describe("inferExportType", () => {
@@ -87,16 +86,5 @@ describe("inferPkgExternals", () => {
       /^#.*$/,
       "#test",
     ]);
-  });
-});
-
-describe("inferPkgInlinedDeps", () => {
-  it("infers inlined dependencies from package.json", () => {
-    expect(
-      inferPkgInlinedDeps({
-        name: "test",
-        bundledDependencies: ["citty"],
-      }),
-    ).to.deep.equal(["citty"]);
   });
 });
