@@ -79,7 +79,7 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
       ) {
         return false;
       }
-      if (ctx.options.rollup.inlineDependencies) {
+      if (Array.isArray(ctx.options.rollup.inlineDependencies)) {
         const isExplicitlyInlined =
           arrayIncludes(ctx.options.rollup.inlineDependencies, pkg) ||
           arrayIncludes(ctx.options.rollup.inlineDependencies, id);
