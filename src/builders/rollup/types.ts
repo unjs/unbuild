@@ -44,9 +44,12 @@ export interface RollupBuildOptions {
   preserveDynamicImports?: boolean;
 
   /**
-   * Inline dependencies nor explicitly set in "dependencies" or "peerDependencies" or as marked externals to the bundle.
+   * Whether to inline dependencies not explicitly set in "dependencies" or "peerDependencies" or as marked externals to the bundle.
+   *
+   * If set to true, all such dependencies will be inlined.
+   * If an array of string or regular expressions is passed, these will be used to determine whether to inline such a dependency.
    */
-  inlineDependencies?: boolean;
+  inlineDependencies?: boolean | Array<string | RegExp>;
 
   /**
    * Rollup [Output Options](https://rollupjs.org/configuration-options)

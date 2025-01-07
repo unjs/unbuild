@@ -71,7 +71,7 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
         return true;
       }
       if (
-        ctx.options.rollup.inlineDependencies ||
+        ctx.options.rollup.inlineDependencies === true ||
         id[0] === "." ||
         isAbsolute(id) ||
         /src[/\\]/.test(id) ||
@@ -79,11 +79,13 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
       ) {
         return false;
       }
-      const isExplicitlyInlined =
-        arrayIncludes(ctx.options.inline, pkg) ||
-        arrayIncludes(ctx.options.inline, id);
-      if (isExplicitlyInlined) {
-        return false;
+      if (ctx.options.rollup.inlineDependencies) {
+        const isExplicitlyInlined =
+          arrayIncludes(ctx.options.rollup.inlineDependencies, pkg) ||
+          arrayIncludes(ctx.options.rollup.inlineDependencies, id);
+        if (isExplicitlyInlined) {
+          return false;
+        }
       }
       if (!isExplicitExternal) {
         warn(ctx, `Inlined implicit external ${id}`);
