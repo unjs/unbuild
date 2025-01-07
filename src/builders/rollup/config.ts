@@ -71,13 +71,21 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
         return true;
       }
       if (
-        ctx.options.rollup.inlineDependencies ||
+        ctx.options.rollup.inlineDependencies === true ||
         id[0] === "." ||
         isAbsolute(id) ||
         /src[/\\]/.test(id) ||
         id.startsWith(ctx.pkg.name!)
       ) {
         return false;
+      }
+      if (Array.isArray(ctx.options.rollup.inlineDependencies)) {
+        const isExplicitlyInlined =
+          arrayIncludes(ctx.options.rollup.inlineDependencies, pkg) ||
+          arrayIncludes(ctx.options.rollup.inlineDependencies, id);
+        if (isExplicitlyInlined) {
+          return false;
+        }
       }
       if (!isExplicitExternal) {
         warn(ctx, `Inlined implicit external ${id}`);
