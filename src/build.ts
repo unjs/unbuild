@@ -1,7 +1,6 @@
 import Module from "node:module";
 import { promises as fsp } from "node:fs";
 import { resolve, relative, isAbsolute, normalize } from "pathe";
-import { withTrailingSlash } from "ufo";
 import type { PackageJson } from "pkg-types";
 import { colors } from "consola/utils";
 import { consola } from "consola";
@@ -15,6 +14,7 @@ import {
   resolvePreset,
   removeExtension,
   inferPkgExternals,
+  withTrailingSlash,
 } from "./utils";
 import type { BuildContext, BuildConfig, BuildOptions } from "./types";
 import { validatePackage, validateDependencies } from "./validate";

@@ -202,3 +202,7 @@ function pathToRegex(path: string): string | RegExp {
       )
     : path;
 }
+
+export function withTrailingSlash(path: string): string {
+  return path.endsWith("/") ? path : `${path}/`;
+}
