@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v3.3.0
+
+[compare changes](https://github.com/unjs/unbuild/compare/v3.2.0...v3.3.0)
+
+### 🚀 Enhancements
+
+- Allow specifying dependencies to inline in `inlineDependencies` ([#480](https://github.com/unjs/unbuild/pull/480))
+
+### 🩹 Fixes
+
+- **rollup:** Resolve aliases using pathe utils ([#483](https://github.com/unjs/unbuild/pull/483))
+
+### 💅 Refactors
+
+- Inline `withTrailingSlash` util ([#482](https://github.com/unjs/unbuild/pull/482))
+
+### 🏡 Chore
+
+- Update deps ([edc8784](https://github.com/unjs/unbuild/commit/edc8784))
+
+### ❤️ Contributors
+
+- Pooya Parsa ([@pi0](http://github.com/pi0))
+- Kricsleo ([@kricsleo](http://github.com/kricsleo))
+- Daniel Roe ([@danielroe](http://github.com/danielroe))
+
 ## v3.2.0
 
 [compare changes](https://github.com/unjs/unbuild/compare/v3.1.0...v3.2.0)
