@@ -4,6 +4,7 @@ import { nodeResolve } from "@rollup/plugin-node-resolve";
 import alias from "@rollup/plugin-alias";
 import replace from "@rollup/plugin-replace";
 import { resolve, isAbsolute } from "pathe";
+import { resolveAlias } from "pathe/utils";
 import { arrayIncludes, getpkg, warn } from "../../utils";
 import type { BuildContext, RollupOptions } from "../../types";
 import { esbuild } from "./plugins/esbuild";
@@ -11,12 +12,7 @@ import { JSONPlugin } from "./plugins/json";
 import { rawPlugin } from "./plugins/raw";
 import { cjsPlugin } from "./plugins/cjs";
 import { shebangPlugin } from "./plugins/shebang";
-import {
-  DEFAULT_EXTENSIONS,
-  getChunkFilename,
-  resolveAlias,
-  resolveAliases,
-} from "./utils";
+import { DEFAULT_EXTENSIONS, getChunkFilename, resolveAliases } from "./utils";
 
 export function getRollupOptions(ctx: BuildContext): RollupOptions {
   const _aliases = resolveAliases(ctx);
