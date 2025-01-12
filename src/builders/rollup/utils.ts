@@ -40,19 +40,6 @@ export function resolveAliases(ctx: BuildContext): Record<string, string> {
   return aliases;
 }
 
-// TODO: use pathe utils to handle nested aliases
-export function resolveAlias(
-  id: string,
-  aliases: Record<string, string>,
-): string {
-  for (const [find, replacement] of Object.entries(aliases)) {
-    if (id.startsWith(find)) {
-      return id.replace(find, replacement);
-    }
-  }
-  return id;
-}
-
 export function getChunkFilename(
   ctx: BuildContext,
   chunk: PreRenderedChunk,
