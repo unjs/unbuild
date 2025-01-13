@@ -90,13 +90,12 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
       }
 
       // Check for other explicit inline rules
-      if (ctx.options.rollup.inlineDependencies === true) {
-        return false;
-      } else if (
-        Array.isArray(ctx.options.rollup.inlineDependencies) &&
-        (arrayIncludes(ctx.options.rollup.inlineDependencies, pkgName) ||
-          arrayIncludes(ctx.options.rollup.inlineDependencies, originalId) ||
-          arrayIncludes(ctx.options.rollup.inlineDependencies, resolvedId))
+      if (
+        ctx.options.rollup.inlineDependencies === true ||
+        (Array.isArray(ctx.options.rollup.inlineDependencies) &&
+          (arrayIncludes(ctx.options.rollup.inlineDependencies, pkgName) ||
+            arrayIncludes(ctx.options.rollup.inlineDependencies, originalId) ||
+            arrayIncludes(ctx.options.rollup.inlineDependencies, resolvedId)))
       ) {
         return false;
       }
