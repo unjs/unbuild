@@ -1,0 +1,157 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Node10 and Node16 Default Exports Types > Mixed Declaration Types 1`] = `
+[
+  [
+    "index.d.cts",
+    [
+      {
+        "code": "export type { A, B, C, Options }",
+        "end": 259,
+        "exports": " A, B, C, Options",
+        "names": [
+          "A",
+          "B",
+          "C",
+          "Options",
+        ],
+        "specifier": undefined,
+        "start": 227,
+        "type": "named",
+      },
+    ],
+    [],
+  ],
+  [
+    "index.d.ts",
+    [
+      {
+        "code": "export type { A, B, C, Options }",
+        "end": 259,
+        "exports": " A, B, C, Options",
+        "names": [
+          "A",
+          "B",
+          "C",
+          "Options",
+        ],
+        "specifier": undefined,
+        "start": 227,
+        "type": "named",
+      },
+    ],
+    [],
+  ],
+]
+`;
+
+exports[`Node10 and Node16 Default Exports Types > Re-Export Types 1`] = `
+[
+  [
+    "index.d.cts",
+    [],
+    [
+      {
+        "code": "export { A, B, CC as C, CC } from './types.cjs'",
+        "end": 86,
+        "exports": " A, B, CC as C, CC",
+        "names": [
+          "A",
+          "B",
+          "C",
+          "CC",
+        ],
+        "specifier": "./types.cjs",
+        "start": 39,
+        "type": "named",
+      },
+      {
+        "code": "export { Options }",
+        "end": 177,
+        "exports": " Options",
+        "name": "Options",
+        "names": [
+          "Options",
+        ],
+        "specifier": undefined,
+        "start": 159,
+        "type": "named",
+      },
+    ],
+  ],
+  [
+    "index.d.ts",
+    [],
+    [
+      {
+        "code": "export { A, B, CC as C, CC } from './types.js'",
+        "end": 84,
+        "exports": " A, B, CC as C, CC",
+        "names": [
+          "A",
+          "B",
+          "C",
+          "CC",
+        ],
+        "specifier": "./types.js",
+        "start": 38,
+        "type": "named",
+      },
+      {
+        "code": "export { Options }",
+        "end": 175,
+        "exports": " Options",
+        "name": "Options",
+        "names": [
+          "Options",
+        ],
+        "specifier": undefined,
+        "start": 157,
+        "type": "named",
+      },
+    ],
+  ],
+  [
+    "types.d.cts",
+    [
+      {
+        "code": "export type { A, B, C, C as CC, Options }",
+        "end": 200,
+        "exports": " A, B, C, C as CC, Options",
+        "names": [
+          "A",
+          "B",
+          "C",
+          "CC",
+          "Options",
+        ],
+        "specifier": undefined,
+        "start": 159,
+        "type": "named",
+      },
+    ],
+    [],
+  ],
+  [
+    "types.d.ts",
+    [
+      {
+        "code": "export type { A, B, C, C as CC, Options }",
+        "end": 200,
+        "exports": " A, B, C, C as CC, Options",
+        "names": [
+          "A",
+          "B",
+          "C",
+          "CC",
+          "Options",
+        ],
+        "specifier": undefined,
+        "start": 159,
+        "type": "named",
+      },
+    ],
+    [],
+  ],
+]
+`;
