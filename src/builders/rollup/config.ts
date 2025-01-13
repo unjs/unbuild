@@ -5,6 +5,7 @@ import alias from "@rollup/plugin-alias";
 import replace from "@rollup/plugin-replace";
 import { resolve, isAbsolute } from "pathe";
 import { resolveAlias } from "pathe/utils";
+import { parseNodeModulePath } from "mlly";
 import { arrayIncludes, getpkg, warn } from "../../utils";
 import type { BuildContext, RollupOptions } from "../../types";
 import { esbuild } from "./plugins/esbuild";
@@ -57,36 +58,51 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
       },
     ].filter(Boolean),
 
-    external(id) {
-      id = resolveAlias(id, _aliases);
-      const pkg = getpkg(id);
-      const isExplicitExternal =
-        arrayIncludes(ctx.options.externals, pkg) ||
-        arrayIncludes(ctx.options.externals, id);
-      if (isExplicitExternal) {
+    external(originalId) {
+      // Resolve aliases
+      const resolvedId = resolveAlias(originalId, _aliases);
+
+      // Try to guess package name of id
+      const pkgName =
+        parseNodeModulePath(resolvedId)?.name ||
+        parseNodeModulePath(originalId)?.name ||
+        getpkg(originalId);
+
+      // Check for explicit external rules
+      if (
+        arrayIncludes(ctx.options.externals, pkgName) ||
+        arrayIncludes(ctx.options.externals, originalId) ||
+        arrayIncludes(ctx.options.externals, resolvedId)
+      ) {
         return true;
       }
-      if (
-        ctx.options.rollup.inlineDependencies === true ||
-        id[0] === "." ||
-        isAbsolute(id) ||
-        /src[/\\]/.test(id) ||
-        id.startsWith(ctx.pkg.name!)
-      ) {
-        return false;
-      }
-      if (Array.isArray(ctx.options.rollup.inlineDependencies)) {
-        const isExplicitlyInlined =
-          arrayIncludes(ctx.options.rollup.inlineDependencies, pkg) ||
-          arrayIncludes(ctx.options.rollup.inlineDependencies, id);
-        if (isExplicitlyInlined) {
+
+      // Source is always bundled
+      for (const id of [originalId, resolvedId]) {
+        if (
+          id[0] === "." ||
+          isAbsolute(id) ||
+          /src[/\\]/.test(id) ||
+          id.startsWith(ctx.pkg.name!)
+        ) {
           return false;
         }
       }
-      if (!isExplicitExternal) {
-        warn(ctx, `Inlined implicit external ${id}`);
+
+      // Check for other explicit inline rules
+      if (
+        ctx.options.rollup.inlineDependencies === true ||
+        (Array.isArray(ctx.options.rollup.inlineDependencies) &&
+          (arrayIncludes(ctx.options.rollup.inlineDependencies, pkgName) ||
+            arrayIncludes(ctx.options.rollup.inlineDependencies, originalId) ||
+            arrayIncludes(ctx.options.rollup.inlineDependencies, resolvedId)))
+      ) {
+        return false;
       }
-      return isExplicitExternal;
+
+      // Inline by default, but also show a warning, since it is an implicit behavior
+      warn(ctx, `Implicitly bundling "${originalId}"`);
+      return false;
     },
 
     onwarn(warning, rollupWarn) {
