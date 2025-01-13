@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v3.3.1
+
+[compare changes](https://github.com/unjs/unbuild/compare/v3.3.0...v3.3.1)
+
+### 🩹 Fixes
+
+- **rollup:** Improve external detection ([#488](https://github.com/unjs/unbuild/pull/488))
+
+### ❤️ Contributors
+
+- Pooya Parsa ([@pi0](http://github.com/pi0))
+
 ## v3.3.0
 
 [compare changes](https://github.com/unjs/unbuild/compare/v3.2.0...v3.3.0)
