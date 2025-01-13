@@ -78,13 +78,15 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
       }
 
       // Source is always bundled
-      if (
-        originalId[0] === "." ||
-        isAbsolute(originalId) ||
-        /src[/\\]/.test(originalId) ||
-        originalId.startsWith(ctx.pkg.name!)
-      ) {
-        return false;
+      for (const id of [originalId, resolvedId]) {
+        if (
+          id[0] === "." ||
+          isAbsolute(id) ||
+          /src[/\\]/.test(id) ||
+          id.startsWith(ctx.pkg.name!)
+        ) {
+          return false;
+        }
       }
 
       // Check for other explicit inline rules
