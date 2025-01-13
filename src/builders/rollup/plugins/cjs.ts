@@ -16,9 +16,11 @@ export function cjsPlugin(_opts?: any): Plugin {
 
 export function fixCJSExportTypePlugin(): Plugin {
   const regexp = /export\s*\{([^}]*)\}/;
+  const defaultExportRegexp = /\s*as\s+default\s*/;
+  const typeExportRegexp = /\s*type\s+/;
   return {
     name: "unbuild-fix-cjs-export-type",
-    renderChunk(code, info, opts) {
+    renderChunk(code, info) {
       if (
         info.type !== "chunk" ||
         !(
@@ -34,6 +36,7 @@ export function fixCJSExportTypePlugin(): Plugin {
       const defaultExport = findExports(code).find((e) =>
         e.names.includes("default"),
       );
+
       if (!defaultExport) {
         return;
       }
@@ -45,10 +48,10 @@ export function fixCJSExportTypePlugin(): Plugin {
 
       let defaultAlias: string | undefined;
       const exportsEntries: string[] = [];
-
       for (const exp of match[1].split(",").map((e) => e.trim())) {
-        if (exp.endsWith(" as default")) {
-          defaultAlias = exp.replace(" as default", "");
+        const m = exp.match(defaultExportRegexp);
+        if (m) {
+          defaultAlias = exp.replace(m[0], "");
         } else {
           exportsEntries.push(exp);
         }
@@ -58,12 +61,37 @@ export function fixCJSExportTypePlugin(): Plugin {
         return;
       }
 
-      const newExports =
-        exportsEntries.length > 0
-          ? `export = ${defaultAlias};\nexport { ${exportsEntries.join(", ")} }`
-          : `export = ${defaultAlias}`;
+      let exportStatement = exportsEntries.length > 0 ? undefined : "";
 
-      return code.replace(defaultExport.code, newExports);
+      // replace export { type A, type B, type ... } with export type { A, B, ... }
+      // that's, if all remaining exports are type exports, replace export {} with export type {}
+      if (exportStatement === undefined) {
+        let someExternalExport = false;
+        const allRemainingExports = exportsEntries.map((exp) => {
+          if (someExternalExport) {
+            return [exp, ""] as const;
+          }
+          if (!info.imports.includes(exp)) {
+            const m = exp.match(typeExportRegexp);
+            if (m) {
+              const name = exp.replace(m[0], "").trim();
+              if (!info.imports.includes(name)) {
+                return [exp, name] as const;
+              }
+            }
+          }
+          someExternalExport = true;
+          return [exp, ""] as const;
+        });
+        exportStatement = someExternalExport
+          ? `\nexport { ${allRemainingExports.map(([e, _]) => e).join(", ")} }`
+          : `\nexport type { ${allRemainingExports.map(([_, t]) => t).join(", ")} }`;
+      }
+
+      return code.replace(
+        defaultExport.code,
+        `export = ${defaultAlias}${exportStatement}`,
+      );
     },
   } as Plugin;
 }
