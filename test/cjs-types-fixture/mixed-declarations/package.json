@@ -7,11 +7,11 @@
     ".": {
       "import": {
         "types": "./dist/index.d.mts",
-        "default": "./dist/index.d.mjs"
+        "default": "./dist/index.mjs"
       },
       "require": {
         "types": "./dist/index.d.cts",
-        "default": "./dist/index.d.cjs"
+        "default": "./dist/index.cjs"
       }
     }
   },
