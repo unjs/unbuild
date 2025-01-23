@@ -14,4 +14,3 @@ function plugin(options: Options = {}): ResolvedOptions {
 }
 
 export default plugin;
-export { plugin };
