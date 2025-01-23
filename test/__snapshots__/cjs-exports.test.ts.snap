@@ -92,12 +92,12 @@ exports[`Node10 and Node16 Default Exports Types > Re-Export Types 1`] = `
     [],
     [
       {
-        "code": "export { ResolvedOptions, default as plugin } from './index.cjs'",
-        "end": 119,
-        "exports": " ResolvedOptions, default as plugin",
+        "code": "export { ResolvedOptions } from './index.cjs'",
+        "end": 100,
+        "exports": " ResolvedOptions",
+        "name": "ResolvedOptions",
         "names": [
           "ResolvedOptions",
-          "plugin",
         ],
         "specifier": "./index.cjs",
         "start": 55,
@@ -105,7 +105,7 @@ exports[`Node10 and Node16 Default Exports Types > Re-Export Types 1`] = `
       },
       {
         "code": "export { A, B, CC as C, CC, Options } from './types.cjs'",
-        "end": 177,
+        "end": 158,
         "exports": " A, B, CC as C, CC, Options",
         "names": [
           "A",
@@ -115,13 +115,13 @@ exports[`Node10 and Node16 Default Exports Types > Re-Export Types 1`] = `
           "Options",
         ],
         "specifier": "./types.cjs",
-        "start": 121,
+        "start": 102,
         "type": "named",
       },
     ],
     "import _default from './index.cjs';
 export = _default;
-export { ResolvedOptions, default as plugin } from './index.cjs';
+export { ResolvedOptions } from './index.cjs';
 export { A, B, CC as C, CC, Options } from './types.cjs';
 ",
     [
@@ -141,12 +141,12 @@ export { A, B, CC as C, CC, Options } from './types.cjs';
     [],
     [
       {
-        "code": "export { ResolvedOptions, default as plugin } from './index.js'",
-        "end": 117,
-        "exports": " ResolvedOptions, default as plugin",
+        "code": "export { ResolvedOptions } from './index.js'",
+        "end": 98,
+        "exports": " ResolvedOptions",
+        "name": "ResolvedOptions",
         "names": [
           "ResolvedOptions",
-          "plugin",
         ],
         "specifier": "./index.js",
         "start": 54,
@@ -154,7 +154,7 @@ export { A, B, CC as C, CC, Options } from './types.cjs';
       },
       {
         "code": "export { A, B, CC as C, CC, Options } from './types.js'",
-        "end": 174,
+        "end": 155,
         "exports": " A, B, CC as C, CC, Options",
         "names": [
           "A",
@@ -164,13 +164,13 @@ export { A, B, CC as C, CC, Options } from './types.cjs';
           "Options",
         ],
         "specifier": "./types.js",
-        "start": 119,
+        "start": 100,
         "type": "named",
       },
     ],
     "import _default from './index.js';
 export = _default;
-export { ResolvedOptions, default as plugin } from './index.js';
+export { ResolvedOptions } from './index.js';
 export { A, B, CC as C, CC, Options } from './types.js';
 ",
     [
@@ -204,12 +204,12 @@ export { A, B, CC as C, CC, Options } from './types.js';
         "type": "named",
       },
       {
-        "code": "export { Options, type ResolvedOptions, plugin }",
-        "end": 280,
-        "exports": " Options, type ResolvedOptions, plugin",
+        "code": "export { Options, type ResolvedOptions }",
+        "end": 272,
+        "exports": " Options, type ResolvedOptions",
+        "name": "Options",
         "names": [
           "Options",
-          "plugin",
         ],
         "specifier": undefined,
         "start": 232,
@@ -225,7 +225,7 @@ interface ResolvedOptions extends Options {
 declare function plugin(options?: Options): ResolvedOptions;
 
 export = plugin;
-export { Options, type ResolvedOptions, plugin };
+export { Options, type ResolvedOptions };
 ",
     [
       {
@@ -258,12 +258,12 @@ export { Options, type ResolvedOptions, plugin };
         "type": "named",
       },
       {
-        "code": "export { Options, type ResolvedOptions, plugin }",
-        "end": 278,
-        "exports": " Options, type ResolvedOptions, plugin",
+        "code": "export { Options, type ResolvedOptions }",
+        "end": 270,
+        "exports": " Options, type ResolvedOptions",
+        "name": "Options",
         "names": [
           "Options",
-          "plugin",
         ],
         "specifier": undefined,
         "start": 230,
@@ -279,7 +279,7 @@ interface ResolvedOptions extends Options {
 declare function plugin(options?: Options): ResolvedOptions;
 
 export = plugin;
-export { Options, type ResolvedOptions, plugin };
+export { Options, type ResolvedOptions };
 ",
     [
       {
