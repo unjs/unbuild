@@ -4,6 +4,7 @@ export default defineBuildConfig({
   entries: [
     "./index.ts",
     "./asdefault.ts",
+    "./defaultclass.ts",
     "./magicstringasdefault.ts",
     "./resolveasdefault.ts",
   ],

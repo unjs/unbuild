@@ -128,7 +128,7 @@ describe("Node10 and Node16 Default Exports Types", () => {
     );
     await build(root, false);
     const files = await readDtsFiles(resolve(root, "dist"));
-    expect(files).toHaveLength(8);
+    expect(files).toHaveLength(10);
     for (const [name, types, exports, content, imports] of files) {
       if (name.startsWith("asdefault")) {
         expect(exports).toHaveLength(0);
@@ -174,6 +174,15 @@ describe("Node10 and Node16 Default Exports Types", () => {
         const defaultImport = parseStaticImport(imports[0]);
         expect(defaultImport.defaultImport).toBe("resolve");
         expect(content).toMatch(`export = ${defaultImport.defaultImport}`);
+      } else if (name.startsWith("defaultclass")) {
+        expect(exports).toHaveLength(0);
+        expect(types).toHaveLength(0);
+        expect(imports.filter((i) => !!i.imports)).toHaveLength(0);
+        expect(
+          exports.find((e) => e.names.includes("default")),
+          `${name} should not have a default export`,
+        ).toBeUndefined();
+        expect(content).toMatch(`export = DefaultClass`);
       }
     }
     expect(files).toMatchSnapshot();

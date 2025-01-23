@@ -417,6 +417,32 @@ export = resolve;
     ],
   ],
   [
+    "defaultclass.d.cts",
+    [],
+    [],
+    "declare class DefaultClass {
+    name: string;
+    constructor(name: string);
+}
+
+export = DefaultClass;
+",
+    [],
+  ],
+  [
+    "defaultclass.d.ts",
+    [],
+    [],
+    "declare class DefaultClass {
+    name: string;
+    constructor(name: string);
+}
+
+export = DefaultClass;
+",
+    [],
+  ],
+  [
     "index.d.cts",
     [],
     [

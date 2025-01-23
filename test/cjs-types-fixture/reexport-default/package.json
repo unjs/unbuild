@@ -24,6 +24,16 @@
         "default": "./dist/asdefault.cjs"
       }
     },
+    "./defaultclass": {
+      "import": {
+        "types": "./dist/defaultclass.d.mts",
+        "default": "./dist/defaultclass.mjs"
+      },
+      "require": {
+        "types": "./dist/asdefault.d.cts",
+        "default": "./dist/asdefault.cjs"
+      }
+    },
     "./magicstringasdefault": {
       "import": {
         "types": "./dist/magicstringasdefault.d.mts",
@@ -52,6 +62,9 @@
     "*": {
       "asdefault": [
         "./dist/asdefault.d.ts"
+      ],
+      "defaultclass": [
+        "./dist/defaultclass.d.ts"
       ],
       "magicstringasdefault": [
         "./dist/magicstringasdefault.d.ts"
