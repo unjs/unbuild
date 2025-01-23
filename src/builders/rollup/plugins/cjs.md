@@ -7,12 +7,14 @@ This document will cover all the types of default exports that can be generated 
 The following example can be found in the [reexport-types](../../../../test/cjs-types-fixture/reexport-types) fixture, check `index.ts` module.
 
 Given the following code:
+
 ```ts
 // module.ts
 export default function foo() {}
 ```
 
 `rollup-plugin-dts` will generate:
+
 ```ts
 // module.d.[c]ts
 declare function foo(): void;
@@ -21,6 +23,7 @@ export { foo as default };
 ```
 
 we need to convert it to:
+
 ```ts
 // module.d.[c]ts
 declare function foo(): void;
@@ -33,6 +36,7 @@ export = foo;
 The following example can be found in the [reexport-default](../../../../test/cjs-types-fixture/reexport-default) fixture, check `index.ts` module.
 
 Given the following code:
+
 ```ts
 // module.ts
 import MagicString from "magic-string";
@@ -40,16 +44,18 @@ export default MagicString;
 ```
 
 `rollup-plugin-dts` will generate:
+
 ```ts
 // module.d.[c]ts
-import MagicString from 'magic-string';
-export { default } from 'magic-string';
+import MagicString from "magic-string";
+export { default } from "magic-string";
 ```
 
 we need to convert it to (doesn't require adding the import):
+
 ```ts
 // module.d.[c]ts
-import MagicString from 'magic-string';
+import MagicString from "magic-string";
 export = MagicString;
 ```
 
@@ -58,6 +64,7 @@ export = MagicString;
 The following example can be found in the [reexport-types](../../../../test/cjs-types-fixture/reexport-types) fixture, check `all.ts` module.
 
 Given the following code:
+
 ```ts
 // module.ts
 export type * from "./index.ts";
@@ -65,19 +72,21 @@ export { default } from "./index.ts";
 ```
 
 `rollup-plugin-dts` will generate:
+
 ```ts
 // module.d.[c]ts
 // otherexports and otherexporttypes when present
-export { otherexports, type otherexporttypes, default } from './index.js';
+export { otherexports, type otherexporttypes, default } from "./index.js";
 ```
 
 we need to convert it to (requires adding the import):
+
 ```ts
 // module.d.[c]ts
-import _default from './index.js';
+import _default from "./index.js";
 export = _default;
 // otherexports and otherexporttypes when present
-export { otherexports, type otherexporttypes } from './index.js';
+export { otherexports, type otherexporttypes } from "./index.js";
 ```
 
 ### Exporting default from named import as default export with specifier
@@ -85,6 +94,7 @@ export { otherexports, type otherexporttypes } from './index.js';
 The following example can be found in the [reexport-default](../../../../test/cjs-types-fixture/reexport-default) fixture, check `asdefault.ts` module.
 
 Given the following code:
+
 ```ts
 // module.ts
 import { resolve } from "pathe";
@@ -92,16 +102,18 @@ export default resolve;
 ```
 
 `rollup-plugin-dts` will generate:
+
 ```ts
 // module.d.[c]ts
-import { resolve } from 'pathe';
-export { resolve as default } from 'pathe';
+import { resolve } from "pathe";
+export { resolve as default } from "pathe";
 ```
 
 we need to convert it to (doesn't require adding the import):
+
 ```ts
 // module.d.[c]ts
-import { resolve } from 'pathe';
+import { resolve } from "pathe";
 export = resolve;
 ```
 
@@ -110,20 +122,23 @@ export = resolve;
 The following example can be found in the [reexport-default](../../../../test/cjs-types-fixture/reexport-default) fixture, check `asdefault.ts` module.
 
 Given the following code:
+
 ```ts
 // module.ts
 export { resolve as default } from "pathe";
 ```
 
 `rollup-plugin-dts` will generate:
+
 ```ts
 // module.d.[c]ts
-export { resolve as default } from 'pathe';
+export { resolve as default } from "pathe";
 ```
 
 we need to convert it to (requires adding the import):
+
 ```ts
 // module.d.[c]ts
-import { resolve } from 'pathe';
+import { resolve } from "pathe";
 export = resolve;
 ```
