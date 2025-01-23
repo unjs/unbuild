@@ -14,6 +14,16 @@
         "default": "./dist/index.cjs"
       }
     },
+    "./all": {
+      "import": {
+        "types": "./dist/all.d.mts",
+        "default": "./dist/all.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
     "./types": {
       "types": {
         "import": "./dist/types.d.mts",
@@ -26,6 +36,9 @@
   "types": "./dist/index.d.ts",
   "typesVersions": {
     "*": {
+      "all": [
+        "./dist/all.d.ts"
+      ],
       "types": [
         "./dist/types.d.ts"
       ]

@@ -7,7 +7,7 @@ exports[`Node10 and Node16 Default Exports Types > Mixed Declaration Types 1`] =
     [
       {
         "code": "export type { A, B, C, Options }",
-        "end": 259,
+        "end": 260,
         "exports": " A, B, C, Options",
         "names": [
           "A",
@@ -16,10 +16,30 @@ exports[`Node10 and Node16 Default Exports Types > Mixed Declaration Types 1`] =
           "Options",
         ],
         "specifier": undefined,
-        "start": 227,
+        "start": 228,
         "type": "named",
       },
     ],
+    [],
+    "interface A {
+    name: string;
+}
+interface B {
+    name: string;
+}
+interface C {
+    name: string;
+}
+interface Options {
+    a?: A;
+    b?: B;
+    c?: C;
+}
+declare function plugin(options?: Options): Options;
+
+export = plugin;
+export type { A, B, C, Options };
+",
     [],
   ],
   [
@@ -27,7 +47,7 @@ exports[`Node10 and Node16 Default Exports Types > Mixed Declaration Types 1`] =
     [
       {
         "code": "export type { A, B, C, Options }",
-        "end": 259,
+        "end": 260,
         "exports": " A, B, C, Options",
         "names": [
           "A",
@@ -36,10 +56,30 @@ exports[`Node10 and Node16 Default Exports Types > Mixed Declaration Types 1`] =
           "Options",
         ],
         "specifier": undefined,
-        "start": 227,
+        "start": 228,
         "type": "named",
       },
     ],
+    [],
+    "interface A {
+    name: string;
+}
+interface B {
+    name: string;
+}
+interface C {
+    name: string;
+}
+interface Options {
+    a?: A;
+    b?: B;
+    c?: C;
+}
+declare function plugin(options?: Options): Options;
+
+export = plugin;
+export type { A, B, C, Options };
+",
     [],
   ],
 ]
@@ -47,6 +87,104 @@ exports[`Node10 and Node16 Default Exports Types > Mixed Declaration Types 1`] =
 
 exports[`Node10 and Node16 Default Exports Types > Re-Export Types 1`] = `
 [
+  [
+    "all.d.cts",
+    [],
+    [
+      {
+        "code": "export { ResolvedOptions, default as plugin } from './index.cjs'",
+        "end": 119,
+        "exports": " ResolvedOptions, default as plugin",
+        "names": [
+          "ResolvedOptions",
+          "plugin",
+        ],
+        "specifier": "./index.cjs",
+        "start": 55,
+        "type": "named",
+      },
+      {
+        "code": "export { A, B, CC as C, CC, Options } from './types.cjs'",
+        "end": 177,
+        "exports": " A, B, CC as C, CC, Options",
+        "names": [
+          "A",
+          "B",
+          "C",
+          "CC",
+          "Options",
+        ],
+        "specifier": "./types.cjs",
+        "start": 121,
+        "type": "named",
+      },
+    ],
+    "import _default from './index.cjs';
+export = _default;
+export { ResolvedOptions, default as plugin } from './index.cjs';
+export { A, B, CC as C, CC, Options } from './types.cjs';
+",
+    [
+      {
+        "code": "import _default from './index.cjs';
+",
+        "end": 36,
+        "imports": "_default ",
+        "specifier": "./index.cjs",
+        "start": 0,
+        "type": "static",
+      },
+    ],
+  ],
+  [
+    "all.d.ts",
+    [],
+    [
+      {
+        "code": "export { ResolvedOptions, default as plugin } from './index.js'",
+        "end": 117,
+        "exports": " ResolvedOptions, default as plugin",
+        "names": [
+          "ResolvedOptions",
+          "plugin",
+        ],
+        "specifier": "./index.js",
+        "start": 54,
+        "type": "named",
+      },
+      {
+        "code": "export { A, B, CC as C, CC, Options } from './types.js'",
+        "end": 174,
+        "exports": " A, B, CC as C, CC, Options",
+        "names": [
+          "A",
+          "B",
+          "C",
+          "CC",
+          "Options",
+        ],
+        "specifier": "./types.js",
+        "start": 119,
+        "type": "named",
+      },
+    ],
+    "import _default from './index.js';
+export = _default;
+export { ResolvedOptions, default as plugin } from './index.js';
+export { A, B, CC as C, CC, Options } from './types.js';
+",
+    [
+      {
+        "code": "import _default from './index.js';
+",
+        "end": 35,
+        "imports": "_default ",
+        "specifier": "./index.js",
+        "start": 0,
+        "type": "static",
+      },
+    ],
+  ],
   [
     "index.d.cts",
     [],
@@ -66,16 +204,38 @@ exports[`Node10 and Node16 Default Exports Types > Re-Export Types 1`] = `
         "type": "named",
       },
       {
-        "code": "export { Options, type ResolvedOptions }",
-        "end": 271,
-        "exports": " Options, type ResolvedOptions",
-        "name": "Options",
+        "code": "export { Options, type ResolvedOptions, plugin }",
+        "end": 280,
+        "exports": " Options, type ResolvedOptions, plugin",
         "names": [
           "Options",
+          "plugin",
         ],
         "specifier": undefined,
-        "start": 231,
+        "start": 232,
         "type": "named",
+      },
+    ],
+    "import { Options } from './types.cjs';
+export { A, B, CC as C, CC } from './types.cjs';
+
+interface ResolvedOptions extends Options {
+    name: string;
+}
+declare function plugin(options?: Options): ResolvedOptions;
+
+export = plugin;
+export { Options, type ResolvedOptions, plugin };
+",
+    [
+      {
+        "code": "import { Options } from './types.cjs';
+",
+        "end": 39,
+        "imports": "{ Options } ",
+        "specifier": "./types.cjs",
+        "start": 0,
+        "type": "static",
       },
     ],
   ],
@@ -98,16 +258,38 @@ exports[`Node10 and Node16 Default Exports Types > Re-Export Types 1`] = `
         "type": "named",
       },
       {
-        "code": "export { Options, type ResolvedOptions }",
-        "end": 269,
-        "exports": " Options, type ResolvedOptions",
-        "name": "Options",
+        "code": "export { Options, type ResolvedOptions, plugin }",
+        "end": 278,
+        "exports": " Options, type ResolvedOptions, plugin",
         "names": [
           "Options",
+          "plugin",
         ],
         "specifier": undefined,
-        "start": 229,
+        "start": 230,
         "type": "named",
+      },
+    ],
+    "import { Options } from './types.js';
+export { A, B, CC as C, CC } from './types.js';
+
+interface ResolvedOptions extends Options {
+    name: string;
+}
+declare function plugin(options?: Options): ResolvedOptions;
+
+export = plugin;
+export { Options, type ResolvedOptions, plugin };
+",
+    [
+      {
+        "code": "import { Options } from './types.js';
+",
+        "end": 38,
+        "imports": "{ Options } ",
+        "specifier": "./types.js",
+        "start": 0,
+        "type": "static",
       },
     ],
   ],
@@ -131,6 +313,25 @@ exports[`Node10 and Node16 Default Exports Types > Re-Export Types 1`] = `
       },
     ],
     [],
+    "interface A {
+    name: string;
+}
+interface B {
+    name: string;
+}
+interface C {
+    name: string;
+}
+
+interface Options {
+    a?: A;
+    b?: B;
+    c?: C;
+}
+
+export type { A, B, C, C as CC, Options };
+",
+    [],
   ],
   [
     "types.d.ts",
@@ -152,6 +353,230 @@ exports[`Node10 and Node16 Default Exports Types > Re-Export Types 1`] = `
       },
     ],
     [],
+    "interface A {
+    name: string;
+}
+interface B {
+    name: string;
+}
+interface C {
+    name: string;
+}
+
+interface Options {
+    a?: A;
+    b?: B;
+    c?: C;
+}
+
+export type { A, B, C, C as CC, Options };
+",
+    [],
+  ],
+]
+`;
+
+exports[`Node10 and Node16 Default Exports Types > Re-Export as default 1`] = `
+[
+  [
+    "asdefault.d.cts",
+    [],
+    [],
+    "import { resolve } from 'pathe';
+export = resolve;
+",
+    [
+      {
+        "code": "import { resolve } from 'pathe';
+",
+        "end": 33,
+        "imports": "{ resolve } ",
+        "specifier": "pathe",
+        "start": 0,
+        "type": "static",
+      },
+    ],
+  ],
+  [
+    "asdefault.d.ts",
+    [],
+    [],
+    "import { resolve } from 'pathe';
+export = resolve;
+",
+    [
+      {
+        "code": "import { resolve } from 'pathe';
+",
+        "end": 33,
+        "imports": "{ resolve } ",
+        "specifier": "pathe",
+        "start": 0,
+        "type": "static",
+      },
+    ],
+  ],
+  [
+    "index.d.cts",
+    [],
+    [
+      {
+        "code": "export { MagicStringOptions } from 'magic-string'",
+        "end": 111,
+        "exports": " MagicStringOptions",
+        "name": "MagicStringOptions",
+        "names": [
+          "MagicStringOptions",
+        ],
+        "specifier": "magic-string",
+        "start": 62,
+        "type": "named",
+      },
+    ],
+    "import MagicString from 'magic-string';
+export = MagicString;
+export { MagicStringOptions } from 'magic-string';
+",
+    [
+      {
+        "code": "import MagicString from 'magic-string';
+",
+        "end": 40,
+        "imports": "MagicString ",
+        "specifier": "magic-string",
+        "start": 0,
+        "type": "static",
+      },
+    ],
+  ],
+  [
+    "index.d.ts",
+    [],
+    [
+      {
+        "code": "export { MagicStringOptions } from 'magic-string'",
+        "end": 111,
+        "exports": " MagicStringOptions",
+        "name": "MagicStringOptions",
+        "names": [
+          "MagicStringOptions",
+        ],
+        "specifier": "magic-string",
+        "start": 62,
+        "type": "named",
+      },
+    ],
+    "import MagicString from 'magic-string';
+export = MagicString;
+export { MagicStringOptions } from 'magic-string';
+",
+    [
+      {
+        "code": "import MagicString from 'magic-string';
+",
+        "end": 40,
+        "imports": "MagicString ",
+        "specifier": "magic-string",
+        "start": 0,
+        "type": "static",
+      },
+    ],
+  ],
+  [
+    "magicstringasdefault.d.cts",
+    [],
+    [],
+    "import _default from 'magic-string';
+export = _default;
+import 'pathe';
+",
+    [
+      {
+        "code": "import _default from 'magic-string';
+",
+        "end": 37,
+        "imports": "_default ",
+        "specifier": "magic-string",
+        "start": 0,
+        "type": "static",
+      },
+      {
+        "code": "import 'pathe';
+",
+        "end": 72,
+        "imports": undefined,
+        "specifier": "pathe",
+        "start": 56,
+        "type": "static",
+      },
+    ],
+  ],
+  [
+    "magicstringasdefault.d.ts",
+    [],
+    [],
+    "import _default from 'magic-string';
+export = _default;
+import 'pathe';
+",
+    [
+      {
+        "code": "import _default from 'magic-string';
+",
+        "end": 37,
+        "imports": "_default ",
+        "specifier": "magic-string",
+        "start": 0,
+        "type": "static",
+      },
+      {
+        "code": "import 'pathe';
+",
+        "end": 72,
+        "imports": undefined,
+        "specifier": "pathe",
+        "start": 56,
+        "type": "static",
+      },
+    ],
+  ],
+  [
+    "resolveasdefault.d.cts",
+    [],
+    [],
+    "import { resolve } from 'pathe';
+export = resolve;
+",
+    [
+      {
+        "code": "import { resolve } from 'pathe';
+",
+        "end": 33,
+        "imports": "{ resolve } ",
+        "specifier": "pathe",
+        "start": 0,
+        "type": "static",
+      },
+    ],
+  ],
+  [
+    "resolveasdefault.d.ts",
+    [],
+    [],
+    "import { resolve } from 'pathe';
+export = resolve;
+",
+    [
+      {
+        "code": "import { resolve } from 'pathe';
+",
+        "end": 33,
+        "imports": "{ resolve } ",
+        "specifier": "pathe",
+        "start": 0,
+        "type": "static",
+      },
+    ],
   ],
 ]
 `;
