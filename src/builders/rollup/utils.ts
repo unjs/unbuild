@@ -53,43 +53,45 @@ export function resolveAliases(ctx: BuildContext): Record<string, string> {
   return aliases;
 }
 
-function inferAliasesFromTsconfig(ctx: BuildContext): Record<
-  string,
-  string
-> | undefined {
+function inferAliasesFromTsconfig(
+  ctx: BuildContext,
+): Record<string, string> | undefined {
   const tsconfig = getTsconfig(ctx);
 
   if (!tsconfig.compilerOptions?.paths) {
     return;
   }
 
-  const tsconfigDir = tsconfig.path 
-    ? dirname(tsconfig.path) 
+  const tsconfigDir = tsconfig.path
+    ? dirname(tsconfig.path)
     : ctx.options.rootDir;
-  
-  const resolvedBaseUrl = resolve(tsconfigDir, tsconfig.compilerOptions?.baseUrl || ".");
+
+  const resolvedBaseUrl = resolve(
+    tsconfigDir,
+    tsconfig.compilerOptions?.baseUrl || ".",
+  );
 
   const aliases = Object.fromEntries(
-    Object.entries(tsconfig.compilerOptions.paths).map(([pattern, substitutions]) => {
-      const find = pattern.replace(/\/\*$/, "");
-      // Pick only the first path.
-      const replacement = substitutions[0].replace(/\*$/, "");
-      const resolvedReplacement = resolve(resolvedBaseUrl, replacement);
-      return [find, resolvedReplacement];
-    }),
+    Object.entries(tsconfig.compilerOptions.paths).map(
+      ([pattern, substitutions]) => {
+        const find = pattern.replace(/\/\*$/, "");
+        // Pick only the first path.
+        const replacement = substitutions[0].replace(/\*$/, "");
+        const resolvedReplacement = resolve(resolvedBaseUrl, replacement);
+        return [find, resolvedReplacement];
+      },
+    ),
   );
 
   return aliases;
 }
 
-function getTsconfig(ctx: BuildContext): { 
-  path?: string, 
-  compilerOptions?: CompilerOptions 
+function getTsconfig(ctx: BuildContext): {
+  path?: string;
+  compilerOptions?: CompilerOptions;
 } {
-  const { 
-    tsconfig: overridePath, 
-    compilerOptions: overrideCompilerOptions 
-  } = ctx.options.rollup.dts;
+  const { tsconfig: overridePath, compilerOptions: overrideCompilerOptions } =
+    ctx.options.rollup.dts;
 
   const tsconfigPath = overridePath
     ? resolve(ctx.options.rootDir, overridePath)
@@ -99,10 +101,7 @@ function getTsconfig(ctx: BuildContext): {
     return { compilerOptions: overrideCompilerOptions };
   }
 
-  const { config: tsconfigRaw } = readConfigFile(
-    tsconfigPath,
-    sys.readFile,
-  );
+  const { config: tsconfigRaw } = readConfigFile(tsconfigPath, sys.readFile);
   const { options: compilerOptions } = parseJsonConfigFileContent(
     tsconfigRaw,
     sys,
@@ -112,7 +111,7 @@ function getTsconfig(ctx: BuildContext): {
   return {
     path: tsconfigPath,
     compilerOptions: { ...compilerOptions, ...overrideCompilerOptions },
-  }
+  };
 }
 
 export function getChunkFilename(
