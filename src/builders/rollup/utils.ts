@@ -40,7 +40,7 @@ export async function resolveAliases(ctx: BuildContext): Promise<Record<string, 
 
   /**
    * REVIEW: This makes alias resolution asynchronous (which is contagious),
-   * because we are lazy loading TypeScript, 
+   * because we are dynamic loading TypeScript (cause it's a peer dependency), 
    * or we can use a synchronous alternative [get-tsconfig](https://github.com/privatenumber/get-tsconfig).
    * 
    * Additionally, do we need a flag to explicitly enable this feature?
