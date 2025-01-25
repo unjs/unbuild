@@ -1,3 +1,4 @@
+import { dirname, resolve } from 'pathe'
 import type { PreRenderedChunk } from "rollup";
 import type { BuildContext } from "../../types";
 
@@ -13,7 +14,7 @@ export const DEFAULT_EXTENSIONS: string[] = [
   ".json",
 ];
 
-export function resolveAliases(ctx: BuildContext): Record<string, string> {
+export async function resolveAliases(ctx: BuildContext): Promise<Record<string, string>> {
   const aliases: Record<string, string> = {
     [ctx.pkg.name!]: ctx.options.rootDir,
     ...ctx.options.alias,
@@ -37,7 +38,56 @@ export function resolveAliases(ctx: BuildContext): Record<string, string> {
     }
   }
 
+  /**
+   * REVIEW: This makes alias resolution asynchronous (which is contagious),
+   * because we are lazy loading TypeScript, 
+   * or we can use a synchronous alternative [get-tsconfig](https://github.com/privatenumber/get-tsconfig).
+   * 
+   * Additionally, do we need a flag to explicitly enable this feature?
+   */
+  const tsconfigAliases = await tryInferTsconfigAliases()
+  if(tsconfigAliases) {
+    Object.assign(aliases, tsconfigAliases)
+  }
+
   return aliases;
+}
+
+async function tryInferTsconfigAliases(): Promise<Record<string, string> | null> {
+  const ts = await import('typescript').catch(() => null)
+
+  if(!ts) {
+    return null
+  }
+
+  const tsconfigPath = ts.findConfigFile(process.cwd(), ts.sys.fileExists, 'tsconfig.json')
+
+  if(!tsconfigPath)  {
+    return null
+  }
+
+  const tsconfigDir = dirname(tsconfigPath)
+  const { config: rawTsconfig } = ts.readConfigFile(tsconfigPath, ts.sys.readFile)
+  const { options: tsconfig } = ts.parseJsonConfigFileContent(rawTsconfig, ts.sys, tsconfigDir)
+
+  if(!tsconfig.paths) {
+    return null
+  }
+
+  const resolvedBaseUrl = resolve(tsconfigDir, tsconfig.baseUrl || '.');
+
+  const aliases = Object.fromEntries(
+    Object.entries(tsconfig.paths)
+      .map(([pattern, substitutions]) => {
+        const find = pattern.replace(/\/\*$/, '')
+        // Pick only the first path.
+        const replacement = substitutions[0].replace(/\*$/, '')
+        const resolvedReplacement = resolve(resolvedBaseUrl, replacement)
+        return [find, resolvedReplacement]
+      })
+  )
+
+  return aliases
 }
 
 export function getChunkFilename(

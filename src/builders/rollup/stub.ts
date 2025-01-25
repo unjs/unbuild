@@ -15,7 +15,7 @@ export async function rollupStub(ctx: BuildContext): Promise<void> {
     {
       ...ctx.options.stubOptions.jiti,
       alias: {
-        ...resolveAliases(ctx),
+        ...await resolveAliases(ctx),
         ...ctx.options.stubOptions.jiti.alias,
       },
       transformOptions: {

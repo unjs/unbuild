@@ -20,7 +20,7 @@ export async function rollupBuild(ctx: BuildContext): Promise<void> {
   }
 
   // Resolve options
-  const rollupOptions = getRollupOptions(ctx);
+  const rollupOptions = await getRollupOptions(ctx);
   await ctx.hooks.callHook("rollup:options", ctx, rollupOptions);
 
   // Skip build if no input entries defined
