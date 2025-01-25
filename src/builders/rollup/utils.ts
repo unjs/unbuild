@@ -1,6 +1,12 @@
 import { dirname, resolve } from "pathe";
+import { 
+  sys,
+  readConfigFile, 
+  parseJsonConfigFileContent, 
+} from "typescript"
 import type { PreRenderedChunk } from "rollup";
 import type { BuildContext } from "../../types";
+import type { CompilerOptions } from "typescript";
 
 export const DEFAULT_EXTENSIONS: string[] = [
   ".ts",
@@ -14,9 +20,7 @@ export const DEFAULT_EXTENSIONS: string[] = [
   ".json",
 ];
 
-export async function resolveAliases(
-  ctx: BuildContext,
-): Promise<Record<string, string>> {
+export function resolveAliases(ctx: BuildContext): Record<string, string> {
   const aliases: Record<string, string> = {
     [ctx.pkg.name!]: ctx.options.rootDir,
     ...ctx.options.alias,
@@ -40,14 +44,7 @@ export async function resolveAliases(
     }
   }
 
-  /**
-   * REVIEW: This makes alias resolution asynchronous (which is contagious),
-   * because we are dynamically loading TypeScript (cause it's a peer dependency), 
-   * or we can use a synchronous alternative [get-tsconfig](https://github.com/privatenumber/get-tsconfig).
-   *
-   * Additionally, do we need a flag to explicitly enable this feature?
-   */
-  const tsconfigAliases = await tryInferTsconfigAliases();
+  const tsconfigAliases = inferAliasesFromTsconfig(ctx);
   if (tsconfigAliases) {
     Object.assign(aliases, tsconfigAliases);
   }
@@ -55,45 +52,24 @@ export async function resolveAliases(
   return aliases;
 }
 
-async function tryInferTsconfigAliases(): Promise<Record<
+function inferAliasesFromTsconfig(ctx: BuildContext): Record<
   string,
   string
-> | null> {
-  const ts = await import("typescript").catch(() => null);
+> | undefined {
+  const tsconfig = getTsconfig(ctx);
 
-  if (!ts) {
-    return null;
+  if (!tsconfig.compilerOptions?.paths) {
+    return;
   }
 
-  const tsconfigPath = ts.findConfigFile(
-    process.cwd(),
-    ts.sys.fileExists,
-    "tsconfig.json",
-  );
-
-  if (!tsconfigPath) {
-    return null;
-  }
-
-  const tsconfigDir = dirname(tsconfigPath);
-  const { config: rawTsconfig } = ts.readConfigFile(
-    tsconfigPath,
-    ts.sys.readFile,
-  );
-  const { options: tsconfig } = ts.parseJsonConfigFileContent(
-    rawTsconfig,
-    ts.sys,
-    tsconfigDir,
-  );
-
-  if (!tsconfig.paths) {
-    return null;
-  }
-
-  const resolvedBaseUrl = resolve(tsconfigDir, tsconfig.baseUrl || ".");
+  const tsconfigDir = tsconfig.path 
+    ? dirname(tsconfig.path) 
+    : ctx.options.rootDir;
+  
+  const resolvedBaseUrl = resolve(tsconfigDir, tsconfig.compilerOptions?.baseUrl || ".");
 
   const aliases = Object.fromEntries(
-    Object.entries(tsconfig.paths).map(([pattern, substitutions]) => {
+    Object.entries(tsconfig.compilerOptions.paths).map(([pattern, substitutions]) => {
       const find = pattern.replace(/\/\*$/, "");
       // Pick only the first path.
       const replacement = substitutions[0].replace(/\*$/, "");
@@ -103,6 +79,40 @@ async function tryInferTsconfigAliases(): Promise<Record<
   );
 
   return aliases;
+}
+
+function getTsconfig(ctx: BuildContext): { 
+  path?: string, 
+  compilerOptions?: CompilerOptions 
+} {
+  const { 
+    tsconfig: overridePath, 
+    compilerOptions: overrideCompilerOptions 
+  } = ctx.options.rollup.dts;
+
+  const tsconfigPath = resolve(
+    ctx.options.rootDir, 
+    overridePath || 'tsconfig.json'
+  )
+
+  if (!tsconfigPath) {
+    return { compilerOptions: overrideCompilerOptions };
+  }
+
+  const { config: tsconfigRaw } = readConfigFile(
+    tsconfigPath,
+    sys.readFile,
+  );
+  const { options: compilerOptions } = parseJsonConfigFileContent(
+    tsconfigRaw,
+    sys,
+    dirname(tsconfigPath),
+  );
+
+  return {
+    path: tsconfigPath,
+    compilerOptions: { ...compilerOptions, ...overrideCompilerOptions },
+  }
 }
 
 export function getChunkFilename(
