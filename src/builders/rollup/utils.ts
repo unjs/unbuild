@@ -1,12 +1,13 @@
 import { dirname, resolve } from "pathe";
 import { 
   sys,
+  findConfigFile, 
   readConfigFile, 
   parseJsonConfigFileContent, 
 } from "typescript"
+import type { CompilerOptions } from "typescript";
 import type { PreRenderedChunk } from "rollup";
 import type { BuildContext } from "../../types";
-import type { CompilerOptions } from "typescript";
 
 export const DEFAULT_EXTENSIONS: string[] = [
   ".ts",
@@ -90,10 +91,9 @@ function getTsconfig(ctx: BuildContext): {
     compilerOptions: overrideCompilerOptions 
   } = ctx.options.rollup.dts;
 
-  const tsconfigPath = resolve(
-    ctx.options.rootDir, 
-    overridePath || 'tsconfig.json'
-  )
+  const tsconfigPath = overridePath
+    ? resolve(ctx.options.rootDir, overridePath)
+    : findConfigFile(ctx.options.rootDir, sys.fileExists);
 
   if (!tsconfigPath) {
     return { compilerOptions: overrideCompilerOptions };
