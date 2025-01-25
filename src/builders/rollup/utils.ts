@@ -1,10 +1,10 @@
 import { dirname, resolve } from "pathe";
-import { 
+import {
   sys,
-  findConfigFile, 
-  readConfigFile, 
-  parseJsonConfigFileContent, 
-} from "typescript"
+  findConfigFile,
+  readConfigFile,
+  parseJsonConfigFileContent,
+} from "typescript";
 import type { CompilerOptions } from "typescript";
 import type { PreRenderedChunk } from "rollup";
 import type { BuildContext } from "../../types";
