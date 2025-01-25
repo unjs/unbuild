@@ -15,7 +15,9 @@ import { cjsPlugin } from "./plugins/cjs";
 import { shebangPlugin } from "./plugins/shebang";
 import { DEFAULT_EXTENSIONS, getChunkFilename, resolveAliases } from "./utils";
 
-export async function getRollupOptions(ctx: BuildContext): Promise<RollupOptions> {
+export async function getRollupOptions(
+  ctx: BuildContext,
+): Promise<RollupOptions> {
   const _aliases = await resolveAliases(ctx);
   return (<RollupOptions>{
     input: Object.fromEntries(
