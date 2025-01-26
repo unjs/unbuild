@@ -23,6 +23,7 @@ export const DEFAULT_EXTENSIONS: string[] = [
 
 export function resolveAliases(ctx: BuildContext): Record<string, string> {
   const aliases: Record<string, string> = {
+    ...inferAliasesFromTsconfig(ctx),
     [ctx.pkg.name!]: ctx.options.rootDir,
     ...ctx.options.alias,
   };
@@ -43,11 +44,6 @@ export function resolveAliases(ctx: BuildContext): Record<string, string> {
         ctx.options.rollup.alias.entries || ctx.options.rollup.alias,
       );
     }
-  }
-
-  const tsconfigAliases = inferAliasesFromTsconfig(ctx);
-  if (tsconfigAliases) {
-    Object.assign(aliases, tsconfigAliases);
   }
 
   return aliases;
