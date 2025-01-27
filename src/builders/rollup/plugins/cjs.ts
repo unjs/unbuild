@@ -89,9 +89,7 @@ function extractExports(
     return;
   }
 
-  const regexp = /export\s*\{([^}]*)\}/;
-  const defaultExportRegexp = /\s*as\s+default\s*/;
-  const match = defaultExport.code.match(regexp);
+  const match = defaultExport.code.match(/export\s*\{([^}]*)\}/);
   if (!match?.length) {
     ctx.warnings.add(
       `No default export found in ${info.fileName}, it contains default export but cannot be parsed.`,
@@ -106,7 +104,7 @@ function extractExports(
       defaultAlias = exp;
       continue;
     }
-    const m = exp.match(defaultExportRegexp);
+    const m = exp.match(/\s*as\s+default\s*/);
     if (m) {
       defaultAlias = exp.replace(m[0], "");
     } else {
@@ -253,7 +251,7 @@ function handleDefaultNamedCJSExport(
   if (lastImportPosition > 0) {
     magicString.appendRight(
       lastImportPosition,
-      `\nimport {  ${defaultAlias} } from '${defaultExport.specifier}';\n`,
+      `\nimport { ${defaultAlias} } from '${defaultExport.specifier}';\n`,
     );
   } else {
     magicString.prepend(
