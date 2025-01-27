@@ -32,7 +32,7 @@ export function fixDefaultCJSExportsPlugin(ctx: BuildContext): Plugin {
         return;
       }
 
-      return pathDefaultCJSExportsPlugin(code, info, ctx);
+      return fixDefaultCJSExports(code, info, ctx);
     },
   } as Plugin;
 }
@@ -311,7 +311,7 @@ function handleNoSpecifierDefaultCJSExport(
   );
 }
 
-function pathDefaultCJSExportsPlugin(
+function fixDefaultCJSExports(
   code: string,
   info: RenderedChunk,
   ctx: BuildContext,
