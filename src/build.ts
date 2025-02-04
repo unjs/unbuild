@@ -126,6 +126,7 @@ async function _build(
       dependencies: [],
       devDependencies: [],
       peerDependencies: [],
+      ignoreConditions: [],
       alias: {},
       replace: {},
       failOnWarn: true,

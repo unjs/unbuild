@@ -55,6 +55,22 @@ export function validatePackage(
     return;
   }
 
+  for (const item of ctx.options.ignoreConditions || []) {
+    if (typeof pkg.exports === "object" && !Array.isArray(pkg.exports)) {
+      for (const key of Object.keys(pkg.exports)) {
+        const exportEntry = pkg.exports[key];
+        if (
+          exportEntry &&
+          typeof exportEntry === "object" &&
+          !Array.isArray(exportEntry) &&
+          exportEntry[item] !== undefined
+        ) {
+          delete exportEntry[item];
+        }
+      }
+    }
+  }
+
   const filenames = new Set(
     [
       ...(typeof pkg.bin === "string"

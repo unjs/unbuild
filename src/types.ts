@@ -143,6 +143,12 @@ export interface BuildOptions {
    * Run different types of builds (untyped, mkdist, Rollup, copy) simultaneously.
    */
   parallel: boolean;
+
+  /**
+   * Ignore conditions.
+   * If the condition is met, the build will be ignored.
+   */
+  ignoreConditions: string[];
 }
 
 export interface BuildContext {
