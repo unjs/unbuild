@@ -74,5 +74,5 @@
       "optional": true
     }
   },
-  "packageManager": "pnpm@9.15.4"
+  "packageManager": "pnpm@10.2.1"
 }
