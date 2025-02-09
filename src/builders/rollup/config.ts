@@ -17,6 +17,9 @@ import { DEFAULT_EXTENSIONS, getChunkFilename, resolveAliases } from "./utils";
 
 export function getRollupOptions(ctx: BuildContext): RollupOptions {
   const _aliases = resolveAliases(ctx);
+  const format = ctx.options.rollup.output?.format || "esm";
+  const ext = format === "iife" ? "js" : "mjs";
+
   return (<RollupOptions>{
     input: Object.fromEntries(
       ctx.options.entries
@@ -45,10 +48,10 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
         },
       <OutputOptions>{
         dir: resolve(ctx.options.rootDir, ctx.options.outDir),
-        entryFileNames: "[name].mjs",
+        entryFileNames: `[name].${ext}`,
         chunkFileNames: (chunk: PreRenderedChunk) =>
-          getChunkFilename(ctx, chunk, "mjs"),
-        format: "esm",
+          getChunkFilename(ctx, chunk, ext),
+        format,
         exports: "auto",
         generatedCode: { constBindings: true },
         externalLiveBindings: false,
