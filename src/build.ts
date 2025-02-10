@@ -51,6 +51,9 @@ export async function build(
       default: true,
     })) as PackageJson) || ({} as PackageJson);
 
+  // Prefer `publishConfig` when defined
+  Object.assign(pkg, pkg.publishConfig);
+
   // Invoke build for every build config defined in build.config.ts
   const cleanedDirs: string[] = [];
 
