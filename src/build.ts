@@ -35,25 +35,32 @@ export async function build(
   // Create jiti instance for loading initial config
   const jiti = createJiti(rootDir);
 
-  const [ _buildConfig, pkg = {} ] = await Promise.all([
-    jiti.import<BuildConfig | BuildConfig[] | undefined>(inputConfig?.config || "./build.config", {
-      try: !inputConfig.config,
-      default: true,
-    }),
-    jiti.import<(PackageJson & Partial<Record<"unbuild" | "build", BuildConfig | BuildConfig[]>>) | undefined>("./package.json", {
+  const [_buildConfig, pkg = {}] = await Promise.all([
+    jiti.import<BuildConfig | BuildConfig[] | undefined>(
+      inputConfig?.config || "./build.config",
+      {
+        try: !inputConfig.config,
+        default: true,
+      },
+    ),
+    jiti.import<
+      | (PackageJson &
+          Partial<Record<"unbuild" | "build", BuildConfig | BuildConfig[]>>)
+      | undefined
+    >("./package.json", {
       try: true,
       default: true,
-    })
-   ])
-  
+    }),
+  ]);
+
   const pkgBuildConfig = pkg.unbuild || pkg.build;
   const buildConfigs = [
     ...(Array.isArray(_buildConfig) ? _buildConfig : [_buildConfig]),
-    ...(Array.isArray(pkgBuildConfig) ? pkgBuildConfig : [])
-  ].filter(Boolean) as BuildConfig[]
+    ...(Array.isArray(pkgBuildConfig) ? pkgBuildConfig : []),
+  ].filter(Boolean) as BuildConfig[];
 
-  if(buildConfigs.length === 0) {
-    buildConfigs.push({})
+  if (buildConfigs.length === 0) {
+    buildConfigs.push({});
   }
 
   // Invoke build for every build config defined in build.config.ts
@@ -79,20 +86,21 @@ async function _build(
   rootDir: string,
   inputConfig: BuildConfig = {},
   buildConfig: BuildConfig,
-  pkg: PackageJson & Partial<Record<"unbuild" | "build", BuildConfig | BuildConfig[]>>,
+  pkg: PackageJson &
+    Partial<Record<"unbuild" | "build", BuildConfig | BuildConfig[]>>,
   cleanedDirs: string[],
   _stubMode: boolean,
   _watchMode: boolean,
 ): Promise<void> {
-  const pkgBuildConfig = pkg.unbuild || pkg.build 
-  const pkgBuildConfigToMerge = Array.isArray(pkgBuildConfig) 
-    ? undefined 
+  const pkgBuildConfig = pkg.unbuild || pkg.build;
+  const pkgBuildConfigToMerge = Array.isArray(pkgBuildConfig)
+    ? undefined
     : pkgBuildConfig;
 
   // Resolve preset
   const preset = await resolvePreset(
     buildConfig.preset ||
-    pkgBuildConfigToMerge?.preset ||
+      pkgBuildConfigToMerge?.preset ||
       inputConfig.preset ||
       "auto",
     rootDir,
