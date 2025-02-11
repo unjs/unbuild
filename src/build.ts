@@ -35,17 +35,16 @@ export async function build(
   // Create jiti instance for loading initial config
   const jiti = createJiti(rootDir);
 
-  const _buildConfig: BuildConfig | BuildConfig[] | undefined =
-    (await jiti.import(inputConfig?.config || "./build.config", {
+  const [ _buildConfig, pkg = {} ] = await Promise.all([
+    jiti.import<BuildConfig | BuildConfig[] | undefined>(inputConfig?.config || "./build.config", {
       try: !inputConfig.config,
       default: true,
-    }));
-
-  const pkg: PackageJson & Partial<Record<"unbuild" | "build", BuildConfig | BuildConfig[]>> =
-  ((await jiti.import("./package.json", {
-    try: true,
-    default: true,
-  })) as PackageJson) || ({} as PackageJson);
+    }),
+    jiti.import<(PackageJson & Partial<Record<"unbuild" | "build", BuildConfig | BuildConfig[]>>) | undefined>("./package.json", {
+      try: true,
+      default: true,
+    })
+   ])
   
   const pkgBuildConfig = pkg.unbuild || pkg.build;
   const buildConfigs = [
