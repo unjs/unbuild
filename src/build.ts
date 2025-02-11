@@ -35,21 +35,27 @@ export async function build(
   // Create jiti instance for loading initial config
   const jiti = createJiti(rootDir);
 
-  const _buildConfig: BuildConfig | BuildConfig[] =
+  const _buildConfig: BuildConfig | BuildConfig[] | undefined =
     (await jiti.import(inputConfig?.config || "./build.config", {
       try: !inputConfig.config,
       default: true,
-    })) || {};
+    }));
 
-  const buildConfigs = (
-    Array.isArray(_buildConfig) ? _buildConfig : [_buildConfig]
-  ).filter(Boolean);
+  const pkg: PackageJson & Partial<Record<"unbuild" | "build", BuildConfig | BuildConfig[]>> =
+  ((await jiti.import("./package.json", {
+    try: true,
+    default: true,
+  })) as PackageJson) || ({} as PackageJson);
+  
+  const pkgBuildConfig = pkg.unbuild || pkg.build;
+  const buildConfigs = [
+    ...(Array.isArray(_buildConfig) ? _buildConfig : [_buildConfig]),
+    ...(Array.isArray(pkgBuildConfig) ? pkgBuildConfig : [])
+  ].filter(Boolean) as BuildConfig[]
 
-  const pkg: PackageJson & Partial<Record<"unbuild" | "build", BuildConfig>> =
-    ((await jiti.import("./package.json", {
-      try: true,
-      default: true,
-    })) as PackageJson) || ({} as PackageJson);
+  if(buildConfigs.length === 0) {
+    buildConfigs.push({})
+  }
 
   // Invoke build for every build config defined in build.config.ts
   const cleanedDirs: string[] = [];
@@ -74,16 +80,20 @@ async function _build(
   rootDir: string,
   inputConfig: BuildConfig = {},
   buildConfig: BuildConfig,
-  pkg: PackageJson & Partial<Record<"unbuild" | "build", BuildConfig>>,
+  pkg: PackageJson & Partial<Record<"unbuild" | "build", BuildConfig | BuildConfig[]>>,
   cleanedDirs: string[],
   _stubMode: boolean,
   _watchMode: boolean,
 ): Promise<void> {
+  const pkgBuildConfig = pkg.unbuild || pkg.build 
+  const pkgBuildConfigToMerge = Array.isArray(pkgBuildConfig) 
+    ? undefined 
+    : pkgBuildConfig;
+
   // Resolve preset
   const preset = await resolvePreset(
     buildConfig.preset ||
-      pkg.unbuild?.preset ||
-      pkg.build?.preset ||
+    pkgBuildConfigToMerge?.preset ||
       inputConfig.preset ||
       "auto",
     rootDir,
@@ -92,7 +102,7 @@ async function _build(
   // Merge options
   const options = defu(
     buildConfig,
-    pkg.unbuild || pkg.build,
+    pkgBuildConfigToMerge,
     inputConfig,
     preset,
     <BuildOptions>{
