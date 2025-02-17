@@ -3,7 +3,7 @@ import commonjs from "@rollup/plugin-commonjs";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import alias from "@rollup/plugin-alias";
 import replace from "@rollup/plugin-replace";
-import preserveDirectives from 'rollup-preserve-directives'
+import preserveDirectives from "rollup-preserve-directives";
 import { resolve, isAbsolute } from "pathe";
 import { resolveAlias } from "pathe/utils";
 import { parseNodeModulePath } from "mlly";

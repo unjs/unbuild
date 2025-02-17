@@ -85,7 +85,8 @@ export async function rollupBuild(ctx: BuildContext): Promise<void> {
       ctx.options.rollup.emitCJS && fixCJSExportTypePlugin(),
     ].filter(
       (plugin) =>
-        plugin && (!("name" in plugin) || plugin.name !== "preserve-directives"),
+        plugin &&
+        (!("name" in plugin) || plugin.name !== "preserve-directives"),
     );
 
     await ctx.hooks.callHook("rollup:dts:options", ctx, rollupOptions);
