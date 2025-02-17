@@ -83,7 +83,10 @@ export async function rollupBuild(ctx: BuildContext): Promise<void> {
       dts(ctx.options.rollup.dts),
       removeShebangPlugin(),
       ctx.options.rollup.emitCJS && fixCJSExportTypePlugin(),
-    ].filter(Boolean);
+    ].filter(
+      (plugin) =>
+        plugin && (!("name" in plugin) || plugin.name !== "preserve-directives"),
+    );
 
     await ctx.hooks.callHook("rollup:dts:options", ctx, rollupOptions);
     const typesBuild = await rollup(rollupOptions);
