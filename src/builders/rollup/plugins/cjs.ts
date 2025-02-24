@@ -22,7 +22,7 @@ export function fixCJSExportTypePlugin(ctx: BuildContext): Plugin {
       ? /\.d\.cts$/ // d.cts only
       : /\.d\.c?ts$/; // d.ts and d.cts
   return FixDtsDefaultCjsExportsPlugin({
-    warn: (msg: string) => ctx.warnings.add(msg),
+    warn: (msg) => ctx.warnings.add(msg),
     matcher: (info) => {
       return (
         info.type === "chunk" &&
