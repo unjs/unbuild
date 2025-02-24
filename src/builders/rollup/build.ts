@@ -82,7 +82,7 @@ export async function rollupBuild(ctx: BuildContext): Promise<void> {
       ...rollupOptions.plugins,
       dts(ctx.options.rollup.dts),
       removeShebangPlugin(),
-      ctx.options.rollup.emitCJS && fixCJSExportTypePlugin(),
+      ctx.options.rollup.emitCJS && fixCJSExportTypePlugin(ctx),
     ].filter(Boolean);
 
     await ctx.hooks.callHook("rollup:dts:options", ctx, rollupOptions);
