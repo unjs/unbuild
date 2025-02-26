@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v3.5.0
+
+[compare changes](https://github.com/unjs/unbuild/compare/v3.4.1...v3.5.0)
+
+### 🚀 Enhancements
+
+- Use `fix-dts-default-cjs-exports` to transform cjs types ([#513](https://github.com/unjs/unbuild/pull/513))
+
+### 🏡 Chore
+
+- **release:** V3.4.1 ([b408ac0](https://github.com/unjs/unbuild/commit/b408ac0))
+- Updated untyped to v2 ([24997cc](https://github.com/unjs/unbuild/commit/24997cc))
+- **release:** V3.4.2 ([045ebf2](https://github.com/unjs/unbuild/commit/045ebf2))
+
+### ❤️ Contributors
+
+- Joaquín Sánchez ([@userquin](https://github.com/userquin))
+- Pooya Parsa ([@pi0](https://github.com/pi0))
+
 ## v3.4.2
 
 [compare changes](https://github.com/unjs/unbuild/compare/v3.4.1...v3.4.2)
