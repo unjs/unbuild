@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v3.4.1
+
+[compare changes](https://github.com/unjs/unbuild/compare/v3.4.0...v3.4.1)
+
+### 🩹 Fixes
+
+- Filter commonjs plugin when generating declaration ([#495](https://github.com/unjs/unbuild/pull/495))
+
+### ❤️ Contributors
+
+- Kricsleo ([@kricsleo](https://github.com/kricsleo))
+
 ## v3.4.0
 
 [compare changes](https://github.com/unjs/unbuild/compare/v3.3.1...v3.4.0)
