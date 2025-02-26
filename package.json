@@ -39,7 +39,7 @@
     "consola": "^3.4.0",
     "defu": "^6.1.4",
     "esbuild": "^0.25.0",
-    "fix-dts-default-cjs-exports": "^0.0.1",
+    "fix-dts-default-cjs-exports": "^1.0.0",
     "hookable": "^5.5.3",
     "jiti": "^2.4.2",
     "magic-string": "^0.30.17",
