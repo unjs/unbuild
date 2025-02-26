@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v3.4.2
+
+[compare changes](https://github.com/unjs/unbuild/compare/v3.4.1...v3.4.2)
+
+### 🏡 Chore
+
+- Updated untyped to v2 ([24997cc](https://github.com/unjs/unbuild/commit/24997cc))
+
+### ❤️ Contributors
+
+- Pooya Parsa ([@pi0](https://github.com/pi0))
+
 ## v3.4.1
 
 [compare changes](https://github.com/unjs/unbuild/compare/v3.4.0...v3.4.1)
