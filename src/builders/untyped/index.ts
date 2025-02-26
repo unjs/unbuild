@@ -6,7 +6,6 @@ import {
   generateMarkdown,
   type InputObject,
 } from "untyped";
-// @ts-ignore
 import untypedPlugin from "untyped/babel-plugin";
 import { pascalCase } from "scule";
 import type {
