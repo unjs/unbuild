@@ -1,4 +1,4 @@
-import { defineBuildConfig } from "unbuild";
+import { defineBuildConfig } from "./src";
 import { rm } from "node:fs/promises";
 
 export default defineBuildConfig({
