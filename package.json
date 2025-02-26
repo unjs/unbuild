@@ -6,11 +6,10 @@
   "license": "MIT",
   "type": "module",
   "exports": {
-    ".": {
-      "import": "./dist/index.mjs"
-    }
+    "types": "./dist/index.d.mts",
+    "import": "./dist/index.mjs"
   },
-  "types": "./dist/index.d.ts",
+  "types": "./dist/index.d.mts",
   "bin": {
     "unbuild": "./dist/cli.mjs"
   },
