@@ -38,6 +38,9 @@ importers:
       esbuild:
         specifier: ^0.25.0
         version: 0.25.0
+      fix-dts-default-cjs-exports:
+        specifier: ^1.0.0
+        version: 1.0.0
       hookable:
         specifier: ^5.5.3
         version: 5.5.3
@@ -1411,6 +1414,9 @@ packages:
   find-up@5.0.0:
     resolution: {integrity: sha512-78/PXT1wlLLDgTzDs7sjq9hzz0vXD+zn+7wypEe4fXQxCmdmqfGsEPQxmiCSQI3ajFV91bVSsvNtrJRiW6nGng==}
     engines: {node: '>=10'}
+
+  fix-dts-default-cjs-exports@1.0.0:
+    resolution: {integrity: sha512-i9Vd++WOWo6JilNgZvNvmy1T0r+/j7vikghQSEhKIuDwz4GjUrYj+Z18zlL7MleYNxE+xE6t3aG7LiAwA1P+dg==}
 
   flat-cache@4.0.1:
     resolution: {integrity: sha512-f7ccFPK3SXFHpx15UIGyRJ/FJQctuKZ0zVuN3frBo4HnK3cay9VEW0R6yPYFHC0AgqhukPzKjq22t5DmAyqGyw==}
@@ -3730,6 +3736,12 @@ snapshots:
     dependencies:
       locate-path: 6.0.0
       path-exists: 4.0.0
+
+  fix-dts-default-cjs-exports@1.0.0:
+    dependencies:
+      magic-string: 0.30.17
+      mlly: 1.7.4
+      rollup: 4.34.8
 
   flat-cache@4.0.1:
     dependencies:
