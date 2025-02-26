@@ -57,6 +57,11 @@ export async function build(
   const _watchMode = inputConfig.watch === true;
   const _stubMode = !_watchMode && (stub || inputConfig.stub === true);
 
+  if (!_watchMode && !_stubMode) {
+    // Prefer `publishConfig` when defined
+    Object.assign(pkg, pkg.publishConfig);
+  }
+
   for (const buildConfig of buildConfigs) {
     await _build(
       rootDir,
