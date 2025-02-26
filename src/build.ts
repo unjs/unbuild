@@ -57,6 +57,11 @@ export async function build(
   const _watchMode = inputConfig.watch === true;
   const _stubMode = !_watchMode && (stub || inputConfig.stub === true);
 
+  if (!_watchMode && !_stubMode) {
+    // Prefer `publishConfig` when defined
+    Object.assign(pkg, pkg.publishConfig);
+  }
+
   for (const buildConfig of buildConfigs) {
     await _build(
       rootDir,
@@ -156,8 +161,12 @@ async function _build(
         },
         esbuild: { target: "esnext" },
         dts: {
-          // https://github.com/Swatinem/rollup-plugin-dts/issues/143
-          compilerOptions: { preserveSymlinks: false },
+          compilerOptions: {
+            // https://github.com/Swatinem/rollup-plugin-dts/issues/143
+            preserveSymlinks: false,
+            // https://github.com/Swatinem/rollup-plugin-dts/issues/127
+            composite: false,
+          },
           respectExternal: true,
         },
       },

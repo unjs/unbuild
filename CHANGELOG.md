@@ -2,6 +2,61 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v3.4.2
+
+[compare changes](https://github.com/unjs/unbuild/compare/v3.4.1...v3.4.2)
+
+### 🏡 Chore
+
+- Updated untyped to v2 ([24997cc](https://github.com/unjs/unbuild/commit/24997cc))
+
+### ❤️ Contributors
+
+- Pooya Parsa ([@pi0](https://github.com/pi0))
+
+## v3.4.1
+
+[compare changes](https://github.com/unjs/unbuild/compare/v3.4.0...v3.4.1)
+
+### 🩹 Fixes
+
+- Filter commonjs plugin when generating declaration ([#495](https://github.com/unjs/unbuild/pull/495))
+
+### ❤️ Contributors
+
+- Kricsleo ([@kricsleo](https://github.com/kricsleo))
+
+## v3.4.0
+
+[compare changes](https://github.com/unjs/unbuild/compare/v3.3.1...v3.4.0)
+
+### 🚀 Enhancements
+
+- Prefer `publishConfig` from `package.json` when defined ([#506](https://github.com/unjs/unbuild/pull/506))
+
+### 🩹 Fixes
+
+- Workaroud the `composite` in `tsconfig.json` ([#504](https://github.com/unjs/unbuild/pull/504))
+
+### 📦 Build
+
+- Remove extra dist files ([c0c00ad](https://github.com/unjs/unbuild/commit/c0c00ad))
+
+### 🏡 Chore
+
+- Update deps ([60154b1](https://github.com/unjs/unbuild/commit/60154b1))
+- Update dependencies ([2448af1](https://github.com/unjs/unbuild/commit/2448af1))
+- Update pnpm ([b43bdf1](https://github.com/unjs/unbuild/commit/b43bdf1))
+- Update `JavaScript` case in pkg description ([#493](https://github.com/unjs/unbuild/pull/493))
+- Update exports field ([0b0d90c](https://github.com/unjs/unbuild/commit/0b0d90c))
+- Update build config ([61054fe](https://github.com/unjs/unbuild/commit/61054fe))
+
+### ❤️ Contributors
+
+- Pooya Parsa ([@pi0](https://github.com/pi0))
+- Kricsleo ([@kricsleo](https://github.com/kricsleo))
+- @beer ([@iiio2](https://github.com/iiio2))
+
 ## v3.3.1
 
 [compare changes](https://github.com/unjs/unbuild/compare/v3.3.0...v3.3.1)
