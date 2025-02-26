@@ -73,5 +73,5 @@
       "optional": true
     }
   },
-  "packageManager": "pnpm@10.3.0"
+  "packageManager": "pnpm@10.5.0"
 }
