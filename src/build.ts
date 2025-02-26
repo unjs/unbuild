@@ -161,8 +161,12 @@ async function _build(
         },
         esbuild: { target: "esnext" },
         dts: {
-          // https://github.com/Swatinem/rollup-plugin-dts/issues/143
-          compilerOptions: { preserveSymlinks: false },
+          compilerOptions: {
+            // https://github.com/Swatinem/rollup-plugin-dts/issues/143
+            preserveSymlinks: false,
+            // https://github.com/Swatinem/rollup-plugin-dts/issues/127
+            composite: false,
+          },
           respectExternal: true,
         },
       },
