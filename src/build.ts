@@ -100,7 +100,7 @@ async function _build(
     pkg.unbuild || pkg.build,
     inputConfig,
     preset,
-    <BuildOptions>{
+    {
       name: (pkg?.name || "").split("/").pop() || "default",
       rootDir,
       entries: [],
@@ -171,7 +171,7 @@ async function _build(
         },
       },
       parallel: false,
-    },
+    } satisfies BuildOptions,
   ) as BuildOptions;
 
   // Resolve dirs relative to rootDir
@@ -265,8 +265,8 @@ async function _build(
     for (const dir of new Set(
       options.entries
         .map((e) => e.outDir)
-        .filter(Boolean)
-        .sort() as unknown as Set<string>,
+        .filter((p): p is NonNullable<typeof p> => !!p)
+        .sort(),
     )) {
       if (
         dir === options.rootDir ||

@@ -84,13 +84,13 @@ export async function rollupBuild(ctx: BuildContext): Promise<void> {
       removeShebangPlugin(),
       ctx.options.rollup.emitCJS && fixCJSExportTypePlugin(ctx),
     ].filter(
-      (plugin) =>
+      (plugin): plugin is NonNullable<Exclude<typeof plugin, false>> =>
         /**
          * Issue: #396
          * rollup-plugin-dts conflicts with rollup-plugin-commonjs:
          * https://github.com/Swatinem/rollup-plugin-dts?tab=readme-ov-file#what-to-expect
          */
-        plugin && (!("name" in plugin) || plugin.name !== "commonjs"),
+        !!plugin && (!("name" in plugin) || plugin.name !== "commonjs"),
     );
 
     await ctx.hooks.callHook("rollup:dts:options", ctx, rollupOptions);

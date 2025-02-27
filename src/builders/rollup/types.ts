@@ -3,6 +3,7 @@ import type {
   RollupBuild,
   OutputOptions,
   InputPluginOption,
+  Plugin,
 } from "rollup";
 import type { RollupReplaceOptions } from "@rollup/plugin-replace";
 import type { RollupAliasOptions } from "@rollup/plugin-alias";
@@ -107,7 +108,7 @@ export interface RollupBuildOptions {
 }
 
 export interface RollupOptions extends _RollupOptions {
-  plugins: InputPluginOption[];
+  plugins: Plugin[];
 }
 
 export interface RollupHooks {

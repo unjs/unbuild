@@ -1,4 +1,4 @@
-import type { Plugin, TransformHook } from "rollup";
+import type { Plugin, TransformHook, TransformResult } from "rollup";
 import type { RollupJsonOptions } from "@rollup/plugin-json";
 import rollupJSONPlugin from "@rollup/plugin-json";
 
@@ -6,10 +6,10 @@ const EXPORT_DEFAULT = "export default ";
 
 export function JSONPlugin(options: RollupJsonOptions): Plugin {
   const plugin = rollupJSONPlugin(options);
-  return <Plugin>{
+  return {
     ...plugin,
     name: "unbuild-json",
-    transform(code, id) {
+    transform(code, id): TransformResult {
       const res = (plugin.transform as TransformHook)!.call(this, code, id);
       if (
         res &&
@@ -22,5 +22,5 @@ export function JSONPlugin(options: RollupJsonOptions): Plugin {
       }
       return res;
     },
-  };
+  } satisfies Plugin;
 }

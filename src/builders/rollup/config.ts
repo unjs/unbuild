@@ -17,7 +17,7 @@ import { DEFAULT_EXTENSIONS, getChunkFilename, resolveAliases } from "./utils";
 
 export function getRollupOptions(ctx: BuildContext): RollupOptions {
   const _aliases = resolveAliases(ctx);
-  return (<RollupOptions>{
+  return {
     input: Object.fromEntries(
       ctx.options.entries
         .filter((entry) => entry.builder === "rollup")
@@ -29,7 +29,7 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
 
     output: [
       ctx.options.rollup.emitCJS &&
-        <OutputOptions>{
+        ({
           dir: resolve(ctx.options.rootDir, ctx.options.outDir),
           entryFileNames: "[name].cjs",
           chunkFileNames: (chunk: PreRenderedChunk) =>
@@ -42,8 +42,8 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
           freeze: false,
           sourcemap: ctx.options.sourcemap,
           ...ctx.options.rollup.output,
-        },
-      <OutputOptions>{
+        } satisfies OutputOptions),
+      {
         dir: resolve(ctx.options.rootDir, ctx.options.outDir),
         entryFileNames: "[name].mjs",
         chunkFileNames: (chunk: PreRenderedChunk) =>
@@ -55,10 +55,10 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
         freeze: false,
         sourcemap: ctx.options.sourcemap,
         ...ctx.options.rollup.output,
-      },
-    ].filter(Boolean),
+      } satisfies OutputOptions,
+    ].filter(Boolean) as OutputOptions[],
 
-    external(originalId) {
+    external(originalId): boolean {
       // Resolve aliases
       const resolvedId = resolveAlias(originalId, _aliases);
 
@@ -105,7 +105,7 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
       return false;
     },
 
-    onwarn(warning, rollupWarn) {
+    onwarn(warning, rollupWarn): void {
       if (!warning.code || !["CIRCULAR_DEPENDENCY"].includes(warning.code)) {
         rollupWarn(warning);
       }
@@ -154,6 +154,7 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
         }),
 
       ctx.options.rollup.preserveDynamicImports && {
+        name: "unbuild=preserve-dynamic-imports",
         renderDynamicImport(): { left: string; right: string } {
           return { left: "import(", right: ")" };
         },
@@ -162,6 +163,6 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
       ctx.options.rollup.cjsBridge && cjsPlugin({}),
 
       rawPlugin(),
-    ].filter(Boolean),
-  }) as RollupOptions;
+    ].filter((p): p is NonNullable<Exclude<typeof p, false>> => !!p),
+  } satisfies RollupOptions;
 }
