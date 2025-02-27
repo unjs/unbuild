@@ -1,10 +1,6 @@
 import { writeFile } from "node:fs/promises";
 import { resolve } from "pathe";
-import { 
-  resolveSchema, 
-  generateTypes, 
-  generateMarkdown,
-} from "untyped";
+import { resolveSchema, generateTypes, generateMarkdown } from "untyped";
 import { loadSchema } from "untyped/loader";
 import { pascalCase } from "scule";
 import type {
@@ -25,11 +21,11 @@ export async function typesBuild(ctx: BuildContext): Promise<void> {
     await ctx.hooks.callHook("untyped:entry:options", ctx, entry, options);
 
     const defaults = entry.defaults || {};
-    const schema = await loadSchema(resolve(ctx.options.rootDir, entry.input), { 
-      cwd: ctx.options.rootDir, 
+    const schema = await loadSchema(resolve(ctx.options.rootDir, entry.input), {
+      cwd: ctx.options.rootDir,
       jiti: options.jiti,
       defaults,
-    }).catch(() => resolveSchema({}, defaults))
+    }).catch(() => resolveSchema({}, defaults));
 
     await ctx.hooks.callHook("untyped:entry:schema", ctx, entry, schema);
 
