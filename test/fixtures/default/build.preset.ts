@@ -1,4 +1,4 @@
-import { definePreset } from "../../src";
+import { definePreset } from "../../../src";
 
 export default definePreset({
   declaration: "compatible",
