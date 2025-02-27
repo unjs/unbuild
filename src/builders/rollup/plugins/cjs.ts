@@ -32,7 +32,7 @@ export function fixCJSExportTypePlugin(ctx: BuildContext): Plugin {
         info.isEntry
       );
     },
-  }) as Plugin;
+  });
 }
 
 const CJSyntaxRe = /__filename|__dirname|require\(|require\.resolve\(/;

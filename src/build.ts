@@ -265,8 +265,8 @@ async function _build(
     for (const dir of new Set(
       options.entries
         .map((e) => e.outDir)
-        .filter(Boolean)
-        .sort() as unknown as Set<string>,
+        .filter((p): p is NonNullable<typeof p> => !!p)
+        .sort(),
     )) {
       if (
         dir === options.rootDir ||
