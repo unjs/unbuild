@@ -29,7 +29,7 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
 
     output: [
       ctx.options.rollup.emitCJS &&
-        {
+        ({
           dir: resolve(ctx.options.rootDir, ctx.options.outDir),
           entryFileNames: "[name].cjs",
           chunkFileNames: (chunk: PreRenderedChunk) =>
@@ -42,7 +42,7 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
           freeze: false,
           sourcemap: ctx.options.sourcemap,
           ...ctx.options.rollup.output,
-        } satisfies OutputOptions,
+        } satisfies OutputOptions),
       {
         dir: resolve(ctx.options.rootDir, ctx.options.outDir),
         entryFileNames: "[name].mjs",
@@ -154,7 +154,7 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
         }),
 
       ctx.options.rollup.preserveDynamicImports && {
-        name: 'unbuild:preserve-dynamic-imports',
+        name: "unbuild=preserve-dynamic-imports",
         renderDynamicImport(): { left: string; right: string } {
           return { left: "import(", right: ")" };
         },
