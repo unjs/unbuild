@@ -1,5 +1,5 @@
 import type { BaseBuildEntry, BuildContext } from "../../types";
-import type { GlobOptions } from 'tinyglobby'
+import type { GlobOptions } from "tinyglobby";
 
 export interface CopyBuildEntry extends BaseBuildEntry {
   builder: "copy";
