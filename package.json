@@ -21,6 +21,7 @@
     "dev": "pnpm unbuild test/fixture",
     "lint": "eslint . && prettier -c src test examples",
     "lint:fix": "automd && eslint --fix . && prettier -w src test examples",
+    "lint:package": "publint",
     "prepack": "pnpm unbuild",
     "release": "pnpm test && changelogen --release --publish && git push --follow-tags",
     "stub": "pnpm unbuild --stub",
@@ -63,6 +64,7 @@
     "eslint": "^9.21.0",
     "eslint-config-unjs": "^0.4.2",
     "prettier": "^3.5.2",
+    "publint": "^0.3.7",
     "typescript": "^5.7.3",
     "vitest": "^3.0.7"
   },
