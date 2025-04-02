@@ -15,6 +15,8 @@ import {
   removeExtension,
   inferPkgExternals,
   withTrailingSlash,
+  findSharedItems,
+  outputWarnings,
 } from "./utils";
 import type { BuildContext, BuildConfig, BuildOptions } from "./types";
 import { validatePackage, validateDependencies } from "./validate";
@@ -62,8 +64,9 @@ export async function build(
     Object.assign(pkg, pkg.publishConfig);
   }
 
+  const ctxs: BuildContext[] = [];
   for (const buildConfig of buildConfigs) {
-    await _build(
+    const ctx = await _build(
       rootDir,
       inputConfig,
       buildConfig,
@@ -72,7 +75,41 @@ export async function build(
       _stubMode,
       _watchMode,
     );
+    ctxs.push(ctx);
+
+    // ouput an empty line as separator
+    console.log("");
+    outputWarnings(
+      "Build is done with some warnings:",
+      ctx.warnings,
+      ctx.options.failOnWarn,
+    );
   }
+
+  const lintWarnings = new Set<string>();
+
+  const unusedDependencies = findSharedItems(
+    ctxs.map((ctx) => ctx.unusedDependencies),
+  );
+  if (unusedDependencies.size > 0) {
+    const message =
+      "Potential unused dependencies found: " +
+      [...unusedDependencies].map((id) => colors.cyan(id)).join(", ");
+    consola.debug("[unbuild] [warn]", message);
+    lintWarnings.add(message);
+  }
+
+  const missingOutputs = findSharedItems(ctxs.map((ctx) => ctx.missingOutputs));
+  if (missingOutputs.size > 0) {
+    const message = `Potential missing package.json files: ${[...missingOutputs]
+      .map((o) => colors.cyan(o))
+      .join(", ")}`;
+    consola.debug("[unbuild] [warn]", message);
+    lintWarnings.add(message);
+  }
+
+  const failOnWarn = ctxs.some((ctx) => ctx.options.failOnWarn);
+  outputWarnings("Lint is done with some warnings:", lintWarnings, failOnWarn);
 }
 
 async function _build(
@@ -83,7 +120,7 @@ async function _build(
   cleanedDirs: string[],
   _stubMode: boolean,
   _watchMode: boolean,
-): Promise<void> {
+): Promise<BuildContext> {
   // Resolve preset
   const preset = await resolvePreset(
     buildConfig.preset ||
@@ -188,6 +225,8 @@ async function _build(
     pkg,
     buildEntries: [],
     usedImports: new Set(),
+    unusedDependencies: new Set(Object.keys(pkg.dependencies || {})),
+    missingOutputs: new Set(),
     hooks: createHooks(),
   };
 
@@ -308,7 +347,7 @@ async function _build(
   // Skip rest for stub and watch mode
   if (options.stub || options.watch) {
     await ctx.hooks.callHook("build:done", ctx);
-    return;
+    return ctx;
   }
 
   // Done info
@@ -383,8 +422,8 @@ async function _build(
     }
     consola.log(entry.chunk ? colors.gray(line) : line);
   }
-  console.log(
-    "Σ Total dist size (byte size):",
+  consola.log(
+    "  Σ Total dist size (byte size):",
     colors.cyan(
       prettyBytes(ctx.buildEntries.reduce((a, e) => a + (e.bytes || 0), 0)),
     ),
@@ -397,19 +436,5 @@ async function _build(
   // Call build:done
   await ctx.hooks.callHook("build:done", ctx);
 
-  consola.log("");
-
-  if (ctx.warnings.size > 0) {
-    consola.warn(
-      "Build is done with some warnings:\n\n" +
-        [...ctx.warnings].map((msg) => "- " + msg).join("\n"),
-    );
-    if (ctx.options.failOnWarn) {
-      consola.error(
-        "Exiting with code (1). You can change this behavior by setting `failOnWarn: false` .",
-      );
-      // eslint-disable-next-line unicorn/no-process-exit
-      process.exit(1);
-    }
-  }
+  return ctx;
 }

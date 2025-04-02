@@ -19,6 +19,24 @@ export function warn(ctx: BuildContext, message: string): void {
   ctx.warnings.add(message);
 }
 
+export function outputWarnings(
+  title: string,
+  warnings: Set<string>,
+  failOnWarn?: boolean,
+): void {
+  if (warnings.size > 0) {
+    consola.warn(
+      `${title}\n\n ${[...warnings].map((msg) => "- " + msg).join("\n")}`,
+    );
+    if (failOnWarn) {
+      consola.error(
+        "Will exit with code (1). You can change this behavior by setting `failOnWarn: false` .",
+      );
+      process.exitCode = 1;
+    }
+  }
+}
+
 export async function symlink(
   from: string,
   to: string,
@@ -205,4 +223,11 @@ function pathToRegex(path: string): string | RegExp {
 
 export function withTrailingSlash(path: string): string {
   return path.endsWith("/") ? path : `${path}/`;
+}
+
+export function findSharedItems(sets: Set<string>[]): Set<string> {
+  const [head, ...tails] = sets;
+  return new Set(
+    [...head].filter((item) => tails.every((set) => set.has(item))),
+  );
 }

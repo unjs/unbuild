@@ -6,38 +6,29 @@ import { resolve } from "pathe";
 import { arrayIncludes, extractExportFilenames, getpkg, warn } from "./utils";
 
 export function validateDependencies(ctx: BuildContext): void {
-  const usedDependencies = new Set<string>();
-  const unusedDependencies = new Set<string>(
-    Object.keys(ctx.pkg.dependencies || {}),
-  );
-  const implicitDependencies = new Set<string>();
   for (const id of ctx.usedImports) {
-    unusedDependencies.delete(id);
-    usedDependencies.add(id);
+    ctx.unusedDependencies.delete(id);
   }
   if (Array.isArray(ctx.options.dependencies)) {
     for (const id of ctx.options.dependencies) {
-      unusedDependencies.delete(id);
+      ctx.unusedDependencies.delete(id);
     }
   }
-  for (const id of usedDependencies) {
-    if (
-      !arrayIncludes(ctx.options.externals, id) &&
-      !id.startsWith("chunks/") &&
-      !ctx.options.dependencies.includes(getpkg(id)) &&
-      !ctx.options.peerDependencies.includes(getpkg(id))
-    ) {
-      implicitDependencies.add(id);
+
+  const implicitDependencies = new Set<string>();
+  if (!ctx.options.rollup.inlineDependencies) {
+    for (const id of ctx.usedImports) {
+      if (
+        !arrayIncludes(ctx.options.externals, id) &&
+        !id.startsWith("chunks/") &&
+        !ctx.options.dependencies.includes(getpkg(id)) &&
+        !ctx.options.peerDependencies.includes(getpkg(id))
+      ) {
+        implicitDependencies.add(id);
+      }
     }
   }
-  if (unusedDependencies.size > 0) {
-    warn(
-      ctx,
-      "Potential unused dependencies found: " +
-        [...unusedDependencies].map((id) => colors.cyan(id)).join(", "),
-    );
-  }
-  if (implicitDependencies.size > 0 && !ctx.options.rollup.inlineDependencies) {
+  if (implicitDependencies.size > 0) {
     warn(
       ctx,
       "Potential implicit dependencies found: " +
@@ -68,19 +59,9 @@ export function validatePackage(
     ].map((i) => i && resolve(rootDir, i.replace(/\/[^/]*\*.*$/, ""))),
   );
 
-  const missingOutputs = [];
-
   for (const filename of filenames) {
     if (filename && !filename.includes("*") && !existsSync(filename)) {
-      missingOutputs.push(filename.replace(rootDir + "/", ""));
+      ctx.missingOutputs.add(filename.replace(rootDir + "/", ""));
     }
-  }
-  if (missingOutputs.length > 0) {
-    warn(
-      ctx,
-      `Potential missing package.json files: ${missingOutputs
-        .map((o) => colors.cyan(o))
-        .join(", ")}`,
-    );
   }
 }

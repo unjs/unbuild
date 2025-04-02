@@ -159,6 +159,8 @@ export interface BuildContext {
   }[];
 
   usedImports: Set<string>;
+  unusedDependencies: Set<string>;
+  missingOutputs: Set<string>;
   warnings: Set<string>;
   hooks: Hookable<BuildHooks>;
 }
