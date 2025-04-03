@@ -18,7 +18,7 @@ export function cjsPlugin(_opts?: any): Plugin {
 
 export function fixCJSExportTypePlugin(ctx: BuildContext): Plugin {
   const regexp =
-    ctx.options.declaration === "node16"
+    ctx.pkg.type === "module"
       ? /\.d\.cts$/ // d.cts only
       : /\.d\.c?ts$/; // d.ts and d.cts
   return FixDtsDefaultCjsExportsPlugin({
