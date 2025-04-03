@@ -26,7 +26,7 @@ export function outputWarnings(
 ): void {
   if (warnings.size > 0) {
     consola.warn(
-      `${title}\n\n ${[...warnings].map((msg) => "- " + msg).join("\n")}`,
+      `${title}\n\n${[...warnings].map((msg) => "- " + msg).join("\n\n")}`,
     );
     if (failOnWarn) {
       consola.error(
@@ -61,7 +61,13 @@ export function dumpObject(obj: Record<string, any>): string {
 
 export function getpkg(id = ""): string {
   const s = id.split("/");
-  return s[0][0] === "@" ? `${s[0]}/${s[1]}` : s[0];
+  if (s[0][0] === "@") {
+    return `${s[0]}/${s[1]}`;
+  }
+  if (s[0].startsWith(".")) {
+    return "";
+  }
+  return s[0];
 }
 
 export async function rmdir(dir: string): Promise<void> {
@@ -213,6 +219,33 @@ export function inferPkgExternals(pkg: PackageJson): (string | RegExp)[] {
   return [...new Set(externals)];
 }
 
+export function resolvePkgEntries(pkg: PackageJson, rootDir: string): string[] {
+  if (!pkg) {
+    return [];
+  }
+
+  return [
+    ...new Set(
+      [
+        ...(typeof pkg.bin === "string"
+          ? [pkg.bin]
+          : Object.values(pkg.bin || {})),
+        pkg.main,
+        pkg.module,
+        pkg.types,
+        pkg.typings,
+        ...extractExportFilenames(pkg.exports).map((i) => i.file),
+      ]
+        .map((filename) =>
+          filename
+            ? resolve(rootDir, filename.replace(/\/[^/]*\*.*$/, ""))
+            : "",
+        )
+        .filter((filename) => filename && !filename.includes("*")),
+    ),
+  ];
+}
+
 function pathToRegex(path: string): string | RegExp {
   return path.includes("*")
     ? new RegExp(
@@ -223,11 +256,4 @@ function pathToRegex(path: string): string | RegExp {
 
 export function withTrailingSlash(path: string): string {
   return path.endsWith("/") ? path : `${path}/`;
-}
-
-export function findSharedItems(sets: Set<string>[]): Set<string> {
-  const [head, ...tails] = sets;
-  return new Set(
-    [...head].filter((item) => tails.every((set) => set.has(item))),
-  );
 }

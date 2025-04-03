@@ -15,11 +15,10 @@ import {
   removeExtension,
   inferPkgExternals,
   withTrailingSlash,
-  findSharedItems,
   outputWarnings,
 } from "./utils";
 import type { BuildContext, BuildConfig, BuildOptions } from "./types";
-import { validatePackage, validateDependencies } from "./validate";
+import { validate } from "./validate";
 import { rollupBuild } from "./builders/rollup";
 import { typesBuild } from "./builders/untyped";
 import { mkdistBuild } from "./builders/mkdist";
@@ -64,9 +63,10 @@ export async function build(
     Object.assign(pkg, pkg.publishConfig);
   }
 
-  const ctxs: BuildContext[] = [];
+  const contexts: BuildContext[] = [];
+
   for (const buildConfig of buildConfigs) {
-    const ctx = await _build(
+    const context = await _build(
       rootDir,
       inputConfig,
       buildConfig,
@@ -75,41 +75,19 @@ export async function build(
       _stubMode,
       _watchMode,
     );
-    ctxs.push(ctx);
+    contexts.push(context);
 
     // ouput an empty line as separator
     console.log("");
     outputWarnings(
       "Build is done with some warnings:",
-      ctx.warnings,
-      ctx.options.failOnWarn,
+      context.warnings,
+      context.options.failOnWarn,
     );
   }
 
-  const lintWarnings = new Set<string>();
-
-  const unusedDependencies = findSharedItems(
-    ctxs.map((ctx) => ctx.unusedDependencies),
-  );
-  if (unusedDependencies.size > 0) {
-    const message =
-      "Potential unused dependencies found: " +
-      [...unusedDependencies].map((id) => colors.cyan(id)).join(", ");
-    consola.debug("[unbuild] [warn]", message);
-    lintWarnings.add(message);
-  }
-
-  const missingOutputs = findSharedItems(ctxs.map((ctx) => ctx.missingOutputs));
-  if (missingOutputs.size > 0) {
-    const message = `Potential missing package.json files: ${[...missingOutputs]
-      .map((o) => colors.cyan(o))
-      .join(", ")}`;
-    consola.debug("[unbuild] [warn]", message);
-    lintWarnings.add(message);
-  }
-
-  const failOnWarn = ctxs.some((ctx) => ctx.options.failOnWarn);
-  outputWarnings("Lint is done with some warnings:", lintWarnings, failOnWarn);
+  // Validate all builds
+  validate(contexts, pkg, rootDir);
 }
 
 async function _build(
@@ -224,9 +202,8 @@ async function _build(
     warnings: new Set(),
     pkg,
     buildEntries: [],
-    usedImports: new Set(),
-    unusedDependencies: new Set(Object.keys(pkg.dependencies || {})),
-    missingOutputs: new Set(),
+    usedDependencies: new Set(),
+    inlinedDependencies: new Set(),
     hooks: createHooks(),
   };
 
@@ -428,10 +405,6 @@ async function _build(
       prettyBytes(ctx.buildEntries.reduce((a, e) => a + (e.bytes || 0), 0)),
     ),
   );
-
-  // Validate
-  validateDependencies(ctx);
-  validatePackage(pkg, rootDir, ctx);
 
   // Call build:done
   await ctx.hooks.callHook("build:done", ctx);

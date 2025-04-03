@@ -1,67 +1,68 @@
 import type { PackageJson } from "pkg-types";
 import type { BuildContext } from "./types";
 import { existsSync } from "node:fs";
+import { isBuiltin } from "node:module";
+import { consola } from "consola";
 import { colors } from "consola/utils";
-import { resolve } from "pathe";
-import { arrayIncludes, extractExportFilenames, getpkg, warn } from "./utils";
+import { resolvePkgEntries } from "./utils";
+import { outputWarnings } from "./utils";
 
-export function validateDependencies(ctx: BuildContext): void {
-  for (const id of ctx.usedImports) {
-    ctx.unusedDependencies.delete(id);
-  }
-  if (Array.isArray(ctx.options.dependencies)) {
-    for (const id of ctx.options.dependencies) {
-      ctx.unusedDependencies.delete(id);
-    }
-  }
-
+export function validate(
+  contexts: BuildContext[],
+  pkg: PackageJson,
+  rootDir: string,
+): void {
+  const warnings = new Set<string>();
+  const dependencies = new Set(Object.keys(pkg.dependencies || {}));
+  const unusedDependencies = new Set(dependencies);
   const implicitDependencies = new Set<string>();
-  if (!ctx.options.rollup.inlineDependencies) {
-    for (const id of ctx.usedImports) {
+
+  for (const ctx of contexts) {
+    for (const usedDependency of ctx.usedDependencies) {
+      unusedDependencies.delete(usedDependency);
+
       if (
-        !arrayIncludes(ctx.options.externals, id) &&
-        !id.startsWith("chunks/") &&
-        !ctx.options.dependencies.includes(getpkg(id)) &&
-        !ctx.options.peerDependencies.includes(getpkg(id))
+        !dependencies.has(usedDependency) &&
+        !ctx.inlinedDependencies.has(usedDependency) &&
+        !isBuiltin(usedDependency)
       ) {
-        implicitDependencies.add(id);
+        implicitDependencies.add(usedDependency);
       }
     }
   }
+
+  const missingOutputs = resolvePkgEntries(pkg, rootDir)
+    .filter((filename) => !existsSync(filename))
+    .map((filename) => filename.replace(rootDir + "/", ""));
+
+  if (missingOutputs.length > 0) {
+    const message =
+      "These files are declared in package.json but were not generated: " +
+      [...missingOutputs].map((o) => colors.yellow(o)).join(", ");
+    consola.debug("[unbuild] [warn]", message);
+    warnings.add(message);
+  }
+
   if (implicitDependencies.size > 0) {
-    warn(
-      ctx,
-      "Potential implicit dependencies found: " +
-        [...implicitDependencies].map((id) => colors.cyan(id)).join(", "),
-    );
-  }
-}
-
-export function validatePackage(
-  pkg: PackageJson,
-  rootDir: string,
-  ctx: BuildContext,
-): void {
-  if (!pkg) {
-    return;
+    const message =
+      "These dependencies are used but not listed in package.json: " +
+      [...implicitDependencies].map((id) => colors.yellow(id)).join(", ");
+    consola.debug("[unbuild] [warn]", message);
+    warnings.add(message);
   }
 
-  const filenames = new Set(
-    [
-      ...(typeof pkg.bin === "string"
-        ? [pkg.bin]
-        : Object.values(pkg.bin || {})),
-      pkg.main,
-      pkg.module,
-      pkg.types,
-      pkg.typings,
-      ...extractExportFilenames(pkg.exports).map((i) => i.file),
-    ].map((i) => i && resolve(rootDir, i.replace(/\/[^/]*\*.*$/, ""))),
+  if (unusedDependencies.size > 0) {
+    const message =
+      "These dependencies are listed in package.json but not used: " +
+      [...unusedDependencies].map((id) => colors.yellow(id)).join(", ");
+    consola.debug("[unbuild] [warn]", message);
+    warnings.add(message);
+  }
+
+  const failOnWarn = contexts.some((ctx) => ctx.options.failOnWarn);
+  outputWarnings(
+    "Validation is done with some warnings:",
+    warnings,
+    failOnWarn,
   );
-
-  for (const filename of filenames) {
-    if (filename && !filename.includes("*") && !existsSync(filename)) {
-      ctx.missingOutputs.add(filename.replace(rootDir + "/", ""));
-    }
-  }
 }

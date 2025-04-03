@@ -158,9 +158,8 @@ export interface BuildContext {
     modules?: { id: string; bytes: number }[];
   }[];
 
-  usedImports: Set<string>;
-  unusedDependencies: Set<string>;
-  missingOutputs: Set<string>;
+  usedDependencies: Set<string>;
+  inlinedDependencies: Set<string>;
   warnings: Set<string>;
   hooks: Hookable<BuildHooks>;
 }

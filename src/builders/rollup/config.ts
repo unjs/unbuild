@@ -68,6 +68,10 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
         parseNodeModulePath(originalId)?.name ||
         getpkg(originalId);
 
+      if (pkgName) {
+        ctx.usedDependencies.add(pkgName);
+      }
+
       // Check for explicit external rules
       if (
         arrayIncludes(ctx.options.externals, pkgName) ||
@@ -97,10 +101,16 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
             arrayIncludes(ctx.options.rollup.inlineDependencies, originalId) ||
             arrayIncludes(ctx.options.rollup.inlineDependencies, resolvedId)))
       ) {
+        if (pkgName) {
+          ctx.inlinedDependencies.add(pkgName);
+        }
         return false;
       }
 
       // Inline by default, but also show a warning, since it is an implicit behavior
+      if (pkgName) {
+        ctx.inlinedDependencies.add(pkgName);
+      }
       warn(ctx, `Implicitly bundling "${originalId}"`);
       return false;
     },

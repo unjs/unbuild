@@ -3,6 +3,8 @@ import { fileURLToPath } from "node:url";
 import { consola } from "consola";
 import { join } from "pathe";
 import { describe, it, expect } from "vitest";
+
+// TODO: shoud test for new 'validate' function
 import { validateDependencies, validatePackage } from "../src/validate";
 
 describe("validatePackage", () => {
@@ -60,7 +62,6 @@ describe("validateDependencies", () => {
         stub: false,
         alias: {},
         replace: {},
-        // @ts-expect-error
         rollup: {
           replace: false,
           alias: false,
@@ -104,7 +105,6 @@ describe("validateDependencies", () => {
         stub: false,
         alias: {},
         replace: {},
-        // @ts-expect-error
         rollup: {
           replace: false,
           alias: false,
