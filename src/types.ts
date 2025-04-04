@@ -98,7 +98,7 @@ export interface BuildOptions {
   /**
    * Watch mode options.
    */
-  watchOptions: WatcherOptions;
+  watchOptions: WatcherOptions | undefined;
 
   /**
    * Stub options, where [jiti](https://github.com/unjs/jiti)
