@@ -4,6 +4,7 @@ import { nodeResolve } from "@rollup/plugin-node-resolve";
 import alias from "@rollup/plugin-alias";
 import replace from "@rollup/plugin-replace";
 import { resolve, isAbsolute } from "pathe";
+import { isBuiltin } from "node:module";
 import { resolveAlias } from "pathe/utils";
 import { parseNodeModulePath } from "mlly";
 import { arrayIncludes, getpkg, warn } from "../../utils";
@@ -68,9 +69,7 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
         parseNodeModulePath(originalId)?.name ||
         getpkg(originalId);
 
-      if (pkgName) {
-        ctx.usedDependencies.add(pkgName);
-      }
+      addDependency(ctx.usedDependencies, pkgName);
 
       // Check for explicit external rules
       if (
@@ -101,17 +100,12 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
             arrayIncludes(ctx.options.rollup.inlineDependencies, originalId) ||
             arrayIncludes(ctx.options.rollup.inlineDependencies, resolvedId)))
       ) {
-        if (pkgName) {
-          ctx.inlinedDependencies.add(pkgName);
-        }
         return false;
       }
 
       // Inline by default, but also show a warning, since it is an implicit behavior
-      if (pkgName) {
-        ctx.inlinedDependencies.add(pkgName);
-      }
       warn(ctx, `Implicitly bundling "${originalId}"`);
+      addDependency(ctx.implicitDependencies, pkgName);
       return false;
     },
 
@@ -174,4 +168,11 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
       rawPlugin(),
     ].filter(Boolean),
   }) as RollupOptions;
+}
+
+function addDependency(dependencies: Set<string>, id: string): void {
+  if (!id || id.startsWith(".") || isBuiltin(id)) {
+    return;
+  }
+  dependencies.add(id);
 }

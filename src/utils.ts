@@ -61,13 +61,7 @@ export function dumpObject(obj: Record<string, any>): string {
 
 export function getpkg(id = ""): string {
   const s = id.split("/");
-  if (s[0][0] === "@") {
-    return `${s[0]}/${s[1]}`;
-  }
-  if (s[0].startsWith(".")) {
-    return "";
-  }
-  return s[0];
+  return s[0][0] === "@" ? `${s[0]}/${s[1]}` : s[0];
 }
 
 export async function rmdir(dir: string): Promise<void> {
@@ -219,31 +213,40 @@ export function inferPkgExternals(pkg: PackageJson): (string | RegExp)[] {
   return [...new Set(externals)];
 }
 
-export function resolvePkgEntries(pkg: PackageJson, rootDir: string): string[] {
+export function resolvePkgEntries(
+  pkg: PackageJson,
+  rootDir: string,
+): Array<{ raw: string; filename: string }> {
   if (!pkg) {
     return [];
   }
 
-  return [
-    ...new Set(
-      [
-        ...(typeof pkg.bin === "string"
-          ? [pkg.bin]
-          : Object.values(pkg.bin || {})),
-        pkg.main,
-        pkg.module,
-        pkg.types,
-        pkg.typings,
-        ...extractExportFilenames(pkg.exports).map((i) => i.file),
-      ]
-        .map((filename) =>
-          filename
-            ? resolve(rootDir, filename.replace(/\/[^/]*\*.*$/, ""))
-            : "",
-        )
-        .filter((filename) => filename && !filename.includes("*")),
-    ),
-  ];
+  const filenames = [
+    ...new Set([
+      ...(typeof pkg.bin === "string"
+        ? [pkg.bin]
+        : Object.values(pkg.bin || {})),
+      pkg.main,
+      pkg.module,
+      pkg.types,
+      pkg.typings,
+      ...extractExportFilenames(pkg.exports).map((i) => i.file),
+    ]),
+  ].filter(Boolean) as string[];
+
+  const entries: Array<{ raw: string; filename: string }> = [];
+
+  for (const filename of filenames) {
+    const resolvedFilename = resolve(
+      rootDir,
+      filename.replace(/\/[^/]*\*.*$/, ""),
+    );
+    if (!resolvedFilename.includes("*")) {
+      entries.push({ raw: filename, filename: resolvedFilename });
+    }
+  }
+
+  return entries;
 }
 
 function pathToRegex(path: string): string | RegExp {

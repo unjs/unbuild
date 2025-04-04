@@ -1,52 +1,37 @@
 import type { PackageJson } from "pkg-types";
 import type { BuildContext } from "./types";
 import { existsSync } from "node:fs";
-import { isBuiltin } from "node:module";
 import { consola } from "consola";
 import { colors } from "consola/utils";
 import { resolvePkgEntries } from "./utils";
-import { outputWarnings } from "./utils";
 
 export function validate(
   contexts: BuildContext[],
   pkg: PackageJson,
   rootDir: string,
-): void {
-  const warnings = new Set<string>();
-  const dependencies = new Set(Object.keys(pkg.dependencies || {}));
+): Set<string> {
+  const dependencies = Object.keys(pkg.dependencies || {});
   const unusedDependencies = new Set(dependencies);
   const implicitDependencies = new Set<string>();
 
   for (const ctx of contexts) {
-    for (const usedDependency of ctx.usedDependencies) {
-      unusedDependencies.delete(usedDependency);
-
-      if (
-        !dependencies.has(usedDependency) &&
-        !ctx.inlinedDependencies.has(usedDependency) &&
-        !isBuiltin(usedDependency)
-      ) {
-        implicitDependencies.add(usedDependency);
-      }
+    for (const id of ctx.usedDependencies) {
+      unusedDependencies.delete(id);
+    }
+    for (const id of ctx.implicitDependencies) {
+      implicitDependencies.add(id);
     }
   }
 
+  const warnings = new Set<string>();
   const missingOutputs = resolvePkgEntries(pkg, rootDir)
-    .filter((filename) => !existsSync(filename))
-    .map((filename) => filename.replace(rootDir + "/", ""));
+    .filter((entry) => !existsSync(entry.filename))
+    .map((entry) => entry.raw);
 
   if (missingOutputs.length > 0) {
     const message =
-      "These files are declared in package.json but were not generated: " +
+      "These files are declared in package.json but not generated: " +
       [...missingOutputs].map((o) => colors.yellow(o)).join(", ");
-    consola.debug("[unbuild] [warn]", message);
-    warnings.add(message);
-  }
-
-  if (implicitDependencies.size > 0) {
-    const message =
-      "These dependencies are used but not listed in package.json: " +
-      [...implicitDependencies].map((id) => colors.yellow(id)).join(", ");
     consola.debug("[unbuild] [warn]", message);
     warnings.add(message);
   }
@@ -59,10 +44,13 @@ export function validate(
     warnings.add(message);
   }
 
-  const failOnWarn = contexts.some((ctx) => ctx.options.failOnWarn);
-  outputWarnings(
-    "Validation is done with some warnings:",
-    warnings,
-    failOnWarn,
-  );
+  if (implicitDependencies.size > 0) {
+    const message =
+      "These dependencies are implicitly bundled: " +
+      [...implicitDependencies].map((id) => colors.yellow(id)).join(", ");
+    consola.debug("[unbuild] [warn]", message);
+    warnings.add(message);
+  }
+
+  return warnings;
 }

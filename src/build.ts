@@ -66,7 +66,7 @@ export async function build(
   const contexts: BuildContext[] = [];
 
   for (const buildConfig of buildConfigs) {
-    const context = await _build(
+    const ctx = await _build(
       rootDir,
       inputConfig,
       buildConfig,
@@ -75,19 +75,24 @@ export async function build(
       _stubMode,
       _watchMode,
     );
-    contexts.push(context);
+    contexts.push(ctx);
 
     // ouput an empty line as separator
     console.log("");
     outputWarnings(
       "Build is done with some warnings:",
-      context.warnings,
-      context.options.failOnWarn,
+      ctx.warnings,
+      ctx.options.failOnWarn,
     );
   }
 
   // Validate all builds
-  validate(contexts, pkg, rootDir);
+  const warnings = validate(contexts, pkg, rootDir);
+  outputWarnings(
+    "Validation is done with some warnings:",
+    warnings,
+    contexts.some((ctx) => ctx.options.failOnWarn),
+  );
 }
 
 async function _build(
@@ -203,7 +208,7 @@ async function _build(
     pkg,
     buildEntries: [],
     usedDependencies: new Set(),
-    inlinedDependencies: new Set(),
+    implicitDependencies: new Set(),
     hooks: createHooks(),
   };
 

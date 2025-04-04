@@ -1,19 +1,16 @@
-import type { BuildEntry } from "../src/types.ts";
+import type { BuildContext } from "../src/types.ts";
 import { fileURLToPath } from "node:url";
 import { consola } from "consola";
 import { join } from "pathe";
 import { describe, it, expect } from "vitest";
-
-// TODO: shoud test for new 'validate' function
-import { validateDependencies, validatePackage } from "../src/validate";
+import { validate } from "../src/validate";
 
 describe("validatePackage", () => {
   it("detects missing files", () => {
-    const buildContext = {
-      warnings: new Set(),
-    } as any;
-
-    validatePackage(
+    const _warnings = validate(
+      [
+        { usedDependencies: new Set(), implicitDependencies: new Set() },
+      ] as BuildContext[],
       {
         main: "./dist/test",
         bin: {
@@ -26,56 +23,31 @@ describe("validatePackage", () => {
         },
       },
       join(fileURLToPath(import.meta.url), "../fixture"),
-      buildContext,
     );
 
-    const warnings = [...buildContext.warnings];
+    const warnings = [..._warnings];
 
-    expect(warnings[0]).to.include("Potential missing");
+    expect(warnings[0]).to.include("not generated");
     expect(warnings[0]).not.to.include("src/index.mts");
 
     for (const file of ["dist/test", "dist/cli", "dist/mod", "runtime"]) {
       expect(warnings[0]).to.include(file);
     }
   });
-});
 
-describe("validateDependencies", () => {
   it("detects implicit deps", () => {
-    const warnings = new Set<string>();
-
-    validateDependencies({
-      warnings,
-      pkg: {},
-      buildEntries: [],
-      hooks: [] as any,
-      usedImports: new Set(["pkg-a/core"]),
-      options: {
-        externals: [],
-        dependencies: ["react"],
-        peerDependencies: [],
-        devDependencies: [],
-        rootDir: ".",
-        entries: [] as BuildEntry[],
-        clean: false,
-        outDir: "dist",
-        stub: false,
-        alias: {},
-        replace: {},
-        rollup: {
-          replace: false,
-          alias: false,
-          resolve: false,
-          json: false,
-          esbuild: false,
-          commonjs: false,
+    const warnings = validate(
+      [
+        {
+          usedDependencies: new Set(["unbuild", "pkg-a"]),
+          implicitDependencies: new Set(["pkg-a"]),
         },
-      },
-    });
-
-    expect([...warnings][0]).to.include(
-      "Potential implicit dependencies found:",
+      ] as BuildContext[],
+      { dependencies: { unbuild: "latest" } },
+      "",
     );
+
+    expect([...warnings][0]).to.include("implicitly bundled");
   });
 
   it("does not print implicit deps warning for peerDependencies", () => {
@@ -88,34 +60,35 @@ describe("validateDependencies", () => {
         : (): void => {},
     );
 
-    validateDependencies({
-      pkg: {},
-      buildEntries: [],
-      hooks: [] as any,
-      usedImports: new Set(["pkg-a/core"]),
-      options: {
-        externals: [],
-        dependencies: ["react"],
-        peerDependencies: ["pkg-a"],
-        devDependencies: [],
-        rootDir: ".",
-        entries: [] as BuildEntry[],
-        clean: false,
-        outDir: "dist",
-        stub: false,
-        alias: {},
-        replace: {},
-        rollup: {
-          replace: false,
-          alias: false,
-          resolve: false,
-          json: false,
-          esbuild: false,
-          commonjs: false,
+    validate(
+      [
+        {
+          usedDependencies: new Set(["unbuild", "pkg-a"]),
+          implicitDependencies: new Set("pkg-a"),
         },
+      ] as BuildContext[],
+      {
+        dependencies: { unbuild: "latest" },
+        peerDependencies: { "pkg-a": "latest" },
       },
-    });
+      "",
+    );
 
     expect(logs.length).to.eq(0);
+  });
+
+  it("detects unused deps", () => {
+    const warnings = validate(
+      [
+        {
+          usedDependencies: new Set("unbuild"),
+          implicitDependencies: new Set(),
+        },
+      ] as BuildContext[],
+      { dependencies: { unbuild: "latest", "pkg-a": "latest" } },
+      "",
+    );
+
+    expect([...warnings][0]).to.include("not used");
   });
 });
