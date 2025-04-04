@@ -4,10 +4,9 @@ import { nodeResolve } from "@rollup/plugin-node-resolve";
 import alias from "@rollup/plugin-alias";
 import replace from "@rollup/plugin-replace";
 import { resolve, isAbsolute } from "pathe";
-import { isBuiltin } from "node:module";
 import { resolveAlias } from "pathe/utils";
-import { parseNodeModulePath } from "mlly";
-import { arrayIncludes, getpkg, warn } from "../../utils";
+import { parseNodeModulePath, isNodeBuiltin } from "mlly";
+import { arrayIncludes, getpkg } from "../../utils";
 import type { BuildContext, RollupOptions } from "../../types";
 import { esbuild } from "./plugins/esbuild";
 import { JSONPlugin } from "./plugins/json";
@@ -59,7 +58,7 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
       },
     ].filter(Boolean),
 
-    external(originalId) {
+    external(originalId, importer) {
       // Resolve aliases
       const resolvedId = resolveAlias(originalId, _aliases);
 
@@ -69,7 +68,20 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
         parseNodeModulePath(originalId)?.name ||
         getpkg(originalId);
 
-      addDependency(ctx.usedDependencies, pkgName);
+      if (pkgName && !pkgName.startsWith(".") && !isNodeBuiltin(pkgName)) {
+        ctx.usedDependencies.add(pkgName);
+
+        if (
+          // Only treat as hoisted if the importer is source
+          (!importer || !importer.includes("/node_modules/")) &&
+          !ctx.options.dependencies.includes(pkgName) &&
+          !ctx.options.devDependencies.includes(pkgName) &&
+          !ctx.options.peerDependencies.includes(pkgName) &&
+          !Object.keys(ctx.pkg.optionalDependencies || {}).includes(pkgName)
+        ) {
+          ctx.hoistedDependencies.add(pkgName);
+        }
+      }
 
       // Check for explicit external rules
       if (
@@ -104,8 +116,7 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
       }
 
       // Inline by default, but also show a warning, since it is an implicit behavior
-      warn(ctx, `Implicitly bundling "${originalId}"`);
-      addDependency(ctx.implicitDependencies, pkgName);
+      ctx.implicitDependencies.add(originalId);
       return false;
     },
 
@@ -168,11 +179,4 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
       rawPlugin(),
     ].filter(Boolean),
   }) as RollupOptions;
-}
-
-function addDependency(dependencies: Set<string>, id: string): void {
-  if (!id || id.startsWith(".") || isBuiltin(id)) {
-    return;
-  }
-  dependencies.add(id);
 }

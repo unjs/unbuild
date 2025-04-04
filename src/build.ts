@@ -18,7 +18,7 @@ import {
   outputWarnings,
 } from "./utils";
 import type { BuildContext, BuildConfig, BuildOptions } from "./types";
-import { validate } from "./validate";
+import { validateBuilds, validateBuild } from "./validate";
 import { rollupBuild } from "./builders/rollup";
 import { typesBuild } from "./builders/untyped";
 import { mkdistBuild } from "./builders/mkdist";
@@ -77,21 +77,25 @@ export async function build(
     );
     contexts.push(ctx);
 
-    // ouput an empty line as separator
+    // Output an empty line as separator between builds
     console.log("");
+
+    // Validate single build
+    const warnings = validateBuild(ctx);
     outputWarnings(
       "Build is done with some warnings:",
-      ctx.warnings,
+      warnings,
       ctx.options.failOnWarn,
     );
   }
 
   // Validate all builds
-  const warnings = validate(contexts, pkg, rootDir);
+  const warnings = validateBuilds(contexts, pkg, rootDir);
+  const failOnWarn = contexts.some((ctx) => ctx.options.failOnWarn);
   outputWarnings(
     "Validation is done with some warnings:",
     warnings,
-    contexts.some((ctx) => ctx.options.failOnWarn),
+    failOnWarn,
   );
 }
 
@@ -208,6 +212,7 @@ async function _build(
     pkg,
     buildEntries: [],
     usedDependencies: new Set(),
+    hoistedDependencies: new Set(),
     implicitDependencies: new Set(),
     hooks: createHooks(),
   };

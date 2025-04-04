@@ -159,7 +159,9 @@ export interface BuildContext {
   }[];
 
   usedDependencies: Set<string>;
+  hoistedDependencies: Set<string>;
   implicitDependencies: Set<string>;
+
   warnings: Set<string>;
   hooks: Hookable<BuildHooks>;
 }

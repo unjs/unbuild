@@ -32,7 +32,8 @@ export function outputWarnings(
       consola.error(
         "Will exit with code (1). You can change this behavior by setting `failOnWarn: false` .",
       );
-      process.exitCode = 1;
+      // eslint-disable-next-line unicorn/no-process-exit
+      process.exit(1);
     }
   }
 }
