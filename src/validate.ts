@@ -39,8 +39,8 @@ export function validateBuilds(
   }
 
   const missingOutputs = resolvePkgEntries(pkg, rootDir)
-    .filter((entry) => !existsSync(entry.filename))
-    .map((entry) => entry.raw);
+    .filter((entry) => !existsSync(entry.path))
+    .map((entry) => entry.name);
   if (missingOutputs.length > 0) {
     const message = `These files are declared in package.json but not generated: ${_joinWarnings(missingOutputs)}`;
     consola.debug("[unbuild] [warn]", message);

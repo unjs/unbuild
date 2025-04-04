@@ -217,7 +217,7 @@ export function inferPkgExternals(pkg: PackageJson): (string | RegExp)[] {
 export function resolvePkgEntries(
   pkg: PackageJson,
   rootDir: string,
-): Array<{ raw: string; filename: string }> {
+): Array<{ name: string; path: string }> {
   if (!pkg) {
     return [];
   }
@@ -235,15 +235,12 @@ export function resolvePkgEntries(
     ]),
   ].filter(Boolean) as string[];
 
-  const entries: Array<{ raw: string; filename: string }> = [];
+  const entries: Array<{ name: string; path: string }> = [];
 
-  for (const filename of filenames) {
-    const resolvedFilename = resolve(
-      rootDir,
-      filename.replace(/\/[^/]*\*.*$/, ""),
-    );
-    if (!resolvedFilename.includes("*")) {
-      entries.push({ raw: filename, filename: resolvedFilename });
+  for (const name of filenames) {
+    const path = resolve(rootDir, name.replace(/\/[^/]*\*.*$/, ""));
+    if (!path.includes("*")) {
+      entries.push({ name, path });
     }
   }
 
