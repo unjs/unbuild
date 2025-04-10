@@ -410,7 +410,7 @@ async function _build(
     consola.log(entry.chunk ? colors.gray(line) : line);
   }
   consola.log(
-    "  Σ Total dist size (byte size):",
+    "Σ Total dist size (byte size):",
     colors.cyan(
       prettyBytes(ctx.buildEntries.reduce((a, e) => a + (e.bytes || 0), 0)),
     ),
