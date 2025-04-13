@@ -234,7 +234,7 @@ async function _build(
       options.declaration !== undefined &&
       entry.declaration === undefined
     ) {
-      entry.declaration = options.declaration ? true : false;
+      entry.declaration = !!options.declaration;
     }
 
     entry.input = resolve(options.rootDir, entry.input);
