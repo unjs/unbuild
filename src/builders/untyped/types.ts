@@ -1,9 +1,10 @@
 import type { Schema } from "untyped";
 import type { BaseBuildEntry, BuildContext } from "../../types";
 
-export interface UntypedBuildEntry extends BaseBuildEntry {
+export interface UntypedBuildEntry extends Omit<BaseBuildEntry, "declaration"> {
   builder: "untyped";
   defaults?: Record<string, any>;
+  declaration?: boolean;
 }
 
 export interface UntypedOutput {

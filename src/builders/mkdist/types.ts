@@ -1,8 +1,9 @@
 import type { MkdistOptions } from "mkdist";
 import type { BuildContext, BaseBuildEntry } from "../../types";
 
-type _BaseAndMkdist = BaseBuildEntry & MkdistOptions;
-export interface MkdistBuildEntry extends _BaseAndMkdist {
+export interface MkdistBuildEntry
+  extends Omit<BaseBuildEntry, "declaration">,
+    MkdistOptions {
   builder: "mkdist";
 }
 

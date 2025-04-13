@@ -229,8 +229,12 @@ async function _build(
       entry.builder = entry.input.endsWith("/") ? "mkdist" : "rollup";
     }
 
-    if (options.declaration !== undefined && entry.declaration === undefined) {
-      entry.declaration = options.declaration;
+    if (
+      (entry.builder === "mkdist" || entry.builder === "untyped") &&
+      options.declaration !== undefined &&
+      entry.declaration === undefined
+    ) {
+      entry.declaration = options.declaration ? true : false;
     }
 
     entry.input = resolve(options.rootDir, entry.input);

@@ -16,7 +16,7 @@ export interface BaseBuildEntry {
   input: string;
   name?: string;
   outDir?: string;
-  declaration?: "compatible" | "node16" | boolean;
+  declaration?: never;
 }
 
 /** Bundler types */
