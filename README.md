@@ -9,9 +9,14 @@
 
 > A unified JavaScript build system
 
+> [!NOTE]
+> We are experimenting with [obuild](https://github.com/unjs/obuild) as the next next-gen successor based on [rolldown](https://github.com/rolldown/rolldown).
+> 
+> If you mainly need faster build speeds and don't mind trying beta software, give it a try!
+
 ### 📦 Optimized bundler
 
-Robust [rollup](https://rollupjs.org) based bundler that supports TypeScript and generates commonjs and module formats + type declarations.
+Robust [rollup](https://rollupjs.org) based bundler that supports TypeScript and generates CommonJS and module formats + type declarations.
 
 ### 🪄 Automated config
 
