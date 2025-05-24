@@ -70,6 +70,10 @@ export async function rollupStub(ctx: BuildContext): Promise<void> {
       0,
       Math.max(0, resolvedEntry.length - extname(resolvedEntry).length),
     );
+    const resolvedEntryForImport = relative(
+      dirname(output),
+      resolvedEntryWithoutExt,
+    );
     const resolvedEntryForTypeImport = isESM
       ? `${resolvedEntry.replace(/(\.m?)(ts)$/, "$1js")}`
       : resolvedEntryWithoutExt;
@@ -89,21 +93,24 @@ export async function rollupStub(ctx: BuildContext): Promise<void> {
       );
       await writeFile(
         output + ".cjs",
-        shebang +
-          [
-            `const { createJiti } = require(${JSON.stringify(jitiCJSPath)})`,
-            ...importedBabelPlugins.map(
-              (plugin, i) =>
-                `const plugin${i} = require(${JSON.stringify(plugin)})`,
-            ),
-            "",
-            `const jiti = createJiti(__filename, ${serializedJitiOptions})`,
-            "",
-            `/** @type {import(${JSON.stringify(
-              resolvedEntryForTypeImport,
-            )})} */`,
-            `module.exports = jiti(${JSON.stringify(resolvedEntry)})`,
-          ].join("\n"),
+        shebang + ctx.options.stubOptions.bypassToSource
+          ? // Bypassing to source
+            `module.exports = require(${JSON.stringify(resolvedEntryForImport)})`
+          : // JIT
+            [
+              `const { createJiti } = require(${JSON.stringify(jitiCJSPath)})`,
+              ...importedBabelPlugins.map(
+                (plugin, i) =>
+                  `const plugin${i} = require(${JSON.stringify(plugin)})`,
+              ),
+              "",
+              `const jiti = createJiti(__filename, ${serializedJitiOptions})`,
+              "",
+              `/** @type {import(${JSON.stringify(
+                resolvedEntryForTypeImport,
+              )})} */`,
+              `module.exports = jiti(${JSON.stringify(resolvedEntry)})`,
+            ].join("\n"),
       );
     }
 
@@ -131,26 +138,34 @@ export async function rollupStub(ctx: BuildContext): Promise<void> {
 
     await writeFile(
       output + ".mjs",
-      shebang +
-        [
-          `import { createJiti } from ${JSON.stringify(jitiESMPath)};`,
-          ...importedBabelPlugins.map(
-            (plugin, i) => `import plugin${i} from ${JSON.stringify(plugin)}`,
-          ),
-          "",
-          `const jiti = createJiti(import.meta.url, ${serializedJitiOptions})`,
-          "",
-          `/** @type {import(${JSON.stringify(resolvedEntryForTypeImport)})} */`,
-          `const _module = await jiti.import(${JSON.stringify(
-            resolvedEntry,
-          )});`,
-          hasDefaultExport
-            ? "\nexport default _module?.default ?? _module;"
-            : "",
-          ...namedExports
-            .filter((name) => name !== "default")
-            .map((name) => `export const ${name} = _module.${name};`),
-        ].join("\n"),
+      shebang + ctx.options.stubOptions.bypassToSource
+        ? // Bypassing to source
+          [
+            `export * from ${JSON.stringify(resolvedEntryForImport)};`,
+            hasDefaultExport
+              ? `\nexport { default } from ${JSON.stringify(resolvedEntryForImport)};`
+              : "",
+          ].join("\n")
+        : // JIT
+          [
+            `import { createJiti } from ${JSON.stringify(jitiESMPath)};`,
+            ...importedBabelPlugins.map(
+              (plugin, i) => `import plugin${i} from ${JSON.stringify(plugin)}`,
+            ),
+            "",
+            `const jiti = createJiti(import.meta.url, ${serializedJitiOptions})`,
+            "",
+            `/** @type {import(${JSON.stringify(resolvedEntryForTypeImport)})} */`,
+            `const _module = await jiti.import(${JSON.stringify(
+              resolvedEntry,
+            )});`,
+            hasDefaultExport
+              ? "\nexport default _module?.default ?? _module;"
+              : "",
+            ...namedExports
+              .filter((name) => name !== "default")
+              .map((name) => `export const ${name} = _module.${name};`),
+          ].join("\n"),
     );
 
     // DTS Stub

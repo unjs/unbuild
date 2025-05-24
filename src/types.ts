@@ -104,7 +104,16 @@ export interface BuildOptions {
    * Stub options, where [jiti](https://github.com/unjs/jiti)
    * is an object of type `Omit<JitiOptions, "transform" | "onError">`.
    */
-  stubOptions: { jiti: Omit<JitiOptions, "transform" | "onError"> };
+  stubOptions: {
+    jiti: Omit<JitiOptions, "transform" | "onError">;
+
+    /**
+     * Whether stubs should reroute directly to the source code, without
+     * going through [jiti](https://github.com/unjs/jiti).
+     * @default false
+     */
+    bypassToSource: boolean;
+  };
 
   /**
    * Used to specify which modules or libraries should be considered external dependencies

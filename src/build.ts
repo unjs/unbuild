@@ -116,6 +116,7 @@ async function _build(
           interopDefault: true,
           alias: {},
         },
+        bypassToSource: false,
       },
       watch: _watchMode,
       watchOptions: _watchMode
