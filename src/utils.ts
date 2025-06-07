@@ -19,6 +19,25 @@ export function warn(ctx: BuildContext, message: string): void {
   ctx.warnings.add(message);
 }
 
+export function outputWarnings(
+  title: string,
+  warnings: Set<string>,
+  failOnWarn?: boolean,
+): void {
+  if (warnings.size > 0) {
+    consola.warn(
+      `${title}\n\n${[...warnings].map((msg) => "- " + msg).join("\n\n")}`,
+    );
+    if (failOnWarn) {
+      consola.error(
+        "Will exit with code (1). You can change this behavior by setting `failOnWarn: false` .",
+      );
+      // eslint-disable-next-line unicorn/no-process-exit
+      process.exit(1);
+    }
+  }
+}
+
 export async function symlink(
   from: string,
   to: string,
@@ -193,6 +212,39 @@ export function inferPkgExternals(pkg: PackageJson): (string | RegExp)[] {
   }
 
   return [...new Set(externals)];
+}
+
+export function resolvePkgEntries(
+  pkg: PackageJson,
+  rootDir: string,
+): Array<{ name: string; path: string }> {
+  if (!pkg) {
+    return [];
+  }
+
+  const filenames = [
+    ...new Set([
+      ...(typeof pkg.bin === "string"
+        ? [pkg.bin]
+        : Object.values(pkg.bin || {})),
+      pkg.main,
+      pkg.module,
+      pkg.types,
+      pkg.typings,
+      ...extractExportFilenames(pkg.exports).map((i) => i.file),
+    ]),
+  ].filter(Boolean) as string[];
+
+  const entries: Array<{ name: string; path: string }> = [];
+
+  for (const name of filenames) {
+    const path = resolve(rootDir, name.replace(/\/[^/]*\*.*$/, ""));
+    if (!path.includes("*")) {
+      entries.push({ name, path });
+    }
+  }
+
+  return entries;
 }
 
 function pathToRegex(path: string): string | RegExp {
