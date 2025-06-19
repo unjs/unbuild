@@ -23,7 +23,7 @@ describe("validatePackage", () => {
           ".": { node: "./src/index.mts" },
         },
       },
-      join(fileURLToPath(import.meta.url), "../fixture"),
+      join(fileURLToPath(import.meta.url), "../fixtures/default"),
       buildContext,
     );
 
