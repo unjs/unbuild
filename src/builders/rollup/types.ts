@@ -101,7 +101,6 @@ export interface RollupBuildOptions {
 
   /**
    * DTS plugin options
-   * Set to `false` to disable the plugin.
    * Read more: [rollup-plugin-dts](https://www.npmjs.com/package/rollup-plugin-dts)
    */
   dts: RollupDtsOptions;
