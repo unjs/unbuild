@@ -2,6 +2,40 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v3.6.0
+
+[compare changes](https://github.com/unjs/unbuild/compare/v3.5.0...v3.6.0)
+
+### 🚀 Enhancements
+
+- Support `absoluteJitiPath` for stub mode ([#542](https://github.com/unjs/unbuild/pull/542))
+
+### 🩹 Fixes
+
+- **types:** Improve type safety ([#516](https://github.com/unjs/unbuild/pull/516))
+
+### 📖 Documentation
+
+- Remove wrong jsdoc for `dts` type ([#540](https://github.com/unjs/unbuild/pull/540))
+
+### 🏡 Chore
+
+- Add note about obuild ([a751e3b](https://github.com/unjs/unbuild/commit/a751e3b))
+- Update deps ([2951dfd](https://github.com/unjs/unbuild/commit/2951dfd))
+- Update eslint config ([66b9604](https://github.com/unjs/unbuild/commit/66b9604))
+
+### ✅ Tests
+
+- Only include src for coverage report ([#525](https://github.com/unjs/unbuild/pull/525))
+
+### ❤️ Contributors
+
+- Kanon ([@ysknsid25](https://github.com/ysknsid25))
+- Pooya Parsa ([@pi0](https://github.com/pi0))
+- Bobbie Goede <bobbiegoede@gmail.com>
+- Kricsleo ([@kricsleo](https://github.com/kricsleo))
+- Daniel Roe ([@danielroe](https://github.com/danielroe))
+
 ## v3.5.0
 
 [compare changes](https://github.com/unjs/unbuild/compare/v3.4.1...v3.5.0)
