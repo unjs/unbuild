@@ -11,6 +11,8 @@ export async function rollupStub(ctx: BuildContext): Promise<void> {
   const babelPlugins = ctx.options.stubOptions.jiti.transformOptions?.babel
     ?.plugins as any;
   const importedBabelPlugins: Array<string> = [];
+  const jitiImportResolve =
+    ctx.options.stubOptions.jitiImportType === "absolute" ? resolve : relative;
   const serializedJitiOptions = JSON.stringify(
     {
       ...ctx.options.stubOptions.jiti,
@@ -80,7 +82,7 @@ export async function rollupStub(ctx: BuildContext): Promise<void> {
 
     // CJS Stub
     if (ctx.options.rollup.emitCJS) {
-      const jitiCJSPath = resolve(
+      const jitiCJSPath = jitiImportResolve(
         dirname(output),
         await resolvePath("jiti", {
           url: import.meta.url,
@@ -121,7 +123,7 @@ export async function rollupStub(ctx: BuildContext): Promise<void> {
     const hasDefaultExport =
       namedExports.includes("default") || namedExports.length === 0;
 
-    const jitiESMPath = resolve(
+    const jitiESMPath = jitiImportResolve(
       dirname(output),
       await resolvePath("jiti", {
         url: import.meta.url,
