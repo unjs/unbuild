@@ -11,8 +11,9 @@ export async function rollupStub(ctx: BuildContext): Promise<void> {
   const babelPlugins = ctx.options.stubOptions.jiti.transformOptions?.babel
     ?.plugins as any;
   const importedBabelPlugins: Array<string> = [];
-  const jitiImportResolve =
-    ctx.options.stubOptions.jitiImportType === "absolute" ? resolve : relative;
+  const jitiImportResolve = ctx.options.stubOptions.absoluteJitiPath
+    ? resolve
+    : relative;
   const serializedJitiOptions = JSON.stringify(
     {
       ...ctx.options.stubOptions.jiti,

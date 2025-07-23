@@ -106,7 +106,7 @@ export interface BuildOptions {
    */
   stubOptions: {
     jiti: Omit<JitiOptions, "transform" | "onError">;
-    jitiImportType: "relative" | "absolute";
+    absoluteJitiPath: boolean;
   };
 
   /**

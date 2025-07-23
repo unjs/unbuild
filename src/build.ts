@@ -116,7 +116,7 @@ async function _build(
           interopDefault: true,
           alias: {},
         },
-        jitiImportType: "relative",
+        absoluteJitiPath: false,
       },
       watch: _watchMode,
       watchOptions: _watchMode
