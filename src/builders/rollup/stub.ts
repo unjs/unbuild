@@ -80,7 +80,7 @@ export async function rollupStub(ctx: BuildContext): Promise<void> {
 
     // CJS Stub
     if (ctx.options.rollup.emitCJS) {
-      const jitiCJSPath = relative(
+      const jitiCJSPath = resolve(
         dirname(output),
         await resolvePath("jiti", {
           url: import.meta.url,
@@ -121,7 +121,7 @@ export async function rollupStub(ctx: BuildContext): Promise<void> {
     const hasDefaultExport =
       namedExports.includes("default") || namedExports.length === 0;
 
-    const jitiESMPath = relative(
+    const jitiESMPath = resolve(
       dirname(output),
       await resolvePath("jiti", {
         url: import.meta.url,
