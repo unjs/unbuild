@@ -116,7 +116,6 @@ async function _build(
           interopDefault: true,
           alias: {},
         },
-        absoluteJitiPath: false,
       },
       watch: _watchMode,
       watchOptions: _watchMode
