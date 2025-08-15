@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## v3.6.1
+
+[compare changes](https://github.com/unjs/unbuild/compare/v3.6.0...v3.6.1)
+
+### 🩹 Fixes
+
+- Use pathToFileURL for stubbed absolute path ([#546](https://github.com/unjs/unbuild/pull/546))
+
+### 🏡 Chore
+
+- Update lockfile ([5af91b1](https://github.com/unjs/unbuild/commit/5af91b1))
+
+### ❤️ Contributors
+
+- Pooya Parsa ([@pi0](https://github.com/pi0))
+- Julien Huang ([@huang-julien](https://github.com/huang-julien))
+
 ## v3.6.0
 
 [compare changes](https://github.com/unjs/unbuild/compare/v3.5.0...v3.6.0)
