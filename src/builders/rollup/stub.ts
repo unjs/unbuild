@@ -1,7 +1,12 @@
 import { writeFile, mkdir } from "node:fs/promises";
 import { promises as fsp } from "node:fs";
 import { resolve, dirname, extname, relative } from "pathe";
-import { resolvePath, resolveModuleExportNames, fileURLToPath, pathToFileURL } from "mlly";
+import {
+  resolvePath,
+  resolveModuleExportNames,
+  fileURLToPath,
+  pathToFileURL,
+} from "mlly";
 import { warn } from "../../utils";
 import type { BuildContext } from "../../types";
 import { makeExecutable, getShebang } from "./plugins/shebang";
@@ -13,7 +18,7 @@ export async function rollupStub(ctx: BuildContext): Promise<void> {
   const importedBabelPlugins: Array<string> = [];
   // #542
   const jitiImportResolve = ctx.options.stubOptions.absoluteJitiPath
-    ? (...args: string[]): string => pathToFileURL(resolve(...args)) 
+    ? (...args: string[]): string => pathToFileURL(resolve(...args))
     : relative;
   const serializedJitiOptions = JSON.stringify(
     {
