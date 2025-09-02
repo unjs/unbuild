@@ -37,32 +37,23 @@ export async function rollupBuild(ctx: BuildContext): Promise<void> {
   const allOutputOptions = rollupOptions.output! as OutputOptions[];
   for (const outputOptions of allOutputOptions) {
     const { output } = await buildResult.write(outputOptions);
-    const chunkFileNames = new Set<string>();
-    const outputChunks = output.filter(
-      (e) => e.type === "chunk",
+    const entryChunks = output.filter(
+      (chunk) => chunk.type === "chunk" && chunk.isEntry,
     ) as OutputChunk[];
-    for (const entry of outputChunks) {
-      chunkFileNames.add(entry.fileName);
-      for (const id of entry.imports) {
-        ctx.usedImports.add(id);
-      }
-      if (entry.isEntry) {
-        ctx.buildEntries.push({
-          chunks: entry.imports.filter((i) =>
-            outputChunks.find((c) => c.fileName === i),
-          ),
-          modules: Object.entries(entry.modules).map(([id, mod]) => ({
-            id,
-            bytes: mod.renderedLength,
-          })),
-          path: entry.fileName,
-          bytes: Buffer.byteLength(entry.code, "utf8"),
-          exports: entry.exports,
-        });
-      }
-    }
-    for (const chunkFileName of chunkFileNames) {
-      ctx.usedImports.delete(chunkFileName);
+
+    for (const chunk of entryChunks) {
+      ctx.buildEntries.push({
+        chunks: chunk.imports.filter((i) =>
+          entryChunks.find((c) => c.fileName === i),
+        ),
+        modules: Object.entries(chunk.modules).map(([id, mod]) => ({
+          id,
+          bytes: mod.renderedLength,
+        })),
+        path: chunk.fileName,
+        bytes: Buffer.byteLength(chunk.code, "utf8"),
+        exports: chunk.exports,
+      });
     }
   }
 
