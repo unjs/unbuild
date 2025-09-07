@@ -1,12 +1,7 @@
 import { writeFile } from "node:fs/promises";
 import { resolve } from "pathe";
-import {
-  resolveSchema,
-  generateTypes,
-  generateMarkdown,
-  type InputObject,
-} from "untyped";
-import untypedPlugin from "untyped/babel-plugin";
+import { resolveSchema, generateTypes, generateMarkdown } from "untyped";
+import { loadSchema } from "untyped/loader";
 import { pascalCase } from "scule";
 import type {
   BuildContext,
@@ -14,7 +9,6 @@ import type {
   UntypedOutputs,
 } from "../../types";
 import consola from "consola";
-import { createJiti } from "jiti";
 
 export async function typesBuild(ctx: BuildContext): Promise<void> {
   const entries = ctx.options.entries.filter(
@@ -23,37 +17,19 @@ export async function typesBuild(ctx: BuildContext): Promise<void> {
   await ctx.hooks.callHook("untyped:entries", ctx, entries);
 
   for (const entry of entries) {
-    const options = {
-      jiti: {
-        interopDefault: true,
-        transformOptions: {
-          babel: {
-            plugins: [untypedPlugin],
-          },
-        },
-      },
-    };
+    const options = { jiti: {} };
     await ctx.hooks.callHook("untyped:entry:options", ctx, entry, options);
 
-    const untypedJiti = createJiti(ctx.options.rootDir, options.jiti);
-
-    const distDir = entry.outDir!;
-
-    let rawSchema =
-      ((await untypedJiti.import(resolve(ctx.options.rootDir, entry.input), {
-        try: true,
-      })) as InputObject) || ({} as InputObject);
-
-    const rawSchemaKeys = Object.keys(rawSchema);
-    if (rawSchemaKeys.length === 1 && rawSchemaKeys[0] === "default") {
-      rawSchema = (rawSchema as any).default;
-    }
-
     const defaults = entry.defaults || {};
-    const schema = await resolveSchema(rawSchema, defaults);
+    const schema = await loadSchema(resolve(ctx.options.rootDir, entry.input), {
+      cwd: ctx.options.rootDir,
+      jiti: options.jiti,
+      defaults,
+    }).catch(() => resolveSchema({}, defaults));
 
     await ctx.hooks.callHook("untyped:entry:schema", ctx, entry, schema);
 
+    const distDir = entry.outDir!;
     const outputs: UntypedOutputs = {
       markdown: {
         fileName: resolve(distDir, `${entry.name}.md`),
