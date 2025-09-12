@@ -1,3 +1,11 @@
+import { dirname, resolve } from "pathe";
+import {
+  sys,
+  findConfigFile,
+  readConfigFile,
+  parseJsonConfigFileContent,
+} from "typescript";
+import type { CompilerOptions } from "typescript";
 import type { PreRenderedChunk } from "rollup";
 import type { BuildContext } from "../../types";
 
@@ -15,6 +23,7 @@ export const DEFAULT_EXTENSIONS: string[] = [
 
 export function resolveAliases(ctx: BuildContext): Record<string, string> {
   const aliases: Record<string, string> = {
+    ...inferAliasesFromTsconfig(ctx),
     [ctx.pkg.name!]: ctx.options.rootDir,
     ...ctx.options.alias,
   };
@@ -38,6 +47,67 @@ export function resolveAliases(ctx: BuildContext): Record<string, string> {
   }
 
   return aliases;
+}
+
+function inferAliasesFromTsconfig(
+  ctx: BuildContext,
+): Record<string, string> | undefined {
+  const tsconfig = getTsconfig(ctx);
+
+  if (!tsconfig.compilerOptions?.paths) {
+    return;
+  }
+
+  const tsconfigDir = tsconfig.path
+    ? dirname(tsconfig.path)
+    : ctx.options.rootDir;
+
+  const resolvedBaseUrl = resolve(
+    tsconfigDir,
+    tsconfig.compilerOptions?.baseUrl || ".",
+  );
+
+  const aliases = Object.fromEntries(
+    Object.entries(tsconfig.compilerOptions.paths).map(
+      ([pattern, substitutions]) => {
+        const find = pattern.replace(/\/\*$/, "");
+        // Pick only the first path.
+        const replacement = substitutions[0].replace(/\*$/, "");
+        const resolvedReplacement = resolve(resolvedBaseUrl, replacement);
+        return [find, resolvedReplacement];
+      },
+    ),
+  );
+
+  return aliases;
+}
+
+function getTsconfig(ctx: BuildContext): {
+  path?: string;
+  compilerOptions?: CompilerOptions;
+} {
+  const { tsconfig: overridePath, compilerOptions: overrideCompilerOptions } =
+    ctx.options.rollup.dts;
+
+  const tsconfigPath = overridePath
+    ? resolve(ctx.options.rootDir, overridePath)
+    : findConfigFile(ctx.options.rootDir, sys.fileExists);
+
+  if (!tsconfigPath) {
+    return { compilerOptions: overrideCompilerOptions };
+  }
+
+  const { config: tsconfigRaw } = readConfigFile(tsconfigPath, sys.readFile);
+  const { options: compilerOptions } = parseJsonConfigFileContent(
+    tsconfigRaw,
+    sys,
+    dirname(tsconfigPath),
+  );
+
+  return {
+    path: tsconfigPath,
+    compilerOptions: { ...compilerOptions, ...overrideCompilerOptions },
+  };
 }
 
 export function getChunkFilename(
