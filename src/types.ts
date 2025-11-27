@@ -174,8 +174,9 @@ type DeepPartial<T> = { [P in keyof T]?: DeepPartial<T[P]> };
  * In addition to basic `entries`, `presets`, and `hooks`,
  * there are also all the properties of `BuildOptions` except for BuildOptions's `entries`.
  */
-export interface BuildConfig
-  extends DeepPartial<Omit<BuildOptions, "entries">> {
+export interface BuildConfig extends DeepPartial<
+  Omit<BuildOptions, "entries">
+> {
   /**
    * Specify the entry file or entry module during the construction process.
    */
@@ -194,10 +195,7 @@ export interface BuildConfig
 }
 
 export interface BuildHooks
-  extends CopyHooks,
-    UntypedHooks,
-    MkdistHooks,
-    RollupHooks {
+  extends CopyHooks, UntypedHooks, MkdistHooks, RollupHooks {
   "build:prepare": (ctx: BuildContext) => void | Promise<void>;
   "build:before": (ctx: BuildContext) => void | Promise<void>;
   "build:done": (ctx: BuildContext) => void | Promise<void>;
