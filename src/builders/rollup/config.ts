@@ -3,6 +3,7 @@ import commonjs from "@rollup/plugin-commonjs";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import alias from "@rollup/plugin-alias";
 import replace from "@rollup/plugin-replace";
+import { PluginPure } from "rollup-plugin-pure";
 import { resolve, isAbsolute } from "pathe";
 import { resolveAlias } from "pathe/utils";
 import { parseNodeModulePath } from "mlly";
@@ -145,6 +146,12 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
         esbuild({
           sourcemap: ctx.options.sourcemap,
           ...ctx.options.rollup.esbuild,
+        }),
+
+      ctx.options.rollup.pure &&
+        PluginPure({
+          sourcemap: ctx.options.sourcemap,
+          ...ctx.options.rollup.pure,
         }),
 
       ctx.options.rollup.commonjs &&
