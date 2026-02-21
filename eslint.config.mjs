@@ -4,7 +4,7 @@ import unjs from "eslint-config-unjs";
 export default unjs({
   ignores: [
     ".git",
-    "test/fixture/dist"
+    "test/fixtures/**/dist"
   ],
   rules: {
     "unicorn/no-null": 0,

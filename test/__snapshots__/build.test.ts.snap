@@ -1,0 +1,102 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Build fixtures > declaration (mkdist) > a.d.ts 1`] = `
+"export declare function foo(): number;
+"
+`;
+
+exports[`Build fixtures > declaration (mkdist) > a.mjs 1`] = `
+"export function foo() {
+  return 42;
+}
+"
+`;
+
+exports[`Build fixtures > declaration (mkdist) > index.d.ts 1`] = `
+"export { foo } from "./a.js";
+"
+`;
+
+exports[`Build fixtures > declaration (mkdist) > index.mjs 1`] = `
+"export { foo } from "./a.js";
+"
+`;
+
+exports[`Build fixtures > declaration (rollup) > index.cjs 1`] = `
+"'use strict';
+
+function foo() {
+  return 42;
+}
+
+exports.foo = foo;
+"
+`;
+
+exports[`Build fixtures > declaration (rollup) > index.d.cts 1`] = `
+"declare function foo(): number;
+
+export { foo };
+"
+`;
+
+exports[`Build fixtures > declaration (rollup) > index.d.mts 1`] = `
+"declare function foo(): number;
+
+export { foo };
+"
+`;
+
+exports[`Build fixtures > declaration (rollup) > index.d.ts 1`] = `
+"declare function foo(): number;
+
+export { foo };
+"
+`;
+
+exports[`Build fixtures > declaration (rollup) > index.mjs 1`] = `
+"function foo() {
+  return 42;
+}
+
+export { foo };
+"
+`;
+
+exports[`Build fixtures > sourcemap (mkdist) > a.mjs 1`] = `
+"export function foo() {
+  return 42;
+}
+"
+`;
+
+exports[`Build fixtures > sourcemap (mkdist) > index.mjs 1`] = `
+"export { foo } from "./a.js";
+"
+`;
+
+exports[`Build fixtures > sourcemap (rollup) > index.cjs 1`] = `
+"'use strict';
+
+function foo() {
+  return 42;
+}
+
+exports.foo = foo;
+//# sourceMappingURL=index.cjs.map
+"
+`;
+
+exports[`Build fixtures > sourcemap (rollup) > index.cjs.map 1`] = `"{"version":3,"file":"index.cjs","sources":["../src/a.ts"],"sourcesContent":["export function foo(): number {\\n  return 42;\\n}\\n"],"names":[],"mappings":";;AAAO,SAAS,GAAc,GAAA;AAC5B,EAAO,OAAA,EAAA;AACT;;;;"}"`;
+
+exports[`Build fixtures > sourcemap (rollup) > index.mjs 1`] = `
+"function foo() {
+  return 42;
+}
+
+export { foo };
+//# sourceMappingURL=index.mjs.map
+"
+`;
+
+exports[`Build fixtures > sourcemap (rollup) > index.mjs.map 1`] = `"{"version":3,"file":"index.mjs","sources":["../src/a.ts"],"sourcesContent":["export function foo(): number {\\n  return 42;\\n}\\n"],"names":[],"mappings":"AAAO,SAAS,GAAc,GAAA;AAC5B,EAAO,OAAA,EAAA;AACT;;;;"}"`;
