@@ -21,10 +21,13 @@ export async function copyBuild(ctx: BuildContext): Promise<void> {
       const patterns = Array.isArray(entry.pattern)
         ? entry.pattern
         : [entry.pattern || "**"];
-      const paths = await glob(patterns, {
+      const options = {
         cwd: resolve(ctx.options.rootDir, entry.input),
         absolute: false,
-      });
+        patterns,
+      };
+      await ctx.hooks.callHook("copy:entry:options", ctx, entry, options);
+      const paths = await glob(options);
 
       const outputList = await Promise.allSettled(
         paths.map(async (path) => {
