@@ -2,7 +2,6 @@ import type {
   RollupOptions as _RollupOptions,
   RollupBuild,
   OutputOptions,
-  InputPluginOption,
   Plugin,
 } from "rollup";
 import type { RollupReplaceOptions } from "@rollup/plugin-replace";
@@ -17,7 +16,7 @@ import type { EsbuildOptions } from "./plugins/esbuild";
 
 export type RollupCommonJSOptions = Parameters<typeof commonjs>[0] & {};
 
-export interface RollupBuildEntry extends BaseBuildEntry {
+export interface RollupBuildEntry extends Omit<BaseBuildEntry, "declaration"> {
   builder: "rollup";
 }
 

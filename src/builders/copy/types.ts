@@ -1,6 +1,6 @@
 import type { BaseBuildEntry, BuildContext } from "../../types";
 
-export interface CopyBuildEntry extends BaseBuildEntry {
+export interface CopyBuildEntry extends Omit<BaseBuildEntry, "declaration"> {
   builder: "copy";
   pattern?: string | string[];
 }
