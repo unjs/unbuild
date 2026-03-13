@@ -10,6 +10,7 @@ import type { RollupAliasOptions } from "@rollup/plugin-alias";
 import type { RollupNodeResolveOptions } from "@rollup/plugin-node-resolve";
 import type { RollupJsonOptions } from "@rollup/plugin-json";
 import type { Options as RollupDtsOptions } from "rollup-plugin-dts";
+import type { PureAnnotationsOptions } from "rollup-plugin-pure";
 import type commonjs from "@rollup/plugin-commonjs";
 import type { BaseBuildEntry } from "../../types";
 import type { BuildContext } from "../../types";
@@ -104,6 +105,15 @@ export interface RollupBuildOptions {
    * Read more: [rollup-plugin-dts](https://www.npmjs.com/package/rollup-plugin-dts)
    */
   dts: RollupDtsOptions;
+
+  /**
+   * Pure annotations plugin options.
+   * Automatically adds `/* #__PURE__ *\/` annotations before specified function calls
+   * to help with tree-shaking.
+   * Set to `false` to disable the plugin.
+   * Read more: [rollup-plugin-pure](https://github.com/danielroe/rollup-plugin-pure)
+   */
+  pure?: PureAnnotationsOptions | false;
 }
 
 export interface RollupOptions extends _RollupOptions {
