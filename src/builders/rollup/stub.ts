@@ -158,7 +158,15 @@ export async function rollupStub(ctx: BuildContext): Promise<void> {
             : "",
           ...namedExports
             .filter((name) => name !== "default")
-            .map((name) => `export const ${name} = _module.${name};`),
+            .map((name) => {
+              // Check if name is a valid JS identifier
+              // Arbitrary module namespace identifiers (e.g. 'module.exports')
+              // need bracket notation for member access
+              if (/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(name)) {
+                return `export const ${name} = _module.${name};`;
+              }
+              return `export const ${JSON.stringify(name)} = _module[${JSON.stringify(name)}];`;
+            }),
         ].join("\n"),
     );
 
