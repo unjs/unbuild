@@ -55,16 +55,16 @@
     "untyped": "^2.0.0"
   },
   "devDependencies": {
-    "@babel/plugin-transform-class-properties": "^7.28.6",
-    "@types/node": "^25.2.2",
-    "@vitest/coverage-v8": "^4.0.18",
-    "automd": "^0.4.3",
-    "changelogen": "^0.6.2",
-    "eslint": "^10.0.0",
-    "eslint-config-unjs": "^0.6.2",
-    "prettier": "^3.8.1",
-    "typescript": "^5.9.3",
-    "vitest": "^4.0.18"
+    "@babel/plugin-transform-class-properties": "7.28.6",
+    "@types/node": "25.2.2",
+    "@vitest/coverage-v8": "4.0.18",
+    "automd": "0.4.3",
+    "changelogen": "0.6.2",
+    "eslint": "10.0.0",
+    "eslint-config-unjs": "0.6.2",
+    "prettier": "3.8.1",
+    "typescript": "5.9.3",
+    "vitest": "4.0.18"
   },
   "peerDependencies": {
     "typescript": "^5.9.2"
