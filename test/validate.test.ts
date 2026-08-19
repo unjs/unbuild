@@ -77,6 +77,44 @@ describe("validateDependencies", () => {
     );
   });
 
+  it("detects unused deps", () => {
+    const warnings = new Set<string>();
+
+    validateDependencies({
+      warnings,
+      pkg: { dependencies: { lodash: "^4.17.21" } },
+      buildEntries: [],
+      hooks: [] as any,
+      usedImports: new Set<string>(),
+      options: {
+        externals: [],
+        // build.ts infers this from pkg.dependencies
+        dependencies: ["lodash"],
+        peerDependencies: [],
+        devDependencies: [],
+        rootDir: ".",
+        entries: [] as BuildEntry[],
+        clean: false,
+        outDir: "dist",
+        stub: false,
+        alias: {},
+        replace: {},
+        // @ts-expect-error
+        rollup: {
+          replace: false,
+          alias: false,
+          resolve: false,
+          json: false,
+          esbuild: false,
+          commonjs: false,
+        },
+      },
+    });
+
+    expect([...warnings][0]).to.include("Potential unused dependencies found:");
+    expect([...warnings][0]).to.include("lodash");
+  });
+
   it("does not print implicit deps warning for peerDependencies", () => {
     const logs: string[] = [];
     consola.mockTypes((type) =>
