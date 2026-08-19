@@ -15,11 +15,6 @@ export function validateDependencies(ctx: BuildContext): void {
     unusedDependencies.delete(id);
     usedDependencies.add(id);
   }
-  if (Array.isArray(ctx.options.dependencies)) {
-    for (const id of ctx.options.dependencies) {
-      unusedDependencies.delete(id);
-    }
-  }
   for (const id of usedDependencies) {
     if (
       !arrayIncludes(ctx.options.externals, id) &&
