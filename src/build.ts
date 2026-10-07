@@ -14,6 +14,7 @@ import {
   resolvePreset,
   removeExtension,
   inferPkgExternals,
+  inferPkgTypeExternals,
   withTrailingSlash,
 } from "./utils";
 import type { BuildContext, BuildConfig, BuildOptions } from "./types";
@@ -128,6 +129,7 @@ async function _build(
         ...Module.builtinModules,
         ...Module.builtinModules.map((m) => "node:" + m),
       ],
+      dtsExternals: [],
       dependencies: [],
       devDependencies: [],
       peerDependencies: [],
@@ -245,6 +247,10 @@ async function _build(
   // Add all dependencies as externals
   options.externals.push(...inferPkgExternals(pkg));
   options.externals = [...new Set(options.externals)];
+
+  // Types provided by `@types/*` packages are externalized for the declaration
+  // build only (see `inferPkgTypeExternals`)
+  options.dtsExternals = inferPkgTypeExternals(pkg);
 
   // Call build:before
   await ctx.hooks.callHook("build:before", ctx);

@@ -78,6 +78,8 @@ export async function rollupBuild(ctx: BuildContext): Promise<void> {
 
   // Types
   if (ctx.options.declaration) {
+    // `@types/*` externals only apply to the declaration build
+    ctx.dtsBuild = true;
     rollupOptions.plugins = [
       ...rollupOptions.plugins,
       dts(ctx.options.rollup.dts),
@@ -124,6 +126,7 @@ export async function rollupBuild(ctx: BuildContext): Promise<void> {
       });
     }
     // #endregion
+    ctx.dtsBuild = false;
   }
 
   await ctx.hooks.callHook("rollup:done", ctx);

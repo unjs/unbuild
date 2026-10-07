@@ -68,11 +68,15 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
         parseNodeModulePath(originalId)?.name ||
         getpkg(originalId);
 
-      // Check for explicit external rules
+      // Check for explicit external rules. `dtsExternals` only applies while the
+      // declaration build is running (see `inferPkgTypeExternals`).
+      const externals = ctx.dtsBuild
+        ? [...ctx.options.externals, ...ctx.options.dtsExternals]
+        : ctx.options.externals;
       if (
-        arrayIncludes(ctx.options.externals, pkgName) ||
-        arrayIncludes(ctx.options.externals, originalId) ||
-        arrayIncludes(ctx.options.externals, resolvedId)
+        arrayIncludes(externals, pkgName) ||
+        arrayIncludes(externals, originalId) ||
+        arrayIncludes(externals, resolvedId)
       ) {
         return true;
       }

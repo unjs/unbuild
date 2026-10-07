@@ -4,6 +4,7 @@ import {
   extractExportFilenames,
   inferExportType,
   inferPkgExternals,
+  inferPkgTypeExternals,
 } from "../src/utils";
 
 describe("inferExportType", () => {
@@ -86,5 +87,32 @@ describe("inferPkgExternals", () => {
       /^#.*$/,
       "#test",
     ]);
+  });
+
+  it("keeps `@types/*` packages external without mapping them for the JS build", () => {
+    expect(
+      inferPkgExternals({
+        name: "test",
+        dependencies: { "@types/aws-lambda": "8.10.0" },
+        devDependencies: { "@types/react": "17.0.0" },
+      }),
+    ).to.deep.equal(["@types/aws-lambda", "@types/react", "test"]);
+  });
+
+  it("maps `@types/*` packages to the name they provide types for (dts build)", () => {
+    expect(
+      inferPkgTypeExternals({
+        dependencies: { "@types/aws-lambda": "8.10.0" },
+        devDependencies: { "@types/react": "17.0.0" },
+      }),
+    ).to.deep.equal(["aws-lambda", "react"]);
+  });
+
+  it("maps scoped `@types/*` packages using the `__` separator (dts build)", () => {
+    expect(
+      inferPkgTypeExternals({
+        devDependencies: { "@types/babel__core": "7.0.0" },
+      }),
+    ).to.deep.equal(["@babel/core"]);
   });
 });

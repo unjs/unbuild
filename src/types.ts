@@ -115,6 +115,20 @@ export interface BuildOptions {
    */
   externals: (string | RegExp)[];
 
+  /**
+   * Externals that only apply to the declaration (`.d.ts`) build.
+   *
+   * A `@types/*` package provides types for a runtime package with a different
+   * name (`@types/aws-lambda` → `aws-lambda`). Declaration files import from the
+   * runtime name, so it has to be external there — otherwise the types are inlined
+   * and the output contains absolute `node_modules` paths (issue #510).
+   *
+   * It must not be external for the JavaScript build: the runtime package is not
+   * necessarily a dependency, and externalizing it would leave an unresolved
+   * import in the output that the consumer cannot resolve.
+   */
+  dtsExternals: (string | RegExp)[];
+
   dependencies: string[];
 
   peerDependencies: string[];
@@ -152,6 +166,11 @@ export interface BuildContext {
   options: BuildOptions;
   pkg: PackageJson;
   jiti: Jiti;
+  /**
+   * Whether the declaration build is currently running. Set by the rollup builder
+   * so that `external()` also applies `options.dtsExternals`.
+   */
+  dtsBuild?: boolean;
   buildEntries: {
     path: string;
     bytes?: number;
