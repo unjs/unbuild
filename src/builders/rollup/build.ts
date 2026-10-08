@@ -78,52 +78,58 @@ export async function rollupBuild(ctx: BuildContext): Promise<void> {
 
   // Types
   if (ctx.options.declaration) {
-    rollupOptions.plugins = [
-      ...rollupOptions.plugins,
-      dts(ctx.options.rollup.dts),
-      removeShebangPlugin(),
-      ctx.options.rollup.emitCJS && fixCJSExportTypePlugin(ctx),
-    ].filter(
-      (plugin): plugin is NonNullable<Exclude<typeof plugin, false>> =>
-        /**
-         * Issue: #396
-         * rollup-plugin-dts conflicts with rollup-plugin-commonjs:
-         * https://github.com/Swatinem/rollup-plugin-dts?tab=readme-ov-file#what-to-expect
-         */
-        !!plugin && (!("name" in plugin) || plugin.name !== "commonjs"),
-    );
+    // `@types/*` externals only apply to the declaration build
+    ctx.dtsBuild = true;
+    try {
+      rollupOptions.plugins = [
+        ...rollupOptions.plugins,
+        dts(ctx.options.rollup.dts),
+        removeShebangPlugin(),
+        ctx.options.rollup.emitCJS && fixCJSExportTypePlugin(ctx),
+      ].filter(
+        (plugin): plugin is NonNullable<Exclude<typeof plugin, false>> =>
+          /**
+           * Issue: #396
+           * rollup-plugin-dts conflicts with rollup-plugin-commonjs:
+           * https://github.com/Swatinem/rollup-plugin-dts?tab=readme-ov-file#what-to-expect
+           */
+          !!plugin && (!("name" in plugin) || plugin.name !== "commonjs"),
+      );
 
-    await ctx.hooks.callHook("rollup:dts:options", ctx, rollupOptions);
-    const typesBuild = await rollup(rollupOptions);
-    await ctx.hooks.callHook("rollup:dts:build", ctx, typesBuild);
-    // #region cjs
-    if (ctx.options.rollup.emitCJS) {
+      await ctx.hooks.callHook("rollup:dts:options", ctx, rollupOptions);
+      const typesBuild = await rollup(rollupOptions);
+      await ctx.hooks.callHook("rollup:dts:build", ctx, typesBuild);
+      // #region cjs
+      if (ctx.options.rollup.emitCJS) {
+        await typesBuild.write({
+          dir: resolve(ctx.options.rootDir, ctx.options.outDir),
+          entryFileNames: "[name].d.cts",
+          chunkFileNames: (chunk) => getChunkFilename(ctx, chunk, "d.cts"),
+        });
+      }
+      // #endregion
+      // #region mjs
       await typesBuild.write({
         dir: resolve(ctx.options.rootDir, ctx.options.outDir),
-        entryFileNames: "[name].d.cts",
-        chunkFileNames: (chunk) => getChunkFilename(ctx, chunk, "d.cts"),
+        entryFileNames: "[name].d.mts",
+        chunkFileNames: (chunk) => getChunkFilename(ctx, chunk, "d.mts"),
       });
+      // #endregion
+      // #region .d.ts for node10 compatibility (TypeScript version < 4.7)
+      if (
+        ctx.options.declaration === true ||
+        ctx.options.declaration === "compatible"
+      ) {
+        await typesBuild.write({
+          dir: resolve(ctx.options.rootDir, ctx.options.outDir),
+          entryFileNames: "[name].d.ts",
+          chunkFileNames: (chunk) => getChunkFilename(ctx, chunk, "d.ts"),
+        });
+      }
+      // #endregion
+    } finally {
+      ctx.dtsBuild = false;
     }
-    // #endregion
-    // #region mjs
-    await typesBuild.write({
-      dir: resolve(ctx.options.rootDir, ctx.options.outDir),
-      entryFileNames: "[name].d.mts",
-      chunkFileNames: (chunk) => getChunkFilename(ctx, chunk, "d.mts"),
-    });
-    // #endregion
-    // #region .d.ts for node10 compatibility (TypeScript version < 4.7)
-    if (
-      ctx.options.declaration === true ||
-      ctx.options.declaration === "compatible"
-    ) {
-      await typesBuild.write({
-        dir: resolve(ctx.options.rootDir, ctx.options.outDir),
-        entryFileNames: "[name].d.ts",
-        chunkFileNames: (chunk) => getChunkFilename(ctx, chunk, "d.ts"),
-      });
-    }
-    // #endregion
   }
 
   await ctx.hooks.callHook("rollup:done", ctx);
