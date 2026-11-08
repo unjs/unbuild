@@ -155,7 +155,16 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
 
       ctx.options.rollup.preserveDynamicImports && {
         name: "unbuild=preserve-dynamic-imports",
-        renderDynamicImport(): { left: string; right: string } {
+        renderDynamicImport({
+          targetModuleId,
+          targetChunk,
+        }: {
+          targetModuleId?: string | null;
+          targetChunk?: unknown;
+        }): { left: string; right: string } | null {
+          if (targetModuleId || targetChunk) {
+            return null;
+          }
           return { left: "import(", right: ")" };
         },
       },
