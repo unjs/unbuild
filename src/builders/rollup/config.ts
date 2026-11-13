@@ -1,4 +1,4 @@
-import type { OutputOptions, PreRenderedChunk } from "rollup";
+import type { OutputOptions, PluginContext, PreRenderedChunk } from "rollup";
 import commonjs from "@rollup/plugin-commonjs";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import alias from "@rollup/plugin-alias";
@@ -155,14 +155,23 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
 
       ctx.options.rollup.preserveDynamicImports && {
         name: "unbuild=preserve-dynamic-imports",
-        renderDynamicImport({
-          targetModuleId,
-          targetChunk,
-        }: {
-          targetModuleId?: string | null;
-          targetChunk?: unknown;
-        }): { left: string; right: string } | null {
-          if (targetModuleId || targetChunk) {
+        renderDynamicImport(
+          this: PluginContext,
+          {
+            targetModuleId,
+            targetChunk,
+          }: {
+            targetModuleId?: string | null;
+            targetChunk?: unknown;
+          },
+        ): { left: string; right: string } | null {
+          // Let Rollup render imports of modules it bundles (internal chunks),
+          // and keep native `import()` for externals and unresolved targets.
+          const isInternal =
+            !!targetChunk ||
+            (!!targetModuleId &&
+              this.getModuleInfo(targetModuleId)?.isExternal === false);
+          if (isInternal) {
             return null;
           }
           return { left: "import(", right: ")" };
