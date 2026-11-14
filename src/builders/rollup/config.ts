@@ -1,4 +1,9 @@
-import type { OutputOptions, PreRenderedChunk } from "rollup";
+import type {
+  OutputOptions,
+  Plugin,
+  PluginContext,
+  PreRenderedChunk,
+} from "rollup";
 import commonjs from "@rollup/plugin-commonjs";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import alias from "@rollup/plugin-alias";
@@ -153,12 +158,23 @@ export function getRollupOptions(ctx: BuildContext): RollupOptions {
           ...ctx.options.rollup.commonjs,
         }),
 
-      ctx.options.rollup.preserveDynamicImports && {
-        name: "unbuild=preserve-dynamic-imports",
-        renderDynamicImport(): { left: string; right: string } {
-          return { left: "import(", right: ")" };
-        },
-      },
+      ctx.options.rollup.preserveDynamicImports &&
+        ({
+          name: "unbuild=preserve-dynamic-imports",
+          renderDynamicImport(
+            this: PluginContext,
+            { targetChunk, targetModuleId },
+          ): { left: string; right: string } | null {
+            if (
+              targetChunk ||
+              (targetModuleId &&
+                this.getModuleInfo(targetModuleId)?.isExternal === false)
+            ) {
+              return null;
+            }
+            return { left: "import(", right: ")" };
+          },
+        } satisfies Plugin),
 
       ctx.options.rollup.cjsBridge && cjsPlugin({}),
 
