@@ -55,7 +55,7 @@
     "untyped": "^2.0.0"
   },
   "devDependencies": {
-    "@babel/plugin-transform-class-properties": "^7.28.6",
+    "@babel/plugin-transform-class-properties": "^8.0.1",
     "@types/node": "^25.2.2",
     "@vitest/coverage-v8": "^4.0.18",
     "automd": "^0.4.3",
