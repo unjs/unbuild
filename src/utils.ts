@@ -171,7 +171,14 @@ export function inferPkgExternals(pkg: PackageJson): (string | RegExp)[] {
       dep.startsWith("@types/"),
     ),
     ...Object.keys(pkg.optionalDependencies || {}),
-  ];
+  ].flatMap((dep) => {
+    if (!dep.startsWith("@types/")) {
+      return dep;
+    }
+    // Keep imports from type packages external under their public module name.
+    const moduleName = dep.slice(7).replace(/^(.+)__(.+)$/, "@$1/$2");
+    return [dep, moduleName];
+  });
 
   if (pkg.name) {
     externals.push(pkg.name);
