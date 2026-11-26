@@ -3,12 +3,14 @@ import { mkdist, type MkdistOptions } from "mkdist";
 import { symlink, rmdir, warn } from "../../utils";
 import type { MkdistBuildEntry, BuildContext } from "../../types";
 import consola from "consola";
+import { rewriteCrossEntryImports } from "./rewrite";
 
 export async function mkdistBuild(ctx: BuildContext): Promise<void> {
   const entries = ctx.options.entries.filter(
     (e) => e.builder === "mkdist",
   ) as MkdistBuildEntry[];
   await ctx.hooks.callHook("mkdist:entries", ctx, entries);
+  const writtenFiles: string[] = [];
   for (const entry of entries) {
     const distDir = entry.outDir!;
     if (ctx.options.stub) {
@@ -29,6 +31,7 @@ export async function mkdistBuild(ctx: BuildContext): Promise<void> {
         mkdistOptions,
       );
       const output = await mkdist(mkdistOptions);
+      writtenFiles.push(...output.writtenFiles);
       ctx.buildEntries.push({
         path: distDir,
         chunks: output.writtenFiles.map((p) => relative(ctx.options.outDir, p)),
@@ -44,6 +47,9 @@ export async function mkdistBuild(ctx: BuildContext): Promise<void> {
       }
     }
   }
+  // Rewrite relative imports that point at files from another entry, which a
+  // per-entry `mkdist()` call cannot resolve on its own.
+  await rewriteCrossEntryImports(writtenFiles);
   await ctx.hooks.callHook("mkdist:done", ctx);
 
   if (entries.length > 0 && ctx.options.watch) {
